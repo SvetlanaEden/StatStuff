@@ -1,0 +1,238 @@
+\documentclass[]{article}
+
+\usepackage{anysize}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color}
+\let\epsilon\varepsilon
+\newcommand\SLASH{\char`\\}
+\newcommand{\csch}{\text{csch}}
+\marginsize{0.5in}{1in}{0.5in}{1in}
+\setlength\parindent{0pt}
+
+% Title Page: Modify as needed
+\title{Summary for Bryan's research}
+\author{Summarized by Svetlana Eden}
+\date{Month Day, 2015}
+
+\hypersetup{hidelinks}
+
+% \usepackage[pdftex,bookmarks,pagebackref,pdfpagemode=UseOutlines,
+%      colorlinks,linkcolor=\linkcol,
+%      pdfauthor={Svetlana K Eden},
+%      pdftitle={\titl}]{hyperref}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
+\section{Test of Association Between Two Ordinal Variables While Adjusting for Covariates, Li and Shepherd, 2010}
+We have two ordinal variables $\pmb{X}$ and $\pmb{Y}$ and we would like to test if after adjustment for $\pmb{Z}$ they are independent. We do this in two ways:
+\begin{enumerate}[1)]
+	\item compare \emph{observed} distribution with \emph{expected} distribution under the null.
+	\item run two regressions $\pmb{X\sim Z}$ and $\pmb{Y\sim Z}$, obtain their residuals, $r_x$ and $r_y$ and test them (???)
+\end{enumerate}
+\subsection{Observed vs expected distributions statistic, $T_1$}
+In general, the joint distribution can be written:
+$$
+\begin{aligned}
+	P(Y,X) = \int_z P(Y,X|\pmb{Z})dP(\pmb{Z})
+\end{aligned}
+$$
+Under the null of conditional independence:
+$$
+\begin{aligned}
+	P_0(Y,X) = \int_z P(Y|\pmb{Z})P(X|\pmb{Z})dP(\pmb{Z})
+\end{aligned}
+$$
+More notations:
+$$
+\begin{aligned}
+  p_{i}^j &= P(Y_i = j|\pmb{Z}_i = \pmb{z}_i),~~j=1,...,s\\
+  q_{i}^l &= P(X_i = l|\pmb{Z}_i = \pmb{z}_i),~~l=1,...,t\\
+	&\gamma_i^j=P(Y_i\leq j|\pmb{Z}=\pmb{z}_i), ~~p_{i}^j = \gamma^{j}_i - \gamma^{j-1}_i\\
+	 &similar~thing~for~q_i^l
+\end{aligned}
+$$
+Now we get estimates $\hat{p}_i^j$ and $\hat{q}_i^l$ from regressions $\pmb{X~Z}$ and $\pmb{Y~Z}$ and then estimate the null distribution:
+$$
+\begin{aligned}
+  \hat{P}_0 = \left\{\hat{\pi}_0^{jl}\right\},~~where~~\hat{\pi}_0^{jl} = \frac{1}{n}\sum_i \hat{p}_i^j \cdot \hat{q}_i^l
+\end{aligned}
+$$
+Now we estimate the alternative distribution:
+$$
+\begin{aligned}
+  \hat{P}_{jl} = \frac{n_{jl}}{n}
+\end{aligned}
+$$
+Where $n_{jl}$ is number of subjects with levels j and l respectively.\\
+We now summarize the observed and expected distribution separately by calculating \emph{Goodman} and \emph{Kruskal}'s gamma (Goodman, L. A., and Kruskal, W. H. (1954), "Measures of Association for Cross Classifications," Journal of the American Statistical Association).
+$$
+\begin{aligned}
+	C&=\sum_{j_1<j_2, ~l_1<l_2}\pi_{j_1l_1}\pi_{j_2l_2}\\
+	D&=\sum_{j_1<j_2, ~l_1>l_2}\pi_{j_1l_1}\pi_{j_2l_2}\\
+  \Gamma &= \frac{C-D}{C+D}\\
+\end{aligned}
+$$
+{\scriptsize{\textbf{Note:} Strictly speaking, $C$ and $D$ from above have to be multiplied by $2$ (see section \ref{sssec:GoodmanKruskal}). But because 2 cancels out, I guess, they omit the $2$}}\\
+Let $\Gamma_1 = \Gamma(\hat{P})$ and  $\Gamma_0 = \Gamma(\hat{P}_0)$ be the gamma for the observed and expected distributions for $(Y,X)$. The test statistics is $T_1=\Gamma_1 - \Gamma_0$. When the multinomial models are correct (?!), under the null:
+$$
+\begin{aligned}
+	\hat{P}_0 \rightarrow P,~~~\hat{P} \rightarrow P\\
+	T_1 = \Gamma(\hat{P}) - \Gamma(\hat{P_0}) \underset{n\rightarrow \infty}{\longrightarrow} 0
+\end{aligned}
+$$
+\subsubsection{\emph{Goodman} and \emph{Kruskal}'s gamma}
+\label{sssec:GoodmanKruskal}
+We have two $iid$ subjects $1$ and $2$ with two ordered responses $\underline{a}_1,\underline{b}_1$ and $\underline{a}_2,\underline{b}_2$ that have categories $1,2,...,s$, and $1,2,...,t$. If we summarised proportions of each combination in a table we would use the following notations:\\
+~\\
+\begin{tabular}{ l | c | c | c | c | c}
+  \hline
+  ~ & $B_1$ & $B_2$ & ... & $B_t$ & Total\\
+  \hline
+  $A_1$ & $\rho_{11}$&$\rho_{12}$&... &$\rho_{1t}$& $\rho_{1\cdot}$\\
+  $A_2$ & $\rho_{21}$&$\rho_{22}$&... &$\rho_{2t}$& $\rho_{2\cdot}$\\
+  ... & ...&...&... &...& ...\\
+  $A_s$ & $\rho_{s1}$&$\rho_{s2}$&... &$\rho_{st}$& $\rho_{1\cdot}$\\
+  \hline
+  Total & $\rho_{\cdot 1}$& $\rho_{\cdot 2}$&... & $\rho_{\cdot t}$& 1\\
+\end{tabular}
+~\\
+
+
+Let's denote:
+$$
+\begin{aligned}
+	\Pi_c&=Pr\left\{ \underline{a}_1 <\underline{a}_2 ~and ~\underline{b}_1<\underline{b}_2;~~or~\underline{a}_1 >\underline{a}_2 ~and ~\underline{b}_1>\underline{b}_2\right\}\\
+	\Pi_d&=Pr\left\{ \underline{a}_1 <\underline{a}_2 ~and ~\underline{b}_1>\underline{b}_2;~~or~\underline{a}_1 >\underline{a}_2 ~and ~\underline{b}_1<\underline{b}_2\right\}\\
+	\Pi_t&=Pr\left\{\underline{a}_1 =\underline{a}_2 ~or ~\underline{b}_1=\underline{b}_2\right\}\\
+\end{aligned}
+$$
+From the above, the conditional probability for the \emph{like} order given no ties is $\Pi_c/(1-\Pi_t)$ and the conditional probability fo the $unlike$ order given no ties is $\Pi_d/(1-\Pi_t)$. Keeping in mind that $\Pi_c +\Pi_d +\Pi_t=1$, a possible measure of association, $\gamma$ is:
+$$
+\begin{aligned}
+	\gamma = \frac{\Pi_c - \Pi_d}{1-\Pi_t} =  \frac{\Pi_c - \Pi_d}{\Pi_c + \Pi_d} = \frac{2\Pi_c - 1 + \Pi_t}{1- \Pi_t}
+\end{aligned}
+$$
+This measure can be interpreted as \emph{difference} between the conditional probabilites of like and unlike orders: how much more probable it is to get like than unlike orders in the two classifications when two individuals are chosen randomly from the population.\\
+The latter equality is especially usefull because we can compute it using easily verifyable relationships:
+$$
+\begin{aligned}
+	\Pi_c&=2\sum_a \sum_b \rho_{ab}\left\{ \sum_{a'>a} \sum_{b'>b} \rho_{a'b'} \right\}\\
+	\Pi_t&=\sum_a \rho_{a\cdot}^2 + \sum_b \rho_{\cdot b}^2 - \sum_{a} \sum_{b} \rho_{ab}^2\\
+\end{aligned}
+$$
+
+{\scriptsize{\textbf{Verification}\\
+We know that $P(A\cup B) = P(A) + P(B) - P(A\cap B)$. Let's denote $A=\{\underline{a}_1 =\underline{a}_2\}$ and  $B=\{\underline{b}_1 =\underline{b}_2\}$. We think of two subjects having the same categories is like drawing from the cells of the above table with replacement because two subjects are independent. Keeping in mind that $P(\{\underline{a}_1=A_i\cap \underline{b}_1 =B_j) =\rho_{A_i,B_j}$, the probability of two subjects having the same categories is $\rho_{A_i,B_j}\cdot \rho_{A_i,B_j}$ and therefore $P(A\cap B) = \sum_{i,j}\rho_{i,j}^2$. Similarly, and imagining that we draw two subjects independently with replacement based on marginal distributions for $A$ and $B$: $P(A) = \sum_{i}\rho_{i\cdot}^2$ and $P(B) = \sum_{j}\rho_{\cdot j}^2$
+}\\
+Now let's denote $A=\{\underline{a}_1 <\underline{a}_2 \cap\underline{b}_1 <\underline{b}_2\}$ and  $B=\{\underline{a}_1 >\underline{a}_2 \cap \underline{b}_1 >\underline{b}_2\}$. Because these two events do not overlap, we have: $P(A\cup B) = P(A) + P(B)$. Applying the same principle of drawing with replacement, we have: $P(A) = \sum_{i,j}\left(\sum_{k<i,l<j}\rho_{k,l} \right)\rho_{i,j}$ and $P(B) = \sum_{i,j}\left(\sum_{k>i,l>j}\rho_{k,l} \right)\rho_{i,j}$. It so happends that when these two probabilities are summed up, we get the double of one of them. We show it on the example of 2 $A$ categories and three $B$ categories: $P(A\cup B) = [\rho_{11}\rho_{22} + (\rho_{12} + \rho_{11})\rho_{23}]~ + ~[(\rho_{22} + \rho_{23})\rho_{11} + \rho_{23}\rho_{12}] ~=~ 2(\rho_{22} + \rho_{23})\rho_{11} + 2\rho_{12}\rho_{23}$, so $P(A\cap B) = 2\cdot \sum_{i,j}\left(\sum_{k<i,l<j}\rho_{k,l} \right)\rho_{i,j}$
+}\\
+
+Properties:
+\begin{enumerate}[(i)]
+	\item $\gamma$ is indeterminate if the population is concentrated in a single row or column of the cross-classification table.
+	\item $\gamma$ is $1$ if the population is concentrated in a upper-left to lower-right diagonal of the cross classification table. $\gamma$ is $-1$ if the population is concentrated in a lower-left to upper-right diagonal of the table. It can be diagonal or step-diagonal, because the conflinct in order is impossible:\\
+	~\\
+	\begin{tabular}{ c | c | c }
+	  $\rho_{11}$ & $\rho_{12}$ & 0\\
+		\hline
+	  0 & $\rho_{22}$ & $\rho_{23}$\\
+		\hline
+	  0 & 0 & $\rho_{33}$\\
+	\end{tabular}
+	~\\
+	\item $\gamma$ is $0$ in the case of independence, but the converse need not hold except in the $2\times 2$ case. Example:\\
+	~\\
+	\begin{tabular}{ c | c | c }
+	  .2 & 0 & .2\\
+		\hline
+	  0 & .2 & 0\\
+		\hline
+	  .2 & 0 & .2\\
+	\end{tabular}
+	~\\
+	\item In $2\times 2$ case, $\gamma$ is Yule's coefficient of association $\gamma=\frac{\rho_{11}\rho_{22} - \rho_{12}\rho_{21}}{\rho_{11}\rho_{11}+\rho_{12}\rho_{21}}$
+  \item Also, in some way, it is similar to Stewart's measure.
+\end{enumerate}
+
+\subsection{Residual-based test statistic, $T_2$}
+For simplicity, only notations for $Y$ are introduced, the notations for $X$ are similar.\\
+Assume that $Y$ is distributed multinomially with parameter $\theta^Y$. Let $Y_i=y_i$ be the observed outcome for subject $i$. The corresponding distribution of possible outcome levels $Y_{i,fit}\sim Y_i|\pmb{z}_i$ given covariate $\pmb{z}_i$ is multinomial with probability $\{p_i^j\}$. Instead of calculating the difference between $Y_{i,fit}$ and $y_i$ we compare them and give them scores of $1$, $-1$, and $0$ if $y_i>Y_{i,fit}$, $y_i<Y_{i,fit}$, and $y_i=Y_{i,fit}$ respectively.\\
+Keeping in mind that $Y_{i,fit}$ is the \emph{random variable} in the following derivations:
+$$
+\begin{aligned}
+  p_{i,high} &= P(y_i>Y_{i,fit}) = P(Y_{i,fit}<y_i) = P(Y_i \leq y_i - 1|\pmb{Z}=\pmb{z}_i) = \gamma_i^{y_i-1}\\
+  p_{i,low} &= P(y_i<Y_{i,fit}) = P(Y_{i,fit}>y_i)= 1 - P(Y_i \leq y_i|\pmb{Z}=\pmb{z}_i) = 1-\gamma_i^{y_i}\\
+  p_{i,tie} &= P(y_i=Y_{i,fit}) = P(Y_{i,fit}=y_i)= p_i^{y_i}
+\end{aligned}
+$$
+The expected score $Y_{i,res} = p_{i,high} - p_{i,low}$, which is a function of data $(Y_i, \pmb{Z}_i)$ and $\theta^Y$, and we denote $Y_{i,res}$ realization as $y_{i,res} = Y_{i, res|\hat{\theta}^Y}$. Similarly, for $X$, we define: $X_{i,res} = q_{i,high} - q_{i,low}$ and $x_{i,res}$.\\
+When the models for $P(X|\pmb{Z})$ and  $P(Y|\pmb{Z})$ are correct, and keeping in mind that $p_i^j = \gamma_i^j - \gamma_i^{j-1}$ and $\gamma_i^j = \sum_{k = 1}^{j}p_i^k$, we have:
+$$
+\begin{aligned}
+  E(p_{i,high}|\pmb{Z}_i) &= E \left(\gamma_i^{Y_i-1} |\pmb{Z}_i\right) = \sum_{j=1}^s p_i^j \gamma_i^{j-1}=\sum_{j=1}^s p_i^j \left(\sum_{k = 1}^{j-1}p_i^k\right) = \sum_{j_1<j_2} p_i^{j_1} p_i^{j_2}\\
+  E(p_{i,low}|\pmb{Z}_i) &= E \left(1-\gamma_i^{Y_i} |\pmb{Z}_i\right) = \sum_{j=1}^s p_i^j (1-\gamma_i^{j}) = \sum_{j=1}^s p_i^j \left(1-\sum_{k = 1}^{j}p_i^k\right) = \sum_{j=1}^s p_i^j \left(\sum_{k = j+1}^{s}p_i^k\right) = \sum_{j_1<j_2} p_i^{j_1} p_i^{j_2}\\
+\end{aligned}
+$$
+Therefore $E(p_{i,high} - p_{i,low}|\pmb{Z}_i)=0$ and $E(Y_{i,res})=E[E(p_{i,high} - p_{i,low}|\pmb{Z}_i)]=0$. Similarly, for $E(X_{i,res})=0$ and:
+$$
+\begin{aligned}
+	E(Y_{i,res},X_{i,res}) &= E[E(Y_{i,res},X_{i,res}|\pmb{Z}_i)] = E[E(Y_{i,res}|\pmb{Z}_i)E(X_{i,res}|\pmb{Z}_i)] = 0\\
+	&therefore\\
+	cov(Y_{i,res},X_{i,res}) &= E(Y_{i,res},X_{i,res}) - E(Y_{i,res})E(X_{i,res}) = 0\\
+\end{aligned}
+$$
+Therefore, we use the sample correlation coefficient, $T_2$, between $Y_{i,res}$ and $Y_{i,res}$ across all subjects as a test statistics. Under the null, $T_2\underset{n\rightarrow \infty}{\longrightarrow}0$
+
+\subsection{A variation of residual statistic, $T_3$}
+Alternatively, we can compute a statistic based on concordance vs discordance of pairs $(Y_i, X_i)$ and $(Y_i', X_i')$:
+$$
+\begin{aligned}
+	Concordant ~pairs: ~Y_i>X_i ~and ~Y_i'>X_i'~~or~~ Y_i<X_i ~or~ Y_i'<X_i'\\
+	Discordant ~pairs: ~Y_i>X_i ~and ~Y_i'<X_i'~~or~~ Y_i<X_i ~or~ Y_i'>X_i'\\
+	Tied ~pairs: otherwise\\
+\end{aligned}
+$$
+ Under the null the probability of concordance: $C_i = p_{i,high}q_{i,high} + p_{i,low}q_{i,low}$, and the probability of discordance $D_i = p_{i,high}q_{i,low} + p_{i,low}q_{i,high}$. 
+$$
+\begin{aligned}
+	C_i - D_i &= p_{i,high}q_{i,high} + p_{i,low}q_{i,low} -p_{i,high}q_{i,low} - p_{i,low}q_{i,high}=\\
+	 &= (p_{i,high}-p_{i,low}) (q_{i,high} - q_{i,low})=\\
+	 &=Y_{i,res}X_{i,res}\\
+\end{aligned}
+$$
+We know that $E(C_i - D_i)=E(Y_{i,res}X_{i,res}) = 0$, so we suggest a third statistic:
+$$
+\begin{aligned}
+	T_3 = E(\hat{C}_i - \hat{D}_i) &=\frac{1}{n} \sum_i y_{i,res}x_{i,res}\\
+\end{aligned}
+$$
+\subsection{Two method of comuting the p-value}
+\subsubsection{Parametric Bootstrap}
+We generate new datasets from the product distribution $\{\hat{p}_i^j\hat{q}_i^l\}_{j,l}$ for each subject ($i=1,...,n$). Then we carry out the entire estimating procedure for the replicate dataset to obtain the corresponding statisitc, denoted as $T^*$. We do this $N^{emp}$ times and get an empirical distribution of $T$ under the null. The two-sided p-value is then computed as either:
+$$
+\begin{aligned}
+	\#(|T^*|\geq |T|)/N^{emp}
+\end{aligned}
+$$
+or
+$$
+\begin{aligned}
+	2\times min\{\#(T^*\geq T),\#(T^*\leq T)\}/N^{emp}
+\end{aligned}
+$$
+\end{document}          
+
+\subsubsection{Asymptotic Distribution}
