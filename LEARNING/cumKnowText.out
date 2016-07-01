@@ -1,0 +1,62 @@
+\BOOKMARK [1][-]{section.1}{Matrix algebra, Linear models}{}% 1
+\BOOKMARK [2][-]{subsubsection.1.0.1}{Matrix Inversion, page 23-24}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.0.2}{Positive Definite Matrices, page 27-28}{subsubsection.1.0.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.0.3}{Generalized Inverse, page 32-}{subsubsection.1.0.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.0.4}{Orthogonal vectors and matrices, page 41-}{subsubsection.1.0.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.0.5}{Trace, page 44-}{subsubsection.1.0.1}% 6
+\BOOKMARK [3][-]{subsubsection.1.0.6}{Idempotent matrices, page 54,55}{subsubsection.1.0.1}% 7
+\BOOKMARK [3][-]{subsubsection.1.0.7}{Vector and matrix calculus, page 56-}{subsubsection.1.0.1}% 8
+\BOOKMARK [3][-]{subsubsection.1.0.8}{Means and variances, page 80-}{subsubsection.1.0.1}% 9
+\BOOKMARK [3][-]{subsubsection.1.0.9}{Theorems related to normal distribution}{subsubsection.1.0.1}% 10
+\BOOKMARK [1][-]{section.2}{Probability, Book: STATISTICAL INFERENCE, Casella \046 Berger, Second Edition }{}% 11
+\BOOKMARK [2][-]{subsection.2.1}{Distributions}{section.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Normal}{subsection.2.1}% 13
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Geometric}{subsection.2.1}% 14
+\BOOKMARK [3][-]{subsubsection.2.1.3}{Hypergeometric}{subsection.2.1}% 15
+\BOOKMARK [3][-]{subsubsection.2.1.4}{Binomial}{subsection.2.1}% 16
+\BOOKMARK [3][-]{subsubsection.2.1.5}{Poisson}{subsection.2.1}% 17
+\BOOKMARK [3][-]{subsubsection.2.1.6}{Gamma, p. 63}{subsection.2.1}% 18
+\BOOKMARK [3][-]{subsubsection.2.1.7}{Beta}{subsection.2.1}% 19
+\BOOKMARK [3][-]{subsubsection.2.1.8}{Moment Generating function}{subsection.2.1}% 20
+\BOOKMARK [2][-]{subsection.2.2}{Conditional Moments Identities}{section.2}% 21
+\BOOKMARK [2][-]{subsection.2.3}{Inequalities}{section.2}% 22
+\BOOKMARK [2][-]{subsection.2.4}{Wald, Likelihood, Score tests}{section.2}% 23
+\BOOKMARK [2][-]{subsection.2.5}{Delta method}{section.2}% 24
+\BOOKMARK [3][-]{subsubsection.2.5.1}{First order method}{subsection.2.5}% 25
+\BOOKMARK [3][-]{subsubsection.2.5.2}{Second order method \(Bryan's class notes\)}{subsection.2.5}% 26
+\BOOKMARK [3][-]{subsubsection.2.5.3}{Multivariate method \(Bryan's class notes\)}{subsection.2.5}% 27
+\BOOKMARK [1][-]{section.3}{Advanced probability. Book: Probability. Alan F.Karr}{}% 28
+\BOOKMARK [2][-]{subsection.3.1}{Sets and measures}{section.3}% 29
+\BOOKMARK [2][-]{subsection.3.2}{Types of convergence and implications among forms of convergence, p. 135-}{section.3}% 30
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Implications, theorems \(p. 138,140,-\)}{subsection.3.2}% 31
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Algebraic operations and continuous mapping theorems \(p. 145,-\)}{subsection.3.2}% 32
+\BOOKMARK [2][-]{subsection.3.3}{Characteristic functions \(p. 163-\)}{section.3}% 33
+\BOOKMARK [2][-]{subsection.3.4}{Prediction and conditional expectation}{section.3}% 34
+\BOOKMARK [1][-]{section.4}{Survival analysis \(under construction\)}{}% 35
+\BOOKMARK [2][-]{subsection.4.1}{Tests}{section.4}% 36
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Log-rank test}{subsection.4.1}% 37
+\BOOKMARK [2][-]{subsection.4.2}{Hazard, survival functions and identities}{section.4}% 38
+\BOOKMARK [1][-]{section.5}{Maximization, Lagrange Multiplier, Karush-Kuhn-Tucker conditions \(KKT\)}{}% 39
+\BOOKMARK [1][-]{section.6}{What to practice/ to code}{}% 40
+\BOOKMARK [1][-]{section.7}{Longitudinal Data Analysis}{}% 41
+\BOOKMARK [1][-]{section.8}{OLS vs WLS}{}% 42
+\BOOKMARK [1][-]{section.9}{Models for Longitudinal Data}{}% 43
+\BOOKMARK [2][-]{subsection.9.1}{Interpretation of coefficients}{section.9}% 44
+\BOOKMARK [2][-]{subsection.9.2}{Alternating Logistic Regression}{section.9}% 45
+\BOOKMARK [3][-]{subsubsection.9.2.1}{Model Definition}{subsection.9.2}% 46
+\BOOKMARK [3][-]{subsubsection.9.2.2}{Method of Solving}{subsection.9.2}% 47
+\BOOKMARK [3][-]{subsubsection.9.2.3}{Hypothesis Testing}{subsection.9.2}% 48
+\BOOKMARK [3][-]{subsubsection.9.2.4}{R-code}{subsection.9.2}% 49
+\BOOKMARK [3][-]{subsubsection.9.2.5}{Parameter interpretation}{subsection.9.2}% 50
+\BOOKMARK [2][-]{subsection.9.3}{Generalized Linear Mixed Effects Models \(GLMM\)}{section.9}% 51
+\BOOKMARK [3][-]{subsubsection.9.3.1}{Model Definition}{subsection.9.3}% 52
+\BOOKMARK [3][-]{subsubsection.9.3.2}{Method of Solving}{subsection.9.3}% 53
+\BOOKMARK [3][-]{subsubsection.9.3.3}{Hypothesis Testing}{subsection.9.3}% 54
+\BOOKMARK [3][-]{subsubsection.9.3.4}{Parameter interpretation}{subsection.9.3}% 55
+\BOOKMARK [3][-]{subsubsection.9.3.5}{Model classification}{subsection.9.3}% 56
+\BOOKMARK [3][-]{subsubsection.9.3.6}{Model Summary}{subsection.9.3}% 57
+\BOOKMARK [3][-]{subsubsection.9.3.7}{Missing}{subsection.9.3}% 58
+\BOOKMARK [3][-]{subsubsection.9.3.8}{R-code}{subsection.9.3}% 59
+\BOOKMARK [2][-]{subsection.9.4}{Random facts}{section.9}% 60
+\BOOKMARK [1][-]{section.10}{Computational Statistic}{}% 61
+\BOOKMARK [2][-]{subsection.10.1}{Metropolis-Hastings Algorithm}{section.10}% 62

@@ -1,0 +1,62 @@
+\contentsline {section}{\numberline {1}Matrix algebra, Linear models}{3}{section.1}
+\contentsline {subsubsection}{\numberline {1.0.1}Matrix Inversion, page 23-24}{3}{subsubsection.1.0.1}
+\contentsline {subsubsection}{\numberline {1.0.2}Positive Definite Matrices, page 27-28}{3}{subsubsection.1.0.2}
+\contentsline {subsubsection}{\numberline {1.0.3}Generalized Inverse, page 32-}{4}{subsubsection.1.0.3}
+\contentsline {subsubsection}{\numberline {1.0.4}Orthogonal vectors and matrices, page 41-}{4}{subsubsection.1.0.4}
+\contentsline {subsubsection}{\numberline {1.0.5}Trace, page 44-}{4}{subsubsection.1.0.5}
+\contentsline {subsubsection}{\numberline {1.0.6}Idempotent matrices, page 54,55}{5}{subsubsection.1.0.6}
+\contentsline {subsubsection}{\numberline {1.0.7}Vector and matrix calculus, page 56-}{5}{subsubsection.1.0.7}
+\contentsline {subsubsection}{\numberline {1.0.8}Means and variances, page 80-}{5}{subsubsection.1.0.8}
+\contentsline {subsubsection}{\numberline {1.0.9}Theorems related to normal distribution}{6}{subsubsection.1.0.9}
+\contentsline {section}{\numberline {2}Probability, \textbf {Book: STATISTICAL INFERENCE, Casella \& Berger, Second Edition }}{7}{section.2}
+\contentsline {subsection}{\numberline {2.1}Distributions}{7}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Normal}{7}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Geometric}{7}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.3}Hypergeometric}{7}{subsubsection.2.1.3}
+\contentsline {subsubsection}{\numberline {2.1.4}Binomial}{7}{subsubsection.2.1.4}
+\contentsline {subsubsection}{\numberline {2.1.5}Poisson}{7}{subsubsection.2.1.5}
+\contentsline {subsubsection}{\numberline {2.1.6}Gamma, p. 63}{7}{subsubsection.2.1.6}
+\contentsline {subsubsection}{\numberline {2.1.7}Beta}{7}{subsubsection.2.1.7}
+\contentsline {subsubsection}{\numberline {2.1.8}Moment Generating function}{7}{subsubsection.2.1.8}
+\contentsline {subsection}{\numberline {2.2}Conditional Moments Identities}{7}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Inequalities}{7}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Wald, Likelihood, Score tests}{7}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Delta method}{7}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}First order method}{7}{subsubsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.2}Second order method (Bryan's class notes)}{8}{subsubsection.2.5.2}
+\contentsline {subsubsection}{\numberline {2.5.3}Multivariate method (Bryan's class notes)}{8}{subsubsection.2.5.3}
+\contentsline {section}{\numberline {3}Advanced probability. Book: \textit {Probability. Alan F.Karr}}{9}{section.3}
+\contentsline {subsection}{\numberline {3.1}Sets and measures}{9}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Types of convergence and implications among forms of convergence, p. 135-}{9}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Implications, theorems (p. 138,140,-)}{10}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Algebraic operations and continuous mapping theorems (p. 145,-)}{10}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Characteristic functions (p. 163-)}{11}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Prediction and conditional expectation}{12}{subsection.3.4}
+\contentsline {section}{\numberline {4}Survival analysis (under construction)}{13}{section.4}
+\contentsline {subsection}{\numberline {4.1}Tests}{13}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Log-rank test}{13}{subsubsection.4.1.1}
+\contentsline {subsection}{\numberline {4.2}Hazard, survival functions and identities}{13}{subsection.4.2}
+\contentsline {section}{\numberline {5}Maximization, Lagrange Multiplier, Karush-Kuhn-Tucker conditions (KKT)}{13}{section.5}
+\contentsline {section}{\numberline {6}What to practice/ to code}{13}{section.6}
+\contentsline {section}{\numberline {7}Longitudinal Data Analysis}{15}{section.7}
+\contentsline {section}{\numberline {8}OLS vs WLS}{15}{section.8}
+\contentsline {section}{\numberline {9}Models for Longitudinal Data}{15}{section.9}
+\contentsline {subsection}{\numberline {9.1}Interpretation of coefficients}{15}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Alternating Logistic Regression}{15}{subsection.9.2}
+\contentsline {subsubsection}{\numberline {9.2.1}Model Definition}{15}{subsubsection.9.2.1}
+\contentsline {subsubsection}{\numberline {9.2.2}Method of Solving}{16}{subsubsection.9.2.2}
+\contentsline {subsubsection}{\numberline {9.2.3}Hypothesis Testing}{16}{subsubsection.9.2.3}
+\contentsline {subsubsection}{\numberline {9.2.4}R-code}{16}{subsubsection.9.2.4}
+\contentsline {subsubsection}{\numberline {9.2.5}Parameter interpretation}{17}{subsubsection.9.2.5}
+\contentsline {subsection}{\numberline {9.3}Generalized Linear Mixed Effects Models (GLMM)}{17}{subsection.9.3}
+\contentsline {subsubsection}{\numberline {9.3.1}Model Definition}{17}{subsubsection.9.3.1}
+\contentsline {subsubsection}{\numberline {9.3.2}Method of Solving}{17}{subsubsection.9.3.2}
+\contentsline {subsubsection}{\numberline {9.3.3}Hypothesis Testing}{17}{subsubsection.9.3.3}
+\contentsline {subsubsection}{\numberline {9.3.4}Parameter interpretation}{17}{subsubsection.9.3.4}
+\contentsline {subsubsection}{\numberline {9.3.5}Model classification}{17}{subsubsection.9.3.5}
+\contentsline {subsubsection}{\numberline {9.3.6}Model Summary}{18}{subsubsection.9.3.6}
+\contentsline {subsubsection}{\numberline {9.3.7}Missing}{18}{subsubsection.9.3.7}
+\contentsline {subsubsection}{\numberline {9.3.8}R-code}{18}{subsubsection.9.3.8}
+\contentsline {subsection}{\numberline {9.4}Random facts}{18}{subsection.9.4}
+\contentsline {section}{\numberline {10}Computational Statistic}{18}{section.10}
+\contentsline {subsection}{\numberline {10.1}Metropolis-Hastings Algorithm}{18}{subsection.10.1}

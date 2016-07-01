@@ -1,0 +1,78 @@
+
+%%% for citations. See Lucy's tutorial: https://github.com/LucyMcGowan/Tutorials/blob/master/BiblatexTutorial.md
+%%% put the following before \begin{document}
+%   \usepackage[backend=biber,maxnames=10,citestyle=science]{biblatex}
+%   \addbibresource{skeRef.bib}
+
+%%% when using biber as a "backend" (see the line that starts with \userpackage...) compile like this:
+%   pdflatex myFile
+%   biber myFile
+%   pdflatex myFile
+
+%%% At the end of the document but before \end{document} put:
+%   \printbibliography
+
+@incollection{goodman1979measures,
+  title={Measures of association for cross classifications},
+  author={Goodman, Leo A and Kruskal, William H},
+  booktitle={Measures of association for cross classifications},
+  pages={2--34},
+  year={1979},
+  publisher={Springer}
+}
+
+
+
+%%%%%%%%%%% other types of references:
+%%%%%%%%%%% other types of references:
+%%%%%%%%%%% other types of references:
+% @article{Maier2000,
+%     author = {Maier, R. S. and Kroll, D. M. and Bernard, R. S. and Howington, S. E. and Peters, J. F. and Davis, H. T.},
+%     doi = {10.1063/1.870452},
+%     journal = {Physics of Fluids},
+%     shortjournal = {Phys. Fluids},
+%     pages = {2065--2079},
+%     title = {Pore-scale simulation of dispersion},
+%     volume = {12},
+%     year = {2000}
+% }
+% @book{Giddings1965,
+%     author = {Giddings, J. C.},
+%     isbn = {0824712250},
+%     publisher = {Marcel Dekker},
+%     title = {Dynamics of chromatography: principles and theory},
+%     year = {1965}
+% }
+% @booklet{BrioCartridges,
+%     author = {Nanostream},
+%     title = {Brio Cartridges},
+% }
+% @inbook{Weber1989,
+%     author = {Weber, S. G. and Carr, P. W.},
+%     title = {High Performance Liquid Chromatography},
+%     editor = {Brown, P. R. and Hartwick, R. A.},
+%     publisher = {John Wiley \& Sons},
+%     chapter = {1},
+%     year = {1989}
+% }
+% @inproceedings{Frings2009,
+%     address = {New York, NY, USA},
+%     author = {Frings, W. and Wolf, F. and Petkov, V.},
+%     booktitle = {Proceedings of the Conference on High Performance Computing Networking, Storage and Analysis},
+%     title = {Scalable massively parallel I/O to task-local files},
+%     year = {2009}
+% }
+% @manual{IBM2005,
+%     organization = {IBM Corporation},
+%     title = {Engineering and Scientific Subroutine Library for Linux on POWER, Version 4 Release 2.2},
+%     edition = {4},
+%     year = {2005}
+% }
+% @phdthesis{Kuzmin2009,
+%     address = {Canada},
+%     author = {Kuzmin, A.},
+%     school = {University of Calgary},
+%     title = {Multiphase simulations with lattice Boltzmann scheme},
+%     year = {2009}
+% }
+%

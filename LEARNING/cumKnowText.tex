@@ -1,0 +1,852 @@
+\documentclass[]{article}
+
+\usepackage{anysize}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color}
+\let\epsilon\varepsilon
+\newcommand\SLASH{\char`\\}
+\newcommand{\csch}{\text{csch}}
+\marginsize{0.5in}{1in}{0.5in}{1in}
+\setlength\parindent{0pt}
+
+% Title Page: Modify as needed
+\title{Cumulative Knowledge (Frist 2 Years of Gradschool)}
+\author{Summarized by Svetlana Eden}
+\date{Month Day, 2015}
+
+\hypersetup{hidelinks}
+
+% \usepackage[pdftex,bookmarks,pagebackref,pdfpagemode=UseOutlines,
+%      colorlinks,linkcolor=\linkcol,
+%      pdfauthor={Svetlana K Eden},
+%      pdftitle={\titl}]{hyperref}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
+\section{Matrix algebra, Linear models}
+From \emph{Linear Models in Statistics}, second edition, A.C.Rencher and G.B.Schaalje
+\subsubsection{Matrix Inversion, page 23-24}
+\begin{enumerate}[1)]
+\item $(A^{-1})' = (A')^{-1}$
+\item $(AB)^{-1} = B^{-1}A^{-1}$
+\item \[ If ~~~A =
+\begin{bmatrix}
+    A_{11}       & A_{12}  \\
+    A_{21}       & A_{22} \\
+\end{bmatrix} ~~and
+~~~B = A_{22} - A_{21}A_{11}^{-1}A_{12};\\
+~~~ then~~A^{-1} =
+\begin{bmatrix}
+    A_{11}^{-1} + A_{11}^{-1}A_{12}B^{-1}A_{21}A_{11}^{-1}  &  A_{11}^{-1}A_{12}B^{-1} \\
+    -B^{-1}A_{21}A_{11}^{-1}       &             B^{-1}
+\end{bmatrix}
+\]
+
+\item \[ If ~~~A =
+\begin{bmatrix}
+    \pmb{A}_{11}       & \pmb{a}_{12}  \\
+    \pmb{a}_{12}'       & a_{22} \\
+\end{bmatrix} ~~and
+~~~b = a_{22} - \pmb{a}_{12}'\pmb{A}_{11}^{-1}\pmb{a}_{12};\\
+~~~ then~~A^{-1} = \frac{1}{b}
+\begin{bmatrix}
+    b\pmb{A}_{11}^{-1} + \pmb{A}_{11}^{-1}\pmb{a}_{12}\pmb{a}_{12}'\pmb{A}_{11}^{-1}  &  \pmb{A}_{11}^{-1}\pmb{a}_{12} \\
+    -\pmb{a}_{12}'\pmb{A}_{11}^{-1}       &             1
+\end{bmatrix}
+\]
+
+\item \[If~~ A =
+\begin{bmatrix}
+    A_{11}       & 0  \\
+    0       & A_{22} \\
+\end{bmatrix}^{-1}
+~~~ then ~~A^{-1}=
+\begin{bmatrix}
+    A_{11}^{-1}       & 0  \\
+    0       & A_{22}^{-1} \\
+\end{bmatrix}
+\]
+ \item $(B+cc')^{-1} = B^{-1} - \frac{B^{-1}cc'B^{-1}}{1 + c B^{-1}c}$
+ \item $(A + PBQ)^{-1} = A^{-1} - A^{-1} PB(B+BQA^{-1}PB)^{-1}BQA^{-1}$
+\item \[If~~ A =
+\begin{bmatrix}
+    a       & b  \\
+    c       & d \\
+\end{bmatrix}^{-1}
+~~~ then ~~A^{-1}=\frac{1}{ad-bc}
+\begin{bmatrix}
+    d       & -b  \\
+    -c       & a \\
+\end{bmatrix}
+\]
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Positive Definite Matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Positive Definite Matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Positive Definite Matrices
+\subsubsection{Positive Definite Matrices, page 27-28}
+\textbf{Definition:} Matrix $A$ is \emph{positive definite} if for any $y$: $y'Ay > 0$.\\
+\textbf{Definition:} Matrix $A$ is \emph{positive semidefinite} if there exists such $y \neq 0$ that: $y'Ay = 0$.
+\begin{enumerate}[1)]
+\item If B is $n\times p$, where $n>p$ and $rank(B)=p$($<p$) then $B'B$ is positive definite (semidefinite)
+\item If $A$ is positive definite then $A^{-1}$ is positive definite.
+\item If $A$ is positive definite and is partitioned in the form
+\[ A =
+\begin{bmatrix}
+    A_{11}       & A_{12}  \\
+    A_{21}       & A_{22} \\
+\end{bmatrix}
+\]
+where $A_{11}$ and $A_{22}$ were square, then $A_{11}$ and $A_{22}$ are positive definite
+\item If $A$ is positive definite (semidefinite) then diagonal elements $a_{ii}>0$ ($a_{ii}\geq 0$ )
+\item If $P$ is nonsingular and $A$ is positive definite (semidefinite) then $P'AP$ is positive definite (semidefinite).
+\item If $B$ is an $n\times p$ and if $rank(B)=p$ ($rank(B)<p$) then $B'B$ is positive definite (semidefinite).
+\item If $A$ is positive definite $p \times p$ and $B$ is $k\times p$ with $k \leq p$ then $BAB'$ is positive definite.
+\item $A$ is positive definite if and only if there exists a non-singular matrix such that $A=P'P$ (Cholesky decomposition).
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Generalized Inverse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Generalized Inverse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Generalized Inverse
+\subsubsection{Generalized Inverse, page 32-}
+\textbf{Definition:} A \emph{generalized inverse}(also called a \emph{conditional inverse}) of an $n\times p$ matrix $A$ is any matrix $A^-$ that satisfies:
+\begin{equation}
+	AA^-A = A
+	\end{equation}
+\begin{enumerate}[1)]
+\item If B is $n\times p$, where $n>p$ and $rank(B)=p$($<p$) then $B'B$ is positive definite (semidefinite)
+\item If $A$ is positive definite then $A^{-1}$ is positive definite.
+\item If $A$ is positive definite and is partitioned in the form
+\[ A =
+\begin{bmatrix}
+    A_{11}       & A_{12}  \\
+    A_{21}       & A_{22} \\
+\end{bmatrix}
+\]
+where $A_{11}$ and $A_{22}$ were square, then $A_{11}$ and $A_{22}$ are positive definite
+
+\item Assume that $A$ is $n\times p$ and $rank(A) = r$, and $A_{11}$ is $r\times r$ and $rank(A_{11}) = r$:
+ \[ If ~~~A =
+\begin{bmatrix}
+    A_{11}       & A_{12}  \\
+    A_{21}       & A_{22} \\
+\end{bmatrix}
+~~~ then~~A^{-1} =
+\begin{bmatrix}
+    A_{11}^{-1}  &  0 \\
+    0       &             0
+\end{bmatrix}
+\]
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Orthogonal vectors and matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Orthogonal vectors and matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Orthogonal vectors and matrices
+\subsubsection{Orthogonal vectors and matrices, page 41-}
+\textbf{Definition:} Two vectors $a$ and $b$ of size $n\times 1$ are said to be \emph{orthogonal} if $a'b = 0$.
+\textbf{Definition:} A set of $p\times 1$ vectors $c_1,c_2,...,c_n$ that are normalized and pairwise orthogonal is said to be \emph{orthogonal}.
+\textbf{Definition:} A set of $p\times 1$ vectors $c_1,c_2,...,c_n$ that are normalized and pairwise orthogonal is said to be \emph{orthogonal}.
+\begin{enumerate}[1)]
+	\item $C'C=I$, $CC'=I$
+	\item Mulitplication by an orthogonal matrix is equivalent to axes rotation therefore, if $z=Cx$ then $z'z = (Cx)'(Cx) = x'C'Cx = x'Ix = x'x$.
+\end{enumerate}
+If $A$ is any $p\times p$ matrix and $C$ is orthogonal:
+\begin{enumerate}[1)]
+	\item $|C|=+1 ~~or~~ -1$
+	\item $|C'AC| = |A|$
+	\item $-1 \geq c_{ij} \geq 1$, where $c_{ij}$ is any element of $C$.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace
+\subsubsection{Trace, page 44-}
+\begin{enumerate}[1)]
+	\item If $A$ and $B$ are $n\times n$ matrices, then $tr(A \pm B) = tr(A) \pm tr(B)$
+	\item If $A$ is $n\times p$ and $B$ is $p\times n$, then $tr(AB) = tr(BA)$
+	\item If $A$ is $n\times p$, then $tr(A'A) = \sum_{i=1}^p a_i' a_i$, where $a_i$ is the $i^{th}$ \emph{column} of $A$ AND $tr(AA') = \sum_{i=1}^n a_i' a_i$, where $a_i$ is the $i^{th}$ \emph{row} of $A$ OR $tr(A'A) = tr(AA') = \sum_{i=1}^n\sum_{j=1}^p a_{ij}^2$
+	\item If $A$ is any $n\times n$ matrix and $P$ is any $n\times n$ nonsingular matrix, then $tr(P^{-1}AP) = tr(A)$
+	\item If $A$ is any $n\times n$ matrix and $C$ is any $n\times n$ orthogonal matrix, then $tr(C'AC) = tr(A)$
+	\item If $A$ is any $n\times p$ of rank $r$ and $A^-$ is a generalized inverse of $A$, then $tr(A^-A) = tr(AA^-) = r$
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% idempotent matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% idempotent matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% idempotent matrices
+\subsubsection{Idempotent matrices, page 54,55}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% matrix calculus
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% matrix calculus
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% matrix calculus
+\subsubsection{Vector and matrix calculus, page 56-}
+\textbf{Theorem 2.14.a, p.56}: Let $u=\pmb{a}'\pmb{x}=\pmb{x}'\pmb{a}$ where $\pmb{a}'=(a_1, a_2, ..., a_p)$ is a vector of constants. Then \\
+$$
+\begin{aligned}
+	\frac{\partial u}{\partial\pmb{x}} = \frac{\partial \pmb{a}'\pmb{x}}{\partial\pmb{x}} = \frac{\partial \pmb{x}'\pmb{a}}{\partial\pmb{x}} = \pmb{a}
+\end{aligned}
+$$
+\textbf{Theorem 2.14.b, p.56}: Let $u=\pmb{x}'\pmb{Ax}$ where $\pmb{A}$ is a symmetric matrix of constants. Then \\
+$$
+\begin{aligned}
+	\frac{\partial u}{\partial\pmb{x}} = \frac{\partial \pmb{x}'\pmb{Ax}}{\partial\pmb{x}} = 2\pmb{Ax}
+\end{aligned}
+$$
+\textbf{Theorem 2.14.c, p.57}: Let $u=tr(\pmb{XA})$ where $\pmb{X}$ is a $p\times p$ positive definite matrix and $\pmb{A}$ is a $p\times p$ matrix of constants. Then \\
+$$
+\begin{aligned}
+	\frac{\partial u}{\partial\pmb{X}} = \frac{\partial [tr(\pmb{XA})]}{\partial\pmb{X}} = \pmb{A} + \pmb{A}' - diag\pmb{A}
+\end{aligned}
+$$
+\textbf{Theorem 2.14.d, p.58}: Let $u=ln|\pmb{X}|$ where $\pmb{X}$ is a $p\times p$ Then \\
+$$
+\begin{aligned}
+	\frac{\partial ln|\pmb{X}|}{\partial\pmb{X}} = 2\pmb{X}^{-1} - diag(\pmb{X}^{-1})
+\end{aligned}
+$$
+\textbf{Theorem 2.14.e, p.58}: Let $\pmb{A}$ be nonsingular of order $n$ with derivative $\frac{\partial\pmb{A}}{\partial x}$ Then \\
+$$
+\begin{aligned}
+	\frac{\partial \pmb{A}^{-1}}{\partial x} = -\pmb{A}^{-1} \frac{\partial \pmb{A}}{\partial x} \pmb{A}^{-1}
+\end{aligned}
+$$
+\textbf{Theorem 2.14.f, p.58}: Let $\pmb{A}$ be $n\times n$ positive definite matrix. Then \\
+$$
+\begin{aligned}
+	\frac{\partial ln|\pmb{A}|}{\partial x} = tr \left( \pmb{A}^{-1}\frac{\partial \pmb{A}}{\partial x}   \right)
+\end{aligned}
+$$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Means and variances
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Means and variances
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Means and variances
+\subsubsection{Means and variances, page 80-}
+\textbf{Theorem 3.6.a,b, Corollary 1, p.80-1}: Let $\pmb{a}$ be a $p \times 1$ vector of constatns and $\pmb{y}$ be a $p \times 1$ random vector with mean vector $\pmb{\mu}$. Also, if $\pmb{X}$ is a random matrix, and $\pmb{a}$, $\pmb{b}$ are vectors of constants, and $\pmb{A}$, $\pmb{B}$ are matrices of constants, then
+\begin{enumerate}[(i)]
+	\item $\mu_z = E(\pmb{a}'\pmb{y}) = \pmb{a}'E(\pmb{y}) = \pmb{a}'\pmb{\mu}$
+	\item $E(\pmb{A}\pmb{y}) = \pmb{A}E(\pmb{y})$
+	\item $E(\pmb{a}'\pmb{Xb}) = \pmb{a}'E(\pmb{X})\pmb{b}$
+	\item $E(\pmb{A}\pmb{XB}) = \pmb{A}E(\pmb{X})\pmb{B}$
+	\item $E(\pmb{Ay} + \pmb{b}) = \pmb{A}E(\pmb{y}) + \pmb{b}$
+\end{enumerate}
+
+\textbf{Theorem 3.6.c, Corollary 1, p.80-1, 76}: Let $\pmb{a}$ be a $p \times 1$ vector of constatns and $\pmb{y}$ be a $p \times 1$ random vector with covariance matrix $\pmb{\Sigma}$. Also, let  $\pmb{a}$, $\pmb{b}$ be $p \times 1$ (or other dimension (play it by ear)), and $\pmb{A}$ be $k \times p$ matrix of constants, $\pmb{B}$ be an $m \times p$ matrix of constants, then
+\begin{enumerate}[(i)]
+	\item $\sigma^2 = var(\pmb{a}'\pmb{y}) = \pmb{a}'\pmb{\Sigma  a}$
+	\item $cov(\pmb{a}'\pmb{y}, \pmb{b}'\pmb{y}) = \pmb{a}'\pmb{\Sigma  b}$
+	\item $cov(\pmb{A}\pmb{y}) = \pmb{A}\pmb{\Sigma  A}'$
+	\item $cov(\pmb{A}\pmb{y}+ \pmb{b}) = \pmb{A}\pmb{\Sigma  A}'$
+	\item $cov(\pmb{Ay}, \pmb{Bx}) = \pmb{A}\pmb{\Sigma_{yx}  B}'$
+	\item $\pmb{\Sigma} = E[(\pmb{y} - \pmb{\mu})][(\pmb{y} - \pmb{\mu})'] = E(\pmb{yy}' - \pmb{\mu\mu}')$
+	\item p. 107 $E(\pmb{y}'\pmb{Ay}) = tr(\pmb{A\Sigma}) + \pmb{\mu}'\pmb{A\mu}$
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Theorems related to normal distribution
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Theorems related to normal distribution
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Theorems related to normal distribution
+\subsubsection{Theorems related to normal distribution}
+\textbf{Theorem 4.4a, p.92}: Let $p\times 1$ random vector $\pmb{y}$ be $N(\pmb{\mu}, \pmb{\Sigma})$, let $\pmb{a}$ be any $p\times 1$ vector of constants, and let $\pmb{A}$ be any $k\times p$ matrix of constatns with rank $k\leq p$. Then 
+\begin{enumerate}[(i)]
+	\item $z = \pmb{a}'\pmb{y}$ is $N(\pmb{a}'\pmb{\mu}, \pmb{a}'\pmb{\Sigma}\pmb{a})$
+	\item $z = \pmb{A}'\pmb{y}$ is $N(\pmb{A}\pmb{\mu}, \pmb{A}\pmb{\Sigma}\pmb{A}')$
+\end{enumerate}
+\textbf{Theorem 7.6b, p.159}: Suppose that $\pmb{y}$ is $N_n(\pmb{X}\pmb{\beta}, \sigma^2\pmb{I})$, where $\pmb{X}$ is $n\times (k+1)$ of rank $k+1<n$ and $\beta = (\beta_0, \beta_1, ..., \beta_k)'$. Then the maximum likelihood estimators $\hat{\pmb{\beta}}$ and $\hat{\sigma}^2$ given in theorem 7.6a have the following distributional properties:
+\begin{enumerate}[(i)]
+	\item $\hat{\pmb{\beta}}$ is  $N_{k+1}(\pmb{\beta}, \sigma^2(\pmb{X}'\pmb{X})^{-1})$
+	\item $\frac{n \hat{\sigma}^2}{\sigma^2}$ is $\chi^2_{n-k-1}$, or equivalently, $\frac{(n-k-1) s^2}{\sigma^2}$ is $\chi^2_{n-k-1}$
+	\item $\hat{\pmb{\beta}}$ and $\hat{\sigma}^2$ (or $s^2$) are independent.
+\end{enumerate}
+\textbf{Theorem 8.4a, p.199}: If $\pmb{y}$ is distributed $N_n(\pmb{X}\pmb{\beta}, \sigma^2\pmb{I})$ and $\pmb{C}$ is $q\times (k+1)$, then:
+\begin{enumerate}[(i)]
+	\item $\pmb{C}\hat{\pmb{\beta}}$ is  $N_q(\pmb{C\beta}, \sigma^2\pmb{C}(\pmb{X}'\pmb{X})^{-1}\pmb{C}')$.
+	\item $\frac{SSH}{\sigma^2} = \frac{(\pmb{C}\hat{\pmb{\beta}})' \pmb{C}(\pmb{X}'\pmb{X})^{-1} \pmb{C}\hat{\pmb{\beta}}}{\sigma^2}$ is $\chi^2_{q, \lambda}$, where $\lambda = \frac{(\pmb{C}\pmb{\beta})' \pmb{C}(\pmb{X}'\pmb{X})^{-1} \pmb{C}\pmb{\beta}}{2\sigma^2}$.
+	\item $\frac{SSE}{\sigma^2} = \frac{\pmb{y}'(\pmb{I}- \pmb{X}(\pmb{X}'\pmb{X})^{-1}\pmb{X})\pmb{y}}{\sigma^2}$ is $\chi^2_{n-k-1}$.
+	\item $SSH$ and $SSE$ are independent.
+\end{enumerate}
+
+\textbf{Theorem 8.4b, p.199}: If $\pmb{y}$ be $N_n(\pmb{X}\pmb{\beta}, \sigma^2\pmb{I})$ and define the statistic:
+$$
+\begin{aligned}
+	F = \frac{SSH/q}{SSE/(n-k-1)} = \frac{(\pmb{C}\hat{\pmb{\beta}})' \pmb{C}(\pmb{X}'\pmb{X})^{-1} \pmb{C}\hat{\pmb{\beta}}/q}{\pmb{y}'(\pmb{I}- \pmb{X}(\pmb{X}'\pmb{X})^{-1}\pmb{X})\pmb{y}/(n-k-1)}
+\end{aligned}
+$$
+where $\pmb{C}$ is $q\times (k+1)$ of rank $q \leq k+1$ and $\hat{\pmb{\beta}} = (\pmb{X}'\pmb{X})^{-1}\pmb{X}'\pmb{y}$ the distribution of $F$ is as follows:
+\begin{enumerate}[(i)]
+	\item If $H_0:~\pmb{C}\pmb{\beta}=0$ is false, then $F$ is distributed as $F_{(q,~n-k-1,~\lambda)}$, where $\lambda=\frac{(\pmb{C}\pmb{\beta})'[\pmb{C}(\pmb{X}'\pmb{X})^{-1}\pmb{C}']^{-1}\pmb{C}\pmb{\beta}}{2\sigma^2}$.
+	\item If $H_0:~\pmb{C}\pmb{\beta}=0$ is true, then $F$ is distributed as $F_{(q,~n-k-1)}$.
+\end{enumerate}
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Probability
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Probability
+\section{Probability, \textbf{Book: STATISTICAL INFERENCE, Casella \& Berger, Second Edition }}
+\subsection{Distributions}
+\subsubsection{Normal}
+\subsubsection{Geometric}
+\subsubsection{Hypergeometric}
+\subsubsection{Binomial}
+\subsubsection{Poisson}
+\subsubsection{Gamma, p. 63}
+Support $0<x<\infty$, $\alpha, \beta >0$. Density and MGF:
+$$
+\begin{aligned}
+	f(x) = \frac{1}{\Gamma (\alpha) \beta^{\alpha}}x^{\alpha - 1} e^{-x/\beta}, ~~~ MGF_X(t) = \left(\frac{1}{1-\beta t} \right)^{\alpha}
+\end{aligned}
+$$
+Transformations:
+\begin{enumerate}[1)]
+	\item If $X \sim \Gamma(\alpha, \beta)$ and $\alpha=1$ then If $X \sim exp(\beta)$
+	\item If $X_i \overset{independent}{\sim} \Gamma(\alpha_i, \beta)$ then   $\sum_{i=1}^n X_i \sim (p.) \Gamma(\sum_{i=1}^n \alpha, \beta)$, page 183, proof using MGF.
+	\item If $X_i \overset{iid}{\sim} \Gamma(\alpha, \beta)$ and $\bar{X} = \frac{\sum_{i=1}^n X_i}{n}$ then $\bar{X} \sim \Gamma(\alpha \cdot n, \beta/n)$.
+	\item If $X \sim \Gamma(\alpha, \beta)$ and $\beta=2$ then $X \sim \chi^2_{2\alpha}$
+	\item If $X \sim \Gamma(\alpha, \beta)$ and $\alpha=3/2$ and $Y=\sqrt{X/\beta}$ then $Y \sim Maxwell$
+	\item If $X \sim \Gamma(\alpha, \beta)$ and $Y=1/X$ then If $Y \sim Inverted~Gamma$
+	\item If $X_i \sim \Gamma(\alpha_i, \beta)~for~i=1,2$ and $Y=\frac{X_1}{X_1 + X_2}$ then $Y \sim Beta(\alpha_1, \alpha_2)$
+	\item If $X \sim \Gamma(\alpha, \beta)$ and then $cX \sim  \Gamma(\alpha, c\beta)$
+	\item If $U_i \overset{iid}{\sim} Uniform[0, 1]$ and then $-\sum_{i=1}^n ln(U_i)  \sim  \Gamma(n, 1)$
+	\item If $X \sim \Gamma(\alpha \in \pmb{Z}, \beta)$ and $Y \sim Pois\left(\frac{x}{\beta}\right)$ then $P\{X > x\} = P\{Y < \alpha\}$
+	\item If $X_n \sim \Gamma(\alpha_n, \beta)$ and $\alpha_n \rightarrow \infty$ then $X_n ~is~distributed~more~like~ Normal(\alpha_n\beta, ~\alpha_n \beta^2)$
+	\item see more in Wikipedia
+\end{enumerate}
+
+
+\subsubsection{Beta}
+\subsubsection{Moment Generating function}
+\subsection{Conditional Moments Identities}
+\subsection{Inequalities}
+\subsection{Wald, Likelihood, Score tests}
+\subsection{Delta method}
+\subsubsection{First order method}
+If a sequence of random variables satisfies: $\sqrt{n}(x_n - \theta) \rightarrow~N(0, \sigma^2)$ in distribution and $g(\theta)$ is a function with existing derivative at point $\theta$ and such that $g(\theta) \neq 0$. Then:
+$$
+\begin{aligned}
+	\sqrt{n}(g(x_n) - g(\theta)) \overset{d}{\rightarrow}~N(0, \sigma^2\cdot (g'(\theta))^2)
+\end{aligned}
+$$
+\textbf{Proof:} From Taylor series expansion we have:
+$$
+\begin{aligned}
+	g(x_n) &= g(\theta) + \frac{g'(\theta)(x_n - \theta)}{1!} + R(x_n, \theta)\\
+	g(x_n) - g(\theta) &= g'(\theta)(x_n - \theta) + R(x_n, \theta)\\
+	\sqrt{n}(g(x_n) - g(\theta)) &= g'(\theta)\sqrt{n}(x_n - \theta) + \sqrt{n}R(x_n, \theta)
+\end{aligned}
+$$
+Because we somehow know that $\sqrt{n}R(x_n, \theta) \rightarrow 0$, it follows that $	\sqrt{n}(g(x_n) - g(\theta)) \overset{d}{\rightarrow}~N(0, \sigma^2\cdot (g'(\theta))^2)$.
+
+\subsubsection{Second order method (Bryan's class notes)}
+If a sequence of random variables satisfies: $\sqrt{n}(x_n - \theta) \rightarrow~N(0, \sigma^2)$ in distribution and $g(\theta)$ is a function with existing derivative at point $\theta$ and such that $g(\theta) = 0$. Then:
+$$
+\begin{aligned}
+	\frac{2n(g(x_n) - g(\theta))}{\sigma^2 g''(\theta)} \overset{d}{\rightarrow}~\chi^2_1
+\end{aligned}
+$$
+\textbf{Proof:} From Taylor series expansion we have:
+$$
+\begin{aligned}
+	g(x_n) &= g(\theta) + \frac{g'(\theta)(x_n - \theta)}{1!} + \frac{g''(\theta)(x_n - \theta)^2}{2!}+ R^*(x_n, \theta)\\
+	g(x_n) &= g(\theta)  + \frac{g''(\theta)(x_n - \theta)^2}{2!}+ R^*(x_n, \theta)\\
+	n(g(x_n) - g(\theta))  &= n\frac{\sigma^2}{\sigma^2}\frac{g''(\theta)(x_n - \theta)^2}{2!}+ n\cdot R^*(x_n, \theta)\\
+\end{aligned}
+$$
+Because again, we somehow know that $n\cdot R^*(x_n, \theta) \rightarrow 0$, and $	\frac{n(x_n - \theta)^2}{\sigma^2} \overset{d}{\rightarrow}~\chi^2_1$ the result follows.
+
+\subsubsection{Multivariate method (Bryan's class notes)}
+Suppose we have a vector of parameters $\pmb{\theta}=(\theta_1, \theta_2, ..., \theta_p)$ and its estimate $\hat{\pmb{\theta}}$.\\ And also suppose $\sqrt{n}(\hat{\pmb{\theta}} - \pmb{\theta}) \overset{d}{\rightarrow}~N(\pmb{0}, \pmb{\Sigma})$, where $\pmb{\sigma}$ is a variance covariance matrix for $\pmb{\theta}$. Then, we have:
+$$
+\begin{aligned}
+	\sqrt{n}(g(\hat{\pmb{\theta}}) - g(\pmb{\theta})) \overset{d}{\rightarrow}~N(\pmb{0}, g'(\pmb{\theta})^T \pmb{\Sigma}~g'(\pmb{\theta}))
+\end{aligned}
+$$
+Where $g'(\pmb{\theta}) = \left( \frac{\partial}{\partial \theta_1} g(\pmb{\theta}), \frac{\partial}{\partial \theta_2} g(\pmb{\theta}), ..., \frac{\partial}{\partial \theta_p} g(\pmb{\theta})  \right)$
+
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Advanced probability. Book
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Advanced probability. Book
+\section{Advanced probability. Book: \textit{Probability. Alan F.Karr}}
+\subsection{Sets and measures}
+\textbf{Definition 1.8, p.20}: Let $A_1, A_2, A_3, ...$ and $A$ be subsets of $\Omega$.
+\begin{enumerate}[a)]
+	\item The $lim~sup$ of $(A_n)$ is the set of $\omega$ such that $\omega \in A_n$ for \emph{infinitely many} values of $n$:
+$$
+\begin{aligned}
+	\{A_n, ~i.o.\} \overset{def}{=} \underset{n}{\lim \sup} ~A_n = \cap_{k=1}^{\infty}\cup_{n=k}^{\infty} A_n
+\end{aligned}
+$$
+	\item The $lim~inf$ of $(A_n)$ is the set of $\omega$ such that $\omega \in A_n$ for \emph{all byt infinitely many} values of $n$:
+$$
+\begin{aligned}
+	\{A_n, ~ult.\} \overset{def}{=} \underset{n}{\lim \inf} ~A_n = \cup_{k=1}^{\infty}\cap_{n=k}^{\infty} A_n
+\end{aligned}
+$$
+	\item The sequence $(A_n)$ \emph{converges to} $A$, which we write as $A=\lim_{n\rightarrow \infty} A_n$ or simply $A_n\rightarrow A$ if :
+$$
+\begin{aligned}
+	\underset{n}{\lim \sup} ~A_n = \underset{n}{\lim \inf} ~A_n = A
+	\end{aligned}
+$$
+\textbf{Theorem 1.27 \textit{(Borel-Cantelli lemma)}, p.27}: If $\sum_{n=1}^{\infty} P(A_n) < \infty$ then $P\{A_n, i.o.\} = 0$	\\
+\textbf{Theorem 3.23 \textit{(Borel-Cantelli lemma)}, p.81}: If $A_1, A_2, A_3, ...$ are independent events such that $\sum_{n=1}^{\infty} P(A_n) = \infty$ then $P\{A_n, i.o.\} = 1$
+
+\end{enumerate}
+
+\subsection{Types of convergence and implications among forms of convergence, p. 135-}
+%\usepackage{mathtools}
+\textbf{Definition}: Sequence $X_n$ converges to $X$ \textbf{\textit{almost surely}} (probabilistic version of pointwise conversion), denoted by $X_n\xrightarrow{a.s.}X$, if
+$$
+\begin{aligned}
+	P(\{ \omega: X_n(\omega) \rightarrow X(\omega) \})=1
+	\end{aligned}
+$$
+\textbf{Definition}: Sequence $X_n$ converges to $X$ \textbf{\textit{in probability}}, denoted by $X_n\xrightarrow{P}X$, if
+$$
+\begin{aligned}
+	\lim_{x\rightarrow \infty}P\{|X_n - X|\}=0
+	\end{aligned}
+$$
+\textbf{Definition}: Suppose $X,X_1,X_2,...,X_i,...$ belongs to $L^2$, then $X_n$ converges to $X$ \textbf{\textit{in quadratic mean}}, denoted by $X_n\xrightarrow{q.m.}X$ or $X_n\xrightarrow{L^2}X$, if
+$$
+\begin{aligned}
+	\lim_{x\rightarrow \infty}E[(X_n - X)^2]=0
+	\end{aligned}
+$$
+\textbf{Definition}: Suppose $X,X_1,X_2,...,X_i,...$ $\in$ $L^1$, then $X_n$ converges to $X$ \textbf{\textit{in $L^1$}}, denoted by $X_n\xrightarrow{q.m.}X$ or $X_n\xrightarrow{L^1}X$, if
+$$
+\begin{aligned}
+	\lim_{x\rightarrow \infty}E[|X_n - X|]=0
+	\end{aligned}
+$$
+\textbf{Definition}: The sequence $(X_n)$ converges to $X$ \textbf{\textit{in distribution}}, denoted by $X_n\xrightarrow{q.m.}X$ or $X_n\xrightarrow{d}X$, if
+$$
+\begin{aligned}
+	\lim_{x\rightarrow \infty}F_{X_n}{t}=F_X(t)
+	\end{aligned}
+$$
+for all $t$ at which $F_X$ is continuous.\\
+\textbf{Definition 5.15, p.142}: A sequence $(X_n)$ is \textbf{\textit{uniformly integrable}} if $X_n \in L^1$ for each $n$ and if
+$$
+\begin{aligned}
+	\lim_{a\rightarrow \infty} \sup_n E[|X_n|; \{|X_n|>a\}] = 0
+\end{aligned}
+$$
+$\bigstar$, \textbf{p.143} Any sequence $(X_n)$ dominated by an element from $L^1$ is uniformly integrable.\\
+\textbf{Definition, p.143}: A sequence $(X_n)$ is \textbf{\textit{uniformly absolutely continuous}} if for each $\varepsilon >0$ there is $\delta >0$ such that
+$$
+\begin{aligned}
+	\sup_n E[|X_n|; A] < \varepsilon,~~~~for~\forall A~such~that~P(A)< \delta
+\end{aligned}
+$$
+\textbf{Proposition, p.138}: If $\sum_{n=1}^{\infty} P\{ |X_n - X|>\varepsilon \} < \infty$ for every $\varepsilon > 0$, then $X_n \overset{a.s.}{\longrightarrow} X$.
+
+\subsubsection{Implications, theorems (p. 138,140,-)}
+$$
+\begin{aligned}
+	L^2~ &\Longrightarrow      &L^1  &\Longrightarrow& ~ In~Probability~ &\Longrightarrow&~ In~Distribution\\
+	    &        &L^1  &\overset{Uniform Integr.}{\longleftarrow}&
+			 ~ In~Probability~ & \\
+	    & &Almost ~Surely ~ &\Longrightarrow& ~ In~Probability~ &\Longrightarrow&~In~Distribution\\
+	    & & & & ~ In~Probability~ &\overset{Constant ~Limit}{\longleftarrow}&~In~Distribution~
+	\end{aligned}
+$$
+\subsubsection{Algebraic operations and continuous mapping theorems (p. 145,-)}
+\textbf{Theorems 5.19, 5.20, 5.21, 5.22, 5.23, p.145-8} Let $X$, $X_n$, $Y$, and $Y_n$ be random variables, and $\bigodot \in \{a.s., P, q.m., L^1\}$, then it follows:
+\begin{enumerate}[a)]
+	\item If $X_n \overset{\bigodot}{\longrightarrow} X$ and $Y_n \overset{\bigodot}{\longrightarrow} Y$, then $X_n + Y_n \overset{\bigodot}{\longrightarrow} X + Y$
+	\item If $X_n \overset{\bigodot}{\longrightarrow} X$ and $Y_n \overset{\bigodot}{\longrightarrow} Y$, then $X_nY_n \overset{\bigodot}{\longrightarrow} X Y$
+	\item \textbf{Slutsky's theorem} If $X_n \overset{d}{\longrightarrow} X$ and $Y_n \overset{d}{\longrightarrow} c \in \mathbb{R}$, then $X_n + Y_n \overset{d}{\longrightarrow} X + c$
+	\item \textbf{Slutsky's theorem, bis} If $X_n \overset{d}{\longrightarrow} X$ and $Y_n \overset{d}{\longrightarrow} c \in \mathbb{R}$, then $X_n Y_n \overset{d}{\longrightarrow} cX$
+	\item \textbf{Continuous mappings} Let $g: \mathbb{R} \rightarrow \mathbb{R}$ be a continuouts function. And let $\circledast \in \{a.s., P, d\}$. Then we have that if $X_n \overset{\circledast}{\longrightarrow} X$, then $g(X_n) \overset{\circledast}{\longrightarrow} g(X)$
+\end{enumerate}
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Characteristic functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Characteristic functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Characteristic functions
+\subsection{Characteristic functions (p. 163-)}
+This chapter uses notations and facts for \emph{imaginary numbers}:
+$$
+\begin{aligned}
+	&z = x + y\cdot i = \Re(i) + \Im(i)\cdot i\\
+	&\bar{z}~is~conjugate ~of~z~if~z = x + y\cdot i~~~and~~~\bar{z} = x - y\cdot i\\
+	&|z| = \sqrt{x^2 + y^2} = \sqrt{z\bar{z}}~(modulus~of~z)\\
+	&e^{it} = cos(t) + i\cdot sin(t) ~~~(Euler's~formula)
+\end{aligned}
+$$
+\textbf{Definition}: The \textbf{\textit{characteristic function}}  of a random variable $X$ is the function $\varphi_X:~\mathbb{R} \rightarrow \mathbb{C}$ defined by
+$$
+\begin{aligned}
+	\varphi_X(t) = E[e^{itX}] = \int_{-\infty}^{\infty}e^{itX} dF_X(x)
+\end{aligned}
+$$
+$\bigstar$ $|\varphi_X(0)|= 1$.\\
+$\bigstar$ Characteristic function always exists because for all $t$: $|\varphi_X(t)|\leq 1$.\\
+$\bigstar$ Characteristic function is \emph{uniformly continuous}, where \textbf{\textit{Uniform Continuity}} means that for any $A$ and any $\varepsilon$, there is such $\delta>0$ that $\underset{(x,y)\in A^2,~|x-y|<}{\sup}|\varphi(x) - \varphi(y)| < \varepsilon$.\\
+\textbf{Proposition 6.2 (p.164)}: The characteristic function is uniformly continuous and $\varphi_X(-t) = \overline{\varphi_X(t)},~\forall t$.\\
+\textbf{Theorem 6.4 (p.165)}: If $X$ and $Y$ are independent, then $\varphi_{X+Y}(t) = \varphi_X(t)\varphi_Y(t)$.\\
+\textbf{Theorem 6.5 (p.166)}: Whenever $a<b \in \mathbb{R}$ are continuity points of $F_x$,
+$$
+\begin{aligned}
+	P\{a < X < b\} = \lim_{T \rightarrow \infty}\frac{1}{2\pi}\int_{-T}^{T} \frac{e^{-ita} - e^{itb}}{it}\varphi_X(t)dt
+\end{aligned}
+$$
+\textbf{Theorem 6.6 (p.167)}: If $\varphi_X(t)=\varphi_Y(t),~\forall t$ then $X$ and $Y$ have the same distribution.\\
+\textbf{Theorem 6.7 (p.167) (Fourier inversion theorem)}: If
+$$
+\begin{aligned}
+	\int_{-\infty}^{\infty} |\varphi_X(t)|dt < \infty
+\end{aligned}
+$$
+then $X$ is absolutely continuous with density
+$$
+\begin{aligned}
+	f_X(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty}e^{itX} \varphi_X(t) dt
+\end{aligned}
+$$
+\textbf{Theorem 6.11 (p.169)}: If $E[|X|^k] < \infty$ then the derivative $\varphi^{(k)}_X(t)$ exists  and
+$$
+\begin{aligned}
+	E[X^k] = i^{-k}\varphi^{(k)}_X(0)
+\end{aligned}
+$$
+\textbf{Theorem 6.12 (p.170)}: Let $k$ be and even integer, and suppose that $\varphi_X^{(k)}(0)$ exists then, $E[|X^k|] < \infty$.
+\textbf{Theorem 6.15 (p.171)}: Suppose we have $X_n \overset{d}{\rightarrow} X$ \textbf{if and only if} $\varphi_{X_n}(t) \rightarrow \varphi_{X}(t)$, $\forall t \in \mathbb{R}$
+
+\textbf{Some Theorem not from the book}: If $X$ and $Y$ areindependent real random variables with characteristic functions $\varphi$ and $\phi$ respectively, then $E e^{itXY}=E\varphi(tY)=E\phi(tX)$
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prediction and conditional expectation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prediction and conditional expectation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prediction and conditional expectation
+\subsection{Prediction and conditional expectation}
+See page 217: Let's assume that random variable $Z$ is defined on a probability space $(\Omega, \mathcal{F}, P)$ and $Z \in L^2$ ($E[Z^2] < \infty$). We want to predict unobserved $X$ using observed $Y_1, Y_2, ..., Y_n$. The book says that we predict $X$ using some allowable functions of $Y_i$. So we need to build a \emph{linear predictor}: $Z = f(Y_1, Y_2, ..., Y_n) = a^*_1\cdot Y_1 + a^*_2\cdot Y_1 + a^*_3\cdot Y_1 + ... + a^*_1\cdot Y_n$.\\
+\textbf{Definition}(p. 217): the \textbf{mean squared error of Z (MSE)} is:
+$$
+\begin{aligned}
+	MSE(Z) = E[(Z - X)^2]
+	\end{aligned}
+$$
+Assuming that the optimal predictor exists,
+\textbf{Definition}(p. 217): the \textbf{minimum mean squared error predictor (MMSE)} of $X$ (let's denote it as $\hat{X}$), then satisfies:
+$$
+\begin{aligned}
+	E[(\hat{X} - X)^2] \leq E[(Z - X)^2], ~~~for~ \forall~Z~\in~ V
+	\end{aligned}
+$$
+\textbf{Definition}(my own definition (could not find it in the book)): \textbf{orthonormal base of space $V^n$} is a set of vectors $Z_i$ ($i \in \{1, 2, ..., n\}$) such that there exists such numbers $a_i, a_2, ..., a_n$:
+$$
+\begin{aligned}
+	v = \sum_{i=1}^n a_i Z_i, ~~~\forall ~v\in V^n\\
+	and ~~~\langle Z_i Z_j \rangle = 0, ~~~\forall~i\neq j ~~~~~ and ~~~~~
+	||Z_i|| = 1, ~~~\forall~i
+	\end{aligned}
+$$
+\textbf{Proposition 8.11} The MMSE linear predictor of $X\in L^2$ within V is $\hat{X} = \sum_{i=1}^n = a_i^*Y_i$, where $a^*_1, a^*_2, ..., a^*_n$ are such that
+$$
+\begin{aligned}
+	&\sum_{j=1}^n  \langle Y_i Y_j \rangle a_j^* = \langle Y_i X \rangle, ~~~ i=1,2,...n
+	&for ~ any ~basis~Y_1, Y_2, ..., Y_n\\
+	&a_i^*= \langle Y_i X \rangle,~so~ \hat{X}= \sum_{j=1}^n \langle Y_i X \rangle Y_i, ~~~ i=1,2,...n
+	&for ~ orthonormal ~basis~Y_1, Y_2, ..., Y_n\\
+	\end{aligned}
+$$
+\textbf{Example} If $V = \{ aY + b: a,b \in R\}$, where $Y\in L^2$ and $\sigma^2 = Var(Y)>0$ then it can be shown that $Z_1=(Y-E[Y])/\sigma$ and $Z_2\equiv 1$ is the orthonormal basis, and MMSE, $\hat{X} = \frac{cov(X, Y)}{\sigma^2} (Y-E[Y]) + E[X]$.
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Survival analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Survival analysis
+\section{Survival analysis (under construction)}
+\subsection{Tests}
+\subsubsection{Log-rank test}
+\subsection{Hazard, survival functions and identities}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Survival analysis
+\section{Maximization, Lagrange Multiplier, Karush-Kuhn-Tucker conditions (KKT)}
+We skip the KKT theorem here and give an example of minimization with inequality constraints. The example is taken from {\texttt{http://myweb.clemson.edu/~pbelott/bulk/teaching/lehigh/ie426-f09/lecture20.pdf}}. We have the following minimization problem:
+$$
+\begin{aligned}
+	\min~&X^2 + 2y^2\\
+	  &x+y\geq 3\\
+	  &y-x^2\geq 1
+\end{aligned}
+$$
+The Lagrangian is:
+$$
+\begin{aligned}
+	 \mathcal{L} = x^2 + 2y^2 - &\lambda_1(x+y - 3) + &\lambda_2(y-x^2- 1)\\
+	 &\lambda_1 \geq 0,&\lambda_2 \geq 0
+\end{aligned}
+$$
+{\scriptsize{\textbf{Note} that when we \emph{minimize} we take the main expression with $+$ sign and we \textbf{subtract} the equality constraint the way it is shown above. For inequality, we write it in a standard form (with variables on the left side, with $\geq$ or $>$ signs and a constant on the right), and also subtract it. When we \emph{maximize} or when the inequality constraits are written in a different way, the $+$ and $-$ signs might work differently.\\
+}}~ \\
+The KKT conditions are:
+$$
+\begin{aligned}
+	&A)~~x+y\geq 3\\
+	&B)~~y-x^2\geq 1\\
+	&C)~~\partial\mathcal{L}/\partial{x}=2x - \lambda_1 + 2\lambda_2=0\\
+	&D)~~\partial\mathcal{L}/\partial{y}=4y - \lambda_1 - \lambda_2=0\\
+	&E)~~\lambda_1(x+y -3) = 0\\
+	&F)~~\lambda_2(y-x^2 - 1)=0\\
+	&G)~~\lambda_1,~\lambda_2\geq0\\
+\end{aligned}
+$$
+We have to consider four cases:
+\begin{enumerate}[1)]
+	\item $\lambda_1 = \lambda_2=0$. Then $C$ and $D$ become $x=0$ and $y=0$, which violates $A$.
+	\item $\lambda_1>0,~ \lambda_2=0$. From $E$ it follows that $x+y -3=0$. From $C$ and $D$ we have: $2x-\lambda_1=0$ and $4y-\lambda_1=0$, which leads to a unique solution $(x,y)=(2,1)$, which violates $y-x^2\geq 1$.
+	\item $\lambda_1 =0,~ \lambda_2>0$. From $F$ we have $y - x^2 - 1=0$. From $C$ we have: $2x+2\lambda_2x=2x(1+\lambda_2)=0$. Because $\lambda_2>0$ we must have $x=0$. From $D$
+	we have $4y-\lambda_2=0$. Because $x=0$ we have $y= 0 + 1 = 1$, which violates $x+y\geq 3$.
+	\item $\lambda_1>0,~ \lambda_2>0$. From $E$ and $F$ we have: $y-x^2 - 1=0$ and $x+y=3$, therefore $(3-x) - x^2 - 1=0$ or $x^2 + x - 2=0$. This equation has two solutions $x \in \{-2, 1\}$, therefore $(x,y) \in \{(-2, 5), (1, 2)\}$. For $(x,y)=(-2, 5)$, equation $C$ becomes $-4-\lambda_1 - 4\lambda_2=0$, which is impossible for $\lambda_1,\lambda_2 \geq 0$. For $(x,y)=(1, 2)$ we solve $C$ and $D$ and get $\lambda_1 = 6$, $\lambda_2=2$. This is the only point that satisfies $KKT$ so this is the solution.
+\end{enumerate}
+
+
+\section{What to practice/ to code}
+\begin{enumerate}[1)]
+	\item Wald test (with C matrix), chunk test
+	\item Plot coefficient effects.
+	\item Spaghetti plot
+	\item
+	\item
+\end{enumerate}
+
+\clearpage
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Longitudinal Data Analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Longitudinal Data Analysis
+\section{Longitudinal Data Analysis}
+\textbf{Estimation of $\beta$} can be done through \textbf{response feature analysis} (two-step approach), or \textbf{weighted least squares}.\\
+\textbf{Estimation of $\Sigma$} can be done through \textbf{robust sandwich estimator}, \textbf{maximum likelihood (ML)}, \textbf{restricted maximum likelihood (REML)}
+
+\section{OLS vs WLS}
+When $\pmb{\Sigma}\neq \sigma^2I$ there are two sources of error (slide 42, mod.1, ch.2):
+\begin{itemize}
+	\item $\hat{\sigma}2$ is \textbf{biased}
+	\item $\sigma^2(X^TX)^{-1}$ is \textbf{not correct} estimate for $cov(\hat{\beta})$
+\end{itemize}
+In order to fix this problem we can do robust sandwich estimator.
+~\\
+	\begin{tabular}{ l |c| c }
+  ~~~ & OLS & WLS \\
+  \hline
+  \hline
+  ~~~ &     ~~~          &     ~~~ \\
+  Minimize &               &      $\sum_{i=1}^n(Y_i - X_i\beta)^TW_i(Y_i - X_i\beta)$ \\
+  Score & $X^T(Y-X\beta)=0$ & $X^TW(Y-X\beta)=0$ \\
+
+  $\hat{\beta}$ & $(X^TX)^{-1} X^TY$ &       $   \left(\sum_{i=1}^n X_i^TW_iX_i \right)^{-1} \left( \sum_{i=1}^n X_i^TW_iY_i  \right)$ \\
+  Covariance & $\sigma^2(X^TX)^{-1}$ &              $ \left(\sum_{i=1}^nX_i^TW_iX_i \right)^{-1}$ \\
+  Sandwich & $(X^TX)^{-1} (X^T \hat{\sigma}^2 X) (X^TX)^{-1}$ &                    $\left(\sum_{i=1}^n X_i^TW_iX_i \right)^{-1} \left(\sum_{i=1}^n X_i^T W_i \hat{\pmb{\Sigma}}_0 W_iX_i \right)  \left(\sum_{i=1}^n X_i^TW_iX_i \right)^{-1}$\\
+  cov estimator & $\hat{\sigma}^2 = \frac{1}{mn-p} \sum_{i=1}^n (Y_i - X_i\hat{\beta})^T(Y_i - X_i\hat{\beta})$ &    $\hat{\Sigma}_0 = \frac{1}{n} \sum_{i=1}^n (Y_i - X_i\tilde{\beta})^T(Y_i - X_i\tilde{\beta})$\\
+  \hline
+  \end{tabular}\\
+~\\
+~\\
+
+
+
+\section{Models for Longitudinal Data}
+	\subsection{Interpretation of coefficients}
+	\textbf{Population level 1:} $\beta_1$ is expected change in weight difference b/w subjects associated difference of 1$kg$ of weight at enrolled time holding other variable constant and assuming that no other factors explain this difference.
+	\textbf{Population level 2:} $\beta_1$ is expected difference in weight b/w two population of subjects that differ in weight by 1$kg$ at enrolled time holding other variable constant and assuming that no other factors explain this difference.
+	\textbf{Population level OR:} The odds of receiving individualized information for treatment group were 12 percent less compared to the control group (OR=.88, 95\%CI: [.78, 1.00]), assuming that these groups were identical given the rest of the covariates. In other words, we have evidence that the treatment reduced the odds of receiving the individualized information.
+	\subsection{Alternating Logistic Regression}
+
+	\subsubsection{Model Definition}
+When we have binary longitudinal data, defining covariance structure is a problem because correlation for binary variables is limited by some expression of their means. \\
+Alternating Logistic regression offeres a different approach. We need to solve $\sum_i D_i^T V_i^{-1} (Y_i - \mu_i) = 0$, where $V_i$ is a working covariance structure. Instead of defining it, we assume:
+
+$$
+\begin{aligned}
+	log(E(Y_{ij}|Y_{ij'})) &= \Delta_{ijj'} + \alpha Y_{ij'}\\
+	&or\\
+	log(E(Y_{ij}|Y_{ij'})) &= \Delta_{ijj'} + (\alpha_0 + \alpha_1[|j-j'|]-1) Y_{ij'}\\
+	&or\\
+	log(E(Y_{ij}|Y_{ij'})) &= \Delta_{ijj'} + \alpha_0 + [\alpha_1I[|j-j'|==2) + \alpha_2I[|j-j'|==3) + \alpha_3I[|j-j'|==4) + ...] Y_{ij'}\\
+\end{aligned}
+$$
+	\subsubsection{Method of Solving}
+	\subsubsection{Hypothesis Testing}
+
+	\subsubsection{R-code}
+	If data looks like this
+	\begin{tabular}{ l c r }
+  id & time \\
+  \hline
+  11 & 0 \\
+  11 & 1 \\
+  11 & 2 \\
+  \end{tabular}
+
+Then the z.matrix is built  like this:
+	\begin{tabular}{ l c r }
+  j & j' & (j-j') \\
+  \hline
+  0 & 0 & 0\\
+  0 & 1 & -1 \\
+  0 & 2 & -2 \\
+  1 & 0 & 1 \\
+  1 & 1 & 0 \\
+  1 & 2 & -1 \\
+  2 & 0 & 2 \\
+  2 & 1 & 1 \\
+  2 & 2 & 0 \\
+  \end{tabular}
+
+
+So we can run the following code:
+\begin{verbatim}
+z.mat <- NULL
+for (i in unique(data1$id)){
+#for (i in c("1", "2")){
+    tmp <- data1[data1$id==i,]
+    tmp1 <- expand.grid(tmp$month,tmp$month)
+    tmp2 <- tmp1[,1]-tmp1[,2]
+    tmp2 <- tmp2[tmp2>0]
+    len <- length(tmp2)
+		zForID = cbind(rep(tmp$id[1], len), tmp2, rep(tmp$gender[1], len), rep(tmp$age[1], len),
+		tmp2==2, tmp2==3, tmp2==4, tmp2==5, tmp2==6, tmp2>=7)
+    z.mat <- rbind(z.mat, zForID)
+}
+z.mat <- data.frame(z.mat)
+names(z.mat) <- c("id", "timediff", "gender", "age", "timeDiff=2", "timeDiff=3", "timeDiff=4",
+"timeDiff=5", "timeDiff=6", "timeDiff>=7")
+z.mat$timediff1 <- z.mat$timediff-1
+z.mat$one <- 1
+
+mod1b = ordgee(ordered(thought) ~ month*age + month*gender, data=data1,
+z=z.mat[,c("one","gender", "timeDiff=2", "timeDiff=3", "timeDiff=4", "timeDiff=5", "timeDiff=6",
+"timeDiff>=7")], corstr="userdefined")
+\end{verbatim}
+
+	\subsubsection{Parameter interpretation}
+
+	\subsection{Generalized Linear Mixed Effects Models (GLMM)}
+	\subsubsection{Model Definition}
+	\subsubsection{Method of Solving}
+	\subsubsection{Hypothesis Testing}
+	\subsubsection{Parameter interpretation}
+		\begin{tabular}{ | l | l | c | c | }
+ \hline
+		  Outcome & Coefficient & Random Intercept & Random Intercept/Slope \\
+		  \hline
+		    &   &   &   \\
+		  Continuous & Intercept & Marginal & Marginal \\
+		    & Slope & Marginal & Marginal \\
+		    &   &   &   \\
+		  Count & Intercept & Conditional & Conditional \\
+		    & Slope & Marginal & Conditional \\
+		    &   &   &   \\
+		  Binary & Intercept & Conditional & Conditional \\
+		    & Slope & Conditional & Conditional \\
+				\hline
+		\end{tabular}
+
+	\subsubsection{Model classification}
+
+	\begin{tabular}{|l|| c | c |}
+	  \hline
+	  \hline
+	  ~ & Parametric Likelihood & Semiparametric\\
+	  \hline
+	  \hline
+	  Marginal & MM-LV, MM-T, MM-TLV & GEE-I, GEE-AR, ALR  \\
+	  \hline
+	  Conditional (subject specific) & GLMM-RI, GLMM-RL &   \\
+	  \hline
+	  Conditional (transitional) & GLTM & \\
+	  \hline
+	\end{tabular}
+
+	\subsubsection{Model Summary}
+	\begin{tabular}{|l|| c| c | c |c|c|c|c}
+	  \hline
+	  \hline
+	  Model & Description & Interp & Lik/Sem  & package & call & Mod.,Sl. & Section\\
+	    &   &   & ML-max.lik  &   &   &   &  in this  \\
+	    &   &   & RE-restr.ML  &   &   &   &   doc\\
+	    &   &   & CL-cond.lik  &    &   &   &  \\
+	    &   &   & QL-quasi lik  &    &   &   &  \\
+	  \hline
+	  \hline
+	  GEE 1.0 &  $\sum D_i V_i(\alpha) (y_i - \mu_i) = 0$  & Popul& QL=semi &  &   \texttt{geepack,}   & 3   &       \\
+	    &   poisson, binary  &  &   &  &   \texttt{geeglm}   & 3   &       \\
+	    &       &  &   &  &   \texttt{geese}   & 3   &       \\
+	  \hline
+	  GEE 2.0 & GEE with Indep.  & Popul&semi  &   &      &  3  &       \\
+	  \hline
+	  GEE-I & GEE with Indep.  & Popul&semi  &   &    &    &       \\
+	  (1.0 but it's not) & GEE with Indep.  & Popul&semi  &   &    &    &       \\
+	  \hline
+	  GEE-AR (1.0) & GEE with AR(1)  & Popul&semi  &   &    &     &      \\
+	  \hline
+	  GLMM-RI/RL & Mixed Effects,  &  & ML,RE,CL  &  &  \texttt{glmer}   &  4  &      \\
+	     ~~continuous &    Rand. Int. /+Slope & Subj&   &   &   &    &      \\
+	     ~~count &     & Subj&   &   &   &    &      \\
+	     ~~binary &    & Subj&  &   &   &    &      \\
+	  \hline
+	  GLMM-RL & Mixed Effects,    &   & ML,RE,CL &  & \texttt{glmer}  & 4   &      \\
+	   ~~continuous &   Rand. Int. /+Slope  &  Subj& &   &   &    &      \\
+	   ~~count &    &  Subj&   &   &   &    &      \\
+	   ~~binary &     &  Subj&   &   &   &    &      \\
+	  \hline
+	  ALR$\equiv$GEE 1.5 & Alternating Logist. Regr.  &  &semi &   &  \texttt{ordgee}  &  3,sl.64   &     \\
+	   & of response dependence  &  &semi &   &  \texttt{ordgee}  &  3,sl.64   &     \\
+	    & ALR is just an example  &  Popul.  &semi &   &  \texttt{ordgee}  &  3,sl.64   &     \\
+	  \hline
+	  GLTM & Gen.Lin.Transional  & Popul.$|Y_{j-1}$ & CL  &   &   \texttt{glm} &  5,sl.23   &    \\
+	  \hline
+	  MM-LV & Marginalized, Latent Var  & Popul &lik  &   &   \texttt{mm} &  5  &    \\
+	  \hline
+	  MM-T &  Marginalized, Transitional  & Popul &lik  &   &  \texttt{mm} &  5   &     \\
+	  \hline
+	  MM-TLV &  Marginalized, Trans.    & Popul &lik  &   &  \texttt{mm}  &  5  &     \\
+	    &  Marginalized,   Latent Var   & Popul &lik  &   &  \texttt{mm}  &  5  &     \\
+	    &  Marginalized, both   & Popul &lik  &   &  \texttt{mm}  &  5  &     \\
+	  \hline
+	  \hline
+	  \hline
+	\end{tabular}
+
+Is GEE 2 quisi lik?
+Choosing b/w model wiht a time lag, which model to use \\
+Populaiton
+
+	\subsubsection{Missing}
+	For gee, glm, we can compute weights =1/(probability of being observed) and this is how we can deal with missing data.
+	\subsubsection{R-code}
+
+\subsection{Random facts}
+GLM + robust standard errors = GEE + independence covariate structures (GEE-I)\\
+If you fit GEE 2.0 then the second moment has to be something you are interested in. You estimate them together, but if you get second moment wrong, then the first moment might be wrong.\\
+In GLMM(glmer() function) for not continuous outcome, if we get the correlaiton structure wrong then the first model would be biased.
+
+\section{Computational Statistic}
+\subsection{Metropolis-Hastings Algorithm}
+The following is from the Wikipedia:\\
+\begin{enumerate}[1)]
+	\item Choose and arbitrary point $x_0$
+\end{enumerate}
+	
+\end{document}          
