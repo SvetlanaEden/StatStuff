@@ -8,6 +8,17 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{color}
+
+%%% for citations. See Lucy's tutorial: https://github.com/LucyMcGowan/Tutorials/blob/master/BiblatexTutorial.md
+\usepackage[backend=biber,maxnames=10,citestyle=science]{biblatex}
+\addbibresource{summaryOfRef.bib}
+
+%%% when using biber as a "backend" compile like this:
+% pdflatex myFile
+% biber myFile
+% pdflatex myFile
+
+
 \let\epsilon\varepsilon
 \newcommand\SLASH{\char`\\}
 \newcommand{\csch}{\text{csch}}
@@ -36,7 +47,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
-\section{Test of Association Between Two Ordinal Variables While Adjusting for Covariates, Li and Shepherd, 2010}
+\section{Test of Association Between Two Ordinal Variables While Adjusting for Covariates, Li and Shepherd, 2010 \cite{li2010test}}
 We have two ordinal variables $\pmb{X}$ and $\pmb{Y}$ and we would like to test if after adjustment for $\pmb{Z}$ they are independent. We do this in two ways:
 \begin{enumerate}[1)]
 	\item compare \emph{observed} distribution with \emph{expected} distribution under the null.
@@ -77,7 +88,7 @@ $$
 \end{aligned}
 $$
 Where $n_{jl}$ is number of subjects with levels j and l respectively.\\
-We now summarize the observed and expected distribution separately by calculating \emph{Goodman} and \emph{Kruskal}'s gamma (Goodman, L. A., and Kruskal, W. H. (1954), "Measures of Association for Cross Classifications," Journal of the American Statistical Association).
+We now summarize the observed and expected distribution separately by calculating \emph{Goodman} and \emph{Kruskal}'s gamma \cite{goodman1979measures} (Goodman, L. A., and Kruskal, W. H. (1954), "Measures of Association for Cross Classifications," Journal of the American Statistical Association).
 $$
 \begin{aligned}
 	C&=\sum_{j_1<j_2, ~l_1<l_2}\pi_{j_1l_1}\pi_{j_2l_2}\\
@@ -136,9 +147,12 @@ $$
 
 {\scriptsize{\textbf{Verification}\\
 We know that $P(A\cup B) = P(A) + P(B) - P(A\cap B)$. Let's denote $A=\{\underline{a}_1 =\underline{a}_2\}$ and  $B=\{\underline{b}_1 =\underline{b}_2\}$. We think of two subjects having the same categories is like drawing from the cells of the above table with replacement because two subjects are independent. Keeping in mind that $P(\{\underline{a}_1=A_i\cap \underline{b}_1 =B_j) =\rho_{A_i,B_j}$, the probability of two subjects having the same categories is $\rho_{A_i,B_j}\cdot \rho_{A_i,B_j}$ and therefore $P(A\cap B) = \sum_{i,j}\rho_{i,j}^2$. Similarly, and imagining that we draw two subjects independently with replacement based on marginal distributions for $A$ and $B$: $P(A) = \sum_{i}\rho_{i\cdot}^2$ and $P(B) = \sum_{j}\rho_{\cdot j}^2$
-}\\
+\\
 Now let's denote $A=\{\underline{a}_1 <\underline{a}_2 \cap\underline{b}_1 <\underline{b}_2\}$ and  $B=\{\underline{a}_1 >\underline{a}_2 \cap \underline{b}_1 >\underline{b}_2\}$. Because these two events do not overlap, we have: $P(A\cup B) = P(A) + P(B)$. Applying the same principle of drawing with replacement, we have: $P(A) = \sum_{i,j}\left(\sum_{k<i,l<j}\rho_{k,l} \right)\rho_{i,j}$ and $P(B) = \sum_{i,j}\left(\sum_{k>i,l>j}\rho_{k,l} \right)\rho_{i,j}$. It so happends that when these two probabilities are summed up, we get the double of one of them. We show it on the example of 2 $A$ categories and three $B$ categories: $P(A\cup B) = [\rho_{11}\rho_{22} + (\rho_{12} + \rho_{11})\rho_{23}]~ + ~[(\rho_{22} + \rho_{23})\rho_{11} + \rho_{23}\rho_{12}] ~=~ 2(\rho_{22} + \rho_{23})\rho_{11} + 2\rho_{12}\rho_{23}$, so $P(A\cap B) = 2\cdot \sum_{i,j}\left(\sum_{k<i,l<j}\rho_{k,l} \right)\rho_{i,j}$
-}\\
+\\
+\textbf{Note}(Unrelated to the verification above)\\
+In the same paper, there is also an index, $\lambda$, that measures association between unordered categories. Another interesting part of the paper is where they derive the same index $\lambda$ but using a loss function.
+}}\\
 
 Properties:
 \begin{enumerate}[(i)]
@@ -233,6 +247,29 @@ $$
 	2\times min\{\#(T^*\geq T),\#(T^*\leq T)\}/N^{emp}
 \end{aligned}
 $$
+\subsubsection{Asymptotic Distribution}
+Estimate $\hat{\theta}$ can be obtained by solving the equation $\sum_{i=1}^n \Psi_i(\theta) = 0$ where $\Psi_i(\theta) = \Psi(Y_i, X_i, \pmb{Z}_i; \theta)$ is a \emph{p}-variate function that doesn't depend on $i$ or $n$ and satisfies $E_{\theta}[\Psi_i(\theta)]=0$. From \emph{M}-estimation theory (Stefanski and Boos 2002), if $\Psi$ is suitable smooth, then as $n\leftarrow \infty$,
+$$
+\begin{aligned}
+	\sqrt{n}(\hat{\pmb{\theta}} - \pmb{\theta}) &\underset{d}{\longrightarrow}N(\pmb{0}, V(\theta)),~~where\\
+	  V(\theta) &= A(\theta)^{-1} B(\theta)[A(\theta)^{-1}]'\\
+		A(\theta) &= E \left[-\frac{\partial}{\partial \theta} \Psi_i(\theta)\right]\\
+		B(\theta) &= E \left[\Psi_i(\theta)\Psi_i'(\theta)\right]\\
+\end{aligned}
+$$
+ {\scriptsize{\textbf{My explanation}(might not to be correct): Because $E_{\theta}[\Psi(\theta)]=\pmb{0}$}, the variance of $\Psi(\theta)$ is $B(\theta) = E \left[\Psi_i(\theta)\Psi_i'(\theta)\right]$, therefore $\sqrt{n}(\hat{\Psi}(\theta) - \Psi(\theta)) \underset{d}{\longrightarrow}N(\pmb{0}, B(\theta))$. We can express $\theta$ as $\Psi^{-1}_i(\nu)$ (an inverse of $\Psi$, do not confuse with power $-1$) and apply the delta method keeping in mind that $\frac{\partial \Psi^{-1}_i(\theta)}{\partial \nu} = -\frac{1}{\partial \Psi_i(\nu)/ \partial \theta}$. Then, according to the delta method: $\sqrt{n}(\hat{\theta} - \theta) \underset{d}{\longrightarrow}N\left(\pmb{0}, \frac{B(\theta)}{(\partial (\Psi^{-1}_i(\theta)) /\partial \theta)^2}\right)$ (here $-1$ is used in sense of power). My $i$ indices are all messed up in this explanation.
+ }\\
+ ~\\
+Now we apply \emph{delta} method to a statistic, based on $\theta$:
+
+$$
+\begin{aligned}
+	\sqrt{n}(g(\hat{\pmb{\theta}}) - g(\pmb{\theta})) &\underset{d}{\longrightarrow}N(0, \sigma^2),~~where\\
+	  \sigma^2 &= \left[\frac{\partial}{\partial \theta}g(\pmb{\theta})\right]V(\theta)\left[\frac{\partial}{\partial \theta}g(\pmb{\theta})\right]'
+\end{aligned}
+$$
+
+\printbibliography
+
 \end{document}          
 
-\subsubsection{Asymptotic Distribution}
