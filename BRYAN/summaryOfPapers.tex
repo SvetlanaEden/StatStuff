@@ -430,7 +430,53 @@ After some complicated math, he derives:
 	\end{aligned}
 	$$
 Where $a(\cdot)$ and $b(\cdot)$ are nondecreasing (nuisance) functions with $a(0) = b(0)=0$.\\
-\textbf{Interpretation:} when $\theta>1$, $g(s;t)$ is decreasing with respect to $t$ so that the age-specific rates for sons decrease with increased survival time of their fathers. Similarly, $h(t;s)$ decreases with respect to $s$. When $\theta=1$ and there is no asociation.
+\textbf{Interpretation:} when $\theta>1$, $g(s;t)$ is decreasing with respect to $t$ so that the age-specific rates for sons decrease with increased survival time of their fathers. Similarly, $h(t;s)$ decreases with respect to $s$. When $\theta=1$ and there is no asociation.\\
+Parameter $\theta$ is estimated using maximum likelihood.
+
+\subsection{Fan, 1998}
+There is a need in non-parametric measure of association between two survival times.\\
+Clayton suggested a \textit{cross ratio} (Clayton, 1978, Oaks, 1989) (see Clayton's $\theta$):
+	$$
+	\begin{aligned}
+		&\tilde{c}(s_1, s_2) = \frac{F(ds_1, ds_2)F(ds_1^-, ds_2^-)} {F(ds_1, ds_2^-)F(ds_1^-, ds_2)} \\
+		 &or\\
+		 & \tilde{c}(s_1, s_2) = \frac{ \lambda_1(s_1|T_2=s_2)}{\lambda_1(s_1|T_2 \geq s_2)} = \frac{ \lambda_2(s_2|T_1=s_1)}{\lambda_2(s_2|T_1 \geq s_1)}
+	\end{aligned}
+	$$
+Which can be interpreted as ''the ratio of the breast cancer risk for daughters of age $s_2$ whose mothers developed breast cancer at age $s_1$, compared to daughters of age $s_2$ whose mothers were breast cancer free to age $s_1$. This type of hazard ratio, or relative risk, is most familiar to epidemiologists, and an average relative risk over a range of ages may be readily interpreted and meaningful in epidemiologic contexts''.\\
+Kendall's (1938) coefficient of concordance could be also used for association if we there were no censored observations or restricted rance of ages:
+	$$
+	\begin{aligned}
+		&\tau = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22}) \}
+	\end{aligned}
+	$$
+Oakes (1989) proposed:
+	$$
+	\begin{aligned}
+		&\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}
+	\end{aligned}
+	$$
+''Following the suggestion of in Hsu and Prentice (1996) one could consider a summary dependence measure that weights the cross ratio $\tilde{c}(s_1, s_2)$ over $[0, t_1]\times[0, t_2]$ by $\frac{F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)}$''. But there are some problems with consistency of $\tilde{c}(s_1, s_2)$ when it is weighted this way.\\
+Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_2)}$ and get:
+	$$
+	\begin{aligned}
+		C(t_1, t_2) &= \int_0^{t_1}\int_0^{t_2} \frac{F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)} 
+	\end{aligned}
+	$$
+	
+	Oakes (1989) notes that $\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}$ can be written as:
+	$$
+	\begin{aligned}
+		\tau(s_1, s_2) &= \frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
+	\end{aligned}
+	$$
+The authors propose to weight this $\tau(s_1, s_2)$ proportionally to the density. After some very complex algebra, it can be shown that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
+	$$
+	\begin{aligned}
+		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
+	\end{aligned}
+	$$
+	so that $\mathcal{T}(t_1, t_2) \in [-1,1]$
 
 
 
