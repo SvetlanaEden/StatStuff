@@ -233,7 +233,7 @@ $$
 	T_3 = E(\hat{C}_i - \hat{D}_i) &=\frac{1}{n} \sum_i y_{i,res}x_{i,res}\\
 \end{aligned}
 $$
-\subsection{Two method of comuting the p-value}
+\subsection{Two method of computing the p-value}
 \subsubsection{Parametric Bootstrap}
 We generate new datasets from the product distribution $\{\hat{p}_i^j\hat{q}_i^l\}_{j,l}$ for each subject ($i=1,...,n$). Then we carry out the entire estimating procedure for the replicate dataset to obtain the corresponding statisitc, denoted as $T^*$. We do this $N^{emp}$ times and get an empirical distribution of $T$ under the null. The two-sided p-value is then computed as either:
 $$
@@ -248,7 +248,7 @@ $$
 \end{aligned}
 $$
 \subsubsection{Asymptotic Distribution}
-Estimate $\hat{\theta}$ can be obtained by solving the equation $\sum_{i=1}^n \Psi_i(\theta) = 0$ where $\Psi_i(\theta) = \Psi(Y_i, X_i, \pmb{Z}_i; \theta)$ is a \emph{p}-variate function that doesn't depend on $i$ or $n$ and satisfies $E_{\theta}[\Psi_i(\theta)]=0$. From \emph{M}-estimation theory (Stefanski and Boos 2002), if $\Psi$ is suitable smooth, then as $n\leftarrow \infty$,
+Estimate $\hat{\theta}$ can be obtained by solving the equation $\sum_{i=1}^n \Psi_i(\theta) = 0$ where $\Psi_i(\theta) = \Psi(Y_i, X_i, \pmb{Z}_i; \theta)$ is a \emph{p}-variate function that doesn't depend on $i$ or $n$ and satisfies $E_{\theta}[\Psi_i(\theta)]=0$. From \emph{M}-estimation theory (Stefanski and Boos 2002)\cite{stefanski2002calculus}, if $\Psi$ is suitable smooth, then as $n\leftarrow \infty$,
 $$
 \begin{aligned}
 	\sqrt{n}(\hat{\pmb{\theta}} - \pmb{\theta}) &\underset{d}{\longrightarrow}N(\pmb{0}, V(\theta)),~~where\\
@@ -268,6 +268,171 @@ $$
 	  \sigma^2 &= \left[\frac{\partial}{\partial \theta}g(\pmb{\theta})\right]V(\theta)\left[\frac{\partial}{\partial \theta}g(\pmb{\theta})\right]'
 \end{aligned}
 $$
+In order to estimate $\sigma^2$ we estimate:
+
+$$
+\begin{aligned}
+	\hat{A}(\pmb{\theta}) &= \frac{1}{n}\sum_{i}\left[-\frac{\partial}{\partial\pmb{\theta}}\Psi_i(\hat{\pmb{\theta}})\right]\\
+	\hat{B}(\pmb{\theta}) &= \frac{1}{n}\sum_{i}\Psi_i(\hat{\pmb{\theta}})\Psi_i(\hat{\pmb{\theta}})'\\
+	\widehat{\frac{\partial}{\partial\pmb{\theta}}g(\pmb{\theta})} &= \frac{\partial}{\partial\pmb{\theta}}g(\hat{\pmb{\theta}})
+\end{aligned}
+$$
+Under the null the \emph{p-value} can be computed approximately as $2\Phi\left(\frac{-|T|}{\hat{simga}/n}\right)$, where $\Phi$ is the cumulative distribution function of the standard normal distribution.
+
+\subsubsection{Defining $\theta$, $\Psi_i(\theta)$, and $g(\theta)$}
+For all three statistics, the parameter vector will have the form: $\pmb{\theta} = (\pmb{\theta}^Y, \pmb{\theta}^X, \pmb{\theta}^T)$. The corresponding estimating function $\Psi_i(\pmb{\theta})$ will have the form:
+$$
+\begin{aligned}
+	\Psi_i(\pmb{\theta})^T = \left(\frac{\partial}{\partial \pmb{\theta}^Y}l_Y(Y_i, \pmb{Z}_i; \pmb{\theta}^Y),~\frac{\partial}{\partial \pmb{\theta}^X} l_X(X_i, \pmb{Z}_i;\pmb{\theta}^X), \psi(Y_i, X_i, \pmb{Z}_i;\pmb{\theta})\right)
+\end{aligned}
+$$
+Where $l_X$ and $l_Y$ are the log-likelihood functions of the multinomial models that are used to model $P(Y|\pmb{Z})$ and $P(X|\pmb{Z})$, with parameters $\pmb{\theta}^Y$ and $\pmb{\theta}^X$ respectively. They are score functions and thus $E\left[ \frac{\partial}{\partial\pmb{\theta}}l_Y(Y_i, \pmb{Z}_i; \pmb{\theta}^Y) \right]=\pmb{0}$ and $E\left[ \frac{\partial}{\partial\pmb{\theta}}l_X(Y_i, \pmb{Z}_i; \pmb{\theta}^X) \right]=\pmb{0}$. The functions $\psi(Y_i, X_i, \pmb{Z}_i;\pmb{\theta})$ will be different for each statistic.\\
+~\\
+\textbf{For statistic $\pmb{T}_1$}: for $T_1=\Gamma(\hat{P}) - \Gamma(\hat{P}_0)$, we define $\pmb{\theta}^T = (\pi_{11},...,\pi_{1,t-1},\pi_{1,t}, ~~~\pi_{21},...,\pi_{2,t-1},\pi_{2t}, ~~~..., ~~~\pi_{s1},...,\pi_{s,t-1})$. Note that $\pi_{s,t}$ is not included because it can be expressed from the rest of $\pi_{s,t} = 1-\sum_{j,j}\pi_{ij}$.\\
+The corresponding function $\psi$ is:
+$$
+\begin{aligned}
+	\psi^T(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T) = (I_{\{Y_i=1,X_i=1\}}-\pi_{11}, ~~...,~~I_{\{Y_i=s,X_i=t-1\}}-\pi_{s,t-1})
+\end{aligned}
+$$
+where $I_a$ is an indicator functon of event $a$. $E[\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)]=\pmb{0}$ because for each element of vector $\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)$, say $\psi_{11}$ we have: $E[\psi_{11}] = (1-\pi_{11})\cdot \pi_{11} + (0-\pi_{11})\cdot (1-\pi_{11})=0$. Let $g(\pmb{\theta}) = \Gamma(P) - \Gamma(P_0)$. Then $g(\pmb{\theta})=0$ under the null, and $T_1=g(\hat{\pmb{\theta}})$.\\
+~\\
+\textbf{For statistic $\pmb{T}_2$}: Let's denote $w_1=E(Y_{i,res})$, $w_2=E(X_{i,res})$, $w_3=E(Y_{i,res}, X_{i,res})$, $w_4=E(Y^2_{i,res})$, and $w_5=E(X^2_{i,res})$. Then $\pmb{\theta}^T = (w_1, w_2, w_3, w_4, w_5)$, and the corresponding $\psi$ is:
+$$
+\begin{aligned}
+	\psi^T(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}) = (Y_{i,res}-w_1, ~X_{i,res}-w_2,  ~Y_{i,res}X_{i,res}-w_3, ~Y^2_{i,res}-w_4, ~X^2_{i,res}-w_5)
+\end{aligned}
+$$
+By definition $E[\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)]=\pmb{0}$. Solving the equation $\sum_i\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)]=\pmb{0}$, we have $\hat{w}_1=\frac{1}{n}\sum_i y_{i,res}$, $\hat{w}_2=\frac{1}{n}\sum_i x_{i,res}$, $\hat{w}_3=\frac{1}{n}\sum_i y_{i,res}x_{i,res}$, $\hat{w}_4=\frac{1}{n}\sum_i y^2_{i,res}$, and $\hat{w}_5=\frac{1}{n}\sum_i x^2_{i,res}$. Let $g(\pmb{\theta}) = (w_3 - w_1w_2)/\sqrt{(w_4-w_1^2)(w_5-w_2^2)}=cor(Y_{i,res},X_{i,res})$ (?!). Because it is a correlation, $g(\pmb{\theta})=0$ under the null, and $T_2=g(\hat{\pmb{\theta}})$\\
+~\\
+\textbf{For statistic $\pmb{T}_3$}: $T_3 = \frac{1}{n}\sum_i (\hat{C}_i - \hat{D}_i)$, parameter $\pmb{\theta}^T$ is a scalar, $\theta^T = E(C_i - D_i)$, which is $0$ under the null. The corresponding function $\psi$ is:
+$$
+\begin{aligned}
+	\psi^T(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}) = (C_i - D_i) - \theta^T
+\end{aligned}
+$$
+By definition $E[\psi(Y_i,X_i,\pmb{Z}_i;\theta)]=\pmb{0}$. Let $g(\pmb{\theta}) = \theta^T$. Then $g(\pmb{\theta}) = 0$ under the null, and $T_3=g(\hat{\pmb{\theta}}) $. The delta method is not needed here because $\hat{\sigma}^2$ is simply the last element of the diagonal of $\hat{V}(\pmb{\theta})$ (because $g(\cdot)$ is an identity function).
+
+
+\section{A new residual for ordinal outcomes, Li and Shepherd, 2012 \cite{li2012new}}
+\textbf{Desirable properties of residuals for ordial variables:}
+\begin{enumerate}[(a)]
+	\item results in only one value per subject;
+	\item reflects the overall direction of the observed value compared with the fitted value;
+	\item is monotonic with respect to the observed value for those with the same covariates;
+	\item has a range of possible values that is symmetric about zero;
+	\item has expectation zero;
+	\item should perserve order without assigning arbitrary scores to the categories.
+\end{enumerate}
+~\\
+
+\textbf{Definition:}\\
+Consider a set of of $s$ ordered categories, $S=\{1,...,s\}$, with order $1<...<s$. For a category $y$ in $S$ and a distribution $F$ over $S$, we define a \textbf{\textit{residual}}:
+$$
+\begin{aligned}
+	r(y,F)=E\{sign(y,Y\} = pr(y>Y) - pr(y<Y),
+\end{aligned}
+$$
+where $Y$ is a random variable with distribution $F$, and $sign(a,b)$ is $-1$, $0$ and $1$ for $a<b$, $a=b$, and $a>b$, respectively. Suppose we fit an ordinal outcome variable $Y$ on covariates $Z$. For subject $i$, let $Y_i$ be the outcome and let $F_{Z_i;\theta}$ be the distribution of $Y_i$ given covariates $Z_i$ under a model with parameter $\theta$. We define:
+$$
+\begin{aligned}
+	R_i = r(Y_i,F_{Z_i;\theta})
+\end{aligned}
+$$
+Give data$(y_i, z_i)$ and a fitted model with parameter estimates $\hat{\theta}$, the residual for subject $i$ is $\hat{r}_i = r(Y_i,F_{Z_i;\theta})$. Notice that $\hat{r}_i$ is not a realization of $R_i$, but of the random variable $\hat{R}_i = r(Y_i,F_{Z_i;\hat{\theta}})$. If $\hat{\theta} \overset{P}{\rightarrow} \theta$, then $F_{Z_i;\hat{\theta}} \rightarrow F_{Z_i;\theta}$, and $\hat{R}_i \overset{D}{\rightarrow} R_i$. Therefore, moment properties of $R_i$ are applicable to $\hat{R}_i$ asymptotically.\\
+~\\
+\textbf{Properties of $r(y, F)$, $R_i$, and $\hat{r}_i$:}
+\begin{enumerate}[\textit{Property} 1.]
+	\item $-1\leq r(1, F) \leq ... \leq r(s,F) \leq 1$;
+	\item when $s=1$, $r(1,F) = r(1,1)=0$, where $F=(1)$ is a point mass;
+	\item $r(j, F) = -r(s-j+1, G)$, where $G=(q_1,...q_s) = (p_s,...,p_1)$ with $q_j=p_{s-j+1}$;
+	\item as functions of $(\gamma_1, ..., \gamma_{s-1})$, $\partial r(j,F)/\partial \gamma_j = \partial r(j+1, F)/\partial \gamma_j$.
+	\item \textit{Branching Property}. If two adjacent categories $t$ and $t+1$ are merged, with distribution $G=(q_1,...q_{s-1})$, where $q_j=p_j$ for $j<t$, $q_t=p_t + p_{t+1}$ and $q_j=p_{t+1}$ for $j>1$, then $r(j, G)=$
+	$$
+	\begin{aligned}
+		r(j, G)&= r(j, F), ~~~j<t\\
+		r(j, G)&= r(j+1, F), ~~~j>t\\
+		r(j, G)&= \{ p_t r(t, F) + p_{t+1}(t+1, F) \}/(p_t + p_{t+1}), ~~~j=t\\
+		\end{aligned}
+		$$
+	\item The function $r(j,F)$ satisfies Properties 2, 3(for $s=2$), 4(for $s=2$), and 5 if and only if $r(j,F) = c(\gamma_{j-1} - (1-\gamma_j))$, where $c$ is an arbitrary constant.
+	\item $r(j, F)/2 = ridit_j - 1/2$, where $ridit_j = \gamma_{j-1} + p_j/2 = (\gamma_{j-1} + \gamma_j)/2$ and the mean ridit is $1/2$.
+	\item $E(R) = 0$;
+	\item $var(R) = (1-\sum^s_{j=1} p_j^3)/3$, or alternatively, $var(R) = \sum^s_{j=1} p_j\gamma_{j-1}\gamma_j$. This property provides alternative ways of calculating $var(R)$ and implies that $var(R)$ does not depend on the order of the probabilities.
+	\item when $p_1=...=p_s = 1/s$ $var(R)$ reaches its maximum $(1-1/s^2)/3$
+	\item Consider a random sample of $n$ subjects, with $n_j$ subjects in category $j$ $(j=1,...,s)$. Their empirical distribution is $\hat{F}=(\hat{p}_1, ... \hat{p}_s)$, where $\hat{p}_j = n_j/n$, with cumulative probabilities $\hat{\gamma}_j = \sum_{k\leq j} n_k/n$. With no covariates, the predictor of all subjects is a constant. Then $r_j = r(j,\hat{F}) = \hat{\gamma}_{j-1} + \hat{\gamma_j} - 1 = \left( \sum_{k<j}2n_k + n_j - n \right)/n$. If we rank these subjects, their midrank is $rank_j = \sum{k<j} n_k + (n_j + 1)/2$. The following property holds:
+	$$
+	\begin{aligned}
+		rank_j = T(r_j) = (n/2)\cdot r_j + (n+1)/2
+	\end{aligned}
+	$$
+The function $T(r_j)$ can be viewed as a translation from the residual scale to the rank scale. This property implies that when there are no covariates, statistics $T_2$ (see reference \cite{li2010test}) is Spearman's rank correlation coefficient between $X$ and $Y$. When covariates exist, $T(r_j)$ yields adjusted ranks of the subjects, and $T_2$ can be interpreted as an adjusted rank correlation.
+	\item We now focus on models for an ordinal outcome $Y$ on covariates $Z$ with parameters $\theta$. For subject $i$ $(i=1,...,n)$ and category $j$ $(j=1,...,s)$, let $\gamma_{i,j} = pr(Y_i\leq j|Z_i;\theta)$; for convenience, we define $\gamma_{i,0} = 0$. Let $p_{i,j} = pr(Y_i=j|Z_i)=\gamma_{i,j} - \gamma_{i, j-1}$. The following two moment properties hold:
+	$$
+	\begin{aligned}
+		E{R_i|Z_i;\theta} = 0;
+	\end{aligned}
+	$$
+	\item $var(R_i|Z_i;\theta) = E(R_i^2|Z_i;\theta) =\sum_{j=1}^s R_{i,j}^2 p_{i,j}= \sum_{j=1}^s (\gamma_{i,j-1} + \gamma_{i,j} - 1)^2 p_{i,j}$
+	
+	\item Let $\hat{p}_{i,j}$ and $\hat{\gamma}_{i,j}$ be the maximum likelihood estimates of $p_{i,j}$ and $\hat{\gamma}_{i,j}$. Then $\hat{r}_i = \hat{\gamma}_{i, y_i-1} + \hat{\gamma}_{i, y_i}$ - 1. The variance of $R_i$ can be consistently estimated by inserting these estimates into Property 13, $\hat{var}(R_i) = var(R_i|z_i;\hat{\theta}) =  \sum_{j=1}^s (\hat{\gamma}_{i,j-1} + \hat{\gamma}_{i,j} - 1)^2 \hat{p}_{i,j}$. One could therefore calculate a standardized residual as $\hat{r}_i/\{\hat{var}(R_i)\}^{1/2}$, which for binary $Y$ is the Pearson residual $(I_{\{Y_i=2\}} - \hat{p}_{i,2})(\hat{p}_{i,1}\hat{p}{i,2})^{-1/2}$.
+	
+	\item Now we consider a proportional odds model (??? McCullagh, 1980), $logit\{pr(Y \leq j|Z)\}=\alpha_j + Z^T\beta~(j=1,...,s-1)$ with parameters $\theta = (\alpha_1, ...\alpha_{s-1}, \beta)$. Under this model, our residuals are related to score residuals (??? Therneau el al., 1990, ). Let $l_i$ be the loglikelihood for subject $i$, and $U_i=U_i(\theta) = \partial l_i/\partial \theta$ be the score function. Because $E_{\theta}(U_i) = 0$, $U_i$ is called the score residual. For proportional odds models, the following two properties hold:
+	$$
+	\begin{aligned}
+		\hat{r}_i = - \sum_{j=1}^{s-1}(\partial l_i/\partial \alpha_j)|_{\hat{\theta}}, ~~~where ~\hat{\theta}~is~MLE
+	\end{aligned}
+	$$
+	\item $\sum_{i=1}^n \hat{r}_i = 0$.
+\textbf{Also}, under certain assumptions (see the paper), these residuals are equivalent to comparing $(\gamma_{i,j-1} + \gamma_{i,j})/2$ with $1/2$ on the probability scale.
+	
+\end{enumerate}
+~\\
+
+\section{PSR (probability scale residuals) for censored data}
+% Terms for residuals:
+% \begin{itemize}
+% 	\item \textbf{OMER}-observed minus expected residuals: $E(y-Y^*) = y - \hat{y}$
+% 	\item \textbf{PSR}-probability scale residuals: $E{sign(y,Y^*)} = pr(Y^* < y) - pr(Y^* > y)$
+% \end{itemize}
+As we know, PSR are defined as $r(t,F^*) = E{sign(y,Y^*)} = pr(Y^* < y) - pr(Y^* > y) = F^*(t-) - (1-F^*(y)) = F^*(t-) - 1 + F^*(t)$. Since we do not always observe $t$, the PSR must be defined in terms of $y$ (time to event or censoring) and $\delta$ (if the event happened or not). If $\delta = 1$, then $t=y$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. If $\delta = 0$, then $t$ is unknown, except that it occurs some time after the censoring time $y$, so $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\} = F^*(y)$.
+Let's prove that $r(t,F^*, \delta=0) = F^*(y)$. Since $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\} = \frac{\int_{t>y}r(t, F^*)dF^*(t)}{1-F^*(y)}$, it suffices to show that $F^*(y)\{1- F^*(y)\} = \int_{t>y} r(t, F^*) dF^*(t) = \int_{t>y}F^*(t-)dF^*(t) - \int_{t>y}\{1 - F^*(t)\}dF^*(t)$
+
+
+\section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005}
+\subsection{Clayton, 1978}
+Clayton suggested a \textit{a bivariate model for ordered pairs}. Suppose we are interested in onset of disease for fathers and sons. We want to know if they are associated. If $f(s,t)$ is a density of the age at which fathers ($t$) and sons ($s$) succomb to the disease, then the proposed model is:
+	$$
+	\begin{aligned}
+		&f(s,t)\int_s^{\infty}\int_t^{\infty} f(u, v)dvdu = \theta \int_s^{\infty}f(u, t)du\int_t^{\infty}f(s, v)dv \\
+		&or\\
+		& \frac{ \lambda(s_0|t=t_0)}{\lambda(s_0|t>t_0)} = \frac{ \lambda(t_0|s=s_0)}{\lambda(t_0|s>s_0)} = \theta
+	\end{aligned}
+	$$
+The we have:
+\begin{enumerate}[(i)]
+	\item the joint survivor function:\\$\mathcal{F}(s, t) = \int_s^{\infty}\int_t^{\infty} f(u, v)dvdu$
+	\item the hazard function for sons of fathers who survive until t, that is:\\
+	$g(s;t) = \frac{\partial}{\partial s}\{log\mathcal{F}(s,t)\} = \frac{ \int_t^{\infty} f(s, v)dv} {\mathcal{F}(s, t)}$
+	\item the hazard function for fathers of sons who survive until s, that is:\\
+	$h(t;s) = \frac{\partial}{\partial t}\{log\mathcal{F}(s,t)\} = \frac{ \int_s^{\infty} f(u, t)du} {\mathcal{F}(s, t)}$
+	\item the bivariate failure rate:\\
+	$l(t;s) = \frac{f(s,t)}{\mathcal{F}(s,t)} = g(s;t) h(t;s) - \frac{ \partial^2 }{\partial s \partial t} \{-log\mathcal{F}(s,t)\}$
+\end{enumerate}
+After some complicated math, he derives:
+	$$
+	\begin{aligned}
+		&\mathcal{F}(s,t) = [1 + (\theta - 1)\{a(s) + b(t)\}]^{-1/(\theta - 1)}\\
+		&g(s;t) = \frac{a'(s)}{1 + (\theta - 1)\{a(s) + b(t)\}}\\
+		&h(t;s) = \frac{b'(s)}{1 + (\theta - 1)\{a(s) + b(t)\}}\\
+		&l(s,t) = \frac{\theta a'(s)b'(t)}{1+(\theta-1)(a(s) + b(t))^{2+1/(\theta-1)}}\\
+		&f(s,t) = \frac{\theta a'(s)b'(t)}{1+(\theta-1)(a(s) + b(t))^{2}}
+	\end{aligned}
+	$$
+Where $a(\cdot)$ and $b(\cdot)$ are nondecreasing (nuisance) functions with $a(0) = b(0)=0$.\\
+\textbf{Interpretation:} when $\theta>1$, $g(s;t)$ is decreasing with respect to $t$ so that the age-specific rates for sons decrease with increased survival time of their fathers. Similarly, $h(t;s)$ decreases with respect to $s$. When $\theta=1$ and there is no asociation.
+
+
 
 \printbibliography
 
