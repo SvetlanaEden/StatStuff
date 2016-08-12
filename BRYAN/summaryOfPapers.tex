@@ -395,12 +395,20 @@ The function $T(r_j)$ can be viewed as a translation from the residual scale to 
 % 	\item \textbf{OMER}-observed minus expected residuals: $E(y-Y^*) = y - \hat{y}$
 % 	\item \textbf{PSR}-probability scale residuals: $E{sign(y,Y^*)} = pr(Y^* < y) - pr(Y^* > y)$
 % \end{itemize}
-As we know, PSR are defined as $r(t,F^*) = E{sign(y,Y^*)} = pr(Y^* < y) - pr(Y^* > y) = F^*(t-) - (1-F^*(y)) = F^*(t-) - 1 + F^*(t)$. Since we do not always observe $t$, the PSR must be defined in terms of $y$ (time to event or censoring) and $\delta$ (if the event happened or not). If $\delta = 1$, then $t=y$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. If $\delta = 0$, then $t$ is unknown, except that it occurs some time after the censoring time $y$, so $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\} = F^*(y)$.
-Let's prove that $r(t,F^*, \delta=0) = F^*(y)$. Since $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\} = \frac{\int_{t>y}r(t, F^*)dF^*(t)}{1-F^*(y)}$, it suffices to show that $F^*(y)\{1- F^*(y)\} = \int_{t>y} r(t, F^*) dF^*(t) = \int_{t>y}F^*(t-)dF^*(t) - \int_{t>y}\{1 - F^*(t)\}dF^*(t)$
+PSR are defined as $r(t,F^*) = E\{sign(y,Y^*)\} = pr(Y^* < y) - pr(Y^* > y) = F^*(t-) - (1-F^*(y)) = F^*(t-) - 1 + F^*(t)$.\\
+Since we do not always observe $t$, the PSR must be defined in terms of $y$ (time to event or censoring) and $\delta$ (if the event happened or not). If $\delta = 1$, then $t=y$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. If $\delta = 0$, then $t$ is unknown, except that it occurs some time after the censoring time $y$, so $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\} = F^*(y)$.
+Let's prove that $r(t,F^*, \delta=0) = F^*(y)$. Since $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\} = \frac{\int_{t>y}r(t, F^*)dF^*(t)}{1-F^*(y)}$, it suffices to show that $F^*(y)\{1- F^*(y)\} = \int_{t>y} r(t, F^*) dF^*(t) = \int_{t>y}F^*(t-)dF^*(t) - \int_{t>y}\{1 - F^*(t)\}dF^*(t)$.
+In short, for sensored data:
+	$$
+	\begin{aligned}
+		r(u, F^*) &= F^*(y) + F^*(y-) - 1,~~~&\delta = 1 \\
+		r(u, F^*) &= F^*(y) ,~~~&\delta = 0 \\
+	\end{aligned}
+	$$
 
 
-\section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005}
-\subsection{Clayton, 1978}
+\section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005 \cite{moodie2005adjustment}}
+\subsection{Clayton, 1978 \cite{clayton1978model}}
 Clayton suggested a \textit{a bivariate model for ordered pairs}. Suppose we are interested in onset of disease for fathers and sons. We want to know if they are associated. If $f(s,t)$ is a density of the age at which fathers ($t$) and sons ($s$) succomb to the disease, then the proposed model is:
 	$$
 	\begin{aligned}
@@ -433,7 +441,32 @@ Where $a(\cdot)$ and $b(\cdot)$ are nondecreasing (nuisance) functions with $a(0
 \textbf{Interpretation:} when $\theta>1$, $g(s;t)$ is decreasing with respect to $t$ so that the age-specific rates for sons decrease with increased survival time of their fathers. Similarly, $h(t;s)$ decreases with respect to $s$. When $\theta=1$ and there is no asociation.\\
 Parameter $\theta$ is estimated using maximum likelihood.
 
-\subsection{Fan, 1998}
+\subsection{Dabrowska, 1988 \cite{dabrowska1988kaplan}}
+Dabrowska introduced defined a bivarate Kaplan-Meier estimator and proved its consistency (and probably something else). His notations were used in the following papers:\\
+Let $(\Omega, \mathcal{F}, P)$ be a probability space, and let $F(s,t) = P(T_1>s, T_>t)$ be the corresponding joint survival function. By a bivariate cumulative hazard function, Dabrowska means a vector:
+	$$
+	\begin{aligned}
+		\Lambda(s,t) &= (\Lambda_{10}(s,t), \Lambda_{01}(s,t), \Lambda_{11}(s,t))\\
+		&where\\
+		\Lambda_{11}(ds,dt) &= \frac{P(T_1 \in ds, T_2\in dt)}{P(T_1 \geq s, T_2 \geq t)} = \frac{F(ds, dt)}{F(s-, t-)}\\
+		\Lambda_{10}(ds,t) &= \frac{P(T_1 \in ds, T_2 > dt)}{P(T_1 \geq ds, T_2 > t)} = \frac{-F(ds, t)}{F(s-, t)}~~~see ~the~paper~where ~it~is~F(s-, t-),~probably~a~typo\\ 
+		\Lambda_{01}(s,dt) &= \frac{P(T_1 > s, T_2\in dt)}{P(T_1 > s, T_2 \geq t)} = \frac{-F(s, dt)}{F(s, t-)}\\
+		&and\\
+		\Lambda_{10}(0,t) &= \Lambda_{01}(s,0) = \Lambda_{11}(0,0) = 0\\
+	\end{aligned}
+	$$
+If $F$ has a density $f(s,t)$, we have $\Lambda_{11}(ds,dt) = \lambda_{11}(s,t)ds~dt$, $\Lambda_{10}(ds,t) = \lambda_{10}(s,t)dt$, $\Lambda_{01}(s,dt) = \lambda_{01}(s,t)dt$, so
+
+	$$
+	\begin{aligned}
+		\lambda_{11}(s,t) &= \lim_{(h_1,h_2)\rightarrow 0} \frac{1}{h_1 h_2} P(T_1\in[s,s+h_1], T_2\in[t,t+h_2] | T_1\geq s, T_2 \geq t) & = \frac{f(s,t)}{F(s-, t-)}\\
+		\lambda_{10}(s,t) &= \lim_{h\rightarrow 0} \frac{1}{h} P(T_1\in[s,s+h] | T_1\geq s, T_2 > t) & = \int_t^{\infty} \frac{f(s,v)dv}{F(s-, t)}\\
+		\lambda_{01}(s,t) &= \lim_{h\rightarrow 0} \frac{1}{h} P(T_2\in[t,t+h] | T_1 > s, T_2 \geq t) & = \int_s^{\infty} \frac{f(u,t)du}{F(s, t-)}\\
+	\end{aligned}
+	$$
+Where $\lambda_{11}(s,t)$ is the instantaneous rate of \emph{double failure} at point $(s,t)$, given that the individuals were alive at times $T_1=s-$ and $T_2 = t-$. $\lambda_10(s, t)$ is the rate of a \emph{single failure} at time s give that the first individual was alive at time $T_1=s$ and the second survived beyond time $T_2 = 1$.
+
+\subsection{Fan, 1998 \cite{fan2000dependence}}
 There is a need in non-parametric measure of association between two survival times.\\
 Clayton suggested a \textit{cross ratio} (Clayton, 1978, Oaks, 1989) (see Clayton's $\theta$):
 	$$
@@ -450,7 +483,7 @@ Kendall's (1938) coefficient of concordance could be also used for association i
 		&\tau = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22}) \}
 	\end{aligned}
 	$$
-Oakes (1989) proposed:
+Oakes (1989)\cite{oakes1989bivariate} proposed:
 	$$
 	\begin{aligned}
 		&\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}
@@ -460,17 +493,18 @@ Oakes (1989) proposed:
 Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_2)}$ and get:
 	$$
 	\begin{aligned}
-		C(t_1, t_2) &= \int_0^{t_1}\int_0^{t_2} \frac{F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)} 
+		C(t_1, t_2) &= \int_0^{t_1}\int_0^{t_2} \frac{c(s_1, s_2)F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)} 
 	\end{aligned}
 	$$
-	
-	Oakes (1989) notes that $\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}$ can be written as:
+	When $C(t_1, t_2)>1$, there is positive association. When $C(t_1, t_2)=1$, there is no association. When $C(t_1, t_2)<1$, there is negative association.  \\
+	In addition to $C(t_1, t_2)$ they proposed another summary measure of dependence.
+	Oakes (1989)\cite{oakes1989bivariate} also noted that $\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}$ can be written as:
 	$$
 	\begin{aligned}
 		\tau(s_1, s_2) &= \frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
 	\end{aligned}
 	$$
-The authors propose to weight this $\tau(s_1, s_2)$ proportionally to the density. After some very complex algebra, it can be shown that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
+The authors propose to weight this $\tau(s_1, s_2)$ proportionally to the density. After some algebra, it can be shown that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
 	$$
 	\begin{aligned}
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
@@ -478,8 +512,25 @@ The authors propose to weight this $\tau(s_1, s_2)$ proportionally to the densit
 	$$
 	so that $\mathcal{T}(t_1, t_2) \in [-1,1]$
 
+\subsection{Prentice, 1992 \cite{prentice1992covariance}} 
+If I understand correctly, the authors model bivariate survival as two marginal survivor functions and a covariance function (instead of joint survivor function). 
 
+\subsection{Fan, 2000 \cite{fan2000class}} 
+The authors suggest a class of estimators similar to what was described in \emph{Fan, 1998} \cite{fan2000dependence}, which were weighted averages of local measures. The motivation for new estimators was that ''for certain choices of weights, the estimation of the bivariate survivor function (e.g. Dabrowska (1998)\cite{dabrowska1988kaplan} and Prentice and Cai (1992) \cite{prentice1992covariance}), can be avoided and explicit variance formulae can be obtained.''\\
+The authors utilize the fact that both $C(\cdot, \cdot)$ and $\mathcal{T}(\cdot, \cdot)$ depend on $F(\cdot, \cdot)$ only through the hazard function and therefore can be estimated using Nelson-Aalan-type estimator of the hazard:
 
+	$$
+	\begin{aligned}
+    C(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2)}{\int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2)}\\
+    \mathcal{T}(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) - \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) + \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }\\
+	\end{aligned}
+	$$
+	
+	
+	
+	
+	
+	
 \printbibliography
 
 \end{document}          
