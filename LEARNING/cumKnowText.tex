@@ -849,4 +849,132 @@ The following is from the Wikipedia:\\
 	\item Choose and arbitrary point $x_0$
 \end{enumerate}
 	
+\section{Bayesian Stuff}
+Book: \textbf{Gelman, Bayesian Data Analysis}
+\subsection{Two parameters. Normal distribution's conjugate prior.}
+
+\subsection{Two parameters. Only one is the paprameter of interests.}
+Two paramters Bayesian approach looks like this:
+$$
+\begin{aligned}
+	p(\theta_1, \theta_2|y) \propto p(y|\theta_1, \theta_2)p(\theta_1, \theta_2)
+\end{aligned}
+$$
+We are interesting in only $\theta_1$. We can get it by either intergrating out $\theta_2$: $\int p(\theta_1, \theta_2|y) d\theta_2$ or we can factor out the joint posterior density first and then integrate $\theta_2$ out:\\
+$\int p(\theta_1|\theta_2,y)p(\theta_2|y) d\theta_2$.
+$$
+\begin{aligned}
+	&Method~1:~~~\int p(\theta_1, \theta_2|y) d\theta_2\\
+	&Method~2:~~~\int p(\theta_1|\theta_2,y)p(\theta_2|y) d\theta_2
+\end{aligned}
+$$
+The second way is usually implemented numerically. We first draw $\theta_2$ and then $\theta_1$ given $\theta_2$.
+
+\subsubsection{Normal distribution, non-informative prior. Section 3.2, page 64}
+Here, we show an example of how to implement Method 2.
+Our \textbf{non-informative prior} is:
+$$
+\begin{aligned}
+	p(\mu, \sigma^2) \propto \left( \sigma^2 \right)^{-1}
+\end{aligned}
+$$
+Our \textbf{joint posterior distribution} is:
+$$
+\begin{aligned}
+	p(\mu, \sigma^2|y) &\propto  \sigma^{-n-2} exp\left(\frac{1}{  -2\sigma^2 }   \sum_{i=1}^n(y_i - \mu)^2 \right) =...\\
+	                 & =  \sigma^{-n-2} exp\left(\frac{1}{  -2\sigma^2 }   \left[  (n-1)s^2 + n(\bar{y} - \mu)^2 \right] \right)\\
+									 &~~~~~~~~where~~s^2 = \frac{1}{n-1}\sum_{i=1}^n(y_i - \bar{y})^2
+\end{aligned}
+$$
+We already know the \textbf{marginal posterior of $\mu$ given $\sigma^2$} from section 2.5:
+$$
+\begin{aligned}
+	\mu| \sigma^2,y \sim N\left(\bar{y}, \sigma^2/n \right).
+\end{aligned}
+$$
+
+We find the \textbf{marginal posterior of $\sigma^2$} by integrating out $\mu$ from $p(\mu, \sigma^2)$ (see above). See formula (3.4) in the book:
+$$
+\begin{aligned}
+	p(\sigma^2|y) &\propto  \sigma^{-(n+1)/2} exp\left(\frac{ (n-1)s^2}{  2\sigma^2 }  \right) =\\
+	   & \sim Inv~\chi^2(n-1, s^2)
+\end{aligned}
+$$
+So, we factored out the joint distribution: $p(\mu, \sigma^2|y) = p(\mu|sigma^2, y)p(sigma^2| y)$.\\
+\\
+Analytic form of the $p(\mu|\sigma^2,y)$ also can be obtained and it is $t_{n-1}(\bar{y}, s^2/n)$. Or, after normalizing $\mu$, we get:
+$$
+\begin{aligned}
+	\frac{\mu - \bar{y}}{s/\sqrt{n}}|y\sim  t_{n-1}
+\end{aligned}
+$$
+
+Interestingly, the \textbf{marginal posterior distribution} $p(y|\mu,sigma^2)$ is
+$$
+\begin{aligned}
+	\frac{\mu - \bar{y}}{s/\sqrt{n}}|y\sim  t_{n-1}
+\end{aligned}
+$$
+The \textbf{posterior predictive distribution for a future observation} is :
+
+$$
+\begin{aligned}
+	p(\tilde{y}|y) &= \int \int p(\tilde{y}|\mu, \sigma^2, y)p(\mu, \sigma^2 | y)d\mu d\sigma^2\\
+	 &=t_{n-1}\left(\bar{y}, \left(1+\frac{1}{n}\right)s^2\right)
+\end{aligned}
+$$
+
+
+
+\subsubsection{Normal distribution, conjugate prior. Section 3.3, page 67}
+The conjugate prior looks like this:
+$$
+\begin{aligned}
+	\mu|\sigma^2 &\sim N(\mu_0, \sigma^2/k_0)\\
+	     \sigma^2 &\sim Inv\mbox{-}\chi^2(\nu_0, \sigma_0^2)\\
+			&OR\\
+			p(\mu, \sigma^2) &\propto \sigma^{-1}(\sigma^2)^{-(\nu/2 + 1)}exp\left( -\frac{1}{2\sigma^2}\left[\nu_0\sigma_0^2 + k_0(\mu_0 - \mu)^2 \right]  \right)\\
+			&OR\\
+	N \mbox{-} Inv \mbox{-} \chi^2&(\mu_0, \sigma_0^2/k_0, \nu_0, \sigma_0^2)
+\end{aligned}
+$$
+
+The join posterior is:
+$$
+\begin{aligned}
+			p(\mu, \sigma^2) &\propto N \mbox{-} Inv \mbox{-} \chi^2(\mu_n, \sigma_n^2/k_n; \nu_n, \sigma_n^2)\\
+			&where:\\
+			\mu_n &= \frac{k_0}{k_0 + n}\mu_0  +  \frac{n}{k_0 + n}\bar{y}\\
+			k_n   &= k_0 + n\\
+			\nu_n &= \nu_0 + n\\
+			\nu_n \sigma_n^2 &= \nu_0 \sigma_0^2 + (n-1)s^2 + \frac{k_0n}{k_0 + n}(\bar{y - \mu_0})^2
+\end{aligned}
+$$
+
+The \textbf{conditional posterior density of $\mu$ given $\sigma^2$}
+
+$$
+\begin{aligned}
+			\mu|\sigma^2,y \sim N\left(  \mu_n, \sigma^2/k_n \right) = N\left( \frac{ \frac{k_0}{\sigma^2}\mu_0 +  \frac{n}{\sigma^2}\bar{y} }{  \frac{k_0}{\sigma^2} +  \frac{n}{\sigma^2}  },  \frac{1 }{  \frac{k_0}{\sigma^2} +  \frac{n}{\sigma^2}  }  \right)
+\end{aligned}
+$$
+
+The \textbf{marginal posterior distribution, $p(\sigma^2|y)$}
+
+$$
+\begin{aligned}
+			\sigma^2|y \sim  Inv\mbox{-}\chi^2 \left(\nu_n, \sigma_n^2  \right)
+\end{aligned}
+$$
+
+
+The \textbf{analytic form of the marginal posterior distribution, $\mu$}
+$$
+\begin{aligned}
+			\mu|y &\propto  \left( 1+ \frac{k_n(\mu - \mu_n)^2}{  \nu_n\sigma_n^2  }  \right) \\
+			       &=t_{\nu_n}  \left(  \mu|\mu_n, \sigma_n^2/k_n   \right)
+\end{aligned}
+$$
+
+
 \end{document}          
