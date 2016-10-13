@@ -524,10 +524,10 @@ or $r(y, F^*) = F^*(y) + \delta((F^*(y-) - 1)$.
 Here we show that if we define Spearman correlation for continuous and censored outcomes a certain way, we then Spearman correlation and PSR correlation for ontinuous censored outcome are equivalent.\\
 ~\\
 Spearman correlation for continuous outcome can be defined as $cor(F_S(s), F_T(t))$ (reference ???). In case of censored outcomes however, we don't always know $s$ and $t$. This means that we have to redefine Spearman correlation in a different way. In the following section we use $S$, $C$, $\delta=I(S\leq C)$, $X = min(S, C)$ for the first outcome and $T$, $D$, $\epsilon=I(T\leq D)$, $Y = min(T, D)$ for the second.\\
-Let's modify the definition of the Spearman correlation in the following way. When $\delta = 1$ or $S\leq C$, we have that $X = min(S, C)=S$ and instead of $F_S(s)$ we can take $F_S(x)$. When $\delta = 0$ or $S > C$, we have that $X = min(S, C)=C$ and instead of $F_S(s)$ we can take $E_S[F_S(x)|S>X]$. Let's compute $E_S[F_S(x)|S>X]$:
+Let's modify the definition of the Spearman correlation in the following way. When $\delta = 1$ or $S\leq C$, we have that $X = min(S, C)=S$ and instead of $F_S(s)$ we can take $F_S(x)$. When $\delta = 0$ or $S > C$, we have that $X = min(S, C)=C$ and instead of $F_S(s)$ we can take $E_S[F_S(s)|S>x]$. Let's compute $E_S[F_S(s)|S>x]$:
 	$$
 	\begin{aligned}
-		E_S[F_S(x)|S>X] &= \frac{1}{1-F_S(x)}\int_{(x, \infty)} F_S(s)dF_S(s) = \frac{1}{1-F_S(x)} \left.\frac{ [F_S(s)]^2}{2}\right|_{(x, \infty)} = \frac{1-[F_S(x-)]^2}{2(1-F_S(x))} \\
+		E_S[F_S(x)|S>x] &= \frac{1}{1-F_S(x)}\int_{(x, \infty)} F_S(s)dF_S(s) = \frac{1}{1-F_S(x)} \left.\frac{ [F_S(s)]^2}{2}\right|_{(x, \infty)} = \frac{1-[F_S(x-)]^2}{2(1-F_S(x))} \\
 	\end{aligned}
 	$$
 Since we are focusing now on the continuous case, we can assume that $F_S(x)=F_S(x-)$ therefore we have
@@ -558,7 +558,7 @@ For discrete case, Spearman correlation can be defined as (???):
 		cor\left( \frac{F_S(s) + F_S(s-)}{2},~\frac{F_T(t) + F_T(t-)}{2} \right)\\
 	\end{aligned}
 	$$
-So let's find $E_S[F_S(x)|S>X]$ for the discrete case. First (just to get started) let's derive $E_S[F_S(x)]$. We denote $Pr\left\{S=s\right\}$ as $P_s$:
+So let's find $E_S[F_S(x)|S>x]$ for the discrete case. First (just to get started) let's derive $E_S[F_S(x)]$. We denote $Pr\left\{S=s\right\}$ as $P_s$:
 	$$
 	\begin{aligned}
 		E_S[F_S(x)] &= \sum_{i=0}^{\infty}F_S(i)P_i = \sum_{i=0}^{\infty}\left( \sum_{k=0}^{i}P_k \right)P_i =\\
@@ -609,6 +609,30 @@ It can be easily shown that the above expression is the same as correlation of \
 	\end{aligned}
 	$$
 
+\subsection{Spearman correlation and PSR based on a different definition.}
+Up to now, in order to prove the equivalence of Spearman corrlation and the correltation of the PSR we have been using the defition of Spearman correlation of $corr(F_S(s), F_T(t))$. We want to point out that if we start with a different definition: $E(sign(S_1-S_0)sign(T_2-T_0))$ we will get the same result. Let's see why. Keeping in mind that $S_1 \perp T_2$ we can write:
+	$$
+	\begin{aligned}
+		E(sign(S_1-S_0)sign(T_2-T_0)) &= E_{(S,T)}\left\{ E[sign(S_1-S_0)sign(T_2-T_0) |(S_1,T_2)] \right\} = \\
+		  &= E_{(S,T)}\left\{ E[sign(S_1-S_0) |S_1]  E[sign(T_2-T_0) |T_2] \right\} = \\
+		  &= E_{(S,T)}\left\{ [ P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1) ] \cdot  [P(T_0 < T_2|T_2) - P(T_0 > T_2|T_2)] \right\}
+	\end{aligned}
+	$$
+ Now, let's look at the expression $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1)$. We already know that in case of no censoring, $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1) = PSR(S_1)$. When censoring takes place, we don't observe $S_1$, but we still obsere $x_1$, so similarly to the previous section, instead of $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1)$ we can take:
+	$$
+	\begin{aligned}
+		 E_{S_0>x_1}[P(S_0 < x_1)|S_0>x_1] - E_{S_0>x_1}[P(S_0 > x_1)|S_0>x_1]&= 0 - \frac{1}{1-F_S(S>x_1)}\int_{(x_1, \infty)} F_S(s)dF_S(s)
+	\end{aligned}
+	$$
+We have already proved in the previous sections, that taking a correlation of the integrals above results in Spearman correlation (the minus sign cancels out).
+
+\subsection{My plan}
+\begin{enumerate}[1)]
+	\item Understand Qi's conditional, partial, and conditional-partial correlation
+	\item Develop Spearman correlation for different $s$ and $t$: instead of having one number $\rho$ develop a new measure $\rho(s, t)$.
+	\item Finish papers of Prentice and Dabrowska (on correlation)
+	\item Understand Prentice's thing about using regression for correlation. It is probably related to conditional correlation (see Qi's paper).
+\end{enumerate}
 
 
 \section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005 \cite{moodie2005adjustment}}
