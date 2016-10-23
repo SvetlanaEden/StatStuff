@@ -843,11 +843,164 @@ If you fit GEE 2.0 then the second moment has to be something you are interested
 In GLMM(glmer() function) for not continuous outcome, if we get the correlaiton structure wrong then the first model would be biased.
 
 \section{Computational Statistic}
+\subsection{EM Algorithm}
+This is taken from the book of Tishbarani and someone else (Matt's class).\\
+~\\
+{
+\scriptsize{Suppose we have $N$ points $X_i$ that belong to a mixture of two distributions $\phi_{\theta_1}$ and $\phi_{\theta_2}$. And we don't know what point belong to what distribution. Ideally, we would like to maximize:
+$$
+\begin{aligned}
+	L(\theta; \pmb{X}, \pmb{\Delta}) &= \prod_{i=1}^N [(1-\pi)\phi_{\theta_1}(x_i) + \pi\phi_{\theta_2}(x_i)]\\
+	 &or~log~likelihood\\
+	l(\theta; \pmb{X}, \pmb{\Delta}) &= \sum_{i=1}^N log[(1-\pi)\phi_{\theta_1}(x_i) + \pi\phi_{\theta_2}(x_i)]
+\end{aligned}
+$$
+Where $\pmb{\Delta}$ is an indicator function of belonging to class two: $\Delta_i = I(X_i ~in~class~2)$
+This likelihood is hard to maximize because it is the log of the sum. So we apply alternative approach.\\
+~\\
+Suppose we knew what the $\Delta_i$'s were. Then, we could have written the likelihood as:
+$$
+\begin{aligned}
+	L(\theta; \pmb{X}, \pmb{\Delta}) &= \prod_{i=1}^N \left[\left((1-\pi)\phi_{\theta_1}(x_i)\right)^{(1-\Delta_i)} + (\pi\phi_{\theta_2}(x_i))^{\Delta_i}\right]\\
+	 &or~log~likelihood\\
+	l(\theta; \pmb{X}, \pmb{\Delta}) &= \sum_{i=1}^N log\left\{\left[\left((1-\pi)\phi_{\theta_1}(x_i)\right)^{(1-\Delta_i)} + (\pi\phi_{\theta_2}(x_i))^{\Delta_i}\right]\right\}\\
+\end{aligned}
+$$
+But again, it is hard to maximize. Let's use Jensen's inequality that says that for $log(x)$, $E(log(x))\leq log(Ex)$. So instead of maximazing $E(log(x))$ we will maximize its lower bound $log(Ex)$. Or, $\sum log(x) \leq log(\sum x)$ So instead of $\sum_{i=1}^N log\left\{\left[\left((1-\pi)\phi_{\theta_1}(x_i)\right)^{(1-\Delta_i)} + (\pi\phi_{\theta_2}(x_i))^{\Delta_i}\right]\right\}$ we will maximize:
+$$
+\begin{aligned}
+	\mathcal{l}(\theta; \pmb{X}, \pmb{\Delta}) &= \sum_{i=1}^N log\left\{\left[\left((1-\pi)\phi_{\theta_1}(x_i)\right)^{(1-\Delta_i)}\right\} + log \left\{(\pi\phi_{\theta_2}(x_i))^{\Delta_i}\right]\right\}=\\
+	&=\sum_{i=1}^N \left[{(1-\Delta_i)}log\left\{\phi_{\theta_1}(x_i)\right\} + {\Delta_i}log \left\{\phi_{\theta_2}(x_i)\right\}\right] + \\
+	&~~~~~~~~~~~~~~~~~~~ +\sum_{i=1}^N \left[{(1-\Delta_i)}log(1-\pi) + {\Delta_i}log (\pi)\right]\\
+\end{aligned}
+$$
+\textbf{E-step}: We proceed iteratively by evaluating $\Delta_i$ using \emph{Bayes rule}:
+$$
+\begin{aligned}
+	\hat{\Delta}_i = w_i = E(\Delta_i |\theta,\pmb{X}) = Pr(\Delta_i=1 |\theta,\pmb{X})
+\end{aligned}
+$$
+\textbf{M-step}: And then by maximizing the following with respect to $\theta$ and $\pi$:
+$$
+\begin{aligned}
+	\mathcal{l}(\theta; \pmb{X}, \pmb{\Delta})
+	&=\sum_{i=1}^N \left[{(1-w_i)}log\left\{\phi_{\theta_1}(x_i)\right\} + {w_i}log \left\{\phi_{\theta_2}(x_i)\right\}\right] + \\
+	&~~~~~~~~~~~~~~~~~~~ +\sum_{i=1}^N \left[{(1-w_i)}log(1-\pi) + {w_i}log (\pi)\right]\\
+\end{aligned}
+$$
+}} %end of scriptsize font
+
+\subsection{More thorough explanation.}
+The following material is taken from some Stanford lectures (\emph{CS229 Lecture notes by Andrew Ng}).\\
+~\\
+The idea is that we have observed data and missing data. Let's denote the observation number as $i$. For simplicity, we consider a problem with a mixture distribution. The missing data is a group that each observation belongs to. Let's denote group as $g$ and $g^{(i)}$ as a group for $i^{th}$ observation. We  have an \emph{observed log-likelihood} $\sum_i log[p(x^{(i)};\theta)]$, we would like to maximize a \emph{complete likelihood}, $\sum_i  log\left[\sum_{g^{(i)}} p(x^{(i)},g^{(i)};\theta)\right]$:
+
+$$
+\begin{aligned}
+	{l}(\theta) = \sum_i log[p(x^{(i)};\theta)] &= \sum_i  log\left[\sum_{g^{(i)}} p(x^{(i)},g^{(i)};\theta)\right] =  \sum_i  log\left[\sum_{g^{(i)}}Q_i(g^{(i)}) \frac{p(x^{(i)},g^{(i)};\theta)}{Q_i(g^{(i)})}\right]
+\end{aligned}
+$$
+
+Note that $Q_i(g^{(i)})$ is some probability measure, that we choose to multiply and divide $p(x^{(i)},g^{(i)};\theta)$ by.
+
+\emph{Complete likelihood} is usually too difficult to solve, so we solve a \emph{lower bound} of the \emph{complete likelihood}. We do this using the \emph{Jenson}'s inequality for log: $log(E)\geq E(log)$:\\
+$$
+\begin{aligned}
+	{l}(\theta) &=  \sum_i  log\left[\sum_{g^{(i)}}Q_i(g^{(i)}) \frac{p(x^{(i)},g^{(i)};\theta)}{Q_i(g^{(i)})}\right] \geq \sum_i \sum_{g^{(i)}}Q_i(g^{(i)}) log\left[ \frac{p(x^{(i)},g^{(i)};\theta)}{Q_i(g^{(i)})}\right]
+\end{aligned}
+$$
+For any choice of $Q_i$ the right side of the above expression gives a lower bound of ${l}(\theta)$, but we need the largest lower bound. It is provided by the condition that $\frac{p(x^{(i)},g^{(i)};\theta)}{Q_i(g^{(i)})} = c$, where $c$ is a constant and does not depend on $g^{(i)}$. This means that $Q_i(g^{(i)})$ should be proportional to $p(x^{(i)},g^{(i)}$, so we can write:
+$$
+\begin{aligned}
+	Q_i(g^{(i)}) = \frac{p(x^{(i)},g^{(i)};\theta)}{\sum_g p(x^{(i)},g^{(i)};\theta)} = \frac{p(x^{(i)},g^{(i)};\theta)}{p(x^{i};\theta)} = p(g^{(i)}|x^{(i)};\theta)
+\end{aligned}
+$$
+So, the \textbf{E-step} is to compute: $Q_i(g^{(i)})  = p(g^{(i)}|x^{(i)};\theta)$\\
+The \textbf{M-step} is to maximize: $\sum_i \sum_{g^{(i)}}Q_i(g^{(i)}) log\left[ \frac{p(x^{(i)},g^{(i)};\theta)}{Q_i(g^{(i)})}\right]$
+
+\subsubsection{Example with Poisson mixture distribution.}
+Suppose 1500 gay men were surveyed and each was asked how many risky sexual encounters he had in the previous 30 days. Let $n_i$ denote the number of respondents reporting $i$ encounters, for $i=1,...,16$. The data is zero-inflated, so we come up with the following model. With probability $\alpha$ a respondent belongs to a group that always reports $0$ encounters, $z$. With probability $\beta$ a respondent belongs to a so-called typical group, $t$, that follows $Poisson(\mu)$ distribution. And with probability $1 - \alpha - \beta$ a respondent belongs to a so-called risky group, $p$, that follows $Poisson(\lambda)$ distribution.\\
+The parameters are: $\theta = (\alpha, \beta, \mu, \lambda)$. First, we write the \emph{observed likelihood}:
+$$
+\begin{aligned}
+	L &\propto \prod_{i=0}^{16}\left[\frac{ \pi(\theta)}{i!} \right]^{n_i} = \left(   \alpha + \beta  e^{-\mu} + (1-\alpha - \beta) e^{-\lambda}  \right)^{n_0} \prod _{i=1}^{16} \left[\frac{ \mu^ie^{-\mu} }{i!} \beta   +   \frac{ \lambda^i e^{-\lambda} }{i!} (1-\beta-\alpha) \right]^{n_i}\\
+	  &where~\pi(\theta) = \alpha\cdot 1_{(i=0)} + \beta \mu^i exp(-\mu) + (1-\alpha - \beta) \lambda^i exp(-\lambda)
+\end{aligned}
+$$
+The log-likelihood is:
+$$
+\begin{aligned}
+	l &= n_0 ln\left(   \alpha + \beta  e^{-\mu} + (1-\alpha - \beta) e^{-\lambda}  \right)   \sum _{i=1}^{16} n_i ln \left[\frac{ \mu^ie^{-\mu} }{i!} \beta   +   \frac{ \lambda^i e^{-\lambda} }{i!} (1-\beta-\alpha) \right]\\
+\end{aligned}
+$$
+Now it is time to come up with $Q_i(g^{(i)})$'s. They are (as previously said) conditional probabilities of having $i$ sexual encounters given that one of the three groups $z$, $t$, and $p$ (we omit the derivations, they are somewhat simple):
+$$
+\begin{aligned}
+	Q_0(g^{(0)} = z) &= z_0(\theta) = \frac{\alpha}{\pi_0(\theta)}\\ 
+	Q_i(g^{(i)} = z) &= 0,~~i>0\\ 
+	Q_i(g^{(i)} = t) &= t_i(\theta) = \frac{\beta \mu^i e^{-\mu}}{\pi_i(\theta)}\\ 
+	Q_i(g^{(i)} = p) &= p_i(\theta) = \frac{(1 - \alpha - \beta) \lambda^i e^{-\lambda}}{\pi_i(\theta)}\\ 
+ \end{aligned}
+$$
+We continue with using notations $z_0$, $t_i$, and $p_i$ instead of $Q_i(g^{(i)})$. Let's write the \emph{lower bound} of the log-likelihood. Keeping in mind that we omit $i!$ along the way because it is a constant.
+
+$$
+\begin{aligned}
+  ll &= \sum_i \sum_{g^{(i)}}Q_i(g^{(i)}) log\left[ \frac{p(x^{(i)},g^{(i)};\theta)}{Q_i(g^{(i)})}\right] =\\
+	 &= n_0 z_0 ln\left(   \frac{\alpha}{z_0} \right)+  n_0 t_0 ln\left(\frac{\beta  e^{-\mu}}{t_0}\right)  +n_0 p_0 ln\left( \frac{(1-\alpha - \beta) e^{-\lambda}}{p_0}  \right)   \sum _{i=1}^{16} n_i  \left[ t_i ln \left(\frac{ \mu^ie^{-\mu}  \beta}{t_i}\right)   +  p_i ln \left(\frac{ \lambda^i e^{-\lambda}(1-\beta-\alpha) }{p_i}\right)  \right]\\
+\end{aligned}
+$$
+Note that $ln\left(\frac{1}{t_i}\right)$ (or $z_0,~t_0,~p_0,~p_i$) is also a constant, so we have:
+
+$$
+\begin{aligned}
+  ll &= n_0 z_0 ln\left( \alpha \right)+  n_0 t_0 ln\left(\beta  e^{-\mu}\right)  +n_0 p_0 ln\left( (1-\alpha - \beta) e^{-\lambda} \right)  + \\
+	 &~~~~~~~~~~+ \sum _{i=1}^{16} \left[ n_i  t_i \left(  i\cdot ln(\mu) - \mu + ln(\beta)  \right)   +  n_i p_i ln \left(  i\cdot ln(\lambda) - \lambda + ln(1-\alpha -\beta)  \right)  \right]\\
+\end{aligned}
+$$
+
+Derivatives:
+
+$$
+\begin{aligned}
+  \frac{\partial ll}{\partial \alpha} &= \frac{n_0z_0}{\alpha} -  \frac{n_0p_0}{1-\alpha-\beta} -  \sum_{i=1}^{16}\frac{n_ip_i}{1-\alpha-\beta}=0 \\
+  \frac{\partial ll}{\partial \beta}  &= \frac{n_0t_0}{\beta} -  \frac{n_0p_0}{1-\alpha-\beta} + \sum_{i=1}^{16}\frac{n_it_i}{\beta} -  \sum_{i=1}^{16}\frac{n_ip_i}{1-\alpha-\beta}=0 \\
+  \frac{\partial ll}{\partial \mu}    &= -n_0t_0 +  \sum_{i=1}^{16}\frac{n_i t_i i}{\mu} - \sum_{i=1}^{16}n_i t_i i =0\\
+  \frac{\partial ll}{\partial \lambda}    &= -n_0p_0 +  \sum_{i=1}^{16}\frac{n_i p_i i}{\lambda} - \sum_{i=1}^{16}n_i p_i i =0 \\
+\end{aligned}
+$$
+
+For $\mu$ and $\lambda$ it is pretty straight forward:
+$$
+\begin{aligned}
+  \hat{\mu} = \frac{\sum_{i=0}^{16} n_i t_i i }{\sum_{i=0}^{16} n_i t_i}\\
+  \hat{\lambda} = \frac{\sum_{i=0}^{16} n_i p_i i }{\sum_{i=0}^{16} n_i p_i}\\
+\end{aligned}
+$$
+For $\alpha$ and $\beta$ we have:
+$$
+\begin{aligned}
+  \alpha &= \frac{ n_0 z_0   }{\sum_{i=0}^{16} n_i p_i   + n_0z_0}(1-\beta)\\
+  \beta &= \frac{ \sum_{i=0}^{16} n_i t_i}{\sum_{i=0}^{16} n_i t_i + \sum_{i=0}^{16} n_i p_i   + n_0z_0}\ (1-\alpha)  \
+\end{aligned}
+$$
+We keep in mind that $\sum_{i=0}^{16} n_i t_i + \sum_{i=0}^{16} n_i p_i   + n_0z_0 = N$ (total counts), and after performing some algebra a lot of stuff cancels out:
+$$
+\begin{aligned}
+  \hat{\alpha} &= \frac{ n_0 z_0 }{N}\\
+  \hat{\beta} &= \frac{ \sum_{i=0}^{16} n_i t_i}{N}\\
+\end{aligned}
+$$
+
+So the \textbf{E-step} is computing $z_i(\hat{\theta})$, $t_i(\hat{\theta})$, and $p_i(\hat{\theta})$, and the \textbf{M-step} is computing $\alpha$, $\beta$, $\mu$, and $\lambda$.
+
+
 \subsection{Metropolis-Hastings Algorithm}
-The following is from the Wikipedia:\\
-\begin{enumerate}[1)]
-	\item Choose and arbitrary point $x_0$
-\end{enumerate}
+Under construction
+% The following is from the Wikipedia:\\
+% \begin{enumerate}[1)]
+% 	\item Choose and arbitrary point $x_0$
+% \end{enumerate}
 	
 \section{Bayesian Stuff}
 Book: \textbf{Gelman, Bayesian Data Analysis}
@@ -975,6 +1128,39 @@ $$
 			       &=t_{\nu_n}  \left(  \mu|\mu_n, \sigma_n^2/k_n   \right)
 \end{aligned}
 $$
+
+\section{Hierarchical Model for Binomial Data, p. 107}
+Let's assume that $\theta$ is a population parameter of interest. For example, it could be a prevalence of tumor in each rat experiment.\\
+Let's also assume that $\theta$ has its own distribution $p(\phi)$. Therefore the joint \textbf{prior} and the joint \textbf{posterior} distributions are:
+$$
+\begin{aligned}
+  p(\phi, \theta) &= p(\phi)\cdot p(\theta|\phi)\\
+  p(\phi, \theta|y) &= \frac{p(y|\theta, \phi)\cdot p(\theta, \phi)}{p(y)} \propto p(\phi, \theta)\cdot p(y|\theta, \phi)= p(\phi, \theta)\cdot p(y|\theta) =\\
+	&\propto p(\theta|\phi)\cdot p(\phi) \cdot p(y|\theta)\\
+\end{aligned}
+$$
+Whether we are interested in prediction $\tilde{y}$ or the inference about $\theta$, we need $p(\phi|y)$ in order to sample from $p(\theta|\phi,y)$, so we could further sample from $p(y|\theta)$.\\
+~\\
+So the steps of for solving the hierarchical model are the following:
+\begin{enumerate}[1)]
+	\item Define the model: $p(\phi, \theta|y)\propto p(\theta|\phi)\cdot p(\phi) \cdot p(y|\theta)$
+	\item Find $p(\theta|\phi,y)$ - I don't know how they do that???.
+	\item Find $p(\phi|y)$ using one of the following ways:
+	\begin{enumerate}[a)]
+		\item $p(\phi|y) = \int p(\theta,\phi|y)d\theta$.
+		\item $p(\phi|y) = \frac{p(\theta,\phi|y)}{p(\theta|\phi,y)}$. This way might not be valid because the normalizing constant may depend on $\phi$ and $y$.
+	\end{enumerate}
+\end{enumerate}
+~\\
+What follows is way to simulate draws from the joint posterior distribution, $p(\phi, \theta|y)$.
+\begin{enumerate}[1)]
+	\item Draw the vector of hyperparameters, $\phi$ from its marginal posterior distribution $p(\phi|y)$.
+	\item Draw the parameter vector $\theta$ from its conditional posterior distribution $p(\theta|\phi,y)$ given $\phi$.
+	\item if desired, draw $\tilde{y}$ from the posterior predictive distribution given the drawn $\theta$. Depending on the problem it might be necessary to draw a new value $\tilde{\theta}$, give $\phi$.
+\end{enumerate}
+
+
+
 
 
 \end{document}          
