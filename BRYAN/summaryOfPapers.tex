@@ -610,7 +610,7 @@ It can be easily shown that the above expression is the same as correlation of \
 	$$
 
 \subsection{Spearman correlation and PSR based on a different definition.}
-Up to now, in order to prove the equivalence of Spearman corrlation and the correltation of the PSR we have been using the defition of Spearman correlation of $corr(F_S(s), F_T(t))$. We want to point out that if we start with a different definition: $E(sign(S_1-S_0)sign(T_2-T_0))$ we will get the same result. Let's see why. Keeping in mind that $S_1 \perp T_2$ we can write:
+Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and the correltation of the PSR we have been using the following defition of \emph{Spearman} correlation: $corr(F_S(s), F_T(t))$. In this section, we show that if we start with the original definition, $E(sign(S_1-S_0)sign(T_2-T_0))$, we will get the same result. Let's see why. Keeping in mind that $S_1 \perp T_2$ we can write:
 	$$
 	\begin{aligned}
 		E(sign(S_1-S_0)sign(T_2-T_0)) &= E_{(S,T)}\left\{ E[sign(S_1-S_0)sign(T_2-T_0) |(S_1,T_2)] \right\} = \\
@@ -624,14 +624,70 @@ Up to now, in order to prove the equivalence of Spearman corrlation and the corr
 		 E_{S_0>x_1}[P(S_0 < x_1)|S_0>x_1] - E_{S_0>x_1}[P(S_0 > x_1)|S_0>x_1]&= 0 - \frac{1}{1-F_S(S>x_1)}\int_{(x_1, \infty)} F_S(s)dF_S(s)
 	\end{aligned}
 	$$
-We have already proved in the previous sections, that taking a correlation of the integrals above results in Spearman correlation (the minus sign cancels out).
+We have already proved in the previous sections, that taking a correlation of the product of the right hand side expressions above results in Spearman correlation (the minus signs cancel out).
+
+\subsection{Rank tests for independence for bivariate censored data (Dabrowska) \cite{dabrowska1986rank}}
+For null hypothesis $H_0:~F=F_1 F_2$, the following \emph{linear rank} statistic can be used
+	$$
+	\begin{aligned}
+		 &\sum_{n=1}^N a_1(R_{1n}, \delta_{1n})\cdot a_2(R_{2n}, \delta_{2n}), ~i=1,2\\
+		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)}^{a_{ik}}
+	\end{aligned}
+	$$
+Where: 
+	$$
+	\begin{aligned}
+		 R_in &= \#\{m:~Y_{im} \leq Y_{in}, \delta_{im}=1   \}\\
+		 a_{ik} &= \# \{n: ~R_{in}=k,~\delta_{in}=0\}\\
+		 m_{ik} &= \# \{n: ~R_{in}\geq k\}\\
+		 \delta_{im}&=1,~if~subject ~m~from~group~i~has~an~event\\
+		 U_{(k)}~&independent ~ordered~sample~from~Uniform~distribution\\
+		 \mathcal{J}(u,d) ~&is~such~that:~~\int_0^u \mathcal{J}_i(v,1)dv = -(1-u)\mathcal{J}_i(u,0)
+	\end{aligned}
+	$$
+The author then says that the choice of $\mathcal{J}_i(u,d) =d-(1+d)u$ corresponds to the cencored-data version of the Spearman test. She also notes that the exact scores are hard to compute, so an approximate test statistics  can be used:
+	$$
+	\begin{aligned}
+		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
+	\end{aligned}
+	$$
+Substituting $\mathcal{J}_i(u,d) =d-(1+d)u$ into the above expression, we get:
+	$$
+	\begin{aligned}
+		 S_n &= \sum_{n=1}^N (\delta_{1n} - (1+\delta_{1n})\hat{F}_1(Y_{1n}))\cdot (\delta_{2n} - (1+\delta_{2n})\hat{F}_1(Y_{2n})) =\\
+		 &= \sum_{n=1}^N (-\hat{F}_1(Y_{1n}) + \delta_{1n}(1-\hat{F}_1(Y_{1n})))\cdot (-\hat{F}_2(Y_{2n}) + \delta_{2n}(1-\hat{F}_2(Y_{2n})))\\
+	\end{aligned}
+	$$
+Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. If we look at the above expression closely:
+	$$
+	\begin{aligned}
+		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
+	\end{aligned}
+	$$
+it reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual for \emph{continuous case}.
+
+\subsection{Ding, Wang, 2012: Testing Independence for Bivariate Current Status Data}
+Suggested two statistics for testing independence for bivariate \emph{current status data}. One is based on counts (how many events, non-events, and so forth). The other one is:
+	$$
+	\begin{aligned}
+		 E[cov(\delta_1, \delta_2)|C_1,C_2] = E\left\{ [\delta_1 - F_1(C_1)][\delta_1 - F_1(C_1)]  \right\}\\
+	\end{aligned}
+	$$
+Which is \textbf{exactly} covaraince of \textbf{PSR} for \emph{current status data}.
 
 \subsection{My plan}
 \begin{enumerate}[1)]
+  \item look at all papers that are marked with stars
+	\item Look who cited Cuzick's paper
+	\item look cited Alvo and Cabilio, 1993:
+	\item look into Shih \& Louis, 1996: \emph{who sites those and what this is about (Louis is apparently known)}.
+	\item Read the Cuzick's paper in detail.
+	\item Look who cited Betensky, Filkenstein, AIDS, 1999: paper
+Tests of independence for bivariate survival data:
 	\item Understand Qi's conditional, partial, and conditional-partial correlation
+	\item Find out about Spearman test (unlike Spearman's correlation)
+	\item fFind all papers that cite Dabrowska's paper on correlation
 	\item Develop Spearman correlation for different $s$ and $t$: instead of having one number $\rho$ develop a new measure $\rho(s, t)$.
-	\item Finish papers of Prentice and Dabrowska (on correlation)
-	\item Understand Prentice's thing about using regression for correlation. It is probably related to conditional correlation (see Qi's paper).
 \end{enumerate}
 
 
@@ -806,6 +862,30 @@ Therefore, the ratio $\frac{\theta(v)-1}{\theta(v)+1}$ is a conditional version 
 	\end{aligned}
 	$$
 He comes up with an estimator and proves its convergence to $\theta(v)$.
+
+\subsection{Cuzick, 1982 citation ?????}
+Considers a general model of association:
+	$$
+	\begin{aligned}
+		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2
+	\end{aligned}
+	$$
+Where $Z$, $e_1$, and $e_2$ are independent. He considers two cases, and only the second case is relevant for us, when $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ are thought to be related to a third unobserved covariate.\\
+It is not very clear from the paper what they denote as $f_i(x)$. I am guessing this is a density of $Y_i$ (or of $e_i$?). In any case, they author says that when this density is logistic, $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$, then the rank of each observation is $F(x)$ with no censoring, and $\frac{1+F(x)}{2}$, when censoring is present.
+
+\subsection{Shih and Louis, 1998 citation ?????}
+They take martingale residuals $T_n=\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (where $M_{ij}$ is the difference between observed and expected deaths), and create two statistics out of them:
+\begin{enumerate}
+	\item take supremum: $U_n= \sup_{0\leq t \leq t_0} \left|\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)\right|$
+	\item weigh it: $V_n= \sum_i \int_0^{t_0}  \int_0^{t_0} W_n(u_1,u_2) d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (which is analogous to the weighted logrank test)
+\end{enumerate}
+They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defined by Oakes $\theta = \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}$: 
+
+\subsection{Alvo and Cabilio, 1995 citation ?????}
+UNDER CONSTRUCTION.\\
+The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendal} correlation measure in order to build a test that can deal with missing data. 
+
+
 
 \subsection{Fan, 1998 \cite{fan2000dependence}}
 There is a need in non-parametric measure of association between two survival times.\\
