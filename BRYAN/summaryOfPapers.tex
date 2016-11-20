@@ -48,6 +48,64 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
+\section{Oral Exam Stuff}
+Survival analysis is a well researched topic: time to event, time to event with censoring, multiple events, competing risk events, current status analysis. We are interested in association of two survival events. For example, we could be interested in time to breast cancer diagnosis in monthers and their daughters. It could also be a time to an onset of an opportunistic infection and time to viral failure in HIV infected patients. These motivating examples include paired survival, but in general, survival data doesn't have to be paired. The interest to bivariate survival to the best of our knowledge goes back to Clayton (1978)[??? check this]. Since then different methods were employed to address this question.\\
+~\\
+\begin{itemize}
+	\item Evaluation of the bivariate survival function with two marginals and a correlation component:
+	Dabrowska, Pruitt, Prentice, Van Der Laan.
+	\item Martingale residuals (Sih\&Louice, [??? look for more papers on martingale residuals])
+	\item sort of hazard ratio for bivariate surviaval (Clayton, Fan, Oakes, Sankaran et al)
+	\item copulas (zhang2008, [??? provide more references on copulas])
+	\item other regression residuals (Cuzick1982, Prentice)
+	\item Kendall's tau: weighted, global, local. 
+	\item distance measure [??? not sure if I want to address this]
+	\item Spearman correlation (Dabrowska1986, Ding2012, Cuzick1982)
+	\item Probability scale residuals, PSR (Li\&Shepard)
+	\item Challanges and limitations (discrete data covariates)
+	\item Qi - covariates (look at prentice and Cuzick)
+	\item show that this is Spearman
+	\item apply to dataset
+	\item simmulations
+	\item explore performance of partial and conditional Spearman.
+\end{itemize}
+
+Correlation of PSR is in fact a Spearman correlation generalized to the case with sensoring. Although, this kind of association was covered by (Cuzick1982, Dabrowska1986, Ding2012), they mentioned only a continuous case. PSR of (Li\&Shepard) are generalized to discrete case for the case of independent censoring and for the case of currents status data.\\
+~\\
+Future direction. We want to compare the performance of PSR to the performance of martingale residuals for the discrete case.
+
+\section*{Introduction}
+The interest in survival outcome can be traced year 1846, a Hungarian doctor named Ignaz Semmelweis. He was a doctor at Vienna General Hospital maternity clinic, and collected data on the rate of death from childbed fever. He hypothesized that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever is higher because of a disease that is caused by cadaverous particles that medical students and doctors have on on their hands after disecting cadavras. Jumping forward about 100 years, survival data was routinely collected and used by hospital, agencies, and governments [READ YOUR epidemiology book]. The recorded data were used to estimate rates of death, and the 
+Kaplan-Meier [1958, p.459] in their famos paper, generalized the concept of censoring was introduced by Hald in 1949 ["Maximum Likelihood estimation of th eparameters of a normal distribution which is trancated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134]. Cox (1972) extended Kaplan\&Meier results and introduced a regression model for censored suvival data. His model utilized a concept of a \emph{hazard rate}:
+$$
+\begin{aligned}
+	\lambda(s|y) &= \frac{\partial}{\partial s}\left\{  -log \mathcal{S}(s|y)  \right\} =
+	             \frac{f(s|y)}{\mathcal{S}(s|y)}
+\end{aligned}
+$$
+Where $\mathcal{S}(s|y) = 1-F(s|y)$, and $F(s|y)$ and $f(s|y)$ are cumulative distribution function and density function respectively.\\
+Basu (1971) [get this paper from the library ??? this does not add up because Cox wrote his paper later] defined a bivariate survival rate as:
+$$
+\begin{aligned}
+	\lambda(s,t) &= \frac{f(s,t)}{\mathcal{S}(s,t)} = \frac{\partial}{\partial s}\left\{  -log \mathcal{S}(s,t)  \right\}\frac{\partial}{\partial t}\left\{  -log \mathcal{S}(s,t)  \right\} - \frac{\partial^2}{\partial s\partial t}\left\{  -log \mathcal{S}(s,t)  \right\}
+\end{aligned}
+$$
+Firther, Clayton (1978), in order to set a framework for bivariate survival association between fathers and sons, defined a measure similar to harzard ratio. He wanted this measure to be easy to compute, to be expressible as a constant ratio of age-specific rates,  and to be symmetrical in two variables. If we denote time to event for fathers to be $s$ and time to event for sons to be $t$, this measure can be written in the following way:
+$$
+\begin{aligned}
+	\theta = \frac{\lambda_s(s_0|t=t_0)}{\lambda_s(s_0|t>t_0)} = \frac{\lambda_t(t_0|s=s_0)}{\lambda_t(t_0|s>s_0)}
+\end{aligned}
+$$
+The requirement of symmetry is motivated by the fact than neither son nor father are causes of event, rather, there is an unobservable variable that is associated with the event for both of them. This measure can be interpreted for sons (as much as for fathers) in the following way: how much more likely for a son to have an event at time $s_0$ given that his fathers had an event at time $t_0$ compared to a son whose father survived untile time $t_0$ without the event. Independence between fathers and sons would mean $\theta = 1$, positive association $\theta > 1$ and negative association $\theta < 1$.\\
+\textbf{To-do list}
+\begin{enumerate}
+  \item Find in Cox paper: he mentioned bivariate survial of different kind from Clayton's: two events within one individual.
+  \item [Elaborate on the fact that he introduce a whole model (not just a coefficient), showed how to estimate it and added sections on discrete time, and covariates].
+\end{enumerate}
+
+
+
+
 \section{Test of Association Between Two Ordinal Variables While Adjusting for Covariates, Li and Shepherd, 2010 \cite{li2010test}}
 We have two ordinal variables $\pmb{X}$ and $\pmb{Y}$ and we would like to test if after adjustment for $\pmb{Z}$ they are independent. We do this in two ways:
 \begin{enumerate}[1)]
@@ -666,17 +724,32 @@ Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimato
 	$$
 it reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual for \emph{continuous case}.
 
-\subsection{Ding, Wang, 2012: Testing Independence for Bivariate Current Status Data}
+\subsection{Ding, Wang, 2012: Testing Independence for Bivariate Current Status Data, ref???}
 Suggested two statistics for testing independence for bivariate \emph{current status data}. One is based on counts (how many events, non-events, and so forth). The other one is:
 	$$
 	\begin{aligned}
-		 E[cov(\delta_1, \delta_2)|C_1,C_2] = E\left\{ [\delta_1 - F_1(C_1)][\delta_1 - F_1(C_1)]  \right\}\\
+		 E[cov(\delta_1, \delta_2)|C_1,C_2] = E\left\{ [\delta_1 - F_1(C_1)][\delta_2 - F_2(C_2)]  \right\}\\
 	\end{aligned}
 	$$
-Which is \textbf{exactly} covaraince of \textbf{PSR} for \emph{current status data}.
+Which is \textbf{exactly} covariance of \textbf{PSR} for \emph{current status data}.
+
+\subsection{Zhang, 2008: Inference on the association measure for bivariate survival data with hybrind censoring and applications to an HIV study, ref???}
+The author uses archimedian copulas and Kendall's $\tau$ to assess association of bivariate survival data with hybrid censoring.
+
+\subsection{P. Gaduthol Sankaran, B. Abraham, A Alphonsa Antony, 2006: A dependence measure for bivariate failure time data, ref???}
+Meaning to improve over the measures given by Fan et al. (1998) and Fan et al. (2000), the authors propose a \emph{covariance residual life function} (CVRL) as a dependence measure of bivariate falure time data:
+	$$
+	\begin{aligned}
+		 C(t_1, t_2) &= M(t_1, t_2) - r_1(t_1, t_2) r_2(t_1, t_2) =\\
+		  &=E[(T_1-t_1)(T_2-t_2)|T_1>t_1,T_2>t_2] - E[T_1-t_1|T_1>t_1,T_2>t_2]\cdot E[T_2-t_2|T_1>t_1,T_2>t_2]
+	\end{aligned}
+	$$
+They note that this measure is in fact a weighted average of the Clayton's $\theta(t_1,t_2) = \frac{S(t_1,t_2)D_1D_2(S(t_1,t_2))}{D(S(t_1,t_2))D_2(S(t_1,t_2))}$ with a weight $\left[ \frac{D_1D_2(S(t_1,t_2))}{D_1(S(t_1,t_2))D_2(S(t_1,t_2))} \right]^{-1}$.
 
 \subsection{My plan}
 \begin{enumerate}[1)]
+\item Tom Lasko
+  \item look at the papers that have PRS and see if they use covariates
   \item look at all papers that are marked with stars
 	\item Look who cited Cuzick's paper
 	\item look cited Alvo and Cabilio, 1993:
