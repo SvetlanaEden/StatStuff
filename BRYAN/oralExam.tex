@@ -75,7 +75,10 @@ Correlation of PSR is in fact a Spearman correlation generalized to the case wit
 Future direction. We want to compare the performance of PSR to the performance of martingale residuals for the discrete case.
 
 \section*{Introduction}
-The interest in survival outcome can be traced back to year 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, collected data on the rate of death from childbed fever. He hypothesized that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever is higher because of a disease that is caused by cadaverous particles that medical students and doctors have on on their hands after disecting cadavras. Jumping forward about 100 years, survival data was routinely collected and used by hospital, agencies, and governments [READ YOUR epidemiology book]. The recorded data were used to estimate rates of death and other events. Hald in 1949 ["Maximum Likelihood estimation of th eparameters of a normal distribution which is trancated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134], usggested a more complex view of survival data and introduced a concept of sensoring. This concept elegantly taken into accout by one of the most famous work on survival, Kaplan and Meier [1958, p.459]. Cox (1972) extended Kaplan\&Meier results even further and introduced a regression model for censored suvival data. His model utilized a concept of a \emph{hazard rate}:
+The interest in survival outcome can be traced back to year 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, collected data on the rate of death from childbed fever. He hypothesized that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever is higher because of a disease that is caused by cadaverous particles that medical students and doctors have on on their hands after disecting cadavras. Jumping forward about 100 years, survival data was routinely collected and used by hospital, agencies, and governments [READ YOUR epidemiology book]. The recorded data were used to estimate rates of death and other events.
+
+\subsection{1949-1970}
+Hald in 1949 ["Maximum Likelihood estimation of th eparameters of a normal distribution which is trancated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134], suggested a more complex view of survival data and introduced a concept of sensoring. This concept elegantly taken into accout by one of the most famous work on survival, Kaplan and Meier [1958, p.459]. Cox (1972) extended Kaplan\&Meier results even further and introduced a regression model for censored suvival data. His model utilized a concept of a \emph{hazard rate}:
 $$
 \begin{aligned}
 	\lambda(s|y) &= \frac{\partial}{\partial s}\left\{  -log \mathcal{S}(s|y)  \right\} =
@@ -89,6 +92,10 @@ $$
 	\lambda(s,t) &= \frac{f(s,t)}{\mathcal{S}(s,t)} = \frac{\partial}{\partial s}\left\{  -log \mathcal{S}(s,t)  \right\}\frac{\partial}{\partial t}\left\{  -log \mathcal{S}(s,t)  \right\} - \frac{\partial^2}{\partial s\partial t}\left\{  -log \mathcal{S}(s,t)  \right\}
 \end{aligned}
 $$
+
+\subsection{1978}
+
+\subsubsection{Clayton, 1978}
 Later in 1978, Clayton [???] addressed a question of association between paired survival times of fathers and sons and defined a measure similar to harzard ratio. He wanted this measure to be
 \begin{enumerate}
 	\item  easy to compute
@@ -108,6 +115,21 @@ This measure can be interpreted for sons (as much as for fathers) in the followi
 Independence between fathers and sons would mean $\theta = 1$, positive association $\theta > 1$ and negative association $\theta < 1$. Clayton also explained how his model could be generalized to include covariates, and in estimating the model he adopts an approach similar to Cox's. He also derived likelihood for estimating $\theta$ when two marginal distributions are completely unknown.\\
 
 Note that although Clayton developed $\theta$ in the context of a model, the model was not necessacery to check independence. Independence could be checked by evaluating $\theta$.\\
+
+\subsubsection{Prentice, 1978}
+Prentice cosidered a linear regression with censored outcome.
+	$$
+	\begin{aligned}
+		y = \alpha + \beta z + \sigma e
+	\end{aligned}
+	$$
+Although this formulation sets up a context for univariate survival, we are interested in this paper for several reasons. The author's goal was to develop a \emph{liear rank statistic} in order to check the hypothesis of $\beta = 0$. In order to do this he had to find an approach to rank survival outcome in the presence of censored data. He chose a simplified approach to the ranking of censored values [Kalbfleisch \& Prentice, 1973]. According to this approach, uncensored observations are ranked between themselves. Censored observations that are located between two adjacent uncencored observations are arbitrarily ranked. This approach allowed to develop linear rank statistic and its approximation that assigned the same score to all censored residuals between adjacent uncensored values.
+
+Even after using ranks and approximations, Prentice's approach required assuming $F_i$ - distribution of residuals (check this please).
+
+\subsection{1982}
+
+\subsubsection{Oakes, 1982}
 Oakes (1982 ??? reference [YOU DIDN'T COVER THIS BEFORE]) criticised Clayton's likelihood approach to estimating $\theta$ [make sure that you know speficic critisizm points] and introduced an alternative method based on \emph{Kendall}'s $\tau$, coefficient of concordance. In 1989 he also introduced a bivariate survival model based on \emph{frailties}: an unobserved variable that induces dependence between two survival times that both depend on this variable. In the context of this model, he further utilized coefficient $\theta$ introduced by Clayton. He also noted that bivariate distributions introduced by frailty models are part of a larger class of archimedian distributions studied by Genest and MacKay (1986a,b [I did not read their papers and not sure if I should]):
 $$
 \begin{aligned}
@@ -116,440 +138,57 @@ $$
 $$
 Where $p(u)$ is an inverse function of $q(v)$. He shows how to estimate his model in the presence of censoring in either one or both components. He showed that in the context of his model, $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $\tau(v) = \frac{\theta(v)-1}{\theta(v)+1}$, where $v=S(t_1, t_2)$ [I am not sure if all this is necessary].
 
+\subsubsection{Cuzick, 1982, Have not started yet.}
+Considers a general model of association:
+	$$
+	\begin{aligned}
+		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2
+	\end{aligned}
+	$$
+
+Where $Z$, $e_1$, and $e_2$ are independent. He considers two cases, and only the second case is relevant for us, when $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ are thought to be related to a third unobserved covariate.\\
+He assumed the same generalized ranking of censored data as Prentice (1978). Also, similar to Prentice (1978), Cuzick's approach required knowing $f_i(x)$ the density of $Y_i$ (or of $e_i$?). He illustrated his approach by showing that when this density is logistic, $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$, then the rank of each observation is $F(x)$ with no censoring, and $\frac{1+F(x)}{2}$, when censoring is present - \textbf{PSR}
+
+\subsection{Dabrowska, 1986 \cite{dabrowska1986rank}}
+Has developed further the approach of [Prentice, 1978], [Kalbfleisch \& Prentice, 1980], and [Cuzick, 1982], in order to check a null hypothesis of independence $H_0:~F=F_1 F_2$. The author suggested that  the following \emph{linear rank} statistic can be used
+	$$
+	\begin{aligned}
+		 &\sum_{n=1}^N a_1(R_{1n}, \delta_{1n})\cdot a_2(R_{2n}, \delta_{2n}), ~i=1,2\\
+		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)}^{a_{ik}}
+	\end{aligned}
+	$$
+Where: 
+	$$
+	\begin{aligned}
+		 R_in &= \#\{m:~Y_{im} \leq Y_{in}, \delta_{im}=1   \}\\
+		 a_{ik} &= \# \{n: ~R_{in}=k,~\delta_{in}=0\}\\
+		 m_{ik} &= \# \{n: ~R_{in}\geq k\}\\
+		 \delta_{im}&=1,~if~subject ~m~from~group~i~has~an~event\\
+		 U_{(k)}~&independent ~ordered~sample~from~Uniform~distribution\\
+		 \mathcal{J}(u,d) ~&is~such~that:~~\int_0^u \mathcal{J}_i(v,1)dv = -(1-u)\mathcal{J}_i(u,0)
+	\end{aligned}
+	$$
+The author showed that the choice of $\mathcal{J}_i(u,d) =d-(1+d)u$ corresponds to the cencored-data version of the Spearman test. She also notes that the exact scores are hard to compute, so an approximate test statistics  can be used:
+	$$
+	\begin{aligned}
+		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
+	\end{aligned}
+	$$
+Substituting $\mathcal{J}_i(u,d) =d-(1+d)u$ into the above expression, we get:
+	$$
+	\begin{aligned}
+		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
+	\end{aligned}
+	$$
+Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. If we look at the above expression closely: it reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual, \textbf{PSR}, for \emph{continuous case}.
+
+
 \textbf{Show the resemblence with archemedian copulas}
 
 \textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), "Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring," Biometrics, 39, 129-139.}
 
 
-\section{Test of Association Between Two Ordinal Variables While Adjusting for Covariates, Li and Shepherd, 2010 \cite{li2010test}}
-We have two ordinal variables $\pmb{X}$ and $\pmb{Y}$ and we would like to test if after adjustment for $\pmb{Z}$ they are independent. We do this in two ways:
-\begin{enumerate}[1)]
-	\item compare \emph{observed} distribution with \emph{expected} distribution under the null.
-	\item run two regressions $\pmb{X\sim Z}$ and $\pmb{Y\sim Z}$, obtain their residuals, $r_x$ and $r_y$ and test them (???)
-\end{enumerate}
-\subsection{Observed vs expected distributions statistic, $T_1$}
-In general, the joint distribution can be written:
-$$
-\begin{aligned}
-	P(Y,X) = \int_z P(Y,X|\pmb{Z})dP(\pmb{Z})
-\end{aligned}
-$$
-Under the null of conditional independence:
-$$
-\begin{aligned}
-	P_0(Y,X) = \int_z P(Y|\pmb{Z})P(X|\pmb{Z})dP(\pmb{Z})
-\end{aligned}
-$$
-More notations:
-$$
-\begin{aligned}
-  p_{i}^j &= P(Y_i = j|\pmb{Z}_i = \pmb{z}_i),~~j=1,...,s\\
-  q_{i}^l &= P(X_i = l|\pmb{Z}_i = \pmb{z}_i),~~l=1,...,t\\
-	&\gamma_i^j=P(Y_i\leq j|\pmb{Z}=\pmb{z}_i), ~~p_{i}^j = \gamma^{j}_i - \gamma^{j-1}_i\\
-	 &similar~thing~for~q_i^l
-\end{aligned}
-$$
-Now we get estimates $\hat{p}_i^j$ and $\hat{q}_i^l$ from regressions $\pmb{X~Z}$ and $\pmb{Y~Z}$ and then estimate the null distribution:
-$$
-\begin{aligned}
-  \hat{P}_0 = \left\{\hat{\pi}_0^{jl}\right\},~~where~~\hat{\pi}_0^{jl} = \frac{1}{n}\sum_i \hat{p}_i^j \cdot \hat{q}_i^l
-\end{aligned}
-$$
-Now we estimate the alternative distribution:
-$$
-\begin{aligned}
-  \hat{P}_{jl} = \frac{n_{jl}}{n}
-\end{aligned}
-$$
-Where $n_{jl}$ is number of subjects with levels j and l respectively.\\
-We now summarize the observed and expected distribution separately by calculating \emph{Goodman} and \emph{Kruskal}'s gamma \cite{goodman1979measures} (Goodman, L. A., and Kruskal, W. H. (1954), "Measures of Association for Cross Classifications," Journal of the American Statistical Association).
-$$
-\begin{aligned}
-	C&=\sum_{j_1<j_2, ~l_1<l_2}\pi_{j_1l_1}\pi_{j_2l_2}\\
-	D&=\sum_{j_1<j_2, ~l_1>l_2}\pi_{j_1l_1}\pi_{j_2l_2}\\
-  \Gamma &= \frac{C-D}{C+D}\\
-\end{aligned}
-$$
-{\scriptsize{\textbf{Note:} Strictly speaking, $C$ and $D$ from above have to be multiplied by $2$ (see section \ref{sssec:GoodmanKruskal}). But because 2 cancels out, I guess, they omit the $2$}}\\
-Let $\Gamma_1 = \Gamma(\hat{P})$ and  $\Gamma_0 = \Gamma(\hat{P}_0)$ be the gamma for the observed and expected distributions for $(Y,X)$. The test statistics is $T_1=\Gamma_1 - \Gamma_0$. When the multinomial models are correct (?!), under the null:
-$$
-\begin{aligned}
-	\hat{P}_0 \rightarrow P,~~~\hat{P} \rightarrow P\\
-	T_1 = \Gamma(\hat{P}) - \Gamma(\hat{P_0}) \underset{n\rightarrow \infty}{\longrightarrow} 0
-\end{aligned}
-$$
-\subsubsection{\emph{Goodman} and \emph{Kruskal}'s gamma}
-\label{sssec:GoodmanKruskal}
-We have two $iid$ subjects $1$ and $2$ with two ordered responses $\underline{a}_1,\underline{b}_1$ and $\underline{a}_2,\underline{b}_2$ that have categories $1,2,...,s$, and $1,2,...,t$. If we summarised proportions of each combination in a table we would use the following notations:\\
-~\\
-\begin{tabular}{ l | c | c | c | c | c}
-  \hline
-  ~ & $B_1$ & $B_2$ & ... & $B_t$ & Total\\
-  \hline
-  $A_1$ & $\rho_{11}$&$\rho_{12}$&... &$\rho_{1t}$& $\rho_{1\cdot}$\\
-  $A_2$ & $\rho_{21}$&$\rho_{22}$&... &$\rho_{2t}$& $\rho_{2\cdot}$\\
-  ... & ...&...&... &...& ...\\
-  $A_s$ & $\rho_{s1}$&$\rho_{s2}$&... &$\rho_{st}$& $\rho_{1\cdot}$\\
-  \hline
-  Total & $\rho_{\cdot 1}$& $\rho_{\cdot 2}$&... & $\rho_{\cdot t}$& 1\\
-\end{tabular}
-~\\
 
-
-Let's denote:
-$$
-\begin{aligned}
-	\Pi_c&=Pr\left\{ \underline{a}_1 <\underline{a}_2 ~and ~\underline{b}_1<\underline{b}_2;~~or~\underline{a}_1 >\underline{a}_2 ~and ~\underline{b}_1>\underline{b}_2\right\}\\
-	\Pi_d&=Pr\left\{ \underline{a}_1 <\underline{a}_2 ~and ~\underline{b}_1>\underline{b}_2;~~or~\underline{a}_1 >\underline{a}_2 ~and ~\underline{b}_1<\underline{b}_2\right\}\\
-	\Pi_t&=Pr\left\{\underline{a}_1 =\underline{a}_2 ~or ~\underline{b}_1=\underline{b}_2\right\}\\
-\end{aligned}
-$$
-From the above, the conditional probability for the \emph{like} order given no ties is $\Pi_c/(1-\Pi_t)$ and the conditional probability fo the $unlike$ order given no ties is $\Pi_d/(1-\Pi_t)$. Keeping in mind that $\Pi_c +\Pi_d +\Pi_t=1$, a possible measure of association, $\gamma$ is:
-$$
-\begin{aligned}
-	\gamma = \frac{\Pi_c - \Pi_d}{1-\Pi_t} =  \frac{\Pi_c - \Pi_d}{\Pi_c + \Pi_d} = \frac{2\Pi_c - 1 + \Pi_t}{1- \Pi_t}
-\end{aligned}
-$$
-This measure can be interpreted as \emph{difference} between the conditional probabilites of like and unlike orders: how much more probable it is to get like than unlike orders in the two classifications when two individuals are chosen randomly from the population.\\
-The latter equality is especially usefull because we can compute it using easily verifyable relationships:
-$$
-\begin{aligned}
-	\Pi_c&=2\sum_a \sum_b \rho_{ab}\left\{ \sum_{a'>a} \sum_{b'>b} \rho_{a'b'} \right\}\\
-	\Pi_t&=\sum_a \rho_{a\cdot}^2 + \sum_b \rho_{\cdot b}^2 - \sum_{a} \sum_{b} \rho_{ab}^2\\
-\end{aligned}
-$$
-
-{\scriptsize{\textbf{Verification}\\
-We know that $P(A\cup B) = P(A) + P(B) - P(A\cap B)$. Let's denote $A=\{\underline{a}_1 =\underline{a}_2\}$ and  $B=\{\underline{b}_1 =\underline{b}_2\}$. We think of two subjects having the same categories is like drawing from the cells of the above table with replacement because two subjects are independent. Keeping in mind that $P(\{\underline{a}_1=A_i\cap \underline{b}_1 =B_j) =\rho_{A_i,B_j}$, the probability of two subjects having the same categories is $\rho_{A_i,B_j}\cdot \rho_{A_i,B_j}$ and therefore $P(A\cap B) = \sum_{i,j}\rho_{i,j}^2$. Similarly, and imagining that we draw two subjects independently with replacement based on marginal distributions for $A$ and $B$: $P(A) = \sum_{i}\rho_{i\cdot}^2$ and $P(B) = \sum_{j}\rho_{\cdot j}^2$
-\\
-Now let's denote $A=\{\underline{a}_1 <\underline{a}_2 \cap\underline{b}_1 <\underline{b}_2\}$ and  $B=\{\underline{a}_1 >\underline{a}_2 \cap \underline{b}_1 >\underline{b}_2\}$. Because these two events do not overlap, we have: $P(A\cup B) = P(A) + P(B)$. Applying the same principle of drawing with replacement, we have: $P(A) = \sum_{i,j}\left(\sum_{k<i,l<j}\rho_{k,l} \right)\rho_{i,j}$ and $P(B) = \sum_{i,j}\left(\sum_{k>i,l>j}\rho_{k,l} \right)\rho_{i,j}$. It so happends that when these two probabilities are summed up, we get the double of one of them. We show it on the example of 2 $A$ categories and three $B$ categories: $P(A\cup B) = [\rho_{11}\rho_{22} + (\rho_{12} + \rho_{11})\rho_{23}]~ + ~[(\rho_{22} + \rho_{23})\rho_{11} + \rho_{23}\rho_{12}] ~=~ 2(\rho_{22} + \rho_{23})\rho_{11} + 2\rho_{12}\rho_{23}$, so $P(A\cap B) = 2\cdot \sum_{i,j}\left(\sum_{k<i,l<j}\rho_{k,l} \right)\rho_{i,j}$
-\\
-\textbf{Note}(Unrelated to the verification above)\\
-In the same paper, there is also an index, $\lambda$, that measures association between unordered categories. Another interesting part of the paper is where they derive the same index $\lambda$ but using a loss function.
-}}\\
-
-Properties:
-\begin{enumerate}[(i)]
-	\item $\gamma$ is indeterminate if the population is concentrated in a single row or column of the cross-classification table.
-	\item $\gamma$ is $1$ if the population is concentrated in a upper-left to lower-right diagonal of the cross classification table. $\gamma$ is $-1$ if the population is concentrated in a lower-left to upper-right diagonal of the table. It can be diagonal or step-diagonal, because the conflinct in order is impossible:\\
-	~\\
-	\begin{tabular}{ c | c | c }
-	  $\rho_{11}$ & $\rho_{12}$ & 0\\
-		\hline
-	  0 & $\rho_{22}$ & $\rho_{23}$\\
-		\hline
-	  0 & 0 & $\rho_{33}$\\
-	\end{tabular}
-	~\\
-	\item $\gamma$ is $0$ in the case of independence, but the converse need not hold except in the $2\times 2$ case. Example:\\
-	~\\
-	\begin{tabular}{ c | c | c }
-	  .2 & 0 & .2\\
-		\hline
-	  0 & .2 & 0\\
-		\hline
-	  .2 & 0 & .2\\
-	\end{tabular}
-	~\\
-	\item In $2\times 2$ case, $\gamma$ is Yule's coefficient of association $\gamma=\frac{\rho_{11}\rho_{22} - \rho_{12}\rho_{21}}{\rho_{11}\rho_{11}+\rho_{12}\rho_{21}}$
-  \item Also, in some way, it is similar to Stewart's measure.
-\end{enumerate}
-\subsection{Residual-based test statistic, $T_2$}
-For simplicity, only notations for $Y$ are introduced, the notations for $X$ are similar.\\
-Assume that $Y$ is distributed multinomially with parameter $\theta^Y$. Let $Y_i=y_i$ be the observed outcome for subject $i$. The corresponding distribution of possible outcome levels $Y_{i,fit}\sim Y_i|\pmb{z}_i$ given covariate $\pmb{z}_i$ is multinomial with probability $\{p_i^j\}$. Instead of calculating the difference between $Y_{i,fit}$ and $y_i$ we compare them and give them scores of $1$, $-1$, and $0$ if $y_i>Y_{i,fit}$, $y_i<Y_{i,fit}$, and $y_i=Y_{i,fit}$ respectively.\\
-Keeping in mind that $Y_{i,fit}$ is the \emph{random variable} in the following derivations:
-$$
-\begin{aligned}
-  p_{i,high} &= P(y_i>Y_{i,fit}) = P(Y_{i,fit}<y_i) = P(Y_i \leq y_i - 1|\pmb{Z}=\pmb{z}_i) = \gamma_i^{y_i-1}\\
-  p_{i,low} &= P(y_i<Y_{i,fit}) = P(Y_{i,fit}>y_i)= 1 - P(Y_i \leq y_i|\pmb{Z}=\pmb{z}_i) = 1-\gamma_i^{y_i}\\
-  p_{i,tie} &= P(y_i=Y_{i,fit}) = P(Y_{i,fit}=y_i)= p_i^{y_i}
-\end{aligned}
-$$
-The expected score $Y_{i,res} = p_{i,high} - p_{i,low}$, which is a function of data $(Y_i, \pmb{Z}_i)$ and $\theta^Y$, and we denote $Y_{i,res}$ realization as $y_{i,res} = Y_{i, res|\hat{\theta}^Y}$. Similarly, for $X$, we define: $X_{i,res} = q_{i,high} - q_{i,low}$ and $x_{i,res}$.\\
-When the models for $P(X|\pmb{Z})$ and  $P(Y|\pmb{Z})$ are correct, and keeping in mind that $p_i^j = \gamma_i^j - \gamma_i^{j-1}$ and $\gamma_i^j = \sum_{k = 1}^{j}p_i^k$, we have:
-$$
-\begin{aligned}
-  E(p_{i,high}|\pmb{Z}_i) &= E \left(\gamma_i^{Y_i-1} |\pmb{Z}_i\right) = \sum_{j=1}^s p_i^j \gamma_i^{j-1}=\sum_{j=1}^s p_i^j \left(\sum_{k = 1}^{j-1}p_i^k\right) = \sum_{j_1<j_2} p_i^{j_1} p_i^{j_2}\\
-  E(p_{i,low}|\pmb{Z}_i) &= E \left(1-\gamma_i^{Y_i} |\pmb{Z}_i\right) = \sum_{j=1}^s p_i^j (1-\gamma_i^{j}) = \sum_{j=1}^s p_i^j \left(1-\sum_{k = 1}^{j}p_i^k\right) = \sum_{j=1}^s p_i^j \left(\sum_{k = j+1}^{s}p_i^k\right) = \sum_{j_1<j_2} p_i^{j_1} p_i^{j_2}\\
-\end{aligned}
-$$
-Therefore $E(p_{i,high} - p_{i,low}|\pmb{Z}_i)=0$ and $E(Y_{i,res})=E[E(p_{i,high} - p_{i,low}|\pmb{Z}_i)]=0$. Similarly, for $E(X_{i,res})=0$ and:
-$$
-\begin{aligned}
-	E(Y_{i,res},X_{i,res}) &= E[E(Y_{i,res},X_{i,res}|\pmb{Z}_i)] = E[E(Y_{i,res}|\pmb{Z}_i)E(X_{i,res}|\pmb{Z}_i)] = 0\\
-	&therefore\\
-	cov(Y_{i,res},X_{i,res}) &= E(Y_{i,res},X_{i,res}) - E(Y_{i,res})E(X_{i,res}) = 0\\
-\end{aligned}
-$$
-Therefore, we use the sample correlation coefficient, $T_2$, between $Y_{i,res}$ and $Y_{i,res}$ across all subjects as a test statistics. Under the null, $T_2\underset{n\rightarrow \infty}{\longrightarrow}0$
-\subsection{A variation of residual statistic, $T_3$}
-Alternatively, we can compute a statistic based on concordance vs discordance of pairs $(Y_i, X_i)$ and $(Y_i', X_i')$:
-$$
-\begin{aligned}
-	Concordant ~pairs: ~Y_i>X_i ~and ~Y_i'>X_i'~~or~~ Y_i<X_i ~or~ Y_i'<X_i'\\
-	Discordant ~pairs: ~Y_i>X_i ~and ~Y_i'<X_i'~~or~~ Y_i<X_i ~or~ Y_i'>X_i'\\
-	Tied ~pairs: otherwise\\
-\end{aligned}
-$$
- Under the null the probability of concordance: $C_i = p_{i,high}q_{i,high} + p_{i,low}q_{i,low}$, and the probability of discordance $D_i = p_{i,high}q_{i,low} + p_{i,low}q_{i,high}$. 
-$$
-\begin{aligned}
-	C_i - D_i &= p_{i,high}q_{i,high} + p_{i,low}q_{i,low} -p_{i,high}q_{i,low} - p_{i,low}q_{i,high}=\\
-	 &= (p_{i,high}-p_{i,low}) (q_{i,high} - q_{i,low})=\\
-	 &=Y_{i,res}X_{i,res}\\
-\end{aligned}
-$$
-We know that $E(C_i - D_i)=E(Y_{i,res}X_{i,res}) = 0$, so we suggest a third statistic:
-$$
-\begin{aligned}
-	T_3 = E(\hat{C}_i - \hat{D}_i) &=\frac{1}{n} \sum_i y_{i,res}x_{i,res}\\
-\end{aligned}
-$$
-\subsection{Two method of computing the p-value}
-\subsubsection{Parametric Bootstrap}
-We generate new datasets from the product distribution $\{\hat{p}_i^j\hat{q}_i^l\}_{j,l}$ for each subject ($i=1,...,n$). Then we carry out the entire estimating procedure for the replicate dataset to obtain the corresponding statisitc, denoted as $T^*$. We do this $N^{emp}$ times and get an empirical distribution of $T$ under the null. The two-sided p-value is then computed as either:
-$$
-\begin{aligned}
-	\#(|T^*|\geq |T|)/N^{emp}
-\end{aligned}
-$$
-or
-$$
-\begin{aligned}
-	2\times min\{\#(T^*\geq T),\#(T^*\leq T)\}/N^{emp}
-\end{aligned}
-$$
-\subsubsection{Asymptotic Distribution}
-Estimate $\hat{\theta}$ can be obtained by solving the equation $\sum_{i=1}^n \Psi_i(\theta) = 0$ where $\Psi_i(\theta) = \Psi(Y_i, X_i, \pmb{Z}_i; \theta)$ is a \emph{p}-variate function that doesn't depend on $i$ or $n$ and satisfies $E_{\theta}[\Psi_i(\theta)]=0$. From \emph{M}-estimation theory (Stefanski and Boos 2002)\cite{stefanski2002calculus}, if $\Psi$ is suitable smooth, then as $n\leftarrow \infty$,
-$$
-\begin{aligned}
-	\sqrt{n}(\hat{\pmb{\theta}} - \pmb{\theta}) &\underset{d}{\longrightarrow}N(\pmb{0}, V(\theta)),~~where\\
-	  V(\theta) &= A(\theta)^{-1} B(\theta)[A(\theta)^{-1}]'\\
-		A(\theta) &= E \left[-\frac{\partial}{\partial \theta} \Psi_i(\theta)\right]\\
-		B(\theta) &= E \left[\Psi_i(\theta)\Psi_i'(\theta)\right]\\
-\end{aligned}
-$$
- {\scriptsize{\textbf{My explanation}(might not to be correct): Because $E_{\theta}[\Psi(\theta)]=\pmb{0}$}, the variance of $\Psi(\theta)$ is $B(\theta) = E \left[\Psi_i(\theta)\Psi_i'(\theta)\right]$, therefore $\sqrt{n}(\hat{\Psi}(\theta) - \Psi(\theta)) \underset{d}{\longrightarrow}N(\pmb{0}, B(\theta))$. We can express $\theta$ as $\Psi^{-1}_i(\nu)$ (an inverse of $\Psi$, do not confuse with power $-1$) and apply the delta method keeping in mind that $\frac{\partial \Psi^{-1}_i(\theta)}{\partial \nu} = -\frac{1}{\partial \Psi_i(\nu)/ \partial \theta}$. Then, according to the delta method: $\sqrt{n}(\hat{\theta} - \theta) \underset{d}{\longrightarrow}N\left(\pmb{0}, \frac{B(\theta)}{(\partial (\Psi^{-1}_i(\theta)) /\partial \theta)^2}\right)$ (here $-1$ is used in sense of power). My $i$ indices are all messed up in this explanation.
- }\\
- ~\\
-Now we apply \emph{delta} method to a statistic, based on $\theta$:
-
-$$
-\begin{aligned}
-	\sqrt{n}(g(\hat{\pmb{\theta}}) - g(\pmb{\theta})) &\underset{d}{\longrightarrow}N(0, \sigma^2),~~where\\
-	  \sigma^2 &= \left[\frac{\partial}{\partial \theta}g(\pmb{\theta})\right]V(\theta)\left[\frac{\partial}{\partial \theta}g(\pmb{\theta})\right]'
-\end{aligned}
-$$
-In order to estimate $\sigma^2$ we estimate:
-
-$$
-\begin{aligned}
-	\hat{A}(\pmb{\theta}) &= \frac{1}{n}\sum_{i}\left[-\frac{\partial}{\partial\pmb{\theta}}\Psi_i(\hat{\pmb{\theta}})\right]\\
-	\hat{B}(\pmb{\theta}) &= \frac{1}{n}\sum_{i}\Psi_i(\hat{\pmb{\theta}})\Psi_i(\hat{\pmb{\theta}})'\\
-	\widehat{\frac{\partial}{\partial\pmb{\theta}}g(\pmb{\theta})} &= \frac{\partial}{\partial\pmb{\theta}}g(\hat{\pmb{\theta}})
-\end{aligned}
-$$
-Under the null the \emph{p-value} can be computed approximately as $2\Phi\left(\frac{-|T|}{\hat{simga}/n}\right)$, where $\Phi$ is the cumulative distribution function of the standard normal distribution.
-\subsubsection{Defining $\theta$, $\Psi_i(\theta)$, and $g(\theta)$}
-For all three statistics, the parameter vector will have the form: $\pmb{\theta} = (\pmb{\theta}^Y, \pmb{\theta}^X, \pmb{\theta}^T)$. The corresponding estimating function $\Psi_i(\pmb{\theta})$ will have the form:
-$$
-\begin{aligned}
-	\Psi_i(\pmb{\theta})^T = \left(\frac{\partial}{\partial \pmb{\theta}^Y}l_Y(Y_i, \pmb{Z}_i; \pmb{\theta}^Y),~\frac{\partial}{\partial \pmb{\theta}^X} l_X(X_i, \pmb{Z}_i;\pmb{\theta}^X), \psi(Y_i, X_i, \pmb{Z}_i;\pmb{\theta})\right)
-\end{aligned}
-$$
-Where $l_X$ and $l_Y$ are the log-likelihood functions of the multinomial models that are used to model $P(Y|\pmb{Z})$ and $P(X|\pmb{Z})$, with parameters $\pmb{\theta}^Y$ and $\pmb{\theta}^X$ respectively. They are score functions and thus $E\left[ \frac{\partial}{\partial\pmb{\theta}}l_Y(Y_i, \pmb{Z}_i; \pmb{\theta}^Y) \right]=\pmb{0}$ and $E\left[ \frac{\partial}{\partial\pmb{\theta}}l_X(Y_i, \pmb{Z}_i; \pmb{\theta}^X) \right]=\pmb{0}$. The functions $\psi(Y_i, X_i, \pmb{Z}_i;\pmb{\theta})$ will be different for each statistic.\\
-~\\
-\textbf{For statistic $\pmb{T}_1$}: for $T_1=\Gamma(\hat{P}) - \Gamma(\hat{P}_0)$, we define $\pmb{\theta}^T = (\pi_{11},...,\pi_{1,t-1},\pi_{1,t}, ~~~\pi_{21},...,\pi_{2,t-1},\pi_{2t}, ~~~..., ~~~\pi_{s1},...,\pi_{s,t-1})$. Note that $\pi_{s,t}$ is not included because it can be expressed from the rest of $\pi_{s,t} = 1-\sum_{j,j}\pi_{ij}$.\\
-The corresponding function $\psi$ is:
-$$
-\begin{aligned}
-	\psi^T(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T) = (I_{\{Y_i=1,X_i=1\}}-\pi_{11}, ~~...,~~I_{\{Y_i=s,X_i=t-1\}}-\pi_{s,t-1})
-\end{aligned}
-$$
-where $I_a$ is an indicator functon of event $a$. $E[\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)]=\pmb{0}$ because for each element of vector $\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)$, say $\psi_{11}$ we have: $E[\psi_{11}] = (1-\pi_{11})\cdot \pi_{11} + (0-\pi_{11})\cdot (1-\pi_{11})=0$. Let $g(\pmb{\theta}) = \Gamma(P) - \Gamma(P_0)$. Then $g(\pmb{\theta})=0$ under the null, and $T_1=g(\hat{\pmb{\theta}})$.\\
-~\\
-\textbf{For statistic $\pmb{T}_2$}: Let's denote $w_1=E(Y_{i,res})$, $w_2=E(X_{i,res})$, $w_3=E(Y_{i,res}, X_{i,res})$, $w_4=E(Y^2_{i,res})$, and $w_5=E(X^2_{i,res})$. Then $\pmb{\theta}^T = (w_1, w_2, w_3, w_4, w_5)$, and the corresponding $\psi$ is:
-$$
-\begin{aligned}
-	\psi^T(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}) = (Y_{i,res}-w_1, ~X_{i,res}-w_2,  ~Y_{i,res}X_{i,res}-w_3, ~Y^2_{i,res}-w_4, ~X^2_{i,res}-w_5)
-\end{aligned}
-$$
-By definition $E[\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)]=\pmb{0}$. Solving the equation $\sum_i\psi(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}^T)]=\pmb{0}$, we have $\hat{w}_1=\frac{1}{n}\sum_i y_{i,res}$, $\hat{w}_2=\frac{1}{n}\sum_i x_{i,res}$, $\hat{w}_3=\frac{1}{n}\sum_i y_{i,res}x_{i,res}$, $\hat{w}_4=\frac{1}{n}\sum_i y^2_{i,res}$, and $\hat{w}_5=\frac{1}{n}\sum_i x^2_{i,res}$. Let $g(\pmb{\theta}) = (w_3 - w_1w_2)/\sqrt{(w_4-w_1^2)(w_5-w_2^2)}=cor(Y_{i,res},X_{i,res})$ (?!). Because it is a correlation, $g(\pmb{\theta})=0$ under the null, and $T_2=g(\hat{\pmb{\theta}})$\\
-~\\
-\textbf{For statistic $\pmb{T}_3$}: $T_3 = \frac{1}{n}\sum_i (\hat{C}_i - \hat{D}_i)$, parameter $\pmb{\theta}^T$ is a scalar, $\theta^T = E(C_i - D_i)$, which is $0$ under the null. The corresponding function $\psi$ is:
-$$
-\begin{aligned}
-	\psi^T(Y_i,X_i,\pmb{Z}_i;\pmb{\theta}) = (C_i - D_i) - \theta^T
-\end{aligned}
-$$
-By definition $E[\psi(Y_i,X_i,\pmb{Z}_i;\theta)]=\pmb{0}$. Let $g(\pmb{\theta}) = \theta^T$. Then $g(\pmb{\theta}) = 0$ under the null, and $T_3=g(\hat{\pmb{\theta}}) $. The delta method is not needed here because $\hat{\sigma}^2$ is simply the last element of the diagonal of $\hat{V}(\pmb{\theta})$ (because $g(\cdot)$ is an identity function).
-\section{A new residual for ordinal outcomes, Li and Shepherd, 2012 \cite{li2012new}}
-\textbf{Desirable properties of residuals for ordial variables:}
-\begin{enumerate}[(a)]
-	\item results in only one value per subject;
-	\item reflects the overall direction of the observed value compared with the fitted value;
-	\item is monotonic with respect to the observed value for those with the same covariates;
-	\item has a range of possible values that is symmetric about zero;
-	\item has expectation zero;
-	\item should perserve order without assigning arbitrary scores to the categories.
-\end{enumerate}
-~\\
-
-\textbf{Definition:}\\
-Consider a set of of $s$ ordered categories, $S=\{1,...,s\}$, with order $1<...<s$. For a category $y$ in $S$ and a distribution $F$ over $S$, we define a \textbf{\textit{residual}}:
-$$
-\begin{aligned}
-	r(y,F)=E\{sign(y,Y)\} = pr(y>Y) - pr(y<Y),
-\end{aligned}
-$$
-where $Y$ is a random variable with distribution $F$, and $sign(a,b)$ is $-1$, $0$ and $1$ for $a<b$, $a=b$, and $a>b$, respectively. Suppose we fit an ordinal outcome variable $Y$ on covariates $Z$. For subject $i$, let $Y_i$ be the outcome and let $F_{Z_i;\theta}$ be the distribution of $Y_i$ given covariates $Z_i$ under a model with parameter $\theta$. We define:
-$$
-\begin{aligned}
-	R_i = r(Y_i,F_{Z_i;\theta})
-\end{aligned}
-$$
-Give data$(y_i, z_i)$ and a fitted model with parameter estimates $\hat{\theta}$, the residual for subject $i$ is $\hat{r}_i = r(Y_i,F_{Z_i;\theta})$. Notice that $\hat{r}_i$ is not a realization of $R_i$, but of the random variable $\hat{R}_i = r(Y_i,F_{Z_i;\hat{\theta}})$. If $\hat{\theta} \overset{P}{\rightarrow} \theta$, then $F_{Z_i;\hat{\theta}} \rightarrow F_{Z_i;\theta}$, and $\hat{R}_i \overset{D}{\rightarrow} R_i$. Therefore, moment properties of $R_i$ are applicable to $\hat{R}_i$ asymptotically.\\
-~\\
-\textbf{Properties of $r(y, F)$, $R_i$, and $\hat{r}_i$:}
-\begin{enumerate}[\textit{Property} 1.]
-	\item $-1\leq r(1, F) \leq ... \leq r(s,F) \leq 1$;
-	\item when $s=1$, $r(1,F) = r(1,1)=0$, where $F=(1)$ is a point mass;
-	\item $r(j, F) = -r(s-j+1, G)$, where $G=(q_1,...q_s) = (p_s,...,p_1)$ with $q_j=p_{s-j+1}$;
-	\item as functions of $(\gamma_1, ..., \gamma_{s-1})$, $\partial r(j,F)/\partial \gamma_j = \partial r(j+1, F)/\partial \gamma_j$.
-	\item \textit{Branching Property}. If two adjacent categories $t$ and $t+1$ are merged, with distribution $G=(q_1,...q_{s-1})$, where $q_j=p_j$ for $j<t$, $q_t=p_t + p_{t+1}$ and $q_j=p_{t+1}$ for $j>1$, then $r(j, G)=$
-	$$
-	\begin{aligned}
-		r(j, G)&= r(j, F), ~~~j<t\\
-		r(j, G)&= r(j+1, F), ~~~j>t\\
-		r(j, G)&= \{ p_t r(t, F) + p_{t+1}(t+1, F) \}/(p_t + p_{t+1}), ~~~j=t\\
-		\end{aligned}
-		$$
-	\item The function $r(j,F)$ satisfies Properties 2, 3(for $s=2$), 4(for $s=2$), and 5 if and only if $r(j,F) = c(\gamma_{j-1} - (1-\gamma_j))$, where $c$ is an arbitrary constant.
-	\item $r(j, F)/2 = ridit_j - 1/2$, where $ridit_j = \gamma_{j-1} + p_j/2 = (\gamma_{j-1} + \gamma_j)/2$ and the mean ridit is $1/2$.
-	\item $E(R) = 0$;
-	\item $var(R) = (1-\sum^s_{j=1} p_j^3)/3$, or alternatively, $var(R) = \sum^s_{j=1} p_j\gamma_{j-1}\gamma_j$. This property provides alternative ways of calculating $var(R)$ and implies that $var(R)$ does not depend on the order of the probabilities.
-	\item when $p_1=...=p_s = 1/s$ $var(R)$ reaches its maximum $(1-1/s^2)/3$
-	\item Consider a random sample of $n$ subjects, with $n_j$ subjects in category $j$ $(j=1,...,s)$. Their empirical distribution is $\hat{F}=(\hat{p}_1, ... \hat{p}_s)$, where $\hat{p}_j = n_j/n$, with cumulative probabilities $\hat{\gamma}_j = \sum_{k\leq j} n_k/n$. With no covariates, the predictor of all subjects is a constant. Then $r_j = r(j,\hat{F}) = \hat{\gamma}_{j-1} + \hat{\gamma_j} - 1 = \left( \sum_{k<j}2n_k + n_j - n \right)/n$. If we rank these subjects, their midrank is $rank_j = \sum{k<j} n_k + (n_j + 1)/2$. The following property holds:
-	$$
-	\begin{aligned}
-		rank_j = T(r_j) = (n/2)\cdot r_j + (n+1)/2
-	\end{aligned}
-	$$
-The function $T(r_j)$ can be viewed as a translation from the residual scale to the rank scale. This property implies that when there are no covariates, statistics $T_2$ (see reference \cite{li2010test}) is Spearman's rank correlation coefficient between $X$ and $Y$. When covariates exist, $T(r_j)$ yields adjusted ranks of the subjects, and $T_2$ can be interpreted as an adjusted rank correlation.
-	\item We now focus on models for an ordinal outcome $Y$ on covariates $Z$ with parameters $\theta$. For subject $i$ $(i=1,...,n)$ and category $j$ $(j=1,...,s)$, let $\gamma_{i,j} = pr(Y_i\leq j|Z_i;\theta)$; for convenience, we define $\gamma_{i,0} = 0$. Let $p_{i,j} = pr(Y_i=j|Z_i)=\gamma_{i,j} - \gamma_{i, j-1}$. The following two moment properties hold:
-	$$
-	\begin{aligned}
-		E{R_i|Z_i;\theta} = 0;
-	\end{aligned}
-	$$
-	\item $var(R_i|Z_i;\theta) = E(R_i^2|Z_i;\theta) =\sum_{j=1}^s R_{i,j}^2 p_{i,j}= \sum_{j=1}^s (\gamma_{i,j-1} + \gamma_{i,j} - 1)^2 p_{i,j}$
-	
-	\item Let $\hat{p}_{i,j}$ and $\hat{\gamma}_{i,j}$ be the maximum likelihood estimates of $p_{i,j}$ and $\hat{\gamma}_{i,j}$. Then $\hat{r}_i = \hat{\gamma}_{i, y_i-1} + \hat{\gamma}_{i, y_i}$ - 1. The variance of $R_i$ can be consistently estimated by inserting these estimates into Property 13, $\hat{var}(R_i) = var(R_i|z_i;\hat{\theta}) =  \sum_{j=1}^s (\hat{\gamma}_{i,j-1} + \hat{\gamma}_{i,j} - 1)^2 \hat{p}_{i,j}$. One could therefore calculate a standardized residual as $\hat{r}_i/\{\hat{var}(R_i)\}^{1/2}$, which for binary $Y$ is the Pearson residual $(I_{\{Y_i=2\}} - \hat{p}_{i,2})(\hat{p}_{i,1}\hat{p}{i,2})^{-1/2}$.
-	
-	\item Now we consider a proportional odds model (??? McCullagh, 1980), $logit\{pr(Y \leq j|Z)\}=\alpha_j + Z^T\beta~(j=1,...,s-1)$ with parameters $\theta = (\alpha_1, ...\alpha_{s-1}, \beta)$. Under this model, our residuals are related to score residuals (??? Therneau el al., 1990, ). Let $l_i$ be the loglikelihood for subject $i$, and $U_i=U_i(\theta) = \partial l_i/\partial \theta$ be the score function. Because $E_{\theta}(U_i) = 0$, $U_i$ is called the score residual. For proportional odds models, the following two properties hold:
-	$$
-	\begin{aligned}
-		\hat{r}_i = - \sum_{j=1}^{s-1}(\partial l_i/\partial \alpha_j)|_{\hat{\theta}}, ~~~where ~\hat{\theta}~is~MLE
-	\end{aligned}
-	$$
-	\item $\sum_{i=1}^n \hat{r}_i = 0$.
-\textbf{Also}, under certain assumptions (see the paper), these residuals are equivalent to comparing $(\gamma_{i,j-1} + \gamma_{i,j})/2$ with $1/2$ on the probability scale.
-	
-\end{enumerate}
-~\\
-
-
-\section{Regression Models for correlated Failure Time Data. Page 302, \cite{kalbfleisch2011statistical}}
-This summary is based on book of Kalbfleisch and Prentice \emph{The Statistical Analysis of Failure Time Data}
-
-\subsection{Notations}
-If $\tilde{T}_i$ is the failure time for subject $i$ and $\pmb{x}_i$ is a covariance vector, \textbf{the joint survivor function} is:
-	$$
-	\begin{aligned}
-		F(t_1,...,t_m;x) = P(\tilde{T}_1>t_1,...,\tilde{T}_m > t_m;x)
-	\end{aligned}
-	$$
-
-Marginal \textbf{first-order }hazard function is:
-	$$
-	\begin{aligned}
-		 \lambda_j(dt_j;x) = P(y_j\leq \tilde{T}_j<t_j + dt_j|\tilde{T}_j \geq t_j,x) ~~~j=1,2,...,m
-	\end{aligned}
-	$$
-
-Marginal \textbf{first-order }hazard function is:
-	$$
-	\begin{aligned}
-		 \lambda_j(dt_j,dt_k;x) = P(y_j\leq \tilde{T}_j<t_j + dt_j,~y_k\leq \tilde{T}_k<t_k + dt_k~|~\tilde{T}_j \geq t_j,~\tilde{T}_k \geq t_k,~x) ~~~j=1,2,...,m
-	\end{aligned}
-	$$
-
-\subsection{Representation and estimation of the bivariate survivor function}
-Some notations:
-	$$
-	\begin{aligned}
-		F(t_1,t_2) &= P(\tilde{T}_1>t_1,\tilde{T}_2 > t_2)\\
-		\Lambda(t_1,t_2) &= \int_0^{t_1} \int_0^{t2} \lambda(du_1, du_2)
-	\end{aligned}
-	$$
-$\Lambda$ \textbf{does not} determine the survivor function over a follow-up region $[0,t_1] \times [0,t_2]$. However, together with the marginal cumulative hazard functions $\Lambda_1$ and $\Lambda_2$ it leads to a \emph{convenient} survivor function estimate with \emph{attractive properties}.\\
-First, let's introduce some notations:
-\[
-F(dt_1, dt_2)=
-\begin{bmatrix}
-    F^{(11)}(t_1, t_2)dt_1 dt_2 & \text{If F is absolutely continuous in both} \\
-        & \text{components at }(dt_1, dt_2) \\
-    F^{(10)}(t_1, \Delta t_2)dt_1 & \text{If F is continuous in its first, but not its }\\
-        & \text{second argument at }(dt_1, dt_2) \\
-    F^{(01)}(\Delta t_1, t_2)dt_2 & \text{If F is continuous in its second, but not its} \\
-        & \text{first argument at }(dt_1, dt_2) \\
-    F(\Delta t_1, \Delta t_2) & \text{If} (t_1, t_2)\text{ is a mass point}\\
-\end{bmatrix}
-\]
-	$$
-	\begin{aligned}
-		F(\Delta t_1, \Delta t_2) &= F(t_1^-, t_2^-) - F(t_1^-, t_2) - F(t_1, t_2^-) + F(t_1, t_2)\\
-		F(t_1, t_2) &= \int_{t_1}^{\infty} \int_{t_2}^{\infty} F(du_1, du_2)
-	\end{aligned}
-	$$
-\textbf{Bivariate hazard function:}
-	$$
-	\begin{aligned}
-		\Lambda(dt_1, dt_2) &= F(dt_1, dt_2)/F(t_1^-, t_2^-) ~~or\\
-		\Lambda(\Delta t_1, \Delta t_2) &= F(\Delta t_1, \Delta t_2)/F(t_1^-, t_2^-)
-	\end{aligned}
-	$$
-It is important to notice that $F(t_1,t_2)$ is not expressed only through $\Lambda$ (see page 309 of Kalbfleisch and Prentice) for the complicated formula. But there is also an easier expression, if we substitute $F(\Delta t_1, \Delta t_2) = \Lambda(\Delta t_1, \Delta t_2) \cdot F(t_1^-, t_2^-)$ into the expression for $F(\Delta t_1, \Delta t_2)$, we get:
-	$$
-	\begin{aligned}
-		F(t_1, t_2) &= F(t_1^-, t_2) + F(t_1, t_2^-) - F(t_1^-, t_2^-)[1-\Lambda(\Delta_1, \Delta_2)]\\
-	\end{aligned}
-	$$
-The above expression is a recursive procedure for estimating $F(t_1, t_2)$ at all failure time points starting with Kaplan-Meier estimates of $F(t_1, 0) = F_1(t_1)$ and $F(t_2, 0) = F_2(t_2)$ given the estimate of $\Lambda(\Delta_1, \Delta_2)$.\\
-Dabrowska (1988) inserts a simple estimator $\hat{\Lambda}(\Delta_1, \Delta_2)$, which is a ratio of the number of double failures at $(t_1,t_2)$ to the number of pairs at risk at that point:
-	$$
-	\begin{aligned}
-		\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)
-	\end{aligned}
-	$$
-This estimator has a reasonably good performance in moderate sample sizes, but is inefficient because of poor correspondence between $\hat{\Lambda}$ and Kaplan-Meier estimates $\hat{F}_1$ and $\hat{F}_2$. Dabrowska (1988) and Prentice\&Cai (1992) tried to improve it by estimating double failure hazard rates in a manner that aknowledge the empirical rate (see the above $\hat{\Lambda}$) and the amount of mass assigned by the Kaplan-Meier marginals along $\tilde{T}_1=t_1$ and along $\tilde{T}_2=t_2$ that remains to be assigned at $(t_1,t_2)$. These estimators were developed using certain product integral and Peano serries representation for the ratio $F(t_1,t_2)/(F_1(t_1)F_2(t_2))$.\\
-\emph{Prentice-Cai's} and \emph{Dabrowska's} estimator are given by:
-	$$
-	\begin{aligned}
-		&\hat{\pmb{\Lambda}}_{\pmb{P\&C}}(\Delta t_1, \Delta t_2) 
-		=\hat{\Lambda}(\Delta t_1, \Delta t_2) + \hat{L}_1(\Delta t_1, 0)\left[ \hat{L}_2(t_1^-, \Delta t_2)  - \hat{\Lambda}_2(t_1^-, \Delta t_2)\right] + \hat{L}_2(0, \Delta t_2)\left[ \hat{L}_1(\Delta t_1, t_2^-)  - \hat{\Lambda}_1(\Delta t_1, t_2^-)\right]\\
-		&\hat{\pmb{\Lambda}}_{\pmb{D}}(\Delta t_1, \Delta t_2) 
-		= \hat{L}_1(\Delta t_1, t_2^-)\hat{\Lambda}_2(t_1^-, \Delta t_2)  +  \frac{(1 - \hat{L}_1(\Delta t_1, t_2^-))(1 - \hat{\Lambda}_2(t_1^-, \Delta t_2))}{ (1-\hat{\Lambda}_1(\Delta t_1, t_2^-))  (1-\hat{\Lambda}_2(t_1^-, \Delta t_2))  } \hat{\Lambda}(\Delta t_1, \Delta t_2) - \hat{\Lambda}_1(\Delta t_1, t_2^-)\hat{\Lambda}_2(t_1^-, \Delta t_2)
-	\end{aligned}
-	$$
-Where
-	$$
-	\begin{aligned}
-		&\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
-		&\hat{L}_1(\Delta t_1, t_2^-) = \hat{F}_1(\Delta t_1, t_2^-)/\hat{L}_1(t_1^-, t_2^-)\\
-		&\hat{\Lambda}_1(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)
-	\end{aligned}
-	$$
 
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
@@ -967,8 +606,6 @@ They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defin
 UNDER CONSTRUCTION.\\
 The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendal} correlation measure in order to build a test that can deal with missing data. 
 
-
-
 \subsection{Fan, 1998 \cite{fan2000dependence}}
 There is a need in non-parametric measure of association between two survival times.\\
 Clayton suggested a \textit{cross ratio} (Clayton, 1978, Oaks, 1989) (see Clayton's $\theta$):
@@ -1043,7 +680,6 @@ The authors utilize the fact that both $C(\cdot, \cdot)$ and $\mathcal{T}(\cdot,
 
 \subsection{van der Laan, 1997 \cite{van1997nonparametric}}
 The estimators of Dabrowska and Prentice and Cai:
-
 	$$
 	\begin{aligned}
     S(t_1, t_2) &= S_1(t_1)S_2(t_2)R(t_1, t_2);\\
