@@ -48,37 +48,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matrix algebra
-\section{Oral Exam Stuff}
-Survival analysis is a well researched topic: time to event, time to event with censoring, multiple events, competing risk events, current status analysis. We are interested in association of two survival events. For example, we could be interested in time to breast cancer diagnosis in mothers and their daughters. It could also be a time to an onset of an opportunistic infection and time to viral failure in HIV infected patients. These motivating examples include paired survival, but in general, survival data doesn't have to be paired. The interest to bivariate survival to the best of our knowledge goes back to Clayton (1978)[??? check this]. Since then different methods were employed to address this question.\\
-~\\
-\begin{itemize}
-	\item Evaluation of the bivariate survival function with two marginals and a correlation component:
-	Dabrowska, Pruitt, Prentice, Van Der Laan.
-	\item Martingale residuals (Sih\&Louice, [??? look for more papers on martingale residuals])
-	\item sort of hazard ratio for bivariate surviaval (Clayton, Fan, Oakes, Sankaran et al)
-	\item copulas (zhang2008, [??? provide more references on copulas])
-	\item other regression residuals (Cuzick1982, Prentice)
-	\item Kendall's tau: weighted, global, local. 
-	\item distance measure [??? not sure if I want to address this]
-	\item Spearman correlation (Dabrowska1986, Ding2012, Cuzick1982)
-	\item Probability scale residuals, PSR (Li\&Shepard)
-	\item Challanges and limitations (discrete data covariates)
-	\item Qi - covariates (look at prentice and Cuzick)
-	\item show that this is Spearman
-	\item apply to dataset
-	\item simmulations
-	\item explore performance of partial and conditional Spearman.
-\end{itemize}
-
-Correlation of PSR is in fact a Spearman correlation generalized to the case with sensoring. Although, this kind of association was covered by (Cuzick1982, Dabrowska1986, Ding2012), they mentioned only a continuous case. PSR of (Li\&Shepard) are generalized to discrete case for the case of independent censoring and for the case of currents status data.\\
-~\\
-Future direction. We want to compare the performance of PSR to the performance of martingale residuals for the discrete case.
 
 \section*{Introduction}
 The interest in survival outcome can be traced back to year 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, collected data on the rate of death from childbed fever. He hypothesized that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever is higher because of a disease that is caused by cadaverous particles that medical students and doctors have on on their hands after disecting cadavras. Jumping forward about 100 years, survival data was routinely collected and used by hospital, agencies, and governments [READ YOUR epidemiology book]. The recorded data were used to estimate rates of death and other events.
 
 \subsection{1949-1970}
-Hald in 1949 ["Maximum Likelihood estimation of th eparameters of a normal distribution which is trancated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134], suggested a more complex view of survival data and introduced a concept of sensoring. This concept elegantly taken into accout by one of the most famous work on survival, Kaplan and Meier [1958, p.459]. Cox (1972) extended Kaplan\&Meier results even further and introduced a regression model for censored suvival data. His model utilized a concept of a \emph{hazard rate}:
+Hald in 1949 ["Maximum Likelihood estimation of th eparameters of a normal distribution which is trancated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134], suggested a more complex view of survival data and introduced a concept of censoring. This concept elegantly taken into accout by one of the most famous work on survival, Kaplan and Meier [1958, p.459]. Cox (1972) extended Kaplan\&Meier results even further and introduced a regression model for censored suvival data. His model utilized a concept of a \emph{hazard rate}:
 $$
 \begin{aligned}
 	\lambda(s|y) &= \frac{\partial}{\partial s}\left\{  -log \mathcal{S}(s|y)  \right\} =
@@ -136,9 +111,12 @@ $$
 	S(t) = p\left[ q\left\{ S_1(t_1) \right\}  + q\left\{ S_2(t_2) \right\}  \right]
 \end{aligned}
 $$
-Where $p(u)$ is an inverse function of $q(v)$. He shows how to estimate his model in the presence of censoring in either one or both components. He showed that in the context of his model, $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $\tau(v) = \frac{\theta(v)-1}{\theta(v)+1}$, where $v=S(t_1, t_2)$ [I am not sure if all this is necessary].
+Where $p(u)$ is an inverse function of $q(v)$. He shows how to estimate his model in the presence of censoring in either one or both components. He showed that in the context of his model, $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $ \frac{\theta(v)-1}{\theta(v)+1} = \tau(v)$, where $v=S(t_1, t_2)$ [I am not sure if all this is necessary].
+{\tiny{\textbf{We recall Kendal's $\tau$, 1938 \cite{kendall1938new}}: If we have two independent paris of variables (with the same bivariate distribution) $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendal's $\tau$ is a probability of concordance minus probability of discordance:
+$\tau = P[(U_1 - U_2)(Z_1 - Z_2)>0] - P[(U_1 - U_2)(Z_1 - Z_2)<0] = E[sign((U_1 - U_2)(Z_1 - Z_2))]$}}
 
-\subsubsection{Cuzick, 1982, Have not started yet.}
+
+\subsubsection{Cuzick, 1982}
 Considers a general model of association:
 	$$
 	\begin{aligned}
@@ -146,15 +124,16 @@ Considers a general model of association:
 	\end{aligned}
 	$$
 
-Where $Z$, $e_1$, and $e_2$ are independent. He considers two cases, and only the second case is relevant for us, when $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ are thought to be related to a third unobserved covariate.\\
-He assumed the same generalized ranking of censored data as Prentice (1978). Also, similar to Prentice (1978), Cuzick's approach required knowing $f_i(x)$ the density of $Y_i$ (or of $e_i$?). He illustrated his approach by showing that when this density is logistic, $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$, then the rank of each observation is $F(x)$ with no censoring, and $\frac{1+F(x)}{2}$, when censoring is present - \textbf{PSR}
+Where $Z$, $e_1$, and $e_2$ are independent and  $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ are thought to be related to a third unobserved covariate.\\
+He assumed the same generalized ranking of censored data as Prentice (1978): the uncensored observations are ranked and the censored observations can be arbitralily ranked, which also includes giving the same rank as the closest uncensored observation to the left of the censored point. Also, similar to Prentice (1978), Cuzick's approach required knowing $f_i(x)$ the density of $e_i$. He illustrated his approach by showing that when this density is logistic, $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$, then the rank of each observation is $F(x)$ with no censoring, and $\frac{1+F(x)}{2}$, when censoring is present - \textbf{PSR}
 
-\subsection{Dabrowska, 1986 \cite{dabrowska1986rank}}
-Has developed further the approach of [Prentice, 1978], [Kalbfleisch \& Prentice, 1980], and [Cuzick, 1982], in order to check a null hypothesis of independence $H_0:~F=F_1 F_2$. The author suggested that  the following \emph{linear rank} statistic can be used
+\subsection{1986}
+\subsubsection{Dabrowska, 1986 \cite{dabrowska1986rank}}
+The author discusses statistics to check independence of two failure times, possibly censored: $H_0:~F=F_1 F_2$. Unlike Cuzick [ref???], she does not assume any model, but the assumption of failure times are still necessary. the author has continued the development of non-parametric test for bivariate survival. further the approach of [Prentice, 1978], [Kalbfleisch \& Prentice, 1980], and [Cuzick, 1982], . The author suggested that  the following \emph{linear rank} statistic can be used
 	$$
 	\begin{aligned}
 		 &\sum_{n=1}^N a_1(R_{1n}, \delta_{1n})\cdot a_2(R_{2n}, \delta_{2n}), ~i=1,2\\
-		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)}^{a_{ik}}
+		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)})^{a_{ik}}
 	\end{aligned}
 	$$
 Where: 
@@ -168,26 +147,85 @@ Where:
 		 \mathcal{J}(u,d) ~&is~such~that:~~\int_0^u \mathcal{J}_i(v,1)dv = -(1-u)\mathcal{J}_i(u,0)
 	\end{aligned}
 	$$
-The author showed that the choice of $\mathcal{J}_i(u,d) =d-(1+d)u$ corresponds to the cencored-data version of the Spearman test. She also notes that the exact scores are hard to compute, so an approximate test statistics  can be used:
+She also notes that the exact scores are hard to compute, so similarly to Prentice [1978???], Kalbfleisch and Prentice [1980???], and Cuzick [1982], the author uses an approximate test statistic:
 	$$
 	\begin{aligned}
 		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
 	\end{aligned}
 	$$
-Substituting $\mathcal{J}_i(u,d) =d-(1+d)u$ into the above expression, we get:
+Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s.
+
+She shows that different failure distribution functions result in different tests. Specifically, the choice of $\mathcal{J}_i(u,d) =d-(1+d)u$ corresponds to the cencored-data version of the Spearman test. Substituting this choice of $\mathcal{J}_i(u,d)$ into the above expression, we get:
 	$$
 	\begin{aligned}
 		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
 	\end{aligned}
 	$$
-Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. If we look at the above expression closely: it reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual, \textbf{PSR}, for \emph{continuous case}.
+The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual, \textbf{PSR}, for continuous and censored failure time. 
+
+
+\subsection{1989}
+\subsubsection{Oakes, 1989 \cite{oakes1989bivariate}}
+ Oakes studied association between two survival functions in the context of \emph{frailty} models $Pr(T>t|W=w) = \{B(t)\}^w$. It can be shown that for these models:
+	$$
+	\begin{aligned}
+		S(t) &= Pr(T>t) = E_W[Pr(T>t,w)]=E_W e^{-(-logB(t))w} = p(-logB(t))
+	\end{aligned}
+	$$
+ where $p(\cdot)$ is the Laplace transform of $W$ ($p(x) = Ee^{xW}$). This representation extends for bivariate distributions, $S(t_1, t_2) = Pr(T_1>t_1, T_2>t_2)$. In a bivariate frailty model $T_1$ and $T_2$ are conditionally independent, given W:
+	$$
+	\begin{aligned}
+		S(t_1, t_2) &= \int \{B_1(t_1)B_2(t_2)\}^w dF(w)\\
+		& therefore:\\
+		S(t_1, t_2) &= p(-logB_1(t_1)-logB_2(t_2))
+	\end{aligned}
+	$$
+	Oakes shows that when each $S_j(t_j)$ depends on the unobserved $W$ this induces an association between the observed times. He also notes that bivariate distributions generated by frailty models are a subclass of the archimedean distributions studied by Genest and MacKay (1986a,b) with the following general form.
+	$$
+	\begin{aligned}
+		S(t) &= p[q(S_1\{t_1\}) + q(S_2\{t_2\})],~~~~~S_1(t_1) = S_1(t_1, 0)~~and~~S_2(t_2) = S_2(0, t_2)
+	\end{aligned}
+	$$
+Oakes proves a lemma that Clayton's $\theta$ depends on $t=(t_1, t_2)$ only through $S(t)=v$ $\theta(v) = \theta^*(t) = \theta^*(S(t))$. He derives a general formula for $\theta(v)$ and also uses the relation $\frac{\theta(v)-1}{\theta(v)+1}$ to derive conditional version of \emph{Kendall}'s $\tau$ (or \emph{local} version of \emph{Kendall}'s $\tau$).
+
+
+
+
+
+\section{Oral Exam Stuff}
+~\\
+\begin{itemize}
+	\item Evaluation of the bivariate survival function with two marginals and a correlation component:
+	Dabrowska, Pruitt, Prentice, Van Der Laan.
+	\item Martingale residuals (Sih\&Louice, [??? look for more papers on martingale residuals])
+	\item sort of hazard ratio for bivariate survival (Clayton, Oakes, Fan, Sankaran et al)
+	\item copulas (zhang2008, [??? provide more references on copulas])
+	\item other regression residuals (Cuzick1982, Prentice)
+	\item Kendall's tau: weighted, global, local. 
+	\item distance measure [??? not sure if I want to address this]
+	\item Spearman correlation (Dabrowska1986, Ding2012, Cuzick1982)
+	\item Probability scale residuals, PSR (Li\&Shepard)
+	\item Challanges and limitations (discrete data covariates)
+	\item Qi - covariates (look at prentice and Cuzick)
+	\item show that this is Spearman
+	\item apply to dataset
+	\item simmulations
+	\item explore performance of partial and conditional Spearman.
+\end{itemize}
+
+Correlation of PSR is in fact a Spearman correlation generalized to the case with censoring. Although, this kind of association was covered by (Cuzick1982, Dabrowska1986, Ding2012), they mentioned only a continuous case. PSR of (Li\&Shepard) are generalized to discrete case for the case of independent censoring and for the case of currents status data.\\
+~\\
+Survival analysis is a well researched topic: time to event, time to event with censoring, multiple events, competing risk events, current status analysis. We are interested in association of two survival events. For example, we could be interested in time to breast cancer diagnosis in mothers and their daughters. It could also be a time to an onset of an opportunistic infection and time to viral failure in HIV infected patients. These motivating examples include paired survival, but in general, survival data doesn't have to be paired. The interest to bivariate survival to the best of our knowledge goes back to Clayton (1978)[??? check this]. Since then different methods were employed to address this question.\\
+
+Future direction. We want to compare the performance of PSR to the performance of martingale residuals for the discrete case.
+
+
 
 
 \textbf{Show the resemblence with archemedian copulas}
 
+
 \textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), "Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring," Biometrics, 39, 129-139.}
-
-
 
 
 \section{PSR (probability scale residuals) for censored data}
@@ -218,7 +256,7 @@ Because $t$ and $s$ are symmetric, $\int\int_{y<s<t}dF^*(s)dF^*(t) = \int\int_{y
 	\end{aligned}
 	$$
 	
-Therefore for sensored data:
+Therefore for censored data:
 	$$
 	\begin{aligned}
 		r(y, F^*) &= F^*(y) + F^*(y-) - 1,~~~&\delta = 1 \\
@@ -333,45 +371,6 @@ Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and t
 	$$
 We have already proved in the previous sections, that taking a correlation of the product of the right hand side expressions above results in Spearman correlation (the minus signs cancel out).
 
-\subsection{Rank tests for independence for bivariate censored data (Dabrowska) \cite{dabrowska1986rank}}
-For null hypothesis $H_0:~F=F_1 F_2$, the following \emph{linear rank} statistic can be used
-	$$
-	\begin{aligned}
-		 &\sum_{n=1}^N a_1(R_{1n}, \delta_{1n})\cdot a_2(R_{2n}, \delta_{2n}), ~i=1,2\\
-		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)}^{a_{ik}}
-	\end{aligned}
-	$$
-Where: 
-	$$
-	\begin{aligned}
-		 R_in &= \#\{m:~Y_{im} \leq Y_{in}, \delta_{im}=1   \}\\
-		 a_{ik} &= \# \{n: ~R_{in}=k,~\delta_{in}=0\}\\
-		 m_{ik} &= \# \{n: ~R_{in}\geq k\}\\
-		 \delta_{im}&=1,~if~subject ~m~from~group~i~has~an~event\\
-		 U_{(k)}~&independent ~ordered~sample~from~Uniform~distribution\\
-		 \mathcal{J}(u,d) ~&is~such~that:~~\int_0^u \mathcal{J}_i(v,1)dv = -(1-u)\mathcal{J}_i(u,0)
-	\end{aligned}
-	$$
-The author then says that the choice of $\mathcal{J}_i(u,d) =d-(1+d)u$ corresponds to the cencored-data version of the Spearman test. She also notes that the exact scores are hard to compute, so an approximate test statistics  can be used:
-	$$
-	\begin{aligned}
-		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
-	\end{aligned}
-	$$
-Substituting $\mathcal{J}_i(u,d) =d-(1+d)u$ into the above expression, we get:
-	$$
-	\begin{aligned}
-		 S_n &= \sum_{n=1}^N (\delta_{1n} - (1+\delta_{1n})\hat{F}_1(Y_{1n}))\cdot (\delta_{2n} - (1+\delta_{2n})\hat{F}_1(Y_{2n})) =\\
-		 &= \sum_{n=1}^N (-\hat{F}_1(Y_{1n}) + \delta_{1n}(1-\hat{F}_1(Y_{1n})))\cdot (-\hat{F}_2(Y_{2n}) + \delta_{2n}(1-\hat{F}_2(Y_{2n})))\\
-	\end{aligned}
-	$$
-Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. If we look at the above expression closely:
-	$$
-	\begin{aligned}
-		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
-	\end{aligned}
-	$$
-it reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual for \emph{continuous case}.
 
 \subsection{Ding, Wang, 2012: Testing Independence for Bivariate Current Status Data, ref???}
 Suggested two statistics for testing independence for bivariate \emph{current status data}. One is based on counts (how many events, non-events, and so forth). The other one is:
@@ -520,79 +519,6 @@ Where
 This problem is related to the problem of identifiability of bivariate survival functions.
 
 
- \subsection{Oakes, 1989 \cite{oakes1989bivariate}}
- Oakes studied association between two survival functions in the context of \emph{frailty} models $Pr(T>t|W=w) = \{B(t)\}^w$. It can be shown that for these models:
-	$$
-	\begin{aligned}
-		S(t) &= Pr(T>t) = E_W[Pr(T>t,w)] = \int Pr(T>t|w)dF{w} = E_W[B^w(t)] = \\
-		  &=E_W e^{-(-logB(t))w} = p(-logB(t))
-	\end{aligned}
-	$$
- where $p(\cdot)$ is the Laplace transform of $W$ ($p(x) = Ee^{xW}$). This representation extends for bivariate distributions, $S(t_1, t_2) = Pr(T_1>t_1, T_2>t_2)$. ''A bivariate frailty model asserts that T, and T2 are conditionally independent, given W:''
-	$$
-	\begin{aligned}
-		S(t_1, t_2) &= \int \{B_1(t_1)B_2(t_2)\}^w dF(w)\\
-		& therefore:\\
-		S(t_1, t_2) &= p(-logB_1(t_1)-logB_2(t_2))
-	\end{aligned}
-	$$
-	Oakes shows that when each $S_j(t_j)$ depends on the unobserved $W$ this induces an association between the observed times. He also notes that bivariate distributions generated by frailty models are a subclass of the archimedean distributions studied by Genest and MacKay (1986a,b) with the following general form. In the following we use the following notation $t=(t_1, t_2)$\\
-	$$
-	\begin{aligned}
-		S(t) &= p[q(S_1\{t_1\}) + q(S_2\{t_2\})],~~~~~S_1(t_1) = S_1(t_1, 0)~~and~~S_2(t_2) = S_2(0, t_2)
-	\end{aligned}
-	$$
-Where $p(\cdot)$ is any nonnegative decreasing function with $p(0)=1$ and nonnegative second derivative, and $q(\cdot)$ is its inverse function. Recalling Clayton's formula for $\theta$:
-	$$
-	\begin{aligned}
-		\theta &= \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
-	\end{aligned}
-	$$
-Oakes proves a lemma that to make a point that $\theta$ depends on $t$ only through $S(t)=v$ $\theta(v) = \theta^*(t) = \theta^*(S(t))$, (keep in mind that $t$ is a vector). He derives a general formula for $\theta(v)$:
-	$$
-	\begin{aligned}
-		\theta(v) = -v\cdot q''(v)/q'(v)
-	\end{aligned}
-	$$
-He also shows how to find $S(t)$ based on $\theta(v)$. He gives several examples of how to find one from the other.
-
-
-	
-{\tiny{\textbf{We recall Kendal's $\tau$, 1938 \cite{kendall1938new}}: If we have two independent paris of variables (with the same bivariate distribution) $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendal's $\tau$ is a probability of concordance minus probability of discordance:
-$\tau = P[(U_1 - U_2)(Z_1 - Z_2)>0] - P[(U_1 - U_2)(Z_1 - Z_2)<0] = E[sign((U_1 - U_2)(Z_1 - Z_2))]$}}
-
- 
-In notations of Oakes, Kendall's (1938) coefficient of concordance is:
-	$$
-	\begin{aligned}
-		&\tau = E\{sign(T_{1}^{(a)} - T_{1}^{(b)}) (T_{2}^{(a)} - T_{2}^{(b)}) \}
-	\end{aligned}
-	$$
-	Where $(T_1^{(a)}, T_2^{(a)})$ and $(T_1^{(b)}, T_2^{(b)})$ are two independent pairs (for example, if we study mothers (1) and daughers (2), $(T_1^{(a)}, T_2^{(a)})$ is one mother-daughter pair and $(T_1^{(b)}, T_2^{(b)})$ is the other).\\
-
- Oakes called $\tau$ a \emph{global} measure. He also said that parameter $\theta$ (introduced by Clayton) can be viewed as \emph{local} measure. If $T^{(a)}=(T_1^{(a)}, T_2^{(a)})$ and $T^{(b)} = (T_1^{(b)}, T_2^{(b)})$, let $\tilde{T}^{(ab)}$ denote the component-wise minimum: $\tilde{T}^{(ab)}_j = min(T^{(a)}_j, T^{(b)}_j),~j\in\{1,2\}$, then (Oakes says that \emph{it is easily seen}):
-	$$
-	\begin{aligned}
-		\theta(v) = \frac{Pr\{(T^{(a)}, T^{(b)})~concordant|\tilde{T}^{(ab)}=t\} }{  Pr\{(T^{(a)}, T^{(b)})~discordant|\tilde{T}^{(ab)}=t\}}
- 	\end{aligned}
-	$$
-Therefore, the ratio $\frac{\theta(v)-1}{\theta(v)+1}$ is a conditional version of Kendall's $\tau$.
-	$$
-	\begin{aligned}
-		&\tau(v) = E\{sign(T_{1}^{(a)} - T_{1}^{(b)}) (T_{2}^{(a)} - T_{2}^{(b)}) ~|~ min(T^{(a)}_1, T^{(b)}_1) = s_1,~min(T^{(a)}_2, T^{(b)}_2) = s_2  \}
-	\end{aligned}
-	$$
-He comes up with an estimator and proves its convergence to $\theta(v)$.
-
-\subsection{Cuzick, 1982 citation ?????}
-Considers a general model of association:
-	$$
-	\begin{aligned}
-		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2
-	\end{aligned}
-	$$
-Where $Z$, $e_1$, and $e_2$ are independent. He considers two cases, and only the second case is relevant for us, when $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ are thought to be related to a third unobserved covariate.\\
-It is not very clear from the paper what they denote as $f_i(x)$. I am guessing this is a density of $Y_i$ (or of $e_i$?). In any case, they author says that when this density is logistic, $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$, then the rank of each observation is $F(x)$ with no censoring, and $\frac{1+F(x)}{2}$, when censoring is present.
 
 \subsection{Shih and Louis, 1998 citation ?????}
 They take martingale residuals $T_n=\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (where $M_{ij}$ is the difference between observed and expected deaths), and create two statistics out of them:
