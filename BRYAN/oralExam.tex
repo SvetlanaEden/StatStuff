@@ -202,8 +202,94 @@ Where
 This problem is related to the problem of identifiability of bivariate survival functions.
 
 \subsubsection{Prentice, 1992 \cite{prentice1992covariance}}
-???
-% If I understand correctly, the authors model bivariate survival as two marginal survivor functions and a covariance function (instead of joint survivor function).
+This section is summarizing chapter 10 of book of Kalbfleisch and Prentice \emph{The Statistical Analysis of Failure Time Data} \cite{kalbfleisch2011statistical} Regression Models for correlated Failure Time Data. Page 302.
+
+If $\tilde{T}_i$ is the failure time for subject $i$ and $\pmb{x}_i$ is a covariance vector, \textbf{the joint survivor function} is:
+	$$
+	\begin{aligned}
+		F(t_1,...,t_m;x) = P(\tilde{T}_1>t_1,...,\tilde{T}_m > t_m;x)
+	\end{aligned}
+	$$
+
+Marginal \textbf{first-order }hazard function is:
+	$$
+	\begin{aligned}
+		 \lambda_j(dt_j;x) = P(y_j\leq \tilde{T}_j<t_j + dt_j|\tilde{T}_j \geq t_j,x) ~~~j=1,2,...,m
+	\end{aligned}
+	$$
+
+Marginal \textbf{first-order }hazard function is:
+	$$
+	\begin{aligned}
+		 \lambda_j(dt_j,dt_k;x) = P(y_j\leq \tilde{T}_j<t_j + dt_j,~y_k\leq \tilde{T}_k<t_k + dt_k~|~\tilde{T}_j \geq t_j,~\tilde{T}_k \geq t_k,~x) ~~~j=1,2,...,m
+	\end{aligned}
+	$$
+
+The following are notations for representation and estimation of the bivariate survivor function:
+	$$
+	\begin{aligned}
+		F(t_1,t_2) &= P(\tilde{T}_1>t_1,\tilde{T}_2 > t_2)\\
+		\Lambda(t_1,t_2) &= \int_0^{t_1} \int_0^{t2} \lambda(du_1, du_2)
+	\end{aligned}
+	$$
+$\Lambda$ \textbf{does not} determine the survivor function over a follow-up region $[0,t_1] \times [0,t_2]$. However, together with the marginal cumulative hazard functions $\Lambda_1$ and $\Lambda_2$ it leads to a \emph{convenient} survivor function estimate with \emph{attractive properties}.\\
+First, let's introduce some notations:
+\[
+F(dt_1, dt_2)=
+\begin{bmatrix}
+    F^{(11)}(t_1, t_2)dt_1 dt_2 & \text{If F is absolutely continuous in both} \\
+        & \text{components at }(dt_1, dt_2) \\
+    F^{(10)}(t_1, \Delta t_2)dt_1 & \text{If F is continuous in its first, but not its }\\
+        & \text{second argument at }(dt_1, dt_2) \\
+    F^{(01)}(\Delta t_1, t_2)dt_2 & \text{If F is continuous in its second, but not its} \\
+        & \text{first argument at }(dt_1, dt_2) \\
+    F(\Delta t_1, \Delta t_2) & \text{If} (t_1, t_2)\text{ is a mass point}\\
+\end{bmatrix}
+\]
+	$$
+	\begin{aligned}
+		F(\Delta t_1, \Delta t_2) &= F(t_1^-, t_2^-) - F(t_1^-, t_2) - F(t_1, t_2^-) + F(t_1, t_2)\\
+		F(t_1, t_2) &= \int_{t_1}^{\infty} \int_{t_2}^{\infty} F(du_1, du_2)
+	\end{aligned}
+	$$
+\textbf{Bivariate hazard function:}
+	$$
+	\begin{aligned}
+		\Lambda(dt_1, dt_2) &= F(dt_1, dt_2)/F(t_1^-, t_2^-) ~~or\\
+		\Lambda(\Delta t_1, \Delta t_2) &= F(\Delta t_1, \Delta t_2)/F(t_1^-, t_2^-)
+	\end{aligned}
+	$$
+It is important to notice that $F(t_1,t_2)$ is not expressed only through $\Lambda$ (see page 309 of Kalbfleisch and Prentice) for the complicated formula. But there is also an easier expression, if we substitute $F(\Delta t_1, \Delta t_2) = \Lambda(\Delta t_1, \Delta t_2) \cdot F(t_1^-, t_2^-)$ into the expression for $F(\Delta t_1, \Delta t_2)$, we get:
+	$$
+	\begin{aligned}
+		F(t_1, t_2) &= F(t_1^-, t_2) + F(t_1, t_2^-) - F(t_1^-, t_2^-)[1-\Lambda(\Delta_1, \Delta_2)]\\
+	\end{aligned}
+	$$
+The above expression is a recursive procedure for estimating $F(t_1, t_2)$ at all failure time points starting with Kaplan-Meier estimates of $F(t_1, 0) = F_1(t_1)$ and $F(t_2, 0) = F_2(t_2)$ given the estimate of $\Lambda(\Delta_1, \Delta_2)$.\\
+Dabrowska (1988) inserts a simple estimator $\hat{\Lambda}(\Delta_1, \Delta_2)$, which is a ratio of the number of double failures at $(t_1,t_2)$ to the number of pairs at risk at that point:
+	$$
+	\begin{aligned}
+		\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)
+	\end{aligned}
+	$$
+This estimator has a reasonably good performance in moderate sample sizes, but is inefficient because of poor correspondence between $\hat{\Lambda}$ and Kaplan-Meier estimates $\hat{F}_1$ and $\hat{F}_2$. Dabrowska (1988) and Prentice\&Cai (1992) tried to improve it by estimating double failure hazard rates in a manner that aknowledge the empirical rate (see the above $\hat{\Lambda}$) and the amount of mass assigned by the Kaplan-Meier marginals along $\tilde{T}_1=t_1$ and along $\tilde{T}_2=t_2$ that remains to be assigned at $(t_1,t_2)$. These estimators were developed using certain product integral and Peano serries representation for the ratio $F(t_1,t_2)/(F_1(t_1)F_2(t_2))$.\\
+\emph{Prentice-Cai's} and \emph{Dabrowska's} estimator are given by:
+	$$
+	\begin{aligned}
+		&\hat{\pmb{\Lambda}}_{\pmb{P\&C}}(\Delta t_1, \Delta t_2) 
+		=\hat{\Lambda}(\Delta t_1, \Delta t_2) + \hat{L}_1(\Delta t_1, 0)\left[ \hat{L}_2(t_1^-, \Delta t_2)  - \hat{\Lambda}_2(t_1^-, \Delta t_2)\right] + \hat{L}_2(0, \Delta t_2)\left[ \hat{L}_1(\Delta t_1, t_2^-)  - \hat{\Lambda}_1(\Delta t_1, t_2^-)\right]\\
+		&\hat{\pmb{\Lambda}}_{\pmb{D}}(\Delta t_1, \Delta t_2) 
+		= \hat{L}_1(\Delta t_1, t_2^-)\hat{\Lambda}_2(t_1^-, \Delta t_2)  +  \frac{(1 - \hat{L}_1(\Delta t_1, t_2^-))(1 - \hat{\Lambda}_2(t_1^-, \Delta t_2))}{ (1-\hat{\Lambda}_1(\Delta t_1, t_2^-))  (1-\hat{\Lambda}_2(t_1^-, \Delta t_2))  } \hat{\Lambda}(\Delta t_1, \Delta t_2) - \hat{\Lambda}_1(\Delta t_1, t_2^-)\hat{\Lambda}_2(t_1^-, \Delta t_2)
+	\end{aligned}
+	$$
+Where
+	$$
+	\begin{aligned}
+		&\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
+		&\hat{L}_1(\Delta t_1, t_2^-) = \hat{F}_1(\Delta t_1, t_2^-)/\hat{L}_1(t_1^-, t_2^-)\\
+		&\hat{\Lambda}_1(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)
+	\end{aligned}
+	$$
 
 \subsubsection{van der Laan, 1997 \cite{van1997nonparametric}}
 The estimators of Dabrowska and Prentice and Cai:
@@ -298,6 +384,27 @@ She shows that different failure distribution functions result in different test
 	\end{aligned}
 	$$
 The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual, \textbf{PSR}, for continuous and censored failure time. 
+
+\subsubsection{Shih, Louis, 1996, \emph{Test of Independence for Bivariate Survival Data}, ref???}
+\textbf{Motivation}: Leukemia patients that undergo bone marrow transplantation are at risk of \emph{acute graft versus host disease (AGVHD)} and \emph{cytomegalovirus (CMV)}, and the question is if these events are correlated:
+
+The authors consider martingale residuals, $M_{ij}$, which is the difference between observed and expected deaths. They base their new statistic on the result of Clayton and Cuzick (1985 ???) who developed a model for bivariate time to event with frailties, and suggested the following test statistic that measured the sample covariance of the martingale residuals:
+$$
+\begin{aligned}
+  T_n=\sum_i \left\{ \delta_{i1} - \hat{\Lambda}(X_{i1}) \right\} \left\{ \delta_{i2} - \hat{\Lambda}(X_{i2}) \right\} =\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2).
+\end{aligned}
+$$ 
+ 
+Shih and Louis suggested to improve its power by introducing the following two statistics:
+
+\begin{enumerate}
+	\item take supremum: $U_n= \sup_{0\leq t \leq t_0} \left|\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)\right|$
+	\item weigh it: $V_n= \sum_i \int_0^{t_0}  \int_0^{t_0} W_n(u_1,u_2) d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (which is analogous to the weighted logrank test)
+\end{enumerate}
+They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defined by Oakes $\theta = \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}$: 
+
+Although statistic $U_n$ is a supremum over $t_1=t_2$, the simulations showed promising results.
+For $V_n$, if the weights are not specified correctly, the test based on $V_n$ looses power.
 
 \subsubsection{Ding, Wang, 2012: Testing Independence for Bivariate Current Status Data, ref???}
 Suggested two statistics for testing independence for bivariate \emph{current status data}. One is based on counts (how many events, non-events, and so forth). The other one is:
@@ -462,13 +569,6 @@ The author uses archimedian copulas and Kendall's $\tau$ to assess association o
 
 \section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005 \cite{moodie2005adjustment}}
 
-\subsection{Shih and Louis, 1998 citation ?????}
-They take martingale residuals $T_n=\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (where $M_{ij}$ is the difference between observed and expected deaths), and create two statistics out of them:
-\begin{enumerate}
-	\item take supremum: $U_n= \sup_{0\leq t \leq t_0} \left|\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)\right|$
-	\item weigh it: $V_n= \sum_i \int_0^{t_0}  \int_0^{t_0} W_n(u_1,u_2) d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (which is analogous to the weighted logrank test)
-\end{enumerate}
-They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defined by Oakes $\theta = \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}$: 
 
 \subsection{Alvo and Cabilio, 1995 citation ?????}
 UNDER CONSTRUCTION.\\
