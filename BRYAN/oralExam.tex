@@ -184,22 +184,52 @@ If $F$ has a density $f(s,t)$, we have $\Lambda_{11}(ds,dt) = \lambda_{11}(s,t)d
 	$$
 Where $\lambda_{11}(s,t)$ is the instantaneous rate of \emph{double failure} at point $(s,t)$, given that the individuals were alive at times $T_1=s-$ and $T_2 = t-$. $\lambda_{10}(s, t)$ is the rate of a \emph{single failure} at time s give that the first individual was alive at time $T_1=s$ and the second survived beyond time $T_2 = 1$.\\
 
-Long story short, he showed that a bivariate survival function can be decomposed into a product of two univariate components and some product of a function of bivariate hazards. He showed the consistency of the estimator (given independence of events and censoring), based on this decomposition:
+Long story short, he showed that a bivariate survival function can be decomposed into a product of two univariate components and some product of a function of bivariate hazards. She showed the consistency of the estimator (given independence of events and censoring), based on this decomposition:
 	$$
 	\begin{aligned}
-		\hat{F}(s,t) = \hat{F}(s,0)\hat{F}(0,t)\prod_{\mathcal{A}}\{1 - \hat{L}(\Delta u, \Delta v)\}
+		\hat{F}(s,t) &= \hat{F}(s,0)\hat{F}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
 	\end{aligned}
 	$$
-Where 
-\begin{itemize}
-	\item $\mathcal{A} = \{0<u\leq s\} \cap \{0 < v \leq t\} \cap \{(u, v) \in E_i\}$, where $E_i$ are four sets based on \emph{Jordan decomposition of functions with bounded variation}, and $\hat{L}(\Delta u, \Delta v)$ is a function of hazards (see the source).
-  \item $\hat{F}(s,0)$ and $\hat{F}(0,t)$ are usual Kaplan-Meier estimates, for example, $\hat{F}(s,0) = \prod_{u\leq s}[1-\hat{\Lambda_{10}(\Delta u, o)}]$
-	\item $\hat{L}(\Delta u, \Delta v) = \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}$
-\end{itemize}
+Where $\hat{F}(s,0)$ and $\hat{F}(0,t)$ are usual Kaplan-Meier estimates, for example, $\hat{F}(s,0) = \prod_{u\leq s}[1-\hat{\Lambda_{10}(\Delta u, o)}]$, and
+	$$
+	\begin{aligned}
+    \hat{L}(\Delta u, \Delta v) &= \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
+  &where\\
+	&\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
+	&\hat{\Lambda}_{10}(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)\\
+	&\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) = \#(T_2=t_2, \delta_2=1, T_1\geq t_1)/\#(T_1\geq t_1, T_2\geq t_2)		
+	\end{aligned}
+	$$
+It is possible to show that expression $1-L(du, dv)$ can be written as:
+	$$
+	\begin{aligned}
+		1 - L(du, dv) &= \frac{P(T_1>u,~T_2>v|T_1\geq u,~T_2\geq v)}  {P(T_1>u|T_1\geq u,~T_2\geq v)P(T_2>v|T_1\geq u,~T_2\geq v)} =
+		\frac{ F(u,v)F(u-,v-) }{ F(u,v-)F(u-,v) }
+	\end{aligned}
+	$$
+
+Which looks very much like:
+	$$
+	\begin{aligned}
+		\theta &= \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
+	\end{aligned}
+	$$
+Which is the coefficient of association derived by Clayton[???] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of cahnges in survival functon, but the similarity is facionating. 
 
 \subsubsection{Pruitt, 1991 \cite{pruitt1991negative}}
- Pruitt showed that Dabrowska's estimator assigns negative mass to points of $\hat{F}(s,t)$. Although the value of negative mass decreases, the number of such points does not disappear with growing sample size, resulting in non-disappearing negative mass.\\
-This problem is related to the problem of identifiability of bivariate survival functions.
+Pruitt showed that Dabrowska's estimator assigns negative mass to points of $\hat{F}(s,t)$. Although the value of negative mass decreases, the number of such points does not disappear with growing sample size, resulting in non-disappearing negative mass. This problem is related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of Prof. Pruitt is rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
+
+	$$
+	\begin{aligned}
+		\hat{F}(s,t) &= \hat{F}(s,0)\hat{F}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
+    1 - \hat{L}(\Delta u, \Delta v) &= 1 - \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
+  &where\\
+	&\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
+	&\hat{\Lambda}_{10}(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)\\
+	&\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) = \#(T_2=t_2, \delta_2=1, T_1\geq t_1)/\#(T_1\geq t_1, T_2\geq t_2)		
+	\end{aligned}
+	$$
+We notice that if expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, then it is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$. This happens because $\hat{\Lambda}(\Delta t_1, \Delta t_2)$, $\hat{\Lambda}_{10}(\Delta t_1, t_2^-)$, and $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2)$ are estimated from different data: the number of double failures doesn't necessarily correspond to the number of single failures because of censoring.
 
 \subsubsection{Prentice, 1992 \cite{prentice1992covariance}}
 This section is summarizing chapter 10 of book of Kalbfleisch and Prentice \emph{The Statistical Analysis of Failure Time Data} \cite{kalbfleisch2011statistical} Regression Models for correlated Failure Time Data. Page 302.
@@ -286,8 +316,9 @@ Where
 	$$
 	\begin{aligned}
 		&\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
+		&\hat{\Lambda}_1(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)\\
+	  &\hat{\Lambda}_2(t_1^-,\Delta  t_2) = \#(T_2=t_2, \delta_2=1, T_1\geq t_1)/\#(T_1\geq t_1, T_2\geq t_2)\\
 		&\hat{L}_1(\Delta t_1, t_2^-) = \hat{F}_1(\Delta t_1, t_2^-)/\hat{L}_1(t_1^-, t_2^-)\\
-		&\hat{\Lambda}_1(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)
 	\end{aligned}
 	$$
 
@@ -562,7 +593,11 @@ Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and t
 	$$
 We have already proved in the previous sections, that taking a correlation of the product of the right hand side expressions above results in Spearman correlation (the minus signs cancel out).
 
+\subsection{Probability scale residual as a measure of association for censored outcomes, continuous or discrete}
+Correlation of PSR is in fact a Spearman correlation generalized to the case with censoring. Although, Cuzick1982, Dabrowska1986, and Ding2012 described statistics indentical to PRS in continuous case, their derivations were done in a semi-parametric setting with very specific assumptions about the distribution of time to event. Spearman correlation of PSR requires very little assumptions (what assumptions???) and is a non-parametric way of measuring association. In addition, PSR are generalized to discrete case for the case of independent censoring and for the case of currents status data.\\
 
+Future direction: We want to develope conditional and partial PSR, we want to evaluate the performance of PSR under different distributions, functional dependence, and percent of censoring.
+	
 
 \subsection{Zhang, 2008: Inference on the association measure for bivariate survival data with hybrind censoring and applications to an HIV study, ref???}
 The author uses archimedian copulas and Kendall's $\tau$ to assess association of bivariate survival data with hybrid censoring.
@@ -574,19 +609,51 @@ The author uses archimedian copulas and Kendall's $\tau$ to assess association o
 UNDER CONSTRUCTION.\\
 The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendal} correlation measure in order to build a test that can deal with missing data. 
 
+\section{Dabrowska example}
+\begin{verbatim}
+library(survival)
+kmdata = data.frame(Y1 = c(.51, .68, .11, .24), d1 = c(1, 1, 1, 0), Y2 = c(.02, .68, .62, .24), d2 = c(1, 1, 0, 0))
+KM1 <- survfit( Surv(kmdata$Y1, kmdata$d1)~ 1)$surv
+KM2 <- survfit( Surv(kmdata$Y2, kmdata$d2)~ 1)$surv
+KM1
+KM2
 
+X = c(rep(.11, 4), rep(.24, 4), rep(.51, 4), rep(.68, 4))
+Y = c(rep(c(.02, .24, .62, .68), 4))
+lam11 = c(rep(0, 8),   .25, .25, 1/3, 1/2,   .25, .25, 1/3, 1)
+lam10 = c(rep(.25, 4),    rep(0, 4),   rep(.5,4),   rep(1,4))
+lam01 = c(rep(c(.25, 0, 0, 1), 4))
+L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
+bivarSurvEstData = data.frame(X=X, Y=Y, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L)
+
+############## estimator at point (X,Y) = (.51, .02):
+L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
+L_24_02 = bivarSurvEstData$L[bivarSurvEstData$X == .24 & bivarSurvEstData$Y == .02]
+L_51_02 = bivarSurvEstData$L[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+KM1_51_02 = bivarSurvEstData$KM1[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+KM2_51_02 = bivarSurvEstData$KM2[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+
+BivarSurvEstimate_51_02 = KM1_51_02 * KM2_51_02 * (1-L_11_02) * (1-L_24_02) * (1-L_51_02)
+BivarSurvEstimate_51_02
+
+l11 = .25
+l10 = 0.5
+l01 = 0.25
+(l10*l01 - l11)/((1 - l10)*(1 - l01))
+
+l11 = .25
+l10 = .25
+l01 = 0
+(l10*l01 - l11)/((1 - l10)*(1 - l01))
+\end{verbatim}
 
 
 \section{Oral Exam Stuff}
 ~\\
 \begin{itemize}
-	\item Evaluation of the bivariate survival function with two marginals and a correlation component:
-	Dabrowska, Pruitt, Prentice, Van Der Laan.
-	\item Martingale residuals (Sih\&Louice, [??? look for more papers on martingale residuals])
+	\item Martingale residuals (Shih\&Louice, [??? look for more papers on martingale residuals])
 	\item sort of hazard ratio for bivariate survival (Clayton, Oakes, Fan, Sankaran et al)
 	\item copulas (zhang2008, [??? provide more references on copulas])
-	\item other regression residuals (Cuzick1982, Prentice)
-	\item Kendall's tau: weighted, global, local. 
 	\item distance measure [??? not sure if I want to address this]
 	\item Spearman correlation (Dabrowska1986, Ding2012, Cuzick1982)
 	\item Probability scale residuals, PSR (Li\&Shepard)
@@ -596,41 +663,18 @@ The authors use a concept of distance applied to \emph{Spearman} and \emph{Kenda
 	\item apply to dataset
 	\item simmulations
 	\item explore performance of partial and conditional Spearman.
-\end{itemize}
-
-Correlation of PSR is in fact a Spearman correlation generalized to the case with censoring. Although, this kind of association was covered by (Cuzick1982, Dabrowska1986, Ding2012), they mentioned only a continuous case. PSR of (Li\&Shepard) are generalized to discrete case for the case of independent censoring and for the case of currents status data.\\
-~\\
-
-Future direction. We want to compare the performance of PSR to the performance of martingale residuals for the discrete case.
-
-
-
-
-\textbf{Show the resemblence with archemedian copulas}
-
-
-\textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), "Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring," Biometrics, 39, 129-139.}
-
-
-\subsection{My plan}
-\begin{enumerate}[1)]
-  \item look at the papers that have PRS and see if they use covariates
-  \item look at all papers that are marked with stars
-	\item Look who cited Cuzick's paper
-	\item look cited Alvo and Cabilio, 1993:
+	\item read Alvo and Cabilio, 1993:
 	\item look into Shih \& Louis, 1996: \emph{who sites those and what this is about (Louis is apparently known)}.
-	\item Read the Cuzick's paper in detail.
 	\item Look who cited Betensky, Filkenstein, AIDS, 1999: paper
 Tests of independence for bivariate survival data:
 	\item Understand Qi's conditional, partial, and conditional-partial correlation
 	\item Find out about Spearman test (unlike Spearman's correlation)
-	\item fFind all papers that cite Dabrowska's paper on correlation
 	\item Develop Spearman correlation for different $s$ and $t$: instead of having one number $\rho$ develop a new measure $\rho(s, t)$.
-\end{enumerate}
+	\item \textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring, Biometrics, 39, 129-139.}
 
+\end{itemize}
+~\\
 
-
-	
 \printbibliography
 
 \end{document}          
