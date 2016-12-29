@@ -214,7 +214,58 @@ Which looks very much like:
 		\theta &= \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
 	\end{aligned}
 	$$
-Which is the coefficient of association derived by Clayton[???] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of cahnges in survival functon, but the similarity is facionating. 
+Which is the coefficient of association derived by Clayton[???] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of changes in survival functon, but the similarity is facionating.\\
+
+Dabrowska addresses a comment of the reviewer that the suggested estimator has negative mass assignment. She provides an example of such case:
+
+\section{Dabrowska example}
+\begin{verbatim}
+### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
+library(survival)
+kmdata = data.frame(Y1 = c(.51, .68, .11, .24), d1 = c(1, 1, 1, 0), Y2 = c(.02, .68, .62, .24), d2 = c(1, 1, 0, 0))
+KM1 <- survfit( Surv(kmdata$Y1, kmdata$d1)~ 1)$surv
+KM2 <- survfit( Surv(kmdata$Y2, kmdata$d2)~ 1)$surv
+KM1
+KM2
+
+X = c(rep(.11, 4), rep(.24, 4), rep(.51, 4), rep(.68, 4))
+Y = c(rep(c(.02, .24, .62, .68), 4))
+lam11 = c(rep(0, 8),   .5,   rep(0, 6),   1)
+lam10 = c(c(.25, 1/3, 1/2, 1),    rep(0, 4),   0.5,   rep(1,7))
+lam01 = c(.25, c(0, 0, 1),   1/3,   c(0, 0, 1),   .5,   c(0, 0, 1),   1,   c(0, 0, 1) )
+numAtRisk = c(4,3,2,1,   3,2,1,1,   2,1,1,1,   1,1,1,1)
+L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
+bivarSurvEstData = data.frame(X=X, Y=Y, lam11=lam11, lam10=lam10, lam01=lam01, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L)
+
+############## estimator at point (X,Y) = (.51, .02):
+L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
+L_24_02 = bivarSurvEstData$L[bivarSurvEstData$X == .24 & bivarSurvEstData$Y == .02]
+L_51_02 = bivarSurvEstData$L[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+KM1_51_02 = bivarSurvEstData$KM1[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+KM2_51_02 = bivarSurvEstData$KM2[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+
+BivarSurvEstimate_51_02 = KM1_51_02 * KM2_51_02 * (1-L_11_02) * (1-L_24_02) * (1-L_51_02)
+BivarSurvEstimate_51_02
+
+BivarSurvEstimate_51_02 > KM1_51_02
+
+############# plot:
+ylim = range(c(X, Y))
+cex = 0.7
+par(mar=c(4, 4, 2, 2))
+plot(ylim, ylim, type="n", axes=FALSE, xlab="T1", ylab="T2")
+segments(x0=c(0, unique(X)), y0=0, y1 = range(Y)[2], lty=3, col="gray")
+segments(x0=0, y0=c(0, unique(Y)), x1 = range(X)[2], lty=3, col="gray")
+axis(side=1, at = unique(X), col = "gray", cex.axis=cex)
+axis(side=2, at = unique(Y), col = "gray", cex.axis=cex)
+koef = .06/sqrt(2)
+segments(x0=c(.11, .24), y0=c(.62, .24), x1=c(.11, .24+koef), y1=c(.68, .24+koef))
+points(unique(X), c(.62, .24, .02, .68), cex=1.2, pch=21, bg=c("orange", "orange", "red", "red"), col="black")
+offset = 0.015
+text(bivarSurvEstData$X-offset, bivarSurvEstData$Y-offset, bivarSurvEstData$numAtRisk, cex=cex)
+\end{verbatim}
+
+She suggests that this can be explained by the fact that $\hat{\Lambda}(\Delta t_1, \Delta t_2)$, $\lambda_{10}(s,t) = \lim_{h\rightarrow 0}$, and $\lambda_{01}(s,t) = \lim_{h\rightarrow 0}$ summarize three different portions of the data. She also notices that in the absence of censoring, this problem does not arise.
 
 \subsubsection{Pruitt, 1991 \cite{pruitt1991negative}}
 Pruitt showed that Dabrowska's estimator assigns negative mass to points of $\hat{F}(s,t)$. Although the value of negative mass decreases, the number of such points does not disappear with growing sample size, resulting in non-disappearing negative mass. This problem is related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of Prof. Pruitt is rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
@@ -323,14 +374,14 @@ Where
 	$$
 
 \subsubsection{van der Laan, 1997 \cite{van1997nonparametric}}
-The estimators of Dabrowska and Prentice and Cai:
+Van Der Laan summarized literature and compared performance several estimators including Dabrowska's and Prentice \& Cai's.
 	$$
 	\begin{aligned}
-    S(t_1, t_2) &= S_1(t_1)S_2(t_2)R(t_1, t_2);\\
-		R(t_1, t_2) &= \frac{S(t_1, t_2)S(0, 0)}{S(t_1)S(t_2)}
+    S(t_1, t_2) &= S_1(t_1, 0)S_2(0, t_2)R(t_1, t_2);\\
+		R(t_1, t_2) &= \frac{S(t_1, t_2)S(0, 0)}{S(t_1,0)S(0,t_2)}
  	\end{aligned}
 	$$
-where $R(t_1, t_2)$ is called \emph{a cross-ratio}(I think) and is a dependence measure between events $T_1>t_1$ and $T_2>t_2$, and $S_j(t_j)$ is a marginal survivor function that is estimated using Kaplan-Meier estimator. The cross-ratio has ''multiplicative property: the cross-ratio over the union of two adjacent rectangles equals the product of the cross-ratios of the rectangles.'' It can be computed iteratively, which leads to the Dbrowska estimator.\\
+where $R(t_1, t_2)$ is called \emph{a cross-ratio}. We see that this is a dependency measure because this is a ratio of columns or rows of a two-by-two table.\\
 \\
 If we represent $R(t_1, t_2) = e^{log(R(t_1, t_2))}$, then $log(R)$ is  an additive measure over the rectangle $(0,s_1]\times(0,s_2]$ and we can compute:
 	
@@ -340,13 +391,11 @@ If we represent $R(t_1, t_2) = e^{log(R(t_1, t_2))}$, then $log(R)$ is  an addit
  	\end{aligned}
 	$$
 
-There is a problem (with consistency) with finding these estimators for continuous using EM algorithm because we need to redistribute the mass and there is a problem with it for singly censored observations. This problem was corrected by Pruitt(1991) by using kernel-density estimators. Van der Laan proposed NPMLE based on interval censored singly-censored observations.\\
-\\
-Under complete independence of events and censoring events, Dabrowska's and Prentice and Cai's estimators did better. With increased dependence, Laan's estimator did better.
+He sites the work of Jill and Johansen (1990) who proved that these two estimators are equivalent, and no surprizingly they have similar performance. Under assumption of complete independence of events and censoring events, Dabrowska's and Prentice and Cai's perform well.
 
-
-
-
+Among other estimators Van Der Laan discusses difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE). In the presents of singly censored observations it has a problem of uniqueness (see page 321 of Prentice). He notes that when NPMLE is solved using expectation-maximization (EM) algorithm, the algorithm assigns equal mass to uncensored observations, and signly and double censored observations are assigned mass based on the nearby uncensored observations. In case of singly censored observations, in order for them to get a mass assignment the half line has to contain at least one uncensored observation, which might not be the case.\\
+Van Der Laan suggests a repaired NPMLE, where instead of the half-lines there are strips that are wide enough to contain the uncensored observations, and suggests a way of redistributing the mass for singly censored observations based on the uncensored observations that fall into the strips or quadrants.
+After comparing sevaral estimator, the author comes to conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators are better. With increased dependence however, Laan's estimator performed better.
 
 \subsection{Developing linear rank tests}
 
@@ -609,47 +658,9 @@ The author uses archimedian copulas and Kendall's $\tau$ to assess association o
 UNDER CONSTRUCTION.\\
 The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendal} correlation measure in order to build a test that can deal with missing data. 
 
-\section{Dabrowska example}
-\begin{verbatim}
-library(survival)
-kmdata = data.frame(Y1 = c(.51, .68, .11, .24), d1 = c(1, 1, 1, 0), Y2 = c(.02, .68, .62, .24), d2 = c(1, 1, 0, 0))
-KM1 <- survfit( Surv(kmdata$Y1, kmdata$d1)~ 1)$surv
-KM2 <- survfit( Surv(kmdata$Y2, kmdata$d2)~ 1)$surv
-KM1
-KM2
-
-X = c(rep(.11, 4), rep(.24, 4), rep(.51, 4), rep(.68, 4))
-Y = c(rep(c(.02, .24, .62, .68), 4))
-lam11 = c(rep(0, 8),   .25, .25, 1/3, 1/2,   .25, .25, 1/3, 1)
-lam10 = c(rep(.25, 4),    rep(0, 4),   rep(.5,4),   rep(1,4))
-lam01 = c(rep(c(.25, 0, 0, 1), 4))
-L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
-bivarSurvEstData = data.frame(X=X, Y=Y, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L)
-
-############## estimator at point (X,Y) = (.51, .02):
-L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
-L_24_02 = bivarSurvEstData$L[bivarSurvEstData$X == .24 & bivarSurvEstData$Y == .02]
-L_51_02 = bivarSurvEstData$L[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-KM1_51_02 = bivarSurvEstData$KM1[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-KM2_51_02 = bivarSurvEstData$KM2[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-
-BivarSurvEstimate_51_02 = KM1_51_02 * KM2_51_02 * (1-L_11_02) * (1-L_24_02) * (1-L_51_02)
-BivarSurvEstimate_51_02
-
-l11 = .25
-l10 = 0.5
-l01 = 0.25
-(l10*l01 - l11)/((1 - l10)*(1 - l01))
-
-l11 = .25
-l10 = .25
-l01 = 0
-(l10*l01 - l11)/((1 - l10)*(1 - l01))
-\end{verbatim}
 
 
 \section{Oral Exam Stuff}
-~\\
 \begin{itemize}
 	\item Martingale residuals (Shih\&Louice, [??? look for more papers on martingale residuals])
 	\item sort of hazard ratio for bivariate survival (Clayton, Oakes, Fan, Sankaran et al)
@@ -664,7 +675,6 @@ l01 = 0
 	\item simmulations
 	\item explore performance of partial and conditional Spearman.
 	\item read Alvo and Cabilio, 1993:
-	\item look into Shih \& Louis, 1996: \emph{who sites those and what this is about (Louis is apparently known)}.
 	\item Look who cited Betensky, Filkenstein, AIDS, 1999: paper
 Tests of independence for bivariate survival data:
 	\item Understand Qi's conditional, partial, and conditional-partial correlation
