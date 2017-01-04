@@ -1,5 +1,6 @@
 \documentclass[]{article}
 
+%\usepackage[final]{pdfpages}
 \usepackage{anysize}
 \usepackage{amsfonts}
 \usepackage{amsmath}
@@ -154,29 +155,28 @@ After weighting $\tau(s_1, s_2)$ proportionally to the density, they obtain the 
 Both, $C(t_1, t_2)$ and $\mathcal{T}(t_1, t_2)$ were proven to be consistent and converged in distribution to a mean zero Gaussian process.
 % and had a property of asymptotic validity (definition ?) of the boostrap.
 
-\subsubsection{Fan, 2000 \cite{fan2000class}}
-The authors suggest a class of estimators similar to what was described in \emph{Fan, 1998} \cite{fan2000dependence}, which were weighted averages of local measures. The motivation for new estimators was that ''for certain choices of weights, the estimation of the bivariate survivor function (e.g. Dabrowska (1998)\cite{dabrowska1988kaplan} and Prentice and Cai (1992) \cite{prentice1992covariance}), can be avoided and explicit variance formulae can be obtained.''\\
-The authors utilize the fact that in some specific cases, both $C(\cdot, \cdot)$ and $\mathcal{T}(\cdot, \cdot)$ depend on $F(\cdot, \cdot)$ only through the hazard function and therefore can be estimated using Nelson-Aalan-type estimator of the hazard:
+\subsubsection{Fan, Prentice, Hsu, 2000 \cite{fan2000class}}
+The authors suggest a class of estimators similar to ones described above [\cite{fan2000dependence}]. They considered special cases of $\theta(t_1, t_2)$ and weights, where instead of using of the bivariate survivor function estimators of Dabrowska, 1998 [\cite{dabrowska1988kaplan}] and Prentice and Cai, 1992 [\cite{prentice1992covariance}] the hazard function estimators of Nelson-Aalen type can be used. And instead of bootstrap variance estimator, an explicit variance formulae can be obtained.\\
 
-	$$
-	\begin{aligned}
-    C(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2)}{\int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2)}\\
-    \mathcal{T}(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) - \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) + \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }\\
-	\end{aligned}
-	$$
-
+% The authors utilize the fact that in some specific cases, both $C(\cdot, \cdot)$ and $\mathcal{T}(\cdot, \cdot)$ depend on $F(\cdot, \cdot)$ only through the hazard function and therefore can be estimated using Nelson-Aalan-type estimator of the hazard:
+% 	$$
+% 	\begin{aligned}
+%     C(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2)}{\int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2)}\\
+%     \mathcal{T}(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) - \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) + \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }\\
+% 	\end{aligned}
+%  $$
 
 \subsection{Estimating bivariate survival surface}
 
 \subsubsection{Dabrowska, 1988 \cite{dabrowska1988kaplan}}
-Dabrowska introduced defined a bivarate Kaplan-Meier estimator and proved its consistency (and probably something else). Her notations were used in the following papers:\\
-Let $(\Omega, \mathcal{F}, P)$ be a probability space, and let $F(s,t) = P(T_1>s, T_2>t)$ be the corresponding joint survival function. By a bivariate cumulative hazard function, Dabrowska means a vector:
+Dabrowska, 1988 \cite{dabrowska1988kaplan} introduced a bivariate non-parametric estimator and proved its consistency. Let's introduce the following notations.
+Let $(\Omega, \mathcal{F}, P)$ be a probability space, and let $F(s,t) = P(T_1>s, T_2>t)$ be the corresponding joint survival function. Bivariate cumulative hazard functions are defined by Dabrowska in the following way:
 	$$
 	\begin{aligned}
-		\Lambda(s,t) &= (\Lambda_{10}(s,t), \Lambda_{01}(s,t), \Lambda_{11}(s,t))\\
-		&where\\
+		%\Lambda(s,t) &= (\Lambda_{10}(s,t), \Lambda_{01}(s,t), \Lambda_{11}(s,t))\\
+		%&where\\
 		\Lambda_{11}(ds,dt) &= \frac{P(T_1 \in ds, T_2\in dt)}{P(T_1 \geq s, T_2 \geq t)} = \frac{F(ds, dt)}{F(s-, t-)}\\
-		\Lambda_{10}(ds,t) &= \frac{P(T_1 \in ds, T_2 > dt)}{P(T_1 \geq ds, T_2 > t)} = \frac{-F(ds, t)}{F(s-, t)}~~~see ~the~paper~where ~it~is~F(s-, t-),~probably~a~typo\\ 
+		\Lambda_{10}(ds,t) &= \frac{P(T_1 \in ds, T_2 > dt)}{P(T_1 \geq ds, T_2 > t)} = \frac{-F(ds, t)}{F(s-, t)}\\ %~~~see ~the~paper~where ~it~is~F(s-, t-),~probably~a~typo\\ 
 		\Lambda_{01}(s,dt) &= \frac{P(T_1 > s, T_2\in dt)}{P(T_1 > s, T_2 \geq t)} = \frac{-F(s, dt)}{F(s, t-)}\\
 		&and\\
 		\Lambda_{10}(0,t) &= \Lambda_{01}(s,0) = \Lambda_{11}(0,0) = 0\\
@@ -191,15 +191,15 @@ If $F$ has a density $f(s,t)$, we have $\Lambda_{11}(ds,dt) = \lambda_{11}(s,t)d
 		\lambda_{01}(s,t) &= \lim_{h\rightarrow 0} \frac{1}{h} P(T_2\in[t,t+h] | T_1 > s, T_2 \geq t) & = \int_s^{\infty} \frac{f(u,t)du}{F(s, t-)}\\
 	\end{aligned}
 	$$
-Where $\lambda_{11}(s,t)$ is the instantaneous rate of \emph{double failure} at point $(s,t)$, given that the individuals were alive at times $T_1=s-$ and $T_2 = t-$. $\lambda_{10}(s, t)$ is the rate of a \emph{single failure} at time s give that the first individual was alive at time $T_1=s$ and the second survived beyond time $T_2 = 1$.\\
+Where $\lambda_{11}(s,t)$ is the instantaneous rate of \emph{double failure} at point $(s,t)$, given that the individuals were alive at times $T_1=s-$ and $T_2 = t-$. $\lambda_{10}(s, t)$ is the rate of a \emph{single failure} at time $s$ give that the first individual was alive at time $T_1=s$ and the second survived beyond time $T_2 = 1$.\\
 
-Long story short, he showed that a bivariate survival function can be decomposed into a product of two univariate components and some product of a function of bivariate hazards. She showed the consistency of the estimator (given independence of events and censoring), based on this decomposition:
+Under condition of independence of independence of event times and censoring times, the author derived a bivariate survival function estimator that could be computed as a product of two univariate survival function estimators and a third term:
 	$$
 	\begin{aligned}
 		\hat{F}(s,t) &= \hat{F}(s,0)\hat{F}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
 	\end{aligned}
 	$$
-Where $\hat{F}(s,0)$ and $\hat{F}(0,t)$ are usual Kaplan-Meier estimates, for example, $\hat{F}(s,0) = \prod_{u\leq s}[1-\hat{\Lambda_{10}(\Delta u, o)}]$, and
+Where $\hat{F}(s,0)$ and $\hat{F}(0,t)$ are usual Kaplan-Meier estimates, for example, $\hat{F}(s,0) = \prod_{u\leq s}[1-\hat{\Lambda}_{10}(\Delta u, o)]$, and the third term is a function of bivariate hazards:
 	$$
 	\begin{aligned}
     \hat{L}(\Delta u, \Delta v) &= \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
@@ -223,11 +223,11 @@ Which looks very much like:
 		\theta &= \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
 	\end{aligned}
 	$$
-Which is the coefficient of association derived by Clayton[\cite{clayton1978model}] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of changes in survival functon, but the similarity is facionating.\\
-
-Dabrowska addresses a comment of the reviewer that the suggested estimator has negative mass assignment. She provides an example of such case:
+Which is the coefficient of association derived by Clayton[\cite{clayton1978model}] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of changes in survival function, but it represents a measure of dependency between two survival times.\\
+This estimator is very easy to compute, but as one of the reviewers commented, it assigned negative mass to some points. The example below was provided by the author:
 
 \subsubsection{Dabrowska's example}
+{{\tiny
 \begin{verbatim}
 ### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
 library(survival)
@@ -244,7 +244,7 @@ lam10 = c(c(.25, 1/3, 1/2, 1),    rep(0, 4),   0.5,   rep(1,7))
 lam01 = c(.25, c(0, 0, 1),   1/3,   c(0, 0, 1),   .5,   c(0, 0, 1),   1,   c(0, 0, 1) )
 numAtRisk = c(4,3,2,1,   3,2,1,1,   2,1,1,1,   1,1,1,1)
 L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
-bivarSurvEstData = data.frame(X=X, Y=Y, lam11=lam11, lam10=lam10, lam01=lam01, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L)
+bivarSurvEstData = data.frame(X=X, Y=Y, lam11=lam11, lam10=lam10, lam01=lam01, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L, numAtRisk = numAtRisk)
 
 ############## estimator at point (X,Y) = (.51, .02):
 L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
@@ -261,35 +261,61 @@ BivarSurvEstimate_51_02 > KM1_51_02
 ############# plot:
 ylim = range(c(X, Y))
 cex = 0.7
-par(mar=c(4, 4, 2, 2))
-plot(ylim, ylim, type="n", axes=FALSE, xlab="T1", ylab="T2")
-segments(x0=c(0, unique(X)), y0=0, y1 = range(Y)[2], lty=3, col="gray")
-segments(x0=0, y0=c(0, unique(Y)), x1 = range(X)[2], lty=3, col="gray")
-axis(side=1, at = unique(X), col = "gray", cex.axis=cex)
-axis(side=2, at = unique(Y), col = "gray", cex.axis=cex)
-koef = .06/sqrt(2)
-segments(x0=c(.11, .24), y0=c(.62, .24), x1=c(.11, .24+koef), y1=c(.68, .24+koef))
-points(unique(X), c(.62, .24, .02, .68), cex=1.2, pch=21, bg=c("orange", "orange", "red", "red"), col="black")
-offset = 0.015
-text(bivarSurvEstData$X-offset, bivarSurvEstData$Y-offset, bivarSurvEstData$numAtRisk, cex=cex)
-\end{verbatim}
+setwd("/Users/svetlanaeden/stuff/StatStuff/BRYAN")
+pdf("figure1.pdf", height=5, width = 5)
+	par(mar=c(4, 4, 2, 2))
+	plot(ylim, ylim, type="n", axes=FALSE, xlab="T1", ylab="T2")
+	segments(x0=c(0, unique(X)), y0=0, y1 = range(Y)[2], lty=3, col="gray")
+	segments(x0=0, y0=c(0, unique(Y)), x1 = range(X)[2], lty=3, col="gray")
+	axis(side=1, at = unique(X), col = "gray", cex.axis=cex)
+	axis(side=2, at = unique(Y), col = "gray", cex.axis=cex)
+	ray = 0.08
+	koef = ray/sqrt(2)
+	segments(x0=c(.11, .24), y0=c(.62, .24), x1=c(.11, .24+koef), y1=c(.62+ray, .24+koef))
+	points(unique(X), c(.62, .24, .02, .68), cex=1.2, pch=21, bg=c("orange", "white", "red", "red"), col="black")
+	offset = 0.015
+	text(bivarSurvEstData$X-offset, bivarSurvEstData$Y-offset, bivarSurvEstData$numAtRisk, cex=cex)
+dev.off()
 
-She suggests that this can be explained by the fact that $\hat{\Lambda}(\Delta t_1, \Delta t_2)$, $\lambda_{10}(s,t) = \lim_{h\rightarrow 0}$, and $\lambda_{01}(s,t) = \lim_{h\rightarrow 0}$ summarize three different portions of the data. She also notices that in the absence of censoring, this problem does not arise.
+if(FALSE){
+  nSim = 100
+	set.seed(1)
+	l01 = runif(nSim); l10 = runif(nSim); l11 = runif(nSim) 
+	xData = data.frame(x = (l01*l10 - l11)/((1-l01)*(1-l10)), l01 = l01, l10 = l10, l11 = l11)
+	xData = xData[order(xData$x),]
+	plot(xData$x, type="l")
+	xData[xData$x < -1,]
+	xData[xData$x > 1,]
+}
+
+
+\end{verbatim}
+}}
+
+
+\begin{figure}[!h]
+\includegraphics{figure1.pdf}
+\caption{Dabrowska's example.}
+\label{fig:bubbles}
+\end{figure}
+\clearpage
+
+Dabrowska demonstrates that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) is greater than its marginal estimator. She noted that this can be explained by the fact that $\Lambda_{11}$, $\Lambda_{10}$, and $\Lambda_{01}$ summarize three different portions of the data, and that in the absence of censoring, this problem does not arise.
 
 \subsubsection{Pruitt, 1991 \cite{pruitt1991negative}}
-Pruitt showed that Dabrowska's estimator assigns negative mass to points of $\hat{F}(s,t)$. Although the value of negative mass decreases, the number of such points does not disappear with growing sample size, resulting in non-disappearing negative mass. This problem is related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of Prof. Pruitt is rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
+Pruitt, 1991 [\cite{pruitt1991negative}] showed that for Dabrowska's estimator, although the value of negative mass decreases, the number of such points does not disappear with growing sample size, resulting in non-disappearing negative mass. This problem is related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of Prof. Pruitt is rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
 
 	$$
 	\begin{aligned}
 		\hat{F}(s,t) &= \hat{F}(s,0)\hat{F}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
     1 - \hat{L}(\Delta u, \Delta v) &= 1 - \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
   &where\\
-	&\hat{\Lambda}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
+	&\hat{\Lambda}_{11}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
 	&\hat{\Lambda}_{10}(\Delta t_1, t_2^-) = \#(T_1=t_1, \delta_1=1, T_2\geq t_2)/\#(T_1\geq t_1, T_2\geq t_2)\\
 	&\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) = \#(T_2=t_2, \delta_2=1, T_1\geq t_1)/\#(T_1\geq t_1, T_2\geq t_2)		
 	\end{aligned}
 	$$
-We notice that if expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, then it is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$. This happens because $\hat{\Lambda}(\Delta t_1, \Delta t_2)$, $\hat{\Lambda}_{10}(\Delta t_1, t_2^-)$, and $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2)$ are estimated from different data: the number of double failures doesn't necessarily correspond to the number of single failures because of censoring.
+It is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in term may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.
 
 \subsubsection{Prentice, 1992 \cite{prentice1992covariance}}
 This section is summarizing chapter 10 of book of Kalbfleisch and Prentice \emph{The Statistical Analysis of Failure Time Data} \cite{kalbfleisch2011statistical} Regression Models for correlated Failure Time Data. Page 302.
