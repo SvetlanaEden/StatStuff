@@ -50,13 +50,11 @@
 \clearpage
 
 \section{INTRODUCTION}
-The interest in survival data can be traced back to year 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, recorded the rate of death from childbed fever. After excluding several other hypotheses, he suggested that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever is higher because of a disease that is caused by cadaverous particles that medical students and doctors have on their hands after dissecting cadavers. As you might know, his theory was dismissed, and he died alienated from the medical community. The rational for his hypothesis was discovered decades later, when the germ theory of the disease was developed.
+The interest in survival data can be traced back to year 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, recorded the rate of death from childbed fever. After excluding several other hypotheses, he suggested that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever was higher because of a disease that was caused by cadaverous particles that medical students and doctors had on their hands after dissecting cadavers. As you might know, his theory was dismissed, and he died alienated from the medical community. The rational for his hypothesis was discovered decades later, when the germ theory of the disease was developed. 
 
 
-Another example was Florence Nightingale, who was born into a rich upper-class British family, and in spite of her status she pursued a career of a nurse. She was credited for significantly reducing hospital mortality of British soldiers during the Crimean War, in 1854 (with hand-washing being one of the most important practices implemented under her supervision). She also published some of her works in simple English in order to popularize medical knowledge.
- 
-
-In these two examples, the survival data could be collected as a binary variable: died or lived.  Another way of collecting survival data is to record time to death or any other event of interest. As we know, time to event may not always be observed, it can be \emph{censored} by other events. Hald in 1949 ["Maximum Likelihood estimation of the parameters of a normal distribution which is truncated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134], suggested a more complex view of survival data and introduced a concept of censoring. This concept was elegantly taken into account by one of the most famous work on survival, Kaplan and Meier, 1958 [\cite{kaplan1958nonparametric}]. Cox, 1972 [\cite{cox1992regression}] extended Kaplan\&Meier results even further and introduced a regression model for censored survival data. His model utilized a concept of a \emph{hazard rate}:
+Another example was Florence Nightingale, who was born into a rich upper-class British family, and in spite of her status she pursued a career of a nurse. She was credited for significantly reducing hospital mortality of British soldiers during the Crimean War, in 1854 (with hand-washing being one of the most important practices implemented under her supervision). She also published some of her works in simple English in order to popularize medical knowledge.\\
+In these two examples, the survival data could be collected as a binary variable: died or lived.  Another way of collecting survival data is to record time to death or any other event of interest. As we know, time to event may not always be observed, it can be \emph{censored} by other events. Hald in 1949 ["Maximum Likelihood estimation of the parameters of a normal distribution which is truncated at a known point", \emph{Skandinavisk Aktuarielidskrift, 32 (1949)}, 119-134], was probably the first to suggest a more complex view of survival data and introduced a concept of censoring. This concept was elegantly taken into account by one of the most famous work on survival, Kaplan and Meier, 1958 [\cite{kaplan1958nonparametric}]. Cox, 1972 [\cite{cox1992regression}] extended Kaplan\&Meier results even further, and introduced a regression model for censored survival data. His model utilized a concept of a \emph{hazard rate}:
 
 $$
 \begin{aligned}
@@ -65,7 +63,7 @@ $$
 \end{aligned}
 $$
 Where $\mathcal{S}(s|y) = 1-F(s|y)$, and $F(s|y)$ and $f(s|y)$ are cumulative distribution function and density function respectively. In the same paper %(p.195)
-Cox generalized his model for a case when one subject can have two events.\\
+Cox generalized his model for a case when one subject can have two events. 
 Basu, 1971 %[get this paper from the library ??? this does not add up because Cox wrote his paper later]
 considered a \emph{paired} bivariate survival with the hazard rate defined as:
 $$
@@ -74,14 +72,14 @@ $$
 \end{aligned}
 $$
 
-In this presentation we are concerned with the question of association between paired survival data. We review three main approaches to this question not necessarily in the chronological order.\\
-First, this question was addressed by introducing a \emph{bi-variate hazard ratio} in the context of specific survival distributions and a family of distributions. The second approach was to find a non-parametric estimate of the bivariate survival function with three components: two marginal survival functions and a term that represented the association between two survivals. The third approach was developing semi-parametric and non-parametric tests to examine association of residuals. We especially focus on the non-parametric test of \emph{probability scale residuals} introduced by Li\&Shepherd [\cite{li2012new}]. This review does not cover all approaches to examining bivariate survival, for example, modeling association using copulas or distance between residuals. 
+In this paper we are concerned with the question of association between paired survival data. We review three main approaches.\\
+First, this question was addressed by introducing a \emph{bi-variate hazard ratio} in the context of specific survival distributions and a family of distributions. The second approach was to find a non-parametric estimate of the bivariate survival function with three components: two marginal survival functions and a term that represented an association between two survival variables. The third approach was to develop semi-parametric and non-parametric tests to examine association of residuals. We especially focus on the non-parametric test of \emph{probability scale residuals} introduced by \cite{li2012new} . This review does not cover all existing approaches to the problem of bivariate survival association, for example, modeling association using copulas or distance between residuals were not considered. The main goal of the paper was to show the complexity of theoretical tools required to address the question of bivariate survival in the presence of censoring and to highlight the generalizability of \emph{probability scale residuals}. In conclusion, we identify our future research with a goal, to apply \emph{probability scale residuals} for a wide range of different statistical scenarios in the context of bivariate survival with censoring. 
 
 \section{LITERATURE REVIEW}
 
 \subsection{Modeling a Bivariate Hazard Ratio}
 
-Following Cox and Basu, \cite{clayton1978model} addressed a question of association between paired survival times of fathers and sons and defined a measure similar to hazard ratio, that has the following properties:
+Following Cox and Basu, \cite{clayton1978model} addressed a question of association between paired survival times of fathers and sons and defined a measure similar to hazard ratio, that had the following properties:
 \begin{enumerate}
 	\item Easy to compute
 	\item Expressible as a constant ratio of age-specific rates
@@ -93,31 +91,27 @@ $$
 	\theta = \frac{\lambda_s(s_0|t=t_0)}{\lambda_s(s_0|t>t_0)} = \frac{\lambda_t(t_0|s=s_0)}{\lambda_t(t_0|s>s_0)}
 \end{aligned}
 $$
-The requirement of symmetry was motivated by the fact than neither son nor father are causes of the event, rather, there is an unobservable variable that is associated with the event for both of them.
+The requirement of symmetry was motivated by the fact than neither son nor father were causes of the event, rather, there was an unobservable variable that was associated with the event for both of them.
 
-This measure can be interpreted for sons (as much as for fathers) in the following way: how much more likely for a son to have an event at time $s_0$ given that his father had an event at time $t_0$ compared to a son whose father survived until time $t_0$ without the event.
-
-Independence between fathers and sons would mean $\theta = 1$, positive association $\theta > 1$ and negative association $\theta < 1$. %Clayton also explained how his model could be generalized to include covariates, and derived the likelihood to estimate $\theta$ when two marginal distributions are completely unknown using approach similar to one used by Cox.\\
-
-Clayton's assumptions lead to a specific form of survival function, and he suggested a likelihood to estimate $\theta$.\\
+This measure can be interpreted for sons (as much as for fathers) in the following way: how much more likely for a son to have an event at time $s_0$ given that his father had an event at time $t_0$ compared to a son whose father survived until time $t_0$ without the event. Independence between fathers and sons would mean $\theta = 1$, positive association $\theta > 1$ and negative association $\theta < 1$.
+ %Clayton also explained how his model could be generalized to include covariates, and derived the likelihood to estimate $\theta$ when two marginal distributions are completely unknown using approach similar to one used by Cox.\\
+Clayton's assumptions lead to a specific form of survival function, and he suggested a likelihood approach to estimate $\theta$.\\
 ~\\
-\cite{oakes1982model} criticized Clayton's likelihood approach to estimating $\theta$ and introduced an alternative method based on the fact that in the context of Clayton's model: $\frac{\theta - 1}{\theta + 1} = \tau$, where $\tau$ is a coefficient of concordance introduced by  \cite{kendall1938new}: for two independent pairs of variables (with the same bivariate distribution) $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendal's $\tau$ is a probability of concordance minus probability of discordance:
+\cite{oakes1982model} criticized Clayton's likelihood approach for estimating $\theta$ and introduced an alternative method based on the fact that in the context of Clayton's model: $\frac{\theta - 1}{\theta + 1} = \tau$, where $\tau$ is a coefficient of concordance introduced by  \cite{kendall1938new}: for two independent pairs of variables (with the same bivariate distribution) $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendal's $\tau$ is a probability of concordance minus probability of discordance:
 $\tau = P[(U_1 - U_2)(Z_1 - Z_2)>0] - P[(U_1 - U_2)(Z_1 - Z_2)<0] = E[sign((U_1 - U_2)(Z_1 - Z_2))]$\\
 
-Later \cite{oakes1989bivariate} introduced a bivariate survival model based on \emph{frailties}. The concept of \emph{frailties} implied that if two survival times depend on an unobserved variable, this induces dependence between the variable themselves. He showed that bivariate distributions introduced by frailty models were part of a larger class of archimedian distributions studied by \cite{genest1986copules}:
+Later \cite{oakes1989bivariate} introduced a bivariate survival model based on \emph{frailties}. The concept of \emph{frailties} implied that if two survival times depended on an unobserved variable, this induced dependence between the variable themselves. He showed that bivariate distributions introduced by frailty models were part of a larger class of archimedian distributions studied by \cite{genest1986copules}:
 $$
 \begin{aligned}
 	S(t) = p\left[ q\left\{ S_1(t_1) \right\}  + q\left\{ S_2(t_2) \right\}  \right]
 \end{aligned}
 $$
 
-Where $p(u)$ is an inverse function of $q(v)$. Oakes showed that for this class of models, $\theta$ depends on $t$ only through $S(t)$, which allowed him to derive an algebraic expression for $\theta$ for this class of models:  $\theta(v) = -vq''(v)/q'(v)$, where $v=S(t_1, t_2)$.\\
-He also pointed out that because $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $\tau(v) = \frac{\theta(v)-1}{\theta(v)+1}$, $\tau(v)$ in this context is measure of local dependence (it depends on $v=S(t_1, t_2)$).\\
+Where $p(u)$ is an inverse function of $q(v)$. Oakes showed that for this class of models, $\theta$ depends on $t$ only through $S(t)$, which allowed him to derive an algebraic expression for $\theta$ for this class of models:  $\theta(v) = -vq''(v)/q'(v)$, where $v=S(t_1, t_2)$. He also pointed out that because $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $\tau(v) = \frac{\theta(v)-1}{\theta(v)+1}$, $\tau(v)$ in this context is a measure of local dependence (it depends on $v=S(t_1, t_2)$).\\
 ~\\
 
-\cite{fan2000dependence} argued that in many studies the age of the participants is restricted by design, for example, the age of mothers is restricted to 50-80, and of daughters to 30-60. Because of this, there is a need to have an association measure that takes this restriction into account and is well suited for censored time to event. \\
-
-They considered a weighted average of Clayton's \textit{cross ratio} $\theta$ over $[0,t_1] \times [0, t_2]$, $\theta = \frac{ \lambda_2(s_2|T_1=s_1)}{\lambda_2(s_2|T_1 \geq s_1)}$. As a reminder, it can be interpreted as a risk for daughters of age $s_2$ whose mothers developed a disease at age $s_1$, compared to daughters of age $s_2$ whose mothers were disease free at age $s_1$. They chose this measure because of its interpretability, and suggested that in order to increase comparability across studies, the weighting should be independent of censoring mechanism. The following weights were proposed: $\frac{F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)}$. For one dimension, this weight could be interpreted as a probability of an event at point $t$ given that the subject survived until $t$.\\
+\cite{fan2000dependence} argued that in many studies the age of the participants was restricted by design, for example, the age of mothers could be restricted to 50-80, and of daughters to 30-60. Because of this, there was a need to have an association measure that would take this restriction into account and would be well suited for censored time to event. \\
+They considered a weighted average of Clayton's \textit{cross ratio} $\theta$ over $[0,t_1] \times [0, t_2]$, $\theta = \frac{ \lambda_2(s_2|T_1=s_1)}{\lambda_2(s_2|T_1 \geq s_1)}$. As a reminder, $\theta$ can be interpreted as a risk for daughters of age $s_2$ whose mothers developed a disease at age $s_1$, compared to daughters of age $s_2$ whose mothers were disease free at age $s_1$. They chose this measure because of its interpretability, and suggested that in order to increase comparability across studies, the weighting should be independent of censoring mechanism. The following weights were proposed: $\frac{F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)}$. For one dimension, this weight could be interpreted as a probability of an event at point $t$ given that the subject survived until $t$.\\
 
 %They allowed the time to be discrete, continuous, or mixed, but $F(., .)$ was required to possess a density relative to the corresponding counting Lebesque measure.\\
 Instead of weighting $\theta(s_1, s_2)$, the authors chose to weight $c(s_1, s_2) = \frac{1}{\theta(s_1, s_2)}$ because weighting $c(s_1, s_2)$ results in a consistent estimator:
@@ -126,17 +120,16 @@ Instead of weighting $\theta(s_1, s_2)$, the authors chose to weight $c(s_1, s_2
 		C(t_1, t_2) &= \int_0^{t_1}\int_0^{t_2} \frac{c(s_1, s_2)F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)} = ...= \int_0^{t_1}\int_0^{t_2} \frac{F(s_1^-, s_2^-)\Lambda_{10}(ds_1, s^-_2)\Lambda_{01}(s^-_1, ds_2)}{1 - F(t_1, 0) - F(0, t_2)+ F(t_1, t_2)} \\
 	\end{aligned}
 	$$
-	The above measure can be estimated non-parametrically using $\hat{F}$ of Dabrowska [1988] or Prentice and Cai [1992], and $\hat{\Lambda}$ can be estimated using Nelson-Aalen estimator.\\
-	
-Note that $C(t_1, t_2)$ may be interpreted as an average relative risk over $[0,t_1] \times [0, t_2]$. when $C(t_1, t_2)>1$. When $C(t_1, t_2)=1$, there is no association. When $C(t_1, t_2)<1$, there is positive association. It can also be interpreted as a weighted average hazard ratio with weights proportional to the failure time density at $(s_1,s_2)$.\\
-	
+	The above measure can be estimated non-parametrically using $\hat{F}$ of \cite{dabrowska1988kaplan} or \cite{prentice1992covariance}, and $\hat{\Lambda}$ can be estimated using a Nelson-Aalen type estimator.
+	%??? Nelson-Aalen
+Note that $C(t_1, t_2)$ may be interpreted as an average relative risk over $[0,t_1] \times [0, t_2]$. When $C(t_1, t_2)=1$, there is no association. When $C(t_1, t_2)<1$, there is positive association. It can also be interpreted as a weighted average hazard ratio with weights proportional to the failure time density at $(s_1,s_2)$.\\
 Because \cite{oakes1989bivariate} noted that $\tau(s_1, s_2)$ can be written as:
 	$$
 	\begin{aligned}
 		\tau(s_1, s_2) &= \frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
 	\end{aligned}
 	$$
-	the authors proposed another summary measure of association:
+	the authors also proposed another summary measure of association:
 	$$
 	\begin{aligned}
 		&\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}
@@ -150,14 +143,11 @@ After weighting $\tau(s_1, s_2)$ proportionally to the density, they obtain the 
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
 	\end{aligned}
 	$$
-	so that $\mathcal{T}(t_1, t_2) \in [-1,1]$
-	
-Both, $C(t_1, t_2)$ and $\mathcal{T}(t_1, t_2)$ were proven to be consistent and converged in distribution to a mean zero Gaussian process.\\
+	so that $\mathcal{T}(t_1, t_2) \in [-1,1]$. Both, $C(t_1, t_2)$ and $\mathcal{T}(t_1, t_2)$ were proven to be consistent and converged in distribution to a mean zero Gaussian process.\\
 % and had a property of asymptotic validity (definition ?) of the bootstrap.
 ~\\
 
-\cite{fan2000class} suggested a class of estimators similar to ones described by \cite{fan2000dependence} . They considered special cases of $\theta(t_1, t_2)$ and weights, where instead of using of the bivariate survivor function estimators of \cite{dabrowska1988kaplan} and \cite{prentice1992covariance} the hazard function estimators of Nelson-Aalen type can be used. And instead of bootstrap variance estimator, an explicit variance formulae can be obtained.\\
-~\\
+\cite{fan2000class} suggested a class of estimators similar to ones described by \cite{fan2000dependence} . They considered special cases of $\theta(t_1, t_2)$ and weights, where instead of using the bivariate survivor function estimators of \cite{dabrowska1988kaplan} and \cite{prentice1992covariance} the hazard function estimators of Nelson-Aalen type could be used. And instead of bootstrap variance estimator, an explicit variance formulae can be obtained.
 % The authors utilize the fact that in some specific cases, both $C(\cdot, \cdot)$ and $\mathcal{T}(\cdot, \cdot)$ depend on $F(\cdot, \cdot)$ only through the hazard function and therefore can be estimated using Nelson-Aalan-type estimator of the hazard:
 % 	$$
 % 	\begin{aligned}
@@ -193,7 +183,7 @@ If $F$ has a density $f(s,t)$, we have $\Lambda_{11}(ds,dt) = \lambda_{11}(s,t)d
 		\lambda_{01}(s,t) &= \lim_{h\rightarrow 0} \frac{1}{h} P(T_2\in[t,t+h] | T_1 > s, T_2 \geq t) & = \int_s^{\infty} \frac{f(u,t)du}{F(s, t-)}\\
 	\end{aligned}
 	$$
-Where $\lambda_{11}(s,t)$ is the instantaneous rate of \emph{double failure} at point $(s,t)$, given that the individuals were alive at times $T_1=s-$ and $T_2 = t-$. $\lambda_{10}(s, t)$ is the rate of a \emph{single failure} at time $s$ give that the first individual was alive at time $T_1=s$ and the second survived beyond time $T_2 = 1$.\\
+Where $\lambda_{11}(s,t)$ is the instantaneous rate of \emph{double failure} at point $(s,t)$, given that the individuals were alive at times $T_1=s-$ and $T_2 = t-$; $\lambda_{10}(s, t)$ is the rate of a \emph{single failure} at time $s$ given that the first individual was alive at time $T_1=s$ and the second survived beyond time $T_2 = 1$.\\
 
 Under condition of independence of independence of event times and censoring times, the author derived a bivariate survival function estimator that could be computed as a product of two univariate survival function estimators and a third term:
 	$$
@@ -201,7 +191,7 @@ Under condition of independence of independence of event times and censoring tim
 		\hat{F}(s,t) &= \hat{F}(s,0)\hat{F}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
 	\end{aligned}
 	$$
-Where $\hat{F}(s,0)$ and $\hat{F}(0,t)$ are usual Kaplan-Meier estimates, for example, $\hat{F}(s,0) = \prod_{u\leq s}[1-\hat{\Lambda}_{10}(\Delta u, o)]$, and the third term is a function of bivariate hazards:
+Where $\hat{F}(s,0)$ and $\hat{F}(0,t)$ are usual Kaplan-Meier estimates, for example, $\hat{F}(s,0) = \prod_{u\leq s}[1-\hat{\Lambda}_{10}(\Delta u, 0)]$, and the third term is a function of bivariate hazards:
 	$$
 	\begin{aligned}
     \hat{L}(\Delta u, \Delta v) &= \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
@@ -219,14 +209,14 @@ It is possible to show that expression $1-L(du, dv)$ can be written as:
 	\end{aligned}
 	$$
 
-Which looks very much like:
+The above expression looks very much like:
 	$$
 	\begin{aligned}
-		\theta &= \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
+		\theta &= \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}},
 	\end{aligned}
 	$$
-Which is the coefficient of association derived by Clayton[\cite{clayton1978model}] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of changes in survival function, but it represents a measure of dependency between two survival times.\\
-This estimator is very easy to compute, but as one of the reviewers commented, it assigned negative mass to some points. The example below was provided by the author:
+which is the coefficient of association derived by Clayton[\cite{clayton1978model}] for a specific model. In the context of  Clayton's model, this coefficient was a constant. Dabrowska's  $1-L(du, dv)$ is not a constant and is not a ratio of changes in survival function, but it represents a measure of dependency between two survival times. 
+This estimator is very easy to compute, but as we see later, it assigns negative mass to some points. The example below was provided by the author:
 
 % \subsubsection{Dabrowska's example}
 % {{\tiny
@@ -297,16 +287,14 @@ This estimator is very easy to compute, but as one of the reviewers commented, i
 
 \begin{figure}[!h]
 \includegraphics{figure1.pdf}
-\caption{Dabrowska's example.}
+\caption{Example that demonstrates assignment of negative point mass. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components.}
 \label{fig:bubbles}
 \end{figure}
-\clearpage
 
-Dabrowska demonstrates that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) is greater than its marginal estimator. She noted that this can be explained by the fact that $\Lambda_{11}$, $\Lambda_{10}$, and $\Lambda_{01}$ summarize three different portions of the data. She proved that in the absence of censoring, this problem does not arise.
-
+Dabrowska demonstrated that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator, point $(0.51,~0)$. She noted that this could be explained by the fact that $\Lambda_{11}$, $\Lambda_{10}$, and $\Lambda_{01}$ summarize three different portions of the data. She proved that in the absence of censoring, this problem does not arise.\\
+%\clearpage
 ~\\
-
-\cite{pruitt1991negative} showed that for the Dabrowska's estimator, although the value of negative mass decreases, the number of such points does not disappear with growing sample size, resulting in non-disappearing negative mass. This problem is related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of Prof. Pruitt is rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
+\cite{pruitt1991negative} showed that for Dabrowska's estimator, although the value of negative mass decreased, the number of such points did not disappear with growing sample size, resulting in non-disappearing negative mass. This problem was related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of the authors was rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
 
 	$$
 	\begin{aligned}
@@ -319,11 +307,12 @@ Dabrowska demonstrates that the bivariate survival function estimator in point $
 	\end{aligned}
 	$$
 It is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in term may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.\\
+Simple simulations showed (not presented here) that term $1 - \hat{L}(\Delta u, \Delta v)$ is greater than $2$ when $\hat{\Lambda}_{01}$ is very large and $\hat{\Lambda}_{10}$ is very small (or the other way around), and when $\hat{\Lambda}_{11}$ is very large. Even for $\hat{\Lambda}_{01} = \hat{\Lambda}_{10} = \hat{\Lambda}_{11} = 0.5$, term $1 - \hat{L}(\Delta u, \Delta v) = 2$. For this  example, when all observations are not censored, the values of $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, and $\hat{\Lambda}_{11}$ balance out and the negative mass disappears.
 ~\\
 
-\cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. \cite{van1997nonparametric} (see the next section) gives an overview for both estimators and suggests another way of estimating bivariate survival.
+\cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. \cite{van1997nonparametric} (see the next section) gave an overview for both estimators and suggested another way of estimating bivariate survival.
 
-\cite{van1997nonparametric} summarized literature for several estimators, and shows that Dabrowska's and Prentice \& Cai's estimators are essentially the following.
+\cite{van1997nonparametric} summarized literature for several estimators, and shows that Dabrowska's and Prentice \& Cai's estimators were essentially the following:
 	$$
 	\begin{aligned}
     S(t_1, t_2) &= S_1(t_1, 0)S_2(0, t_2)R(t_1, t_2);\\
@@ -331,25 +320,15 @@ It is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$ when expression $1 - \ha
  	\end{aligned}
 	$$
 where $R(t_1, t_2)$ is called \emph{a cross-ratio}. We see that this is a dependency measure because this is a ratio of columns or rows of a two-by-two table.\\
-\\
-% If we represent $R(t_1, t_2) = e^{log(R(t_1, t_2))}$, then $log(R)$ is  an additive measure over the rectangle $(0,s_1]\times(0,s_2]$ and we can compute:
-%
-% 	$$
-% 	\begin{aligned}
-% 		log(R)(t_1, t_2) &= \int_{(0,t_1]\times(0,t_2]} d~log(R)(s_1,s_2)
-%  	\end{aligned}
-% 	$$
-
-He sites the work of \cite{gill1990survey} who proved that these two estimators are equivalent, and therefore have similar performance. Under assumption of complete independence of events and censoring events, Dabrowska's and Prentice and Cai's perform well.
-
-Van Der Laan discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE).
+The author sited the work of \cite{gill1990survey} who proved that these two estimators were equivalent, and performed similarly well, under assumption of complete independence of events and censoring events.
+Van Der Laan further discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE).
 %In the presence of singly censored observations it has a problem of uniqueness (see page 321 of Prentice).
-He notes that when NPMLE is solved using expectation-maximization (EM) algorithm, the algorithm assigns equal mass to uncensored observations, and singly and double censored observations are assigned mass based on the nearby uncensored observations. In case of singly censored observations, in order for them to get a mass assignment the half line has to contain at least one uncensored observation, which might not be the case.\\
-Van Der Laan suggests a repaired NPMLE, where instead of the half-lines there are strips that are wide enough to contain the uncensored observations, and suggests a way of redistributing the mass for singly censored observations based on the uncensored observations that fall into the strips or quadrants.
-After comparing several estimator, the author comes to conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators are better. With increased dependence however, Laan's estimator performed better.\\
+He noted that when NPMLE was solved using expectation-maximization (EM) algorithm, the algorithm assigned equal mass to uncensored observations, and singly and double censored observations were assigned mass based on the nearby uncensored observations. In case of singly censored observations, in order for them to get a mass assignment the half line had to contain at least one uncensored observation, which might not happen in a case of continuous time to event.\\
+Van Der Laan suggested a repaired NPMLE, where instead of the half-lines there were strips that were wide enough to contain the uncensored observations, and suggested a way of redistributing the mass for singly censored observations based on the uncensored observations that fell into the strips or quadrants.
+After comparing several estimator, the author came to conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators are better. With increased dependence however, the author's estimator performed better.\\
 ~\\
 
-\cite{moodie2005adjustment} pointed out that the method of Van Der Laan can be inefficient when the strips are large because the uncensored points can borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. They suggested an improvement. They first apply Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistribute the mass from uncensored observations on to points that are located on the half lines of the singly censored observations from the same strip. They reported that this method improves efficiency and does not require computationally intensive methods to compute the variance of the estimator.\\
+\cite{moodie2005adjustment} pointed out that the method of Van Der Laan could be inefficient when the strips were large because the uncensored points could borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. They suggested an improvement. They first applied Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistributed the mass from uncensored observations on to points that were located on the half lines of the singly censored observations from the same strip. They reported that this method improves efficiency and reduced computational complexity when computing the variance.\\
 
 % \begin{figure}[!h]
 % \includegraphics{MoodiePrentice2005.png}
@@ -358,15 +337,12 @@ After comparing several estimator, the author comes to conclusion that with no o
 % \end{figure}
 % \clearpage
 
-
-
-
 \subsection{Linear Rank Tests}
-Before we review the literature for linear rank test, we review the definition of Probability Scale Residuals.
+Before summarizing the literature for linear rank tests, we give a quick introduction of Probability Scale Residuals.
 
 \subsubsection{Probability Scale Residuals for Censored Data}
 
-\cite{li2012new} proposed a method of evaluating residuals for ordinal data. They defined Probability Scale Residuals (PSR) as:\\
+\cite{li2012new} proposed a new method of evaluating residuals for ordinal data. They defined Probability Scale Residuals (PSR) as:\\
 $$
 \begin{aligned}
 	r(t,F^*) &= E\{sign(y,Y^*)\} = pr(Y^* < y) - pr(Y^* > y) = F^*(y-) - (1-F^*(y)) =\\
@@ -374,7 +350,7 @@ $$
 	\end{aligned}
 $$
 
-The authors also extended this definition for two cases: censored time to event and current status data. In order to understand how the PSR were extended for censored data, let's assume that $T$ is time to event, but we only observe $Y = min(T, C)$, where $C$ is time to censoring. When we do not observe $T$, the PSR are defined in terms of $Y$ (time to event or censoring) and $\Delta$, where $\Delta = 1$ when $min(T, C)=T$ (we observe the event) and $\Delta =0$ when $min(T, C)=C$ (the event is not observed because of censoring). \textbf{By definition}, if $\Delta = 1$, then $Y=T$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. If $\Delta = 0$, then $T$ is unknown, except that it occurs some time after the censoring time $C$, so $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\}$. The authors prove that:
+The authors also extended this definition for two cases: censored time to event and current status data. In order to understand how the PSR were extended for censored data, let's assume that $T$ is time to event, but we only observe $Y = min(T, C)$, where $C$ is time to censoring. When we do not observe $T$, the PSR are defined in terms of $Y$ (time to event or censoring) and $\Delta$, where $\Delta = 1$ when $min(T, C)=T$ (we observe the event) and $\Delta =0$ when $min(T, C)=C$ (the event is not observed because of censoring). \textbf{By definition}, if $\Delta = 1$, then $Y=T$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. If $\Delta = 0$, then $T$ is unknown, except that it occurs some time after the censoring time $C$, so \textbf{by definition} $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\}$. The authors prove that:
 
 	$$
 	\begin{aligned}
@@ -385,7 +361,7 @@ The authors also extended this definition for two cases: censored time to event 
 	\end{aligned}
 	$$
 
-In a similar manner, PSR are defined for current status data. Current status data is a pair $(C, \Delta)$, where variable $C$ is the time when we observe the subject, and variable $\Delta$ is whether the subject has already experience the event or not. 
+In a similar manner, PSR are defined for current status data. Current status data is a pair $(C, \Delta)$, where variable $C$ is the time when we observe the subject, and variable $\Delta$ is whether the subject has already experienced the event or not. 
 	$$
 	\begin{aligned}
 		r(c, F^*) &= E\{r(T,F^*)|T^*\leq c\} = F^*(c) - 1,~~~&\delta = 1 \\
@@ -397,11 +373,11 @@ In a similar manner, PSR are defined for current status data. Current status dat
 
 In both cases the PSR have expectation of zero when $F^*$ is properly defined and $T \perp C$.\\
 
-The authors showed how PSR are related to martingale, Cox-Snell, and deviance residuals. And although unlike these residuals, PSR are on a symmetric scale, PSR also can be used to examine the functional adequacy of the model, with positive PSR indicating that the event time was longer than expected. In addition to examining the functional adequacy of the model, PSR can be used to measure and test association of two censored times to event. One of the intuitive ways to find the association between two time-to-event outcomes would be to find their correlation. We show that correlation of PSR is equivalent to the censored version of \emph{Spearman} correlation.
+The authors showed how PSR were related to martingale, Cox-Snell, and deviance residuals and that PSR also can be used to examine the functional adequacy of the model, with positive PSR indicating that the event time was longer than expected. In addition to examining the functional adequacy of the model, PSR can be used to measure and test association of two censored times to event. One of the intuitive ways to find the association between two time-to-event outcomes would be to find their correlation. We now show that correlation of PSR is equivalent to the censored version of \emph{Spearman} correlation.
 
 \subsubsection{Spearman Correlation and Correlation of PSR for Continuous Censored Outcome.}
 In this following section we use $S$, $C$, $\delta=I(S\leq C)$, $X = min(S, C)$ for the first outcome and $T$, $D$, $\epsilon=I(T\leq D)$, $Y = min(T, D)$ for the second.\\
-Spearman correlation for continuous outcome can be defined as $cor(F_S(S), F_T(T))$. In case of censored outcomes however, we don't always observe $S$ and $T$. This means that we have to modify the definition of Spearman correlation in the following way: When $\delta = 1$ or $S\leq C$, we have that $X = min(S, C)=S$ so $F_S(s)=F_S(x)$ and we use $F_S(x)$ in order to compute correlation. When $\delta = 0$ or $S > C$, we have that $X = min(S, C)=C$ and instead of $F_S(s)$, in order to compute correlation, we can take $E_S[F_S(s)|S>x]$. Let's compute $E_S[F_S(s)|S>x]$:
+Spearman correlation for continuous outcome can be defined as $cor(F_S(S), F_T(T))$. In case of censored outcomes however, we don't always observe $S$ and $T$. This means that we have to modify the definition of Spearman correlation in the following way: When $\delta = 1$ or $S\leq C$, we have that $X = min(S, C)=S$ so $F_S(s)=F_S(x)$ and we use $F_S(x)$ in order to compute correlation. When $\delta = 0$ or $S > C$, we have that $X = min(S, C)=C$ and instead of $F_S(s)$, in order to compute correlation, we can take $E_S[F_S(s)|S>x]$. Let's first compute $E_S[F_S(s)|S>x]$:
 % keeping in mind that in continuous case $F_S(s-) = F_S(s)$
 	$$
 	\begin{aligned}
@@ -487,7 +463,10 @@ It can be easily shown that the above expression is equivalent to correlation of
 	\end{aligned}
 	$$
 
-We have proved the equivalence of \emph{Spearman} correlation and the correlation of the PSR based on the following definition of \emph{Spearman} correlation: $corr(F_S(s), F_T(t))$. It is also possible to show the equivalence of \emph{Spearman} correlation and the correlation of PSR using another definition: $E(sign(S-S_0)sign(T-T_0))$, where $(S,T)$ is a paired event time, and $S_0 \perp T_0$.
+We have proved the equivalence of \emph{Spearman} correlation and the correlation of the PSR based on the following definition of \emph{Spearman} correlation: $corr(F_S(s), F_T(t))$. It is also possible to show the equivalence of \emph{Spearman} correlation and the correlation of PSR using another definition: $E(sign(S-S_0)sign(T-T_0))$, where $(S,T)$ is a paired event time, and $S_0 \perp T_0$.\\
+~\\
+We now summarized papers that in the search of a linear rank test for association of bivariate survival data, arrived to a censored version of \emph{Spearman} correlation. 
+
 
 \subsection{Censored Version of Spearman Correlation in Earlier Research}
 
@@ -499,31 +478,30 @@ We have proved the equivalence of \emph{Spearman} correlation and the correlatio
 	$$
 The author's goal was to develop a \emph{linear rank statistic} in order to check the following hypothesis: $\beta = 0$. Although this model described univariate survival, we are interested in it because of the author's approach to censored observations. 
 %In order to do this he had to find an approach to rank survival outcome in the presence of censored data. He chose a simplified approach to the ranking of censored values [Kalbfleisch \& Prentice, 1973]. 
-According to this approach, uncensored observations were ranked among themselves, while censored observations were ranked according to their location relatively to uncensored observations. This approach allowed to develop linear rank statistic and its approximation that assigned the same score to all censored residuals between adjacent uncensored values.\\
+According to this approach, uncensored observations were ranked among themselves, while censored observations were ranked according to their location relatively to uncensored observations. This approach allowed to develop a linear rank statistic and its approximation that assigned the same score to all censored residuals between adjacent uncensored values.\\
 %Even after using ranks and approximations, Prentice's approach required assuming $F_i$ - distribution of residuals (check this please).
 ~\\
 
 \cite{cuzick1982rank} considered a general model of association:
 	$$
 	\begin{aligned}
-		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2
+		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2,
 	\end{aligned}
 	$$
-
-Where $Z$, $e_1$, and $e_2$ are independent and  $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ were thought to be related to a third unobserved covariate.\\
-The author assumed the same generalized ranking of censored data as Prentice, 1978 [\cite{prentice1978linear}]: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation.\\
+where $Z$, $e_1$, and $e_2$ were independent and  $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ were thought to be related to a third unobserved covariate.\\
+The author assumed the same generalized ranking of censored data as \cite{prentice1978linear}: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation on the left.\\
 Cuzick's approach required knowing $f_i(x)$ the density of $e_i$, and as an illustration, he assumed a logistic density of $e_1$ and $e_2$:  $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$. It turned out that for this particular case the rank of each observation with no censoring was $F(x)$, and in the presence of censoring, the rank was $\frac{1+F(x)}{2}$, which resulted in the association test statistic equivalent to \emph{Spearman} correlation.\\
 ~\\
 
-\cite{dabrowska1986rank} developed a non-parametric statistic for testing an association of two survival outcomes, possibly censored, with the following null hypothesis: $H_0:~F=F_1 F_2$. In order to test this hypothesis, the author further developed the results of Prentice 1978 [\cite{prentice1978linear}], Kalbfleisch \& Prentice, 1980 [\cite{kalbfleisch2011statistical}], and Cuzick, 1982 [\cite{cuzick1982rank}], and suggested a \emph{linear rank} statistic and its simplification in the following form:
+\cite{dabrowska1986rank} developed a semi-parametric statistic for testing an association of two survival outcomes, possibly censored, with the following null hypothesis: $H_0:~F=F_1 F_2$. In order to test this hypothesis, the author further developed the results of \cite{prentice1978linear} , \cite{kalbfleisch2011statistical} , and \cite{cuzick1982rank} , and suggested a \emph{linear rank} statistic and its simplification in the following form:
 
 
 	$$
 	\begin{aligned}
-		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
+		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n}),
 	\end{aligned}
 	$$
-Where $\hat{F}_i$ are estimators similar to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. She showed that under certain assumptions, $\mathcal{J}_i(u,d) =d-(1+d)u$, and the test statistic corresponds to the censored data version of the Spearman test. Substituting this choice of $\mathcal{J}_i(u=F_i,~d=\delta_i)$ into the above expression, we get:
+where $\hat{F}_i$ were estimators similar to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. She showed that under certain assumptions and with a particular choice of $\mathcal{J}_i(u,d)$, $\mathcal{J}_i(u,d) =d-(1+d)u$, the test statistic corresponds to the censored data version of the Spearman test. Substituting this choice of $\mathcal{J}_i(u=F_i,~d=\delta_i)$ into the above expression, we get:
 	$$
 	\begin{aligned}
 		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
@@ -538,17 +516,16 @@ The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta)
 		 E[cov(\delta_1, \delta_2)|C_1,C_2] = E\left\{ [\delta_1 - F_1(C_1)][\delta_2 - F_2(C_2)]  \right\}\\
 	\end{aligned}
 	$$
-Which is exactly covariance of PSR for \emph{current status data}.
+Which is exactly covariance of PSR for \emph{current status data}.\\
+~\\
+Although censored version of \emph{Spearman} correlation was suggested before PSR were introduced, the framework for \emph{Spearman} correlation statistics was based on specific distribution assumptions were not generalized for discrete data. The tests statistic computed as correlation of PSR does not have these problem.
+
 
 \section{DISCUSSION AND FUTURE RESEARCH}
 
-The interest in association of bivariate survival data goes back to 1978. Many different approaches have beed taken to address this question althogh not all them were covered here. Our focus was on the three main approaches. We first summarized literature on evaluating a bivariate hazard ratio or cross ratio in the context of a parametric model. This approach was later developed to include larger family of models, and to find cases when non-parametric approach could be taken.
-The interest in association of bivariate suvrival data goes back to 1978. Many different approaches have beed taken to address this question although not all them were covered here. Our focus was on the three main approaches. We first summarized literature on evaluating a bivariate hazard ratio or cross ratio in the context of a parametric model. This approach was later developed to include larger family of models, and to find cases when non-parametric approach could be taken.
+The interest in association of bivariate survival data goes back to 1978. Many different approaches have beed taken to address this question althogh not all them were covered here. Our focus was on the three main approaches. We first summarized literature on evaluating a bivariate hazard ratio or cross ratio in the context of a parametric model. This approach was later developed to include larger family of models, and to find cases when a non-parametric approach could be taken. Another approach was to evaluate a bivariate survival surface as a product of two marginal survival functions and a function representing the association component between two time to event variables. A third approach was developing association tests for bivariate time to event variables.\\
 
-Another approach was to evaluate a bivariate survival surface as a product of two marginal survival functions and a function representing the association component between two time to event variables.
-A third approach summarized in this paper was developing association tests for bivariate time to event variables.\\
-
-Although approaches were based on a complex statistical and mathematical theory, the main disadvantage of previous approaches was lack of generalizability, parametric assumptions, and computational complexity. For example, although \cite{cuzick1982rank}, \cite{dabrowska1988kaplan}, and \cite{ding2004testing} derived statistics identical to correlation of PSR for continuous case, their conclusions were rooted in a semi-parametric context, with very specific assumptions about the distribution of time to event, about asymptotic properties of the statistics, and about the ranking of censored events. Their results also were not generalized to discrete outcomes.\\
+Although all approaches were based on a complex statistical and mathematical theory, their main disadvantages were parametric assumptions, computational complexity, and lack of generalizability. For example, although \cite{cuzick1982rank}, \cite{dabrowska1988kaplan}, and \cite{ding2004testing} derived statistics identical to correlation of PSR for continuous case, their conclusions were rooted in a semi-parametric context, with very specific assumptions about the distribution of time to event, asymptotic properties of the statistics, and ranking of censored events. Their results also were not generalized to discrete outcomes.\\
 
 The use of correlation of PSR, on the other hand, does not require parametric assumptions and can be generalized to discrete censored data and to discrete currents status data. The test of association can be performed using the following statistic:
 $$
@@ -558,11 +535,11 @@ $$
 $$
 where $r_{si}$ and $r_{ti}$ are PSR and $\bar{r}_s = \frac{1}{n}\sum_{i=1}^{n} r_{si}$ and $\bar{r}_t = \frac{1}{n}\sum_{i=1}^{n} r_{ti}$. 
 
-For ordinal uncensored data, \cite{li2010test} suggested two ways of performing the inference: 1) a bootstrap procedure and 2) a large sample approximation. In our future work we will focus on proving the validity of applying the bootstrap procedure to finding the confidence intervals for $T$, and on finding the asymptotic distribution for $T$ for continuous and discrete censored data and currents status data.\\
+For ordinal uncensored data, \cite{li2010test} suggested two ways of performing the inference: 1) a bootstrap procedure and 2) a large sample approximation. In our future work we will focus on proving the validity of applying bootstrap procedure to finding the confidence intervals for $T$, and on finding the asymptotic distribution for $T$ for continuous and discrete censored data and currents status data.\\
 
 We also plan to focus on conditional and partial correlation of PSR for censored and current status data in order to test adjusted association of time to event and adjusted association of status. Partial correlation can be obtain by fitting a parametric or semi-parametric survival model using covariates of interest, and then computing correlation of the resulting PSRs. Conditional correlation can also be computed by first fitting a parametric or semi-parametric survival model, and then evaluating conditional moments that approximate conditional correlation of PSR.
 
-In the future, we plan to compare the performance of PSR correlation for censored data to the performance of martingale, Cox-Snell, and deviance residuals when checking functional adequacy of model fit. The performance can be compared using data simulated under different conditions and assumptions, such as different distribution of the survival data, different functional dependence between time to event and covariates, in the context of parametric and non-parametric models, with proportionality of the hazard and without, with varying percent of censored data.
+In the future, we plan to compare the performance of PSR correlation for censored data to the performance of martingale, Cox-Snell, and deviance residuals when checking functional adequacy of model fit. The performance can be compared using data simulated under different conditions and assumptions, such as different distribution of the survival data, different functional dependence between time to event and covariates, in the context of parametric and non-parametric models, with proportionality of the hazard and without, and finally with varying fraction of censored data.
 
 
 
@@ -612,7 +589,6 @@ In the future, we plan to compare the performance of PSR correlation for censore
 %
 % Although statistic $U_n$ is a supremum over $t_1=t_2$, the simulations showed promising results.
 % For $V_n$, if the weights are not specified correctly, the test based on $V_n$ looses power.
-
 
 
 
