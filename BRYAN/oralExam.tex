@@ -13,7 +13,8 @@
 \DeclareGraphicsExtensions{.png,.pdf}
 
 %%% for citations. See Lucy's tutorial: https://github.com/LucyMcGowan/Tutorials/blob/master/BiblatexTutorial.md
-\usepackage[backend=biber,maxnames=10,citestyle=science]{biblatex}
+% \usepackage[backend=biber, maxnames=10, citestyle=science]{biblatex}
+\usepackage[style=authoryear, backend= biber]{biblatex}
 \addbibresource{summaryOfRef.bib}
 
 %%% when using biber as a "backend" compile like this:
@@ -728,8 +729,7 @@ We want to develope conditional and partial PSR, we want to evaluate the perform
 % 	\item Understand Qi's conditional, partial, and conditional-partial correlation
 % 	\item Develop Spearman correlation for different $s$ and $t$: instead of having one number $\rho$ develop a new measure $\rho(s, t)$.
 % 	\item \textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring, Biometrics, 39, 129-139.}
-
-\end{itemize}
+% \end{itemize}
 ~\\
 
 
@@ -754,6 +754,8 @@ We want to develope conditional and partial PSR, we want to evaluate the perform
 %
 % Although statistic $U_n$ is a supremum over $t_1=t_2$, the simulations showed promising results.
 % For $V_n$, if the weights are not specified correctly, the test based on $V_n$ looses power.
+
+
 
 
 \printbibliography
