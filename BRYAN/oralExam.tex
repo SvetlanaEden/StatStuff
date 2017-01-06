@@ -445,7 +445,7 @@ After comparing several estimator, the author comes to conclusion that with no o
 The authors pointed out that the method of Van Der Laan can be inefficient when the strips are large because the uncensored points can borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. They suggested an improvement. They first apply Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistribute the mass from uncensored observations on to points that are located on the half lines of the singly censored observations from the same strip. They reported that this method improves efficiency and does not require computationally intensive methods to compute the variance of the estimator.\\
 
 % \begin{figure}[!h]
-\includegraphics{MoodiePrentice2005.png}
+% \includegraphics{MoodiePrentice2005.png}
 % \caption{Moodie and Prentice suggestion.}
 % \label{fig:bubbles}
 % \end{figure}
@@ -454,151 +454,64 @@ The authors pointed out that the method of Van Der Laan can be inefficient when 
 
 
 
-\subsection{Linear rank tests}
+%\subsection{Linear rank tests}
 
-\subsubsection{Prentice, 1978}
-Prentice, 1978 [\cite{prentice1978linear}] cosidered a model of linear regression with time to event as an outcome, while allowing the time to be censored.
-	$$
-	\begin{aligned}
-		y = \alpha + \beta z + \sigma e
-	\end{aligned}
-	$$
-The author's goal was to develop a \emph{linear rank statistic} in order to check the hypothesis of $\beta = 0$. Although this model described univariate survival, we are interested in it because of the author's approach to censored observations. 
-%In order to do this he had to find an approach to rank survival outcome in the presence of censored data. He chose a simplified approach to the ranking of censored values [Kalbfleisch \& Prentice, 1973]. 
-According to this approach, uncensored observations were ranked between themselves. Censored observations that are located between two adjacent uncensored observations were arbitrarily ranked. This approach allowed to develop linear rank statistic and its approximation that assigned the same score to all censored residuals between adjacent uncensored values.
-%Even after using ranks and approximations, Prentice's approach required assuming $F_i$ - distribution of residuals (check this please).
+\subsection{Probability Scale Residuals for censored data}
 
-\subsubsection{Cuzick, 1982}
-Considers a general model of association:
-	$$
-	\begin{aligned}
-		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2
-	\end{aligned}
-	$$
-
-Where $Z$, $e_1$, and $e_2$ are independent and  $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ are thought to be related to a third unobserved covariate.\\
-Cuzick, 1982 [\cite{cuzick1982rank}] assumed the same generalized ranking of censored data as Prentice, 1978 [\cite{prentice1978linear}]: the uncensored observations are ranked and the censored observations can be arbitrarily ranked, which also includes giving the same rank as the closest uncensored observation to the left of the censored point.\\
-Cuzick's approach required knowing $f_i(x)$ the density of $e_i$. He illustrated his approach by showing that when this densities of $e_1$ and $e_2$ are logistic, $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$, then the rank of each observation is $F(x)$ with no censoring, and $\frac{1+F(x)}{2}$, when censoring is present. We emphasized this special case because of ???
-% - \textbf{PSR}
-% \subsection{P. Gaduthol Sankaran, B. Abraham, A Alphonsa Antony, 2006: A dependence measure for bivariate failure time data, ref???}
-% Meaning to improve over the measures given by Fan et al. (1998) and Fan et al. (2000), the authors propose a \emph{covariance residual life function} (CVRL) as a dependence measure of bivariate falure time data:
-% 	$$
-% 	\begin{aligned}
-% 		 C(t_1, t_2) &= M(t_1, t_2) - r_1(t_1, t_2) r_2(t_1, t_2) =\\
-% 		  &=E[(T_1-t_1)(T_2-t_2)|T_1>t_1,T_2>t_2] - E[T_1-t_1|T_1>t_1,T_2>t_2]\cdot E[T_2-t_2|T_1>t_1,T_2>t_2]
-% 	\end{aligned}
-% 	$$
-% They note that this measure is in fact a weighted average of the Clayton's $\theta(t_1,t_2) = \frac{S(t_1,t_2)D_1D_2(S(t_1,t_2))}{D(S(t_1,t_2))D_2(S(t_1,t_2))}$ with a weight $\left[ \frac{D_1D_2(S(t_1,t_2))}{D_1(S(t_1,t_2))D_2(S(t_1,t_2))} \right]^{-1}$.
-
-\subsubsection{Dabrowska, 1986 \cite{dabrowska1986rank}}
-Dabrowska, 1986 \cite{dabrowska1986rank} continued developing non-parametric test for bivariate survival outcomes. She derived a statistic for checking independence of two failure times, possibly censored: $H_0:~F=F_1 F_2$.  The author suggested that the following \emph{linear rank} statistic could be used
-	$$
-	\begin{aligned}
-		 &\sum_{n=1}^N a_1(R_{1n}, \delta_{1n})\cdot a_2(R_{2n}, \delta_{2n}), ~i=1,2\\
-		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)})^{a_{ik}}
-	\end{aligned}
-	$$
-Where: 
-	$$
-	\begin{aligned}
-		 R_in &= \#\{m:~Y_{im} \leq Y_{in}, \delta_{im}=1   \}\\
-		 a_{ik} &= \# \{n: ~R_{in}=k,~\delta_{in}=0\}\\
-		 m_{ik} &= \# \{n: ~R_{in}\geq k\}\\
-		 \delta_{im}&=1,~if~subject ~m~from~group~i~has~an~event\\
-		 U_{(k)}~&independent ~ordered~sample~from~Uniform~distribution\\
-		 \mathcal{J}(u,d) ~&is~such~that:~~\int_0^u \mathcal{J}_i(v,1)dv = -(1-u)\mathcal{J}_i(u,0)
-	\end{aligned}
-	$$
-She also noted that the exact scores are hard to compute, so similarly to Prentice 1978 [\cite{prentice1978linear}], Kalbfleisch \& Prentice, 1980 [\cite{kalbfleisch2011statistical}], and Cuzick, 1982 [\cite{cuzick1982rank}], the author used an approximate statistic:
-	$$
-	\begin{aligned}
-		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
-	\end{aligned}
-	$$
-Where $\hat{F}_i$ are estimators similar to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. She showed that when $\mathcal{J}_i(u,d) =d-(1+d)u$, the test statistic corresponds to the cencored-data version of the Spearman test. Substituting this choice of $\mathcal{J}_i(u=F_i,~d=\delta_i)$ into the above expression, we get:
-	$$
-	\begin{aligned}
-		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
-	\end{aligned}
-	$$
-The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual, \textbf{PSR}, for continuous and censored failure time. 
-
-\subsubsection{Shih, Louis, 1996, \cite{shih1996tests}}
-\textbf{Motivation}: Leukemia patients that undergo bone marrow transplantation are at risk of \emph{acute graft versus host disease (AGVHD)} and \emph{cytomegalovirus (CMV)}, and the question is if these events are correlated:
-
-The authors consider martingale residuals, $M_{ij}$, which is the difference between observed and expected deaths. They base their new statistic on the result of Clayton [\cite{clayton1978model}] and Cuzick [\cite{shih1996tests}] who developed a model for bivariate time to event with frailties, and suggested the following test statistic that measured the sample covariance of the martingale residuals:
+Li and Shepherd, 2012 [\cite{li2012new}] proposed a method of evaluating residuals for ordinal data. They defined Probability Scale Residuals (PSR) as:\\
 $$
 \begin{aligned}
-  T_n=\sum_i \left\{ \delta_{i1} - \hat{\Lambda}(X_{i1}) \right\} \left\{ \delta_{i2} - \hat{\Lambda}(X_{i2}) \right\} =\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2).
-\end{aligned}
-$$ 
- 
-Shih and Louis suggested to improve its power by introducing the following two statistics:
-
-\begin{enumerate}
-	\item take supremum: $U_n= \sup_{0\leq t \leq t_0} \left|\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)\right|$
-	\item weigh it: $V_n= \sum_i \int_0^{t_0}  \int_0^{t_0} W_n(u_1,u_2) d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (which is analogous to the weighted logrank test)
-\end{enumerate}
-They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defined by Oakes $\theta = \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}$: 
-
-Although statistic $U_n$ is a supremum over $t_1=t_2$, the simulations showed promising results.
-For $V_n$, if the weights are not specified correctly, the test based on $V_n$ looses power.
-
-\subsubsection{Ding, Wang, 2012 \cite{ding2004testing}}
-Suggested two statistics for testing independence for bivariate \emph{current status data}. One is based on counts (how many events, non-events, and so forth). The other one is:
-	$$
-	\begin{aligned}
-		 E[cov(\delta_1, \delta_2)|C_1,C_2] = E\left\{ [\delta_1 - F_1(C_1)][\delta_2 - F_2(C_2)]  \right\}\\
+	r(t,F^*) &= E\{sign(y,Y^*)\} = pr(Y^* < y) - pr(Y^* > y) = F^*(y-) - (1-F^*(y)) =\\
+	 &=F^*(y-) - 1 + F^*(y)
 	\end{aligned}
-	$$
-Which is \textbf{exactly} covariance of \textbf{PSR} for \emph{current status data}.
+$$
 
+The authors also extended this definition for two cases: censored time to event and current status data. In order to understand how the PSR were extended for censored data, let's assume that $T$ is time to event, but we only observe $Y = min(T, C)$, where $C$ is time to censoring. When we do not observe $T$, the PSR are defined in terms of $Y$ (time to event or censoring) and $\Delta$, where $\Delta = 1$ when $min(T, C)=T$ (we observe the event) and $\Delta =0$ when $min(T, C)=C$ (the event is not observed because of censoring). \textbf{By definition}, if $\Delta = 1$, then $Y=T$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. If $\Delta = 0$, then $T$ is unknown, except that it occurs some time after the censoring time $C$, so $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\}$. The authors prove that:
+% 	$$
+% 	\begin{aligned}
+% 		E\{r(t,F^*)|T^*>y\} &= \frac{\int_{t>y}r(t,F^*)dF^*(t)}{1-F^*(t)}= \frac{\int_{t>y}(F^*(t-) - 1 + F^*(t))dF^*(t)}{1-F^*(y)}= \frac{\int_{t>y}F^*(t-)dF^*(t) - \int_{t>y}(1 - F^*(t))dF^*(t)}{1-F^*(y)}=\\
+% 		&= \frac{\int_{t>y}\int_{s<t}dF^*(s)dF^*(t) - \int_{t>y}\int_{s>t}dF^*(s)dF^*(t)}{1-F^*(y)}= \frac{\int_{t>y}\int_{s<t}dF^*(s)dF^*(t) - \int\int_{y<t<s}dF^*(s)dF^*(t)}{1-F^*(y)}=\\
+% 		&= \frac{\left[\int\int_{s<y<t}dF^*(s)dF^*(t) + \int\int_{y<s<t}dF^*(s)dF^*(t)\right] - \int\int_{y<t<s}dF^*(s)dF^*(t)}{1-F^*(y)}\\
+% 	\end{aligned}
+% 	$$
+% Because $t$ and $s$ are symmetric, $\int\int_{y<s<t}dF^*(s)dF^*(t) = \int\int_{y<t<s}dF^*(s)dF^*(t)$, so we have:
+% 	$$
+% 	\begin{aligned}
+% 		E\{r(t,F^*)|T^*>y\} &= \frac{\left[\int\int_{s<y<t}dF^*(s)dF^*(t) + \cancel{\int\int_{y<s<t}dF^*(s)dF^*(t)}\right] - \cancel{\int\int_{y<t<s}dF^*(s)dF^*(t)}}{1-F^*(y)}\\
+% 		&= \frac{\int\int_{s<y<t}dF^*(s)dF^*(t)}{1-F^*(y)} = \frac{(1-F^*(y))\int_{s<y}dF^*(s)}{1-F^*(t)} = \frac{\cancel{(1-F^*(y))}F^*(y)}{\cancel{1-F^*(y)}} =\\
+% 		&=F^*(y)
+% 	\end{aligned}
+% 	$$
+%
+% Therefore for censored data:
 
-
-
-\section{Probability Scale Residuals for censored data}
-\subsection{PSR (probability scale residuals) for censored data}
-% Terms for residuals:
-% \begin{itemize}
-% 	\item \textbf{OMER}-observed minus expected residuals: $E(y-Y^*) = y - \hat{y}$
-% 	\item \textbf{PSR}-probability scale residuals: $E{sign(y,Y^*)} = pr(Y^* < y) - pr(Y^* > y)$
-% \end{itemize}
-PSR are defined as $r(t,F^*) = E\{sign(y,Y^*)\} = pr(Y^* < y) - pr(Y^* > y) = F^*(t-) - (1-F^*(y)) = F^*(t-) - 1 + F^*(t)$.\\
-Since we do not always observe $t$, the PSR must be defined in terms of $y$ (time to event or censoring) and $\delta$ (if the event happened or not). \\
-\\
-\textbf{By definition}, $r(y,F^*, \delta) = r(t,F^*|\Delta=\delta)$.\\
-If $\delta = 1$, then $t=y$ and $r(y,F^*, \delta=1) = F^*(y-) - 1 + F^*(y)$. \\
-If $\delta = 0$, then $t$ is unknown, except that it occurs some time after the censoring time $y$, so $r(t,F^*, \delta=0) = E\{r(t,F^*)|T^*>y\}$. Let's find it:
-	$$
-	\begin{aligned}
-		E\{r(t,F^*)|T^*>y\} &= \frac{\int_{t>y}r(t,F^*)dF^*(t)}{1-F^*(t)}= \frac{\int_{t>y}(F^*(t-) - 1 + F^*(t))dF^*(t)}{1-F^*(y)}= \frac{\int_{t>y}F^*(t-)dF^*(t) - \int_{t>y}(1 - F^*(t))dF^*(t)}{1-F^*(y)}=\\
-		&= \frac{\int_{t>y}\int_{s<t}dF^*(s)dF^*(t) - \int_{t>y}\int_{s>t}dF^*(s)dF^*(t)}{1-F^*(y)}= \frac{\int_{t>y}\int_{s<t}dF^*(s)dF^*(t) - \int\int_{y<t<s}dF^*(s)dF^*(t)}{1-F^*(y)}=\\
-		&= \frac{\left[\int\int_{s<y<t}dF^*(s)dF^*(t) + \int\int_{y<s<t}dF^*(s)dF^*(t)\right] - \int\int_{y<t<s}dF^*(s)dF^*(t)}{1-F^*(y)}\\
-	\end{aligned}
-	$$
-Because $t$ and $s$ are symmetric, $\int\int_{y<s<t}dF^*(s)dF^*(t) = \int\int_{y<t<s}dF^*(s)dF^*(t)$, so we have:
-	$$
-	\begin{aligned}
-		E\{r(t,F^*)|T^*>y\} &= \frac{\left[\int\int_{s<y<t}dF^*(s)dF^*(t) + \cancel{\int\int_{y<s<t}dF^*(s)dF^*(t)}\right] - \cancel{\int\int_{y<t<s}dF^*(s)dF^*(t)}}{1-F^*(y)}\\
-		&= \frac{\int\int_{s<y<t}dF^*(s)dF^*(t)}{1-F^*(y)} = \frac{(1-F^*(y))\int_{s<y}dF^*(s)}{1-F^*(t)} = \frac{\cancel{(1-F^*(y))}F^*(y)}{\cancel{1-F^*(y)}} =\\
-		&=F^*(y)
-	\end{aligned}
-	$$
-	
-Therefore for censored data:
 	$$
 	\begin{aligned}
 		r(y, F^*) &= F^*(y) + F^*(y-) - 1,~~~&\delta = 1 \\
-		r(y, F^*) &= F^*(y) ,~~~&\delta = 0 \\
+		r(y, F^*) &= E\{r(T,F^*)|T^*>y\} = F^*(y) ,~~~&\delta = 0 \\
+		&or\\
+    r(y, F^*, \delta) &= F^*(y) - \delta(1 - F^*(y-)),~~~&where~\delta \in \{0,1\}
 	\end{aligned}
 	$$
-or $r(y, F^*) = F^*(y) + \delta((F^*(y-) - 1)$.
 
-\subsubsection{Spearman correlation and PSR correlation for continuous censored outcome}
-Here we show that if we define Spearman correlation for continuous and censored outcomes a certain way, we then Spearman correlation and PSR correlation for ontinuous censored outcome are equivalent.\\
-~\\
-Spearman correlation for continuous outcome can be defined as $cor(F_S(s), F_T(t))$ (reference ???). In case of censored outcomes however, we don't always know $s$ and $t$. This means that we have to redefine Spearman correlation in a different way. In the following section we use $S$, $C$, $\delta=I(S\leq C)$, $X = min(S, C)$ for the first outcome and $T$, $D$, $\epsilon=I(T\leq D)$, $Y = min(T, D)$ for the second.\\
-Let's modify the definition of the Spearman correlation in the following way. When $\delta = 1$ or $S\leq C$, we have that $X = min(S, C)=S$ and instead of $F_S(s)$ we can take $F_S(x)$. When $\delta = 0$ or $S > C$, we have that $X = min(S, C)=C$ and instead of $F_S(s)$ we can take $E_S[F_S(s)|S>x]$. Let's compute $E_S[F_S(s)|S>x]$:
+In a similar manner, PSR are defined for current status data. Current status data is a pair $(C, \Delta)$, where variable $C$ is the time when we observe the subject, and variable $\Delta$ is whether the subject has already experience the event or not. 
+	$$
+	\begin{aligned}
+		r(c, F^*) &= E\{r(T,F^*)|T^*\leq c\} = F^*(c) - 1,~~~&\delta = 1 \\
+		r(c, F^*) &= E\{r(T,F^*)|T^*>c\} = F^*(c) ,~~~&\delta = 0 \\
+		&or\\
+    r(c, F^*, \delta) &= F^*(c) - \delta,~~~&where~\delta \in \{0,1\}\\
+	\end{aligned}
+	$$
+
+In both cases the PSR have expectation of zero when $F^*$ is properly defined and $T \perp C$.\\
+
+The authors showed how PSR are related to martingale, Cox-Snell, and deviance residuals. And although ulike these residuals, PSR are on a symmetric scale, PSR also can be used to examine the functional adequacy of the model, with positive PSR indicating that the event time was longer than expected. In addition to examining the functional adequacy of the model, PSR can be used to measure and test association of two censored times to event. One of the intuitive ways to find the association between two time-to-event outcomes would be to find their correlation. We show that correlation of PSR is equivalent to the censored version of \emph{Spearman} correlation.
+
+\subsubsection{Spearman correlation vs correlation of PSR for continuous censored outcome.}
+In this following section we use $S$, $C$, $\delta=I(S\leq C)$, $X = min(S, C)$ for the first outcome and $T$, $D$, $\epsilon=I(T\leq D)$, $Y = min(T, D)$ for the second.\\
+Spearman correlation for continuous outcome can be defined as $cor(F_S(S), F_T(T))$. In case of censored outcomes however, we don't always observe $S$ and $T$. This means that we have to modify the definition of Spearman correlation in the following way: When $\delta = 1$ or $S\leq C$, we have that $X = min(S, C)=S$ so $F_S(s)=F_S(x)$ and we use $F_S(x)$ in order to compute correlation. When $\delta = 0$ or $S > C$, we have that $X = min(S, C)=C$ and instead of $F_S(s)$, in order to compute correlation, we can take $E_S[F_S(s)|S>x]$. Let's compute $E_S[F_S(s)|S>x]$:
+% keeping in mind that in continuous case $F_S(s-) = F_S(s)$
 	$$
 	\begin{aligned}
 		E_S[F_S(x)|S>x] &= \frac{1}{1-F_S(x)}\int_{(x, \infty)} F_S(s)dF_S(s) = \frac{1}{1-F_S(x)} \left.\frac{ [F_S(s)]^2}{2}\right|_{(x, \infty)} = \frac{1-[F_S(x-)]^2}{2(1-F_S(x))} \\
@@ -610,7 +523,7 @@ Since we are focusing now on the continuous case, we can assume that $F_S(x)=F_S
 		E_S[F_S(x)|S>X] &=\frac{1-[F_S(x)]^2}{2(1-F_S(x))}=\frac{\cancel{(1-F_S(x))}(1+F_S(x))}{2\cancel{(1-F_S(x))}}  = \frac{1+F_S(x)}{2} \\
 	\end{aligned}
 	$$
-So, instead of looking at the Spearman correlation as correlation of $F_S(s)$ and $F_T(t)$, we redefine correlation as:
+Now, we redefine the Spearman correlation for the continuous censored data as:
 	$$
 	\begin{aligned}
 		Spearman~correlation~&=~ cor\left(  \delta F_S(x) + (1-\delta) \frac{1+F_S(x)}{2},~\epsilon F_T(y) + (1-\epsilon) \frac{1+F_T(y)}{2}  \right)\\
@@ -618,21 +531,21 @@ So, instead of looking at the Spearman correlation as correlation of $F_S(s)$ an
 		&=~ cor\left(  (1+\delta)F_S(x) +  1-\delta,~(1+\epsilon)F_T(y) +  1-\epsilon  \right)\\
 	\end{aligned}
 	$$
-It is easy to check that in the continous case, the above expression is the same as: 
+It is easy to check that in the continous case, the above expression is the same as the correlation of PSR in the continuous case ($F_S(s-) = F_S(s)$): 
 	$$
 	\begin{aligned}
 		PSR~correlation~&=~ cor\left(  (1+\delta)F_S(x) -\delta,~(1+\epsilon)F_T(y) -\epsilon  \right)\\
 	\end{aligned}
 	$$
 
-\subsubsection{Spearman correlation and PSR correlation for discrete censored outcome}
-For discrete case, Spearman correlation can be defined as (???):
+\subsubsection{Spearman correlation vs correlation of PSR for discrete censored outcome.}
+For the discrete case, Spearman correlation can be defined as:
 	$$
 	\begin{aligned}
 		cor\left( \frac{F_S(s) + F_S(s-)}{2},~\frac{F_T(t) + F_T(t-)}{2} \right)\\
 	\end{aligned}
 	$$
-So let's find $E_S[F_S(x)|S>x]$ for the discrete case. First (just to get started) let's derive $E_S[F_S(x)]$. We denote $Pr\left\{S=s\right\}$ as $P_s$:
+In addition, if we do not observe time to event, instead of $F_S(x)$ or $F_S(x-)$ we take the expectation:  $E_S[F_S(x)|S>x]$ or $E_S[F_S(x-)|S>x]$ respectively. Let's first find $E_S[F_S(x)]$. For brevity, we denote $Pr\left\{S=s\right\}$ as $P_s$:
 	$$
 	\begin{aligned}
 		E_S[F_S(x)] &= \sum_{i=0}^{\infty}F_S(i)P_i = \sum_{i=0}^{\infty}\left( \sum_{k=0}^{i}P_k \right)P_i =\\
@@ -641,7 +554,7 @@ So let's find $E_S[F_S(x)|S>x]$ for the discrete case. First (just to get starte
 		&= \frac{1}{2} + \frac{1}{2}\sum_{i=0}^{\infty}P_i^2
 	\end{aligned}
 	$$
-Now we are equiped to compute $E_S[F_S(x)|S>x]$:
+Now it is easier to derive $E_S[F_S(x)|S>x]$:
 	$$
 	\begin{aligned}
 		E_S[F_S(x)|S>x] &= \frac{1}{1-F_S(x)} \sum_{i=x+1}^{\infty}F_S(i)P_i = \frac{1}{1-F_S(x)}\sum_{i=x+1}^{\infty}\left( \sum_{k=0}^{i}P_k \right)P_i =\\
@@ -651,7 +564,7 @@ Now we are equiped to compute $E_S[F_S(x)|S>x]$:
 	\end{aligned}
 	$$
 
-Our next challenge is to compute $E_S[F_S(x-)|S>x]$. We assume that $F_S(0-)=0$:
+In a similar manner, we derive $E_S[F_S(x-)|S>x]$, assuming that $F_S(0-)=0$:
 	$$
 	\begin{aligned}
 		E_S[F_S(x-)|S>x] &= \frac{1}{1-F_S(x)} \sum_{i=x+1}^{\infty}F_S(i-1)P_i = \frac{1}{1-F_S(x)}\sum_{i=x+1}^{\infty}\left( \sum_{k=0}^{i-1}P_k \right)P_i =\\
@@ -676,7 +589,7 @@ As a result, we have:
 		&=~ cor\left( F_S(x) + \delta F_S(x-) +  1 -\delta , ~ F_T(y) + \epsilon F_T(y-) + 1 -\epsilon   \right)\\
 	\end{aligned}
 	$$
-It can be easily shown that the above expression is the same as correlation of \emph{PSR}:
+It can be easily shown that the above expression is equivalent to correlation of \emph{PSR}:
 	$$
 	\begin{aligned}
 		PSR~correlation~&=~ cor\left(  F_S(x) + \delta F_S(x-) -\delta,~F_T(y) + \epsilon F_T(y-) -\epsilon  \right)\\
@@ -684,26 +597,112 @@ It can be easily shown that the above expression is the same as correlation of \
 	$$
 
 \subsubsection{Spearman correlation and PSR based on a different definition.}
-Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and the correltation of the PSR we have been using the following defition of \emph{Spearman} correlation: $corr(F_S(s), F_T(t))$. In this section, we show that if we start with the original definition, $E(sign(S_1-S_0)sign(T_2-T_0))$, we will get the same result. Let's see why. Keeping in mind that $S_1 \perp T_2$ we can write:
+Up to now, in order to prove the equivalence of \emph{Spearman} correlation and the correltation of the PSR we relied on the following definition of \emph{Spearman} correlation: $corr(F_S(s), F_T(t))$. It is also possible to show the equivalence of \emph{Spearman} correlation and the correlation of PSR using the following definition: $E(sign(S-S_0)sign(T-T_0))$, where $(S,T)$ is a paired event time, and $S_0 \perp T_0$.
+
+% Keeping in mind that $S_1 \perp T_2$ we can write:
+% 	$$
+% 	\begin{aligned}
+% 		E(sign(S_1-S_0)sign(T_2-T_0)) &= E_{(S,T)}\left\{ E[sign(S_1-S_0)sign(T_2-T_0) |(S_1,T_2)] \right\} = \\
+% 		  &= E_{(S,T)}\left\{ E[sign(S_1-S_0) |S_1]  E[sign(T_2-T_0) |T_2] \right\} = \\
+% 		  &= E_{(S,T)}\left\{ [ P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1) ] \cdot  [P(T_0 < T_2|T_2) - P(T_0 > T_2|T_2)] \right\}
+% 	\end{aligned}
+% 	$$
+%  Now, let's look at the expression $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1)$. We already know that in case of no censoring, $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1) = PSR(S_1)$. When censoring takes place, we don't observe $S_1$, but we still obsere $x_1$, so similarly to the previous section, instead of $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1)$ we can take:
+% 	$$
+% 	\begin{aligned}
+% 		 E_{S_0>x_1}[P(S_0 < x_1)|S_0>x_1] - E_{S_0>x_1}[P(S_0 > x_1)|S_0>x_1]&= 0 - \frac{1}{1-F_S(S>x_1)}\int_{(x_1, \infty)} F_S(s)dF_S(s)
+% 	\end{aligned}
+% 	$$
+% We have already proved in the previous sections, that taking a correlation of the product of the right hand side expressions above results in Spearman correlation (the minus signs cancel out).
+
+\subsection{Incidental use of PSR in the previous research}
+
+\subsubsection{Prentice, 1978}
+Prentice, 1978 [\cite{prentice1978linear}] cosidered a model of linear regression with time to event as an outcome, while allowing the time to be censored.
 	$$
 	\begin{aligned}
-		E(sign(S_1-S_0)sign(T_2-T_0)) &= E_{(S,T)}\left\{ E[sign(S_1-S_0)sign(T_2-T_0) |(S_1,T_2)] \right\} = \\
-		  &= E_{(S,T)}\left\{ E[sign(S_1-S_0) |S_1]  E[sign(T_2-T_0) |T_2] \right\} = \\
-		  &= E_{(S,T)}\left\{ [ P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1) ] \cdot  [P(T_0 < T_2|T_2) - P(T_0 > T_2|T_2)] \right\}
+		y = \alpha + \beta z + \sigma e
 	\end{aligned}
 	$$
- Now, let's look at the expression $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1)$. We already know that in case of no censoring, $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1) = PSR(S_1)$. When censoring takes place, we don't observe $S_1$, but we still obsere $x_1$, so similarly to the previous section, instead of $P(S_0 < S_1|S_1) - P(S_0 > S_1|S_1)$ we can take:
+The author's goal was to develop a \emph{linear rank statistic} in order to check the following hypothesis: $\beta = 0$. Although this model described univariate survival, we are interested in it because of the author's approach to censored observations. 
+%In order to do this he had to find an approach to rank survival outcome in the presence of censored data. He chose a simplified approach to the ranking of censored values [Kalbfleisch \& Prentice, 1973]. 
+According to this approach, uncensored observations were ranked among themselves, while censored observations were ranked according to their location relatively to uncensored observations. This approach allowed to develop linear rank statistic and its approximation that assigned the same score to all censored residuals between adjacent uncensored values.
+%Even after using ranks and approximations, Prentice's approach required assuming $F_i$ - distribution of residuals (check this please).
+
+\subsubsection{Cuzick, 1982}
+Cuzick, 1982 [\cite{cuzick1982rank}] considered a general model of association:
 	$$
 	\begin{aligned}
-		 E_{S_0>x_1}[P(S_0 < x_1)|S_0>x_1] - E_{S_0>x_1}[P(S_0 > x_1)|S_0>x_1]&= 0 - \frac{1}{1-F_S(S>x_1)}\int_{(x_1, \infty)} F_S(s)dF_S(s)
+		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2
 	\end{aligned}
 	$$
-We have already proved in the previous sections, that taking a correlation of the product of the right hand side expressions above results in Spearman correlation (the minus signs cancel out).
 
-\subsection{Probability scale residual as a measure of association for censored outcomes, continuous or discrete}
-Correlation of PSR is in fact a Spearman correlation generalized to the case with censoring. Although, Cuzick, 1982 [\cite{cuzick1982rank}], Dabrowska, 1986 [\cite{dabrowska1988kaplan}], and Ding\&Wang, 2012 [\cite{ding2004testing}] described statistics indentical to PRS in continuous case, their derivations were done in a semi-parametric setting with very specific assumptions about the distribution of time to event. Spearman correlation of PSR requires very little assumptions (what assumptions ???) and is a non-parametric way of measuring association. In addition, PSR are generalized to discrete case for the case of independent censoring and for the case of currents status data.\\
+Where $Z$, $e_1$, and $e_2$ are independent and  $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ were thought to be related to a third unobserved covariate.\\
+The author assumed the same generalized ranking of censored data as Prentice, 1978 [\cite{prentice1978linear}]: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation.\\
+Cuzick's approach required knowing $f_i(x)$ the density of $e_i$, and as an illustration, he assumed a logistic density of $e_1$ and $e_2$:  $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$. It turned out that for this particular case the rank of each observation with no censoring was $F(x)$, and in the presence of censoring, the rank was $\frac{1+F(x)}{2}$, which resulted in the association test statistic equivalent to \emph{Spearman} correlation.
+% - \textbf{PSR}
+% \subsection{P. Gaduthol Sankaran, B. Abraham, A Alphonsa Antony, 2006: A dependence measure for bivariate failure time data, ref???}
+% Meaning to improve over the measures given by Fan et al. (1998) and Fan et al. (2000), the authors propose a \emph{covariance residual life function} (CVRL) as a dependence measure of bivariate falure time data:
+% 	$$
+% 	\begin{aligned}
+% 		 C(t_1, t_2) &= M(t_1, t_2) - r_1(t_1, t_2) r_2(t_1, t_2) =\\
+% 		  &=E[(T_1-t_1)(T_2-t_2)|T_1>t_1,T_2>t_2] - E[T_1-t_1|T_1>t_1,T_2>t_2]\cdot E[T_2-t_2|T_1>t_1,T_2>t_2]
+% 	\end{aligned}
+% 	$$
+% They note that this measure is in fact a weighted average of the Clayton's $\theta(t_1,t_2) = \frac{S(t_1,t_2)D_1D_2(S(t_1,t_2))}{D(S(t_1,t_2))D_2(S(t_1,t_2))}$ with a weight $\left[ \frac{D_1D_2(S(t_1,t_2))}{D_1(S(t_1,t_2))D_2(S(t_1,t_2))} \right]^{-1}$.
 
-Future direction: We want to develope conditional and partial PSR, we want to evaluate the performance of PSR under different distributions, functional dependence, and percent of censoring.
+\subsubsection{Dabrowska, 1986}
+Dabrowska, 1986 \cite{dabrowska1986rank} developed a non-parametric statistic for testing an association of two survival outcomes, possibly censored, with the following null hypothesis: $H_0:~F=F_1 F_2$. In order to test this hypothesis, the author further developed the results of Prentice 1978 [\cite{prentice1978linear}], Kalbfleisch \& Prentice, 1980 [\cite{kalbfleisch2011statistical}], and Cuzick, 1982 [\cite{cuzick1982rank}], and suggested a \emph{linear rank} statistic and its simplification in the following form:
+
+% 	$$
+% 	\begin{aligned}
+% 		 &\sum_{n=1}^N a_1(R_{1n}, \delta_{1n})\cdot a_2(R_{2n}, \delta_{2n}), ~i=1,2\\
+% 		 &~~~~~ a_i(j,d) = E\mathcal{J}(U_{(j)}, d)\prod_{k=1}^{N_i} m_{ik}(1-U_{(k)})^{a_{ik}}
+% 	\end{aligned}
+% 	$$
+% Where:
+% 	$$
+% 	\begin{aligned}
+% 		 R_{in} &= \#\{m:~Y_{im} \leq Y_{in}, \delta_{im}=1   \}\\
+% 		 a_{ik} &= \# \{n: ~R_{in}=k,~\delta_{in}=0\}\\
+% 		 m_{ik} &= \# \{n: ~R_{in}\geq k\}\\
+% 		 \delta_{im}&=1,~if~subject ~m~from~group~i~has~an~event\\
+% 		 U_{(k)}~&independent ~ordered~sample~from~Uniform~distribution\\
+% 		 \mathcal{J}(u,d) ~&is~such~that:~~\int_0^u \mathcal{J}_i(v,1)dv = -(1-u)\mathcal{J}_i(u,0)
+% 	\end{aligned}
+% 	$$
+% She also noted that the exact scores are hard to compute, so similarly to , the author used an approximate statistic:
+
+	$$
+	\begin{aligned}
+		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n})
+	\end{aligned}
+	$$
+Where $\hat{F}_i$ are estimators similar to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. She showed that under certain assumptions, $\mathcal{J}_i(u,d) =d-(1+d)u$, and the test statistic corresponds to the cencored-data version of the Spearman test. Substituting this choice of $\mathcal{J}_i(u=F_i,~d=\delta_i)$ into the above expression, we get:
+	$$
+	\begin{aligned}
+		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
+	\end{aligned}
+	$$
+The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is PSR for continuous and censored failure time. 
+
+
+\subsubsection{Ding, Wang, 2012 \cite{ding2004testing}}
+The authors suggested the following statistic for testing independence for bivariate \emph{current status data}:
+	$$
+	\begin{aligned}
+		 E[cov(\delta_1, \delta_2)|C_1,C_2] = E\left\{ [\delta_1 - F_1(C_1)][\delta_2 - F_2(C_2)]  \right\}\\
+	\end{aligned}
+	$$
+Which is exactly covariance of PSR for \emph{current status data}.
+
+\subsection{Advantages of using PSR and future direction}
+
+Although, Cuzick, 1982 [\cite{cuzick1982rank}], Dabrowska, 1986 [\cite{dabrowska1988kaplan}], and Ding\&Wang, 2012 [\cite{ding2004testing}] incidently derived statistics identical to correlation of PSR for continuous case, their conclusions were rooted in a semi-parametric context, with very specific assumptions about the distribution of time to event, about assymptotic properties of statistics of interest, and about the ranking of censored events. Their results also were not generalized to discrete outcomes.\\
+
+The use of correlation of PSR, on the other hand, requires very little assumptions and this approach is non-parametric. In addition, correlation of PSR can be generalized to discrete censored data and for discrete currents status data.\\
+
+We want to develope conditional and partial PSR, we want to evaluate the performance of PSR under different distributions, functional dependence, and percent of censoring.
 	
 
 % \subsection{Zhang, 2008: Inference on the association measure for bivariate survival data with hybrind censoring and applications to an HIV study, ref ?}
@@ -716,30 +715,46 @@ Future direction: We want to develope conditional and partial PSR, we want to ev
 % The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendal} correlation measure in order to build a test that can deal with missing data.
 
 
-
-\section{Oral Exam Stuff}
-\begin{itemize}
-	\item sort of hazard ratio for bivariate survival (Clayton, Oakes, Fan, Sankaran et al)
-	\item copulas (zhang2008, [? provide more references on copulas])
-	\item distance measure [? not sure if I want to address this]
-	\item Spearman correlation (Dabrowska1986, Ding2012, Cuzick1982)
-	\item Probability scale residuals, PSR (Li\&Shepard)
-	\item Challanges and limitations (discrete data covariates)
-	\item Qi - covariates (look at prentice and Cuzick)
-	\item show that this is Spearman
-	\item apply to dataset
-	\item simmulations
-	\item explore performance of partial and conditional Spearman.
-	\item read Alvo and Cabilio, 1993:
-	\item Look who cited Betensky, Filkenstein, AIDS, 1999: paper
-Tests of independence for bivariate survival data:
-	\item Understand Qi's conditional, partial, and conditional-partial correlation
-	\item Find out about Spearman test (unlike Spearman's correlation)
-	\item Develop Spearman correlation for different $s$ and $t$: instead of having one number $\rho$ develop a new measure $\rho(s, t)$.
-	\item \textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring, Biometrics, 39, 129-139.}
+%
+% \section{Oral Exam Stuff}
+% \begin{itemize}
+% 	\item Probability scale residuals, PSR (Li\&Shepard)
+% 	\item Challanges and limitations (discrete data covariates)
+% 	\item Qi - covariates (look at prentice and Cuzick)
+% 	\item show that this is Spearman
+% 	\item apply to dataset
+% 	\item simmulations
+% 	\item explore performance of partial and conditional Spearman.
+% 	\item Understand Qi's conditional, partial, and conditional-partial correlation
+% 	\item Develop Spearman correlation for different $s$ and $t$: instead of having one number $\rho$ develop a new measure $\rho(s, t)$.
+% 	\item \textbf{READ: Hanley, J. A., and Parnes, M. N. (1983), Nonparametric Estimation of a Multivariate Distribution in the Presence of Censoring, Biometrics, 39, 129-139.}
 
 \end{itemize}
 ~\\
+
+
+
+% \subsubsection{Shih, Louis, 1996, \cite{shih1996tests}}
+% \textbf{Motivation}: Leukemia patients that undergo bone marrow transplantation are at risk of \emph{acute graft versus host disease (AGVHD)} and \emph{cytomegalovirus (CMV)}, and the question is if these events are correlated:
+%
+% The authors consider martingale residuals, $M_{ij}$, which is the difference between observed and expected deaths. They base their new statistic on the result of Clayton [\cite{clayton1978model}] and Cuzick [\cite{shih1996tests}] who developed a model for bivariate time to event with frailties, and suggested the following test statistic that measured the sample covariance of the martingale residuals:
+% $$
+% \begin{aligned}
+%   T_n=\sum_i \left\{ \delta_{i1} - \hat{\Lambda}(X_{i1}) \right\} \left\{ \delta_{i2} - \hat{\Lambda}(X_{i2}) \right\} =\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2).
+% \end{aligned}
+% $$
+%
+% Shih and Louis suggested to improve its power by introducing the following two statistics:
+%
+% \begin{enumerate}
+% 	\item take supremum: $U_n= \sup_{0\leq t \leq t_0} \left|\sum_i \int_0^{t_0}  \int_0^{t_0} d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)\right|$
+% 	\item weigh it: $V_n= \sum_i \int_0^{t_0}  \int_0^{t_0} W_n(u_1,u_2) d\hat{M}_{i1}(u_1) d\hat{M}_{i2}(u_2)$ (which is analogous to the weighted logrank test)
+% \end{enumerate}
+% They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defined by Oakes $\theta = \frac{ \frac{\partial^2 S(s,t)}{\partial s \partial t} S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}$:
+%
+% Although statistic $U_n$ is a supremum over $t_1=t_2$, the simulations showed promising results.
+% For $V_n$, if the weights are not specified correctly, the test based on $V_n$ looses power.
+
 
 \printbibliography
 
