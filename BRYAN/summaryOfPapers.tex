@@ -773,10 +773,15 @@ Tests of independence for bivariate survival data:
 \end{enumerate}
 
 
-\section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005 \cite{moodie2005adjustment}}
+%\section{Summary of: An Adjustment to Improve the Bivariate Survivor Function Repaired NPMLE. Moodie, Prentice, 2005 \cite{moodie2005adjustment}}
 
 \subsection{Clayton, 1978 \cite{clayton1978model}}
-Clayton suggested a \textit{a bivariate model for ordered pairs}. Suppose we are interested in onset of disease for fathers and sons. We want to know if they are associated. If $f(s,t)$ is a density of the age at which fathers ($t$) and sons ($s$) succomb to the disease, then the proposed model is:
+Clayton suggested a \textit{a bivariate model for ordered pairs}. Suppose we are interested in onset of disease for fathers and sons. We want to know if they are associated. Following Cox, Clayton thought that similar to Cox proportional hazard idea, when $\lambda(s|y) = a(s)b(y)$, the hazard for a son to contract a disease in case of a binary covariate, would be $\lambda(s|y=1)/\lambda(s|y=0) = b(1)/b(0) = \theta$.
+
+Let's first define the hazard ratio in case of two variables:
+
+
+If $f(s,t)$ is a density of the age at which fathers ($t$) and sons ($s$) succomb to the disease, then the proposed model is:
 	$$
 	\begin{aligned}
 		f(s,t)\int_s^{\infty}\int_t^{\infty} f(u, v)dvdu &= \theta \int_s^{\infty}f(u, t)du\int_t^{\infty}f(s, v)dv \\
@@ -818,11 +823,16 @@ The we have:
 \begin{enumerate}[(i)]
 	\item the joint survivor function:\\$\mathcal{F}(s, t) = \int_s^{\infty}\int_t^{\infty} f(u, v)dvdu$
 	\item the hazard function for sons of fathers who survive until t, that is:\\
-	$g(s;t) = \frac{\partial}{\partial s}\{log\mathcal{F}(s,t)\} = \frac{ \int_t^{\infty} f(s, v)dv} {\mathcal{F}(s, t)}$
+	$g(s;t)=\lim_{h\rightarrow 0} \frac{1}{h} P(T_1\in[s,s+h] | T_1\geq s, T_2 > t) =\frac{ \int_t^{\infty} f(s, v)dv} {\mathcal{F}(s, t)}$\\
+	$g(s;t)=\frac{\partial}{\partial s}\{log\mathcal{F}(s,t)\}$
+  
 	\item the hazard function for fathers of sons who survive until s, that is:\\
-	$h(t;s) = \frac{\partial}{\partial t}\{log\mathcal{F}(s,t)\} = \frac{ \int_s^{\infty} f(u, t)du} {\mathcal{F}(s, t)}$
+	$h(t;s)=\lim_{h\rightarrow 0} \frac{1}{h} P(T_2\in[t,t+h] | T_1 > s, T_2 \geq t) = \frac{ \int_s^{\infty} f(u, t)du} {\mathcal{F}(s, t)}$\\
+	$h(t;s)=\frac{\partial}{\partial t}\{log\mathcal{F}(s,t)\}$
+  
 	\item the bivariate failure rate:\\
-	$l(t;s) = \frac{f(s,t)}{\mathcal{F}(s,t)} = g(s;t) h(t;s) - \frac{ \partial^2 }{\partial s \partial t} \{-log\mathcal{F}(s,t)\}$
+	$l(t;s) =\lim_{(h_1,h_2)\rightarrow 0} \frac{1}{h_1 h_2} P(T_1\in[s,s+h_1], T_2\in[t,t+h_2] | T_1\geq s, T_2 \geq t) = \frac{f(s,t)}{\mathcal{F}(s,t)} $\\
+  $l(t;s) = g(s;t) h(t;s) - \frac{ \partial^2 }{\partial s \partial t} \{-log\mathcal{F}(s,t)\}$
 \end{enumerate}
 After some complicated math, he derives:
 	$$

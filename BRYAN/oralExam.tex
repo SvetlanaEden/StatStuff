@@ -82,7 +82,7 @@ This review does not cover all existing approaches to the problem of bivariate s
 
 \subsection{Modeling a Bivariate Hazard Ratio}
 
-Following Cox and Basu, \cite{clayton1978model} addressed a question of association between paired survival times of fathers and sons and defined a measure similar to hazard ratio, that had the following properties:
+The work of \cite{clayton1978model} was motivated by epidemiological studies of chronic disease in studies of familial tendency. In such studies, the assumption of independence between individual events is no longer valid. It would be possible to consider parental history as a covariate and to use Cox proportional hazard model, but the problem is that time to event for the parent can be censored, for example, if time to cardiovascular disease is studied and the parent dies of cancer. Clayton addressed the question of association between paired survival times of fathers and sons and defined a measure similar to hazard ratio, that had the following properties:
 \begin{enumerate}
 	\item Easy to compute
 	\item Expressible as a constant ratio of age-specific rates

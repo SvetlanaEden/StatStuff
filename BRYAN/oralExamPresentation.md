@@ -84,12 +84,8 @@ where $$a(s)$$ and $$b(t)$$ are unknown non-decreasing functions.
 
 ---
 
-Oakes, 1982
-
-
----
-
-Oakes, 1989
+## Modeling bivariate hazard ratio
+**Oakes, 1989**:
 
 
 
