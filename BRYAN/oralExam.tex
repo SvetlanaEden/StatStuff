@@ -273,9 +273,9 @@ The above expression looks very much like:
 		\theta &= \frac{ \frac{\partial^2 S(t_1,t_2)}{\partial t_1 \partial t_2} S(t_1, t_2)}    {\frac{\partial S(t_1, t_2)}{\partial t_2} \frac{\partial S(t_1, t_2)}{\partial t_1}},
 	\end{aligned}
 	$$
-which is one of the ways to define the \emph{cross ratio} of \cite{clayton1978model}. So Dabrowska's association term can be interpreted the same way as Clayton's \emph{cross ratio} varying over $[0, t_1]\times [0, t_2]$ is not a constant and is not a ratio of changes in survival function, but it represents a measure of dependency between two survival times.
+which is one of the ways to define the \emph{cross ratio} of \cite{clayton1978model}. This helps us interpret Dabrowska's association term the same way as Clayton's \emph{cross ratio}, but instead of being constant, it varies over $[0, t_1]\times [0, t_2]$.\\
 
-So the bivariate survival surface is estimated in the following way:
+Dabrowska's estimator of the bivariate survival surface is computed in the following way:
 	$$
 	\begin{aligned}
 		\hat{S}(t_1,t_2) &= \hat{S}(t_1,0)\hat{S}(0,t_2)\cdot \prod_{{0<u\leq t_1~0<v\leq t_2}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
@@ -292,85 +292,9 @@ Where $\hat{S}(s,0)$ and $\hat{S}(0,t)$ are usual Kaplan-Meier estimates, for ex
 	\end{aligned}
 	$$
 
-This estimator is very easy to compute, but as we see later, it assigns negative mass to some points. The example below was provided by the author:
+This estimator is easy to compute, but as we see later, it assigns negative mass to certain points (see \ref{appendixB}). The authors proved an example when negative mass occurs and she also proved that in the absence of censoring, this problem does not arise.\\
 
-% \subsubsection{Dabrowska's example}
-% {{\tiny
-% \begin{verbatim}
-% ### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
-% library(survival)
-% kmdata = data.frame(Y1 = c(.51, .68, .11, .24), d1 = c(1, 1, 1, 0), Y2 = c(.02, .68, .62, .24), d2 = c(1, 1, 0, 0))
-% KM1 <- survfit( Surv(kmdata$Y1, kmdata$d1)~ 1)$surv
-% KM2 <- survfit( Surv(kmdata$Y2, kmdata$d2)~ 1)$surv
-% KM1
-% KM2
-%
-% X = c(rep(.11, 4), rep(.24, 4), rep(.51, 4), rep(.68, 4))
-% Y = c(rep(c(.02, .24, .62, .68), 4))
-% lam11 = c(rep(0, 8),   .5,   rep(0, 6),   1)
-% lam10 = c(c(.25, 1/3, 1/2, 1),    rep(0, 4),   0.5,   rep(1,7))
-% lam01 = c(.25, c(0, 0, 1),   1/3,   c(0, 0, 1),   .5,   c(0, 0, 1),   1,   c(0, 0, 1) )
-% numAtRisk = c(4,3,2,1,   3,2,1,1,   2,1,1,1,   1,1,1,1)
-% L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
-% bivarSurvEstData = data.frame(X=X, Y=Y, lam11=lam11, lam10=lam10, lam01=lam01, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L, numAtRisk = numAtRisk)
-%
-% ############## estimator at point (X,Y) = (.51, .02):
-% L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
-% L_24_02 = bivarSurvEstData$L[bivarSurvEstData$X == .24 & bivarSurvEstData$Y == .02]
-% L_51_02 = bivarSurvEstData$L[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-% KM1_51_02 = bivarSurvEstData$KM1[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-% KM2_51_02 = bivarSurvEstData$KM2[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-%
-% BivarSurvEstimate_51_02 = KM1_51_02 * KM2_51_02 * (1-L_11_02) * (1-L_24_02) * (1-L_51_02)
-% BivarSurvEstimate_51_02
-%
-% BivarSurvEstimate_51_02 > KM1_51_02
-%
-% ############# plot:
-% ylim = range(c(X, Y))
-% cex = 0.7
-% setwd("/Users/svetlanaeden/stuff/StatStuff/BRYAN")
-% pdf("figure1.pdf", height=5, width = 5)
-% 	par(mar=c(4, 4, 2, 2))
-% 	plot(ylim, ylim, type="n", axes=FALSE, xlab="T1", ylab="T2")
-% 	segments(x0=c(0, unique(X)), y0=0, y1 = range(Y)[2], lty=3, col="gray")
-% 	segments(x0=0, y0=c(0, unique(Y)), x1 = range(X)[2], lty=3, col="gray")
-% 	axis(side=1, at = unique(X), col = "gray", cex.axis=cex)
-% 	axis(side=2, at = unique(Y), col = "gray", cex.axis=cex)
-% 	ray = 0.08
-% 	koef = ray/sqrt(2)
-% 	segments(x0=c(.11, .24), y0=c(.62, .24), x1=c(.11, .24+koef), y1=c(.62+ray, .24+koef))
-% 	points(unique(X), c(.62, .24, .02, .68), cex=1.2, pch=21, bg=c("orange", "white", "red", "red"), col="black")
-% 	offset = 0.015
-% 	text(bivarSurvEstData$X-offset, bivarSurvEstData$Y-offset, bivarSurvEstData$numAtRisk, cex=cex)
-% dev.off()
-%
-% if(FALSE){
-%   nSim = 100
-% 	set.seed(1)
-% 	l01 = runif(nSim); l10 = runif(nSim); l11 = runif(nSim)
-% 	xData = data.frame(x = (l01*l10 - l11)/((1-l01)*(1-l10)), l01 = l01, l10 = l10, l11 = l11)
-% 	xData = xData[order(xData$x),]
-% 	plot(xData$x, type="l")
-% 	xData[xData$x < -1,]
-% 	xData[xData$x > 1,]
-% }
-%
-%
-% \end{verbatim}
-% }}
-
-
-\begin{figure}[!h]
-\includegraphics{figure1.pdf}
-\caption{Example that demonstrates assignment of negative point mass. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components.}
-\label{fig:bubbles}
-\end{figure}
-
-Dabrowska demonstrated that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator, point $(0.51,~0)$. She noted that this could be explained by the fact that $\Lambda_{11}$, $\Lambda_{10}$, and $\Lambda_{01}$ summarize three different portions of the data. She proved that in the absence of censoring, this problem does not arise.\\
-%\clearpage
-~\\
-\cite{pruitt1991negative} showed that for Dabrowska's estimator, although the value of negative mass decreased, the number of such points did not disappear with growing sample size, resulting in non-disappearing negative mass. This problem was related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof of the authors was rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
+\cite{pruitt1991negative} investigated conditions under which Dabrowska's estimator assigns negative mass and showed that although the value of negative mass decreased, the number of such points did not disappear with growing sample size, resulting in non-disappearing negative mass. This problem was related to the problem of identifiability of the bivariate survival functions in the presence of censored data. The proof was rather complicated, but we can intuitively see why this can be the case. Let's rewrite again Dabrowska's estimator:
 
 	$$
 	\begin{aligned}
@@ -382,29 +306,16 @@ Dabrowska demonstrated that the bivariate survival function estimator in point $
 	&\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) = \#(T_2=t_2, \delta_2=1, T_1\geq t_1)/\#(T_1\geq t_1, T_2\geq t_2)
 	\end{aligned}
 	$$
-It is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in term may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.\\
-Simple simulations showed (not presented here) that term $1 - \hat{L}(\Delta u, \Delta v)$ is greater than $2$ when $\hat{\Lambda}_{01}$ is very large and $\hat{\Lambda}_{10}$ is very small (or the other way around), and when $\hat{\Lambda}_{11}$ is very large. Even for $\hat{\Lambda}_{01} = \hat{\Lambda}_{10} = \hat{\Lambda}_{11} = 0.5$, term $1 - \hat{L}(\Delta u, \Delta v) = 2$. For this  example, when all observations are not censored, the values of $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, and $\hat{\Lambda}_{11}$ balance out and the negative mass disappears.
-~\\
+It is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in turn may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.\\
+Simple simulations showed (not presented here) that term $1 - \hat{L}(\Delta u, \Delta v)$ is greater than $2$ when $\hat{\Lambda}_{01}$ is very large and $\hat{\Lambda}_{10}$ is very small (or the other way around), and when $\hat{\Lambda}_{11}$ is very large. Even for $\hat{\Lambda}_{01} = \hat{\Lambda}_{10} = \hat{\Lambda}_{11} = 0.5$, term $1 - \hat{L}(\Delta u, \Delta v) = 2$.  Dabrowska's example presented in \ref{appendixB} can also illustrates that when all observations are not censored, the values of $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, and $\hat{\Lambda}_{11}$ balance out and the negative mass disappears.\\
 
-\cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. \cite{van1997nonparametric} (see the next section) gave an overview for both estimators and suggested another way of estimating bivariate survival.
-
-\cite{van1997nonparametric} summarized literature for several estimators, and shows that Dabrowska's and Prentice \& Cai's estimators were essentially the following:
-	$$
-	\begin{aligned}
-    S(t_1, t_2) &= S_1(t_1, 0)S_2(0, t_2)R(t_1, t_2);\\
-		R(t_1, t_2) &= \frac{S(t_1, t_2)S(0, 0)}{S(t_1,0)S(0,t_2)}
- 	\end{aligned}
-	$$
-where $R(t_1, t_2)$ is called \emph{a cross-ratio}. We see that this is a dependency measure because this is a ratio of columns or rows of a two-by-two table.\\
-The author sited the work of \cite{gill1990survey} who proved that these two estimators were equivalent, and performed similarly well, under assumption of complete independence of events and censoring events.
-Van Der Laan further discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE).
+\cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. In fact, \cite{van1997nonparametric} sited the work of \cite{gill1990survey} who proved that the estimators of Dabrowska and Prentice and Cai were equivalent and performed similarly well under the assumption of complete independence of events and censoring. Van Der Laan further discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE).
 %In the presence of singly censored observations it has a problem of uniqueness (see page 321 of Prentice).
-He noted that when NPMLE was solved using expectation-maximization (EM) algorithm, the algorithm assigned equal mass to uncensored observations, and singly and double censored observations were assigned mass based on the nearby uncensored observations. In case of singly censored observations, in order for them to get a mass assignment the half line had to contain at least one uncensored observation, which might not happen in a case of continuous time to event.\\
+He noted that when NPMLE was solved using expectation-maximization (EM) algorithm, the algorithm assigned equal mass to uncensored observations, while singly and double censored observations were assigned mass based on the nearby uncensored observations. In case of singly censored observations, in order for them to get a mass assignment the half line had to contain at least one uncensored observation, which might not happen in a case of continuous time to event.\\
 Van Der Laan suggested a repaired NPMLE, where instead of the half-lines there were strips that were wide enough to contain the uncensored observations, and suggested a way of redistributing the mass for singly censored observations based on the uncensored observations that fell into the strips or quadrants.
 After comparing several estimator, the author came to conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators are better. With increased dependence however, the author's estimator performed better.\\
-~\\
 
-\cite{moodie2005adjustment} pointed out that the method of Van Der Laan could be inefficient when the strips were large because the uncensored points could borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. They suggested an improvement. They first applied Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistributed the mass from uncensored observations on to points that were located on the half lines of the singly censored observations from the same strip. They reported that this method improves efficiency and reduced computational complexity when computing the variance.\\
+\cite{moodie2005adjustment} pointed out that the method of Van Der Laan could be inefficient when the strips were large because the uncensored points could borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. They suggested an improvement. They first applied Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistributed the mass from uncensored observations on to points that were located on the half lines of the singly censored observations from the same strip. They reported that this method improves efficiency and reduced computational complexity when computing the variance.
 
 % \begin{figure}[!h]
 % \includegraphics{MoodiePrentice2005.png}
@@ -546,32 +457,27 @@ We now summarized papers that in the search of a linear rank test for associatio
 
 \subsection{Censored Version of Spearman Correlation in Earlier Research}
 
-\cite{prentice1978linear} considered a model of linear regression with time to event as an outcome, while allowing the time to be censored.
+\cite{prentice1978linear}  considered a model of linear regression with time to event as an outcome, while allowing the time to be censored.
 	$$
 	\begin{aligned}
 		y = \alpha + \beta z + \sigma e
 	\end{aligned}
 	$$
-The author's goal was to develop a \emph{linear rank statistic} in order to check the following hypothesis: $\beta = 0$. Although this model described univariate survival, we are interested in it because of the author's approach to censored observations.
+The author's goal was to develop a linear rank statistic in order to check the following hypothesis: $\beta = 0$. Although this model described univariate survival, we are interested in it because of the author's approach to censored observations.
 %In order to do this he had to find an approach to rank survival outcome in the presence of censored data. He chose a simplified approach to the ranking of censored values [Kalbfleisch \& Prentice, 1973].
 According to this approach, uncensored observations were ranked among themselves, while censored observations were ranked according to their location relatively to uncensored observations. This approach allowed to develop a linear rank statistic and its approximation that assigned the same score to all censored residuals between adjacent uncensored values.\\
 %Even after using ranks and approximations, Prentice's approach required assuming $F_i$ - distribution of residuals (check this please).
-~\\
 
-\cite{cuzick1982rank} considered a general model of association:
+Using the results of Prentice's work, \cite{cuzick1982rank} considered a general model of association:
 	$$
 	\begin{aligned}
 		Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2,
 	\end{aligned}
 	$$
-where $Z$, $e_1$, and $e_2$ were independent and  $b=a\lambda,~~0<|\lambda|<\infty$. In this case two variables $(Y_1, Y_2)$ were thought to be related to a third unobserved covariate.\\
-The author assumed the same generalized ranking of censored data as \cite{prentice1978linear}: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation on the left.\\
-Cuzick's approach required knowing $f_i(x)$ the density of $e_i$, and as an illustration, he assumed a logistic density of $e_1$ and $e_2$:  $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$. It turned out that for this particular case the rank of each observation with no censoring was $F(x)$, and in the presence of censoring, the rank was $\frac{1+F(x)}{2}$, which resulted in the association test statistic equivalent to \emph{Spearman} correlation.\\
-~\\
+where $Y_1$, and $Y_2$ were event times that could be censored, and random variable $Z$ and $e_1$ and $e_2$ were indenpendent, and finally $b=a\lambda,~~0<|\lambda|<\infty$. The model suggests that two randome variables $(Y_1, Y_2)$ are related to a third unobserved covariate.\\
+Cuzick assumed the same generalized ranking of censored data as \cite{prentice1978linear}: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation on the left. Although his approach was rather general, it did require knowing $f_i(x)$ the density of $e_i$, and as an illustration, he assumed a logistic density of $e_1$ and $e_2$:  $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$. It turned out that for this particular case the rank of each observation with no censoring was $F(x)$, and in the presence of censoring, the rank was $\frac{1+F(x)}{2}$, which resulted in the association test statistic equivalent to \emph{Spearman} correlation.\\
 
-\cite{dabrowska1986rank} developed a semi-parametric statistic for testing an association of two survival outcomes, possibly censored, with the following null hypothesis: $H_0:~F=F_1 F_2$. In order to test this hypothesis, the author further developed the results of \cite{prentice1978linear} , \cite{kalbfleisch2011statistical} , and \cite{cuzick1982rank} , and suggested a \emph{linear rank} statistic and its simplification in the following form:
-
-
+\cite{dabrowska1986rank} developed a semi-parametric statistic for testing an association of two survival outcomes, possibly censored, with the following null hypothesis: $H_0:~F=F_1 F_2$. In order to test this hypothesis, the author further developed the results of \cite{prentice1978linear} and \cite{cuzick1982rank} , and suggested a \emph{linear rank} statistic and its simplification in the following form:
 	$$
 	\begin{aligned}
 		 S_n = \sum_{n=1}^N \mathcal{J}_1( \hat{F}_1, \delta_{1n}) \cdot \mathcal{J}_2( \hat{F}_2, \delta_{2n}),
@@ -583,8 +489,7 @@ where $\hat{F}_i$ were estimators similar to the usual \emph{Kaplan-Meier} estim
 		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
 	\end{aligned}
 	$$
-The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is PSR for continuous and censored failure time.\\
-~\\
+The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, covariance of probability scale residuals. As a reminder, $PSR(x, \delta) = F(x)-\delta(1-F(x))$ for continuous and censored failure time.\\
 
 \cite{ding2004testing} suggested the following statistic for testing independence for bivariate \emph{current status data}:
 	$$
@@ -594,7 +499,7 @@ The above expression reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta)
 	$$
 Which is exactly covariance of PSR for \emph{current status data}.\\
 ~\\
-Although censored version of \emph{Spearman} correlation was suggested before PSR were introduced, the framework for \emph{Spearman} correlation statistics was based on specific distribution assumptions were not generalized for discrete data. The tests statistic computed as correlation of PSR does not have these problem.
+Although censored version of \emph{Spearman} correlation was suggested before PSR were introduced, the framework for \emph{Spearman} correlation statistics was based on specific distribution assumptions were not generalized for discrete data. The using the tests statistic computed as correlation of PSR does not have require distribution assumptions and can be applied to discrete time to event.
 
 \section{DISCUSSION AND FUTURE RESEARCH}
 
@@ -672,56 +577,59 @@ In the future, we plan to compare the performance of PSR correlation for censore
 %\bibliographystyle{plainnat}
 
 \bibliography{summaryOfRef}
-
+\clearpage
 
 \section{Appendix A} \label{appendixA}
-Here we show that 
+Here we show that the \emph{cross ratio} of \ref{clayton1978model} can be written in the following ways:
 	$$
 	\begin{aligned}
 	  \theta = \frac{ \lambda_s(s|T=t)}{\lambda_s(s|T>t)} = \frac{ \lambda_t(t|S=s)}{\lambda_t(t|S>s)} = \frac{ \frac{\partial^2 S(s, t)}{\partial s\partial t} \cdot S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
 	\end{aligned}
 	$$
 
-If $f(s,t)$ is a density of the age at which fathers ($t$) and sons ($s$) succomb to the disease, then the proposed model is:
+Let $f(s,t)$ and $S(s,t)$ be joint density and survivor function respectively of age at which fathers ($T$) and sons ($S$) succumb to disease, then we can write:
 	$$
 	\begin{aligned}
-		f(s,t)\int_s^{\infty}\int_t^{\infty} f(u, v)dvdu &= \theta \int_s^{\infty}f(u, t)du\int_t^{\infty}f(s, v)dv \\
+		\frac{\partial^2 S(s, t)}{\partial s\partial t} &= f(s,t) = f(s|t)\cdot f(t)\\
+		\frac{\partial S(s,t)}{\partial t} &= \int_s^{\infty}f(u, t)du = \int_s^{\infty}f(u|t)f_t(t)du = S(s|t)\cdot f_t(t)\\
+		\frac{\partial S(s,t)}{\partial s} &=...= S(t|s)\cdot f(s) = Pr(T>t|s)\cdot f(s) = Pr(T>t, s) = Pr(s,T>t) = Pr(s|T>t)S_t(t) = \\
+		&=f(s|T>t)\cdot S_t(t)\\
+		S(s,t) &= Pr(S>s|T>t)\cdot Pr(T>t) = S(s|T>t)\cdot S_t(t)
 	\end{aligned}
 	$$
-		or\\
+By substituting the right-hand sides of the above equalities into the expression for $\theta$, we get:
 	$$
 	\begin{aligned}
-		\theta &= \frac{f(s,t)\int_s^{\infty}\int_t^{\infty} f(u, v)dvdu} {\int_s^{\infty}f(u, t)du\int_t^{\infty}f(s, v)dv} = 
-		\frac{ \frac{\partial^2 S(s, t)}{\partial s\partial t} \cdot S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}}
-		&= \frac{f(s,t)/\frac{\partial S(s, t)}{\partial t}}  {\frac{\partial S(s, t)}{\partial s}/ S(s, t) } 
+		\theta &= \frac{\frac{\partial^2 S(s, t)}{\partial s\partial t}/\frac{\partial S(s, t)}{\partial t}}  {\frac{\partial S(s, t)}{\partial s}/ S(s, t) } = \frac{  \frac{f(s|t)\cancel{f_t(t)}}{S(s|t)\cancel{f_t(t)}} } { \frac{f(s|T>t)\cdot \cancel{S_t(t)}}{S(s|T>t)\cdot \cancel{S_t(t)}}  }
+		  = \frac{f(s|t)/S(s|t)}     {f(s|T>t) / S(s|T>t) }\\
 	\end{aligned}
 	$$
-We keep in mind that:
+By defintion, $\lambda_s(s|t) = \frac{f(s|t)}{S(s|t)}$ and $\lambda_s(s|T>t) = \frac{f(s|T>t)}{S(s|T>t)}$, therefore:
 	$$
 	\begin{aligned}
-		f(s,t) &= &f(s|t)\cdot f(t)\\
-		\frac{\partial S(s,t)}{\partial t} &= \int_s^{\infty}f(u, t)du = \int_s^{\infty}f(u|t)f_t(t)du = &S(s|t)\cdot f_t(t)\\
-		\frac{\partial S(s,t)}{\partial s} &=...= S(t|s)\cdot f(s) = Pr(T>t|s)\cdot f(s) = Pr(T>t, s) = Pr(s,T>t) = Pr(s|T>t)S_t(t) = &f(s|T>t)\cdot S_t(t)\\
-		S(s,t) &= Pr(S>s|T>t)\cdot Pr(T>t) = &S(s|T>t)\cdot S_t(t)
-	\end{aligned}
-	$$
-By substituting these equations into the expression for $\theta$, we get:
-	$$
-	\begin{aligned}
-		\theta &= \frac{f(s,t)/\frac{\partial S(s, t)}{\partial t}}  {\frac{\partial S(s, t)}{\partial s}/ S(s, t) } = \frac{  \frac{f(s|t)\cancel{f_t(t)}}{S(s|t)\cancel{f_t(t)}} } { \frac{f(s|T>t)\cdot \cancel{S_t(t)}}{S(s|T>t)\cdot \cancel{S_t(t)}}  }
-		  = \frac{f(s|t)/S(s|t)}     {f(s|T>t) / S(s|T>t) }
+		\theta &=\frac{f(s|t)/S(s|t)}     {f(s|T>t) / S(s|T>t) }
 		= \frac{\lambda_s(s|t) } {\lambda_s(s|T>t) }\\
 	\end{aligned}
 	$$
 Because of the symmetry, we can write:
 	$$
 	\begin{aligned}
-	  \theta = \frac{ \lambda_s(s_0|t=t_0)}{\lambda_s(s_0|t>t_0)} = \frac{ \lambda_t(t_0|s=s_0)}{\lambda_t(t_0|s>s_0)}
+	  \theta = \frac{ \frac{\partial^2 S(s, t)}{\partial s\partial t} \cdot S(s, t)}    {\frac{\partial S(s, t)}{\partial t} \frac{\partial S(s, t)}{\partial s}} = \frac{ \lambda_s(s|T=t)}{\lambda_s(s|T>t)} = \frac{ \lambda_t(t|S=s)}{\lambda_t(t|S>s)}~~\blacksquare
 	\end{aligned}
 	$$
-
+\clearpage
 
 \section{Appendix B} \label{appendixB}
+
+Dabrowska demonstrated that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator, point $(0.51,~0)$. She noted that this could be explained by the fact that $\Lambda_{11}$, $\Lambda_{10}$, and $\Lambda_{01}$ summarize three different portions of the data. 
+
+\begin{figure}[!h]
+\includegraphics{figure1.pdf}
+\caption{Example that demonstrates assignment of negative point mass. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components.}
+\label{fig:bubbles}
+\end{figure}
+
+
 \input{dabrowskaExampTable}
 
 
