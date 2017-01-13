@@ -61,13 +61,12 @@
 \clearpage
 
 \section{INTRODUCTION}
-The interest in survival data can be traced back to at least 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, recorded the rate of death from childbed fever. After excluding several other hypotheses, he suggested that a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever was higher because of a disease that was caused by cadaverous particles that medical students and doctors had on their hands after dissecting cadavers. As you might know, his theory was dismissed, and he died alienated from the medical community. The rational for his hypothesis was discovered decades later, when the germ theory of the disease was developed. 
+The interest in survival data can be traced back to at least 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, recorded the rate of death from childbed fever. After excluding several other hypotheses, he suggested that when a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever was higher because of a disease that was caused by cadaverous particles that medical students and doctors had on their hands after dissecting cadavers. As you might know, his theory was dismissed, and he died alienated from the medical community. The rational for his hypothesis was discovered decades later, when the germ theory of the disease was developed. 
 
 
 Another example was Florence Nightingale, who was born into a rich upper-class British family, and in spite of her status she pursued a career of a nurse. She was credited for significantly reducing hospital mortality of British soldiers during the Crimean War, in 1854 (with hand-washing being one of the most important practices implemented under her supervision). She also published some of her works in simple English in order to popularize medical knowledge.\\
-In these two examples, the survival data could be collected as a binary variable: died or lived.  Another way of collecting survival data is to record time to death or any other event of interest. \\
 
-\cite{fisher1931truncated},  \cite{hald1949maximum}, and \cite{swan1969computing} were probably one of the first to suggest a more complex view of survival data and introduced a concept of \emph{censoring}. An subject is censored at time $t$ if the event did not happen yet, and after time $t$ it can not be observed. For example, suppose we have a five-year longitudinal study that aims to measure an association of blood pressure and time to cardiovascular event. Patients who do not have a cardiovascular event during this period are labeled as \emph{censored}. Censoring is \emph{non-informative} if it is not associated with the potential event time. Otherwise it is called \emph{informative}. Assumption of non-informative censoring simplifies estimation of survival, but nevertheless is a non-trivial problem. It was solved for a univariate case by \cite{kaplan1958nonparametric} who introduced the Product-Limit estimator of the survival curve. \cite{david1972regression} extended their work by introducing a regression model for censored survival outcome. His model utilized a concept of a \emph{hazard rate}:
+In these two examples, survival data was collected as a binary variable: died or lived. For studies with longer follow-up, a better way of collecting survival data is to record time to the event. The problem with collecting time to event though, is that not all events can be observed. For example, suppose a five-year longitudinal study aims to test an association of blood pressure and time to cardiovascular event. Not all patients will necessarily have the event during these five years. Such patients would be labeled as \emph{censored}.  \cite{fisher1931truncated},  \cite{hald1949maximum}, and \cite{swan1969computing} were probably one of the first to suggest a more complex view of survival data by introducing a concept of \emph{censoring} and suggesting methods of dealing with it. Censoring is \emph{non-informative} if it is not associated with the potential event time. Otherwise it is called \emph{informative}. Assumption of non-informative censoring somewhat simplifies estimation of survival probability, but still requires complex theoretical tools. It was \cite{kaplan1958nonparametric} who suggested an estimate of survival probability for a univariate case and in the presence of censoring. They introduced a well known Product-Limit estimator of the survival curve. \cite{david1972regression} extended their work by introducing a regression model for censored survival outcome. His model utilized a concept of a \emph{hazard rate}, and we define it here in order to understand better the rest of the paper. \emph{Hazard rate} is defined as follows:
 
 $$
 \begin{aligned}
@@ -77,9 +76,9 @@ $$
 \end{aligned}
 $$
 
-Where $T$ is time to event, $\mathcal{S}(t) = 1-F(t)$, and $F(t)$ and $f(t)$ are cumulative distribution function and density function of random variable $T$ respectively. $P(T\in[t,t+h] | T\geq t)$ is a \emph{conditional probability}, the probability that the event occurs in the time period of $[t,t+h]$ given that the subject survived without the event at least until time $t$. In other words, hazard rate can be intuitively thought of as a probability of the event per unit of time.\\
+Where $T$ is a random variable of time to event; $F(t)$, $f(t)$, $S(t)$ are cumulative distribution function, density function, and \emph{survival function} of random variable $T$; and $\mathcal{S}(t) = 1-F(t)$. $P(T\in[t,t+h] | T\geq t)$ is a \emph{conditional probability}, the probability that the event occurs in interval $[t,t+h]$ given that the subject survived without the event at least until time $t$. In other words, hazard rate can be intuitively thought of as a probability of the event per unit of time.\\
 Although the notion of hazard rate is intuitively simple, its estimation required complex theoretical tools even in a univariate case. Adding another dimension not only increases the complexity, but also makes it more difficult to apply intuitive thinking. Pursuing a purely theoretical question in the context of \emph{bivariate} survival function, \cite{basu1971bivariate} %[get this paper from the library ??? this does not add up because Cox wrote his paper later]
-defined a double failure hazard rate as:
+defined a \emph{double failure hazard rate} as:
 $$
 \begin{aligned}
 	\lambda(t_1,t_2)&= \lim_{(h_1,h_2)\rightarrow 0} \frac{1}{h_1 h_2} P(T_1\in[t_1,t_1+h_1], T_2\in[t_2,t_2+h_2] | T_1\geq t_1, T_2 \geq t)=
@@ -87,7 +86,7 @@ $$
 	 \frac{f(t_1,t_2)}{\mathcal{S}(t_1,t_2)}
 \end{aligned}
 $$
-The intuition of the univariate hazard rate helps us understand the above expression because of the similarity between $\frac{f(t_1,t_2)}{\mathcal{S}(t_1,t_2)}$ and$\frac{f(t)}{\mathcal{S}(t)}$. We included this definition because the rest of the summarized literature relies on it.\\
+The intuition of the univariate hazard rate helps us understand the above expression because of the similarity between $\frac{f(t_1,t_2)}{\mathcal{S}(t_1,t_2)}$ and$\frac{f(t)}{\mathcal{S}(t)}$. We included this definition because this and other similar concepts are present in the rest of this paper.\\
 
 Although the work of \cite{basu1971bivariate} was not targeted toward specific applications, there are many practical problems where bivariate survival analysis could find its use, for example, in studies of age of appendicitis in twins, or of time to cardiovascular disease among subjects with familial ties. In this paper, we are concerned with the question of association between paired survival data. Although the literature on this subject is vast, we review only three main approaches. First, this question was addressed by introducing a \emph{bivariate hazard ratio} in the context of specific family of distributions. The second approach was to find a non-parametric estimate of the bivariate survival function with three components: two marginal survival functions and a term that represented an association between two survival variables. The third approach was to develop semi-parametric and non-parametric tests to examine association of residuals. We especially focus on the non-parametric test of \emph{probability scale residuals} introduced and thorouphly researched by \cite{li2012new}, \cite{lui2015covariate}, and \cite{shepherd2016probability}.\\
 The main goal of the paper was to show the complexity of theoretical tools required to address the question of bivariate survival in the presence of censoring and to highlight the generalizability of \emph{probability scale residuals} approach and simplicity of its use. In conclusion, we identify the direction of our future research with a goal, to apply \emph{probability scale residuals} for a wide range of different statistical scenarios in the context of bivariate survival with non-informative censoring.
@@ -112,13 +111,13 @@ $$
  \end{aligned}
 $$
  
-The problem with this approach is that a parent may not live long enough to experience time to cardiovascular disease, or the patient does not know his/her parental history. This means that not only our outcome, time to cardiovascular disease, but also our covariate, parental history may be censored. This is what motivated \cite{clayton1978model} to think of a different approach for epidemiological studies of chronic disease with familial tendency. Following the intuition of the hazard ratio in the context of Cox regression, he defined a measure similar to hazard ratio, that had the following properties:
+The problem with this approach is that a parent may not live long enough to experience time to cardiovascular disease. This means that not only our outcome, time to cardiovascular disease, but also our covariate, parental history may be censored. This is what motivated \cite{clayton1978model} to think of a different approach for epidemiological studies of chronic disease with familial tendency. Following the intuition of the hazard ratio in the context of Cox regression, he defined a measure similar to hazard ratio, that had the following properties:
 \begin{enumerate}
 	\item Easy to compute
 	\item Expressible as a constant ratio of age-specific rates
   \item Symmetrical in two variables
 \end{enumerate}
-Let's denote time to event for fathers to be $t$ and time to event for sons to be $s$. Also, let's denote $\lambda_s(s_0|t=t_0) = \frac{f(s_0|t=t_0)}{S(s_0|t=t_0)}$ and $\lambda_s(s_0|t>t_0) = \frac{f(s_0|t>t_0)}{S(s_0|t>t_0)}$. Then Clayton's $\theta$ is defined in the following way:
+Let's denote time to event for fathers to be $t$ and time to event for sons to be $s$. Also, let's denote $\lambda_s(s_0|t=t_0) = \frac{f(s_0|t=t_0)}{S(s_0|t=t_0)}$ and $\lambda_s(s_0|t>t_0) = \frac{f(s_0|t>t_0)}{S(s_0|t>t_0)}$. Then Clayton's \emph{cross ratio}, $\theta$, is defined in the following way:
 $$
 \begin{aligned}
 	\theta = \frac{\lambda_s(s_0|t=t_0)}{\lambda_s(s_0|t>t_0)} = \frac{\lambda_t(t_0|s=s_0)}{\lambda_t(t_0|s>s_0)}
@@ -128,13 +127,13 @@ We clearly see a similarity between the hazard ratio of Cox model and the \emph{
 
 This measure can be interpreted for sons (as much as for fathers) in the following way: how much more likely for a son to have an event at time $s_0$ given that his father had an event at time $t_0$ compared to a son whose father survived until time $t_0$ without the event. Independence between fathers and sons would mean $\theta = 1$, positive association $\theta > 1$ and negative association $\theta < 1$.
  %Clayton also explained how his model could be generalized to include covariates, and derived the likelihood to estimate $\theta$ when two marginal distributions are completely unknown using approach similar to one used by Cox.\\
-Clayton's assumptions lead to a specific form of survival function:
+Clayton's assumptions lead to a specific form of survival function (see \cite{oakes1989bivariate}):
 $$
 \begin{aligned}
-f(s,t) = \frac{\theta a'(s)b'(t)}{[1+(\theta - 1)(a(s) + b(t))]^{2+\frac{1}{\theta-1}}}
+S(t_1,t_2) = \left[\left\{ \frac{1}{S_1(t_1)} \right\}^{\theta - 1} + \left\{ \frac{1}{S_2(t_2)} \right\}^{\theta - 1}   - 1 \right]^{-\frac{1}{\theta-1}}
 \end{aligned}
 $$
-where $a(s)$ and $b(t)$ are non-decreasing functions and $a(0)=0$ and $b(0)=0$. Although the bivariate density has a very specific form, his approach allows estimating $\theta$ without knowing $a(s)$ and $b(t)$ and using a non-parametric likelihood.\\
+where $S_1(t_1)$ and $S_2(t_2)$ are marginal survival functions. Although this bivariate function has a very specific form, Clayton's non-parametric likelihood approach allowed to estimate $\theta$ without knowing specific forms of $S_1(t_1)$ and $S_2(t_2)$.\\
 ~\\
 \cite{oakes1982model} studied Clayton's model extensively and showed that: $\frac{\theta - 1}{\theta + 1} = \tau$, where $\tau$ is a coefficient of concordance introduced by  \cite{kendall1938new}: for two independent pairs of variables with the same bivariate distribution $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendal's $\tau$ is the probability of concordance minus the probability of discordance:
 $\tau = P[(U_1 - U_2)(Z_1 - Z_2)>0] - P[(U_1 - U_2)(Z_1 - Z_2)<0] = E[sign((U_1 - U_2)(Z_1 - Z_2))]$. This fact suggested that $\theta$ can be estimated through $\tau$ as well.\\
@@ -153,35 +152,35 @@ $$
 \end{aligned}
 $$
 
-He showed that bivariate distributions introduced by frailty models were part of a larger class of \emph{archimedian} distributions studied by \cite{genest1986copules}:
+He showed that bivariate distributions introduced by frailty models were part of a larger class, the of \emph{archimedian} distributions studied by \cite{genest1986copules}:
 $$
 \begin{aligned}
 	S(t) = p\left[ q\left\{ S_1(t_1) \right\}  + q\left\{ S_2(t_2) \right\}  \right]
 \end{aligned}
 $$
 
-Where $p(u)$ is a non-negative decreasing function with non-negative second derivative, with $p(0)=1$, and $p(u)$ is an inverse function of $q(v)$. It can be shown (see \ref{appendixA}) that for Clayton's $\theta$ the following equality holds:
+Where $p(u)$ is a non-negative decreasing function with non-negative second derivative, with $p(0)=1$, and $p(u)$ is an inverse function of $q(v)$. It can be shown (see Appendix A) that for Clayton's $\theta$ the following equality holds:
 	$$
 	\begin{aligned}
 		\theta = \frac{\lambda_{t_1}(t_1|T_2=t_2)}{\lambda_{t_1}(t_1|T>t_2)} = \frac{ \frac{\partial^2 S(t_1,t_2)}{\partial t_1 \partial t_2} S(t_1, t_2)}    {\frac{\partial S(t_1, t_2)}{\partial t_2} \frac{\partial S(t_1, t_2)}{\partial t_1}}
 	\end{aligned}
 	$$
-Using this expression, Oakes showed that for \emph{archimedian} class of models, $\theta$ depends on $t$ only through $S(t)$, which allowed him to show the following:
+Using this equality, Oakes showed that for \emph{archimedian} class of models, $\theta$ depends on $t$ only through $S(t)$, which allowed him to show the following:
 $$
 \begin{aligned}
 \theta(v) = -v\cdot q''(v)/q'(v)
 \end{aligned}
 $$
-where $v=S(t_1, t_2)$. He also pointed out that because $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $\tau(v) = \frac{\theta(v)-1}{\theta(v)+1}$, both $\theta(v)$ and $\tau(v)$ can be considered as a measure of local dependence because it depends on $v=S(t_1, t_2)$. Oakes also showed that Clayton's model is a subset of the \emph{archimedian} class, which implies that he extended the set of models for which $\theta(v)$ and $\tau(v)$ can be used as association measures.\\
+where $v=S(t_1, t_2)$. He also pointed out that because $\theta$ and \emph{Kendall}'s $\tau$ were related through the following equality: $\tau(v) = \frac{\theta(v)-1}{\theta(v)+1}$, both $\theta(v)$ and $\tau(v)$ can be considered as a measure of local dependence because it depends on $v=S(t_1, t_2)$. By showing that Clayton's model is a subset of the \emph{archimedian} class, Oakes extended the set of models for which $\theta(v)$ and $\tau(v)$ can be studied.\\
 ~\\
-As a side note, the \emph{archimedian} class of survival function used by Oakes is a subclass of functions called \emph{copulas}. According to \cite{nelsen2007introduction}, a two-dimensional \emph{copula} is a function with support on $[0, 1] \times [0, 1]$ and values in $[0, 1]$. We omit the formal defintion and skip to its important quality summarized in \emph{Sklar's theorem}: if $H(x,y)$ is a joint distribution function with margins $F(x)$ and $G(y)$, there exists a copula $C$ such that for all $x,y$: $H(x,y) = C(F(x), G(y))$, where, if $F$ and $G$ are continuous then $C$ is unique. Nelson also defines a \emph{survival copula} that holds the same property: $\bar{H}(x,y) = C_S(\bar{F}(x), \bar{G}(y))$, where $\bar{H}(x,y)$, $\bar{F}(x)$, and $\bar{G}(y)$ are joint and marginal survival functions respectively. The implication of this property is that in order to estimate a survival copula, the marginal distributions and their association parameter can be estimated separately for any type of survival copula. 
+As a side note, the \emph{archimedian} class of survival function used by Oakes is a subclass of functions called \emph{copulas}. According to \cite{nelsen2007introduction}, a two-dimensional \emph{copula} is a function with support on $[0, 1] \times [0, 1]$ and values in $[0, 1]$. We omit the formal defintion of a \emph{copula} and only mention its important quality summarized in \emph{Sklar's theorem}: if $H(x,y)$ is a joint distribution function with margins $F(x)$ and $G(y)$, there exists a copula $C$ such that for all $x,y$: $H(x,y) = C(F(x), G(y))$, where, if $F$ and $G$ are continuous then $C$ is unique. Nelson also defines a \emph{survival copula} that holds the same property: $\bar{H}(x,y) = C_S(\bar{F}(x), \bar{G}(y))$, where $\bar{H}(x,y)$, $\bar{F}(x)$, and $\bar{G}(y)$ are joint and marginal survival functions respectively. The implication of this property is that in order to estimate a survival copula, the marginal distributions and their association parameter can be estimated separately for any type of survival copula. 
 %Without going into the details, we mention a few papers that used copula approach, . 
-In addition to this important property, the theory of copulas for continuous data has ready expression for \emph{Kendal's} $\tau$ and \emph{Spearman} correlation, two popular association measure for continuous and ordinal data. Without summarizing the entire literature, we mention only few papers where authors used the theory of copulas for inference in bivariate survival: \cite{shih1996tests}, \cite{shih1995inferences}, and \cite{zhang2008inference}.\\
+In addition to this important property, the theory of copulas for continuous data allows to express two popular association measures, \emph{Kendal's} $\tau$ and \emph{Spearman} correlation, in terms of copulas. Without summarizing the entire literature, we mention only few papers where authors used the theory of copulas for inference in bivariate survival: \cite{shih1996tests}, \cite{shih1995inferences}, and \cite{zhang2008inference}.\\
 ~\\
-Now we go back to the \emph{cross ratio} $\theta$, defined by Clayton and later developed by Oakes. In survival studies, the age of participants is often restricted by inclusion criteria. For example, the age of mothers could be restricted to 50-80, and of daughters to 30-60. Because of this, there was a need to have an association measure that would take this restriction into account and would be well suited for censored time to event. This argument lead \cite{fan2000dependence} to consider a weighted average of Clayton's \textit{cross ratio} $\theta$ over $[0,t_1] \times [0, t_2]$, $\theta = \frac{ \lambda_2(s_2|T_1=s_1)}{\lambda_2(s_2|T_1 \geq s_1)}$. As a reminder, $\theta$ can be interpreted as a risk for daughters of age $s_2$ whose mothers developed a disease at age $s_1$, compared to daughters of age $s_2$ whose mothers were disease free at age $s_1$. The authors chose this measure because of its interpretability, and suggested that in order to increase comparability across studies, the weighting should be independent of censoring mechanism. The following weights were proposed: $\frac{F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)}$. For one dimension, this weight could be interpreted as a probability of an event at point $t$ given that the subject survived until $t$.\\
+Now we go back to the \emph{cross ratio} $\theta$, defined by Clayton and later developed by Oakes. In survival studies, the age of participants is often restricted by inclusion criteria. For example, the age of mothers could be restricted to 50-80, and of daughters to 30-60. This created a need for an association measure that would take this restriction into account and would be well suited for censored time to event. This argument lead \cite{fan2000dependence} to consider a weighted average of Clayton's \textit{cross ratio} $\theta = \frac{ \lambda_2(t_2|T_1=t_1)}{\lambda_2(t_2|T_1 \geq t_1)}$ over $[0,t_1] \times [0, t_2]$. As a reminder, $\theta$ can be interpreted as a risk for daughters of age $t_2$ whose mothers developed a disease at age $t_1$, compared to daughters of age $t_2$ whose mothers were disease free at age $t_1$. The authors chose this measure because of its interpretability, and suggested that in order to increase comparability across studies, the weighting should be independent of censoring mechanism. The following weights were proposed: $\frac{F(dt_1,dt_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)}$. For one dimension, this weight could be interpreted as a probability of an event at point $t$ given that the subject survived until $t$.\\
 
 %They allowed the time to be discrete, continuous, or mixed, but $F(., .)$ was required to possess a density relative to the corresponding counting Lebesque measure.\\
-Instead of weighting $\theta(s_1, s_2)$, the authors chose to weight $c(s_1, s_2) = \frac{1}{\theta(s_1, s_2)}$ because weighting $c(s_1, s_2)$ results in a consistent estimator:
+Instead of weighting $\theta(t_1, t_2)$, the authors chose to weight $c(t_1, t_2) = \frac{1}{\theta(t_1, t_2)}$ because weighting $c(t_1, t_2)$ results in a consistent estimator:
 	$$
 	\begin{aligned}
 		C(t_1, t_2) &= \int_0^{t_1}\int_0^{t_2} \frac{c(s_1, s_2)F(ds_1,ds_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)} = ...= \int_0^{t_1}\int_0^{t_2} \frac{F(s_1^-, s_2^-)\Lambda_{10}(ds_1, s^-_2)\Lambda_{01}(s^-_1, ds_2)}{1 - F(t_1, 0) - F(0, t_2)+ F(t_1, t_2)} \\
@@ -189,28 +188,27 @@ Instead of weighting $\theta(s_1, s_2)$, the authors chose to weight $c(s_1, s_2
 	$$
 	The above measure can be estimated non-parametrically using $\hat{F}$ of \cite{dabrowska1988kaplan} or \cite{prentice1992covariance}, and $\hat{\Lambda}$ can be estimated using a Nelson-Aalen type estimator.
 	%??? Nelson-Aalen
-Note that $C(t_1, t_2)$ may be interpreted as an average relative risk over $[0,t_1] \times [0, t_2]$. When $C(t_1, t_2)=1$, there is no association. When $C(t_1, t_2)<1$, there is positive association. It can also be interpreted as a weighted average hazard ratio with weights proportional to the failure time density at $(s_1,s_2)$.\\
-Because \cite{oakes1989bivariate} noted that \emph{Kendal's} $\tau(s_1, s_2)$ can be written as:
+Note that $C(t_1, t_2)$ may be interpreted as an average relative risk over $[0,t_1] \times [0, t_2]$. When $C(t_1, t_2)=1$, there is no association. When $C(t_1, t_2)<1$, there is positive association. It can also be interpreted as a weighted average hazard ratio with weights proportional to the failure time density at $(t_1,t_2)$.\\
+Because \cite{oakes1989bivariate} noted that \emph{Kendal's} $\tau(t_1, t_2)$ can be written as:
 	$$
 	\begin{aligned}
-		\tau(s_1, s_2) &= \frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
+		\tau(t_1, t_2) &= \frac{1 - c(t_1, t_2)}{1+c(t_1, t_2)}
 	\end{aligned}
 	$$
-	The authors also proposed to weight conditional version of \emph{Kendal's} $\tau=\tau(s_1, s_2)$ proposed by \cite{oakes1989bivariate}:
+	The authors also proposed to weight conditional version of \emph{Kendal's} $\tau=\tau(t_1, t_2)$ proposed by \cite{oakes1989bivariate}:
 	$$
 	\begin{aligned}
-		&\tau(s_1, s_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = s_1,~T_{21}\wedge T_{22} = s_2  \}
+		&\tau(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = t_1,~T_{21}\wedge T_{22} = t_2  \}
 		&~~~~where~\wedge~is~minimum
 	\end{aligned}
 	$$
-The above measure can be interpreted as an association measure between paired subjects who reached certain age. After weighting $\tau(s_1, s_2)$ proportionally to the density, they obtained a weighted conditional \emph{Kendal's} $\tau(s_1, s_2)$:
+The above measure can be viewed as an association between paired subjects who reached certain age. After weighting $\tau(t_1, t_2)$ proportionally to the density, they obtained a weighted conditional \emph{Kendal's} $\tau(t_1, t_2)$:
 	$$
 	\begin{aligned}
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
 	\end{aligned}
 	$$
 This measure can be especially useful in studies with long follow-up. For example, the authors estimated that the association of time to appendectomy between monozygotic female twins measured using $C(t_1, t_2)$ and $\mathcal{T}(t_1, t_2)$ was stronger at younger ages and weaker at older ages.\\
-~\\
 
 Measures $C(t_1, t_2)$ and $\mathcal{T}(t_1, t_2)$ were further considered by
 \cite{fan2000class} who suggested a class of estimators similar to ones described by \cite{fan2000dependence} . They considered special cases of $\theta(t_1, t_2)$ and weights, where instead of using the bivariate survival function estimators of \cite{dabrowska1988kaplan} and \cite{prentice1992covariance} the hazard function estimators of Nelson-Aalen type could be used. And instead of bootstrap variance estimator, an explicit variance formulae can be obtained.\\
@@ -221,7 +219,8 @@ Measures $C(t_1, t_2)$ and $\mathcal{T}(t_1, t_2)$ were further considered by
 %     \mathcal{T}(t_1, t_2) &= \frac{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) - \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }{\int_0^{t_1}\int_0^{t_1} H_{11}(ds_1, ds_2) + \int_0^{t_1}\int_0^{t_1} H_{10}(ds_1, s_2^-)H_{01}(s_1^-, ds_2) }\\
 % 	\end{aligned}
 %  $$
-This completes our overview of papers that studied association of bivariate survival through modeling of a bivariate hazard ratio. We proceed to a different but perhaps more complex way of evaluating association of bivariate survival through estimating a a \emph{bivariate survival surface}.
+
+This completes our overview of papers that studied association of bivariate survival through modeling of a \emph{cross ratio}. We proceed to a different but perhaps more complex way of evaluating association of bivariate survival data by estimating a \emph{bivariate survival surface}.
 
 \subsection{Estimating Bivariate Survival Surface}
 
