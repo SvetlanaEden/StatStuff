@@ -298,7 +298,7 @@ This estimator is easy to compute, but as we see later, it assigns negative mass
 
 	$$
 	\begin{aligned}
-		\hat{F}(s,t) &= \hat{F}(s,0)\hat{F}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
+		\hat{S}(s,t) &= \hat{S}(s,0)\hat{S}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
     1 - \hat{L}(\Delta u, \Delta v) &= 1 - \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
   &where\\
 	&\hat{\Lambda}_{11}(\Delta t_1, \Delta t_2) = \#(T_1=t_1, T_2=t_2, \delta_1=\delta_2=1)/\#(T_1\geq t_1, T_2\geq t_2)\\
@@ -306,12 +306,11 @@ This estimator is easy to compute, but as we see later, it assigns negative mass
 	&\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) = \#(T_2=t_2, \delta_2=1, T_1\geq t_1)/\#(T_1\geq t_1, T_2\geq t_2)
 	\end{aligned}
 	$$
-It is possible that $\hat{F}(s,t\neq 0) > \hat{F}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in turn may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.\\
+It is possible that $\hat{S}(s,t\neq 0) > \hat{S}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in turn may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.\\
 Simple simulations showed (not presented here) that term $1 - \hat{L}(\Delta u, \Delta v)$ is greater than $2$ when $\hat{\Lambda}_{01}$ is very large and $\hat{\Lambda}_{10}$ is very small (or the other way around), and when $\hat{\Lambda}_{11}$ is very large. Even for $\hat{\Lambda}_{01} = \hat{\Lambda}_{10} = \hat{\Lambda}_{11} = 0.5$, term $1 - \hat{L}(\Delta u, \Delta v) = 2$.  Dabrowska's example presented in \ref{appendixB} can also illustrates that when all observations are not censored, the values of $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, and $\hat{\Lambda}_{11}$ balance out and the negative mass disappears.\\
 
-\cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. In fact, \cite{van1997nonparametric} sited the work of \cite{gill1990survey} who proved that the estimators of Dabrowska and Prentice and Cai were equivalent and performed similarly well under the assumption of complete independence of events and censoring. Van Der Laan further discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE).
-%In the presence of singly censored observations it has a problem of uniqueness (see page 321 of Prentice).
-He noted that when NPMLE was solved using expectation-maximization (EM) algorithm, the algorithm assigned equal mass to uncensored observations, while singly and double censored observations were assigned mass based on the nearby uncensored observations. In case of singly censored observations, in order for them to get a mass assignment the half line had to contain at least one uncensored observation, which might not happen in a case of continuous time to event.\\
+\cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. In fact, \cite{van1997nonparametric} sited the work of \cite{gill1990survey} who proved that the estimators of Dabrowska and Prentice and Cai were equivalent and performed similarly well under the assumption of complete independence of events and censoring. Van Der Laan further discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE). He cited the work of \cite{tsai1986nonparametric}, who give an example showing that NPMLE for continuous bivariate survival case, the NPMLE is not consistent. Without formally proving this, Van Der Laan gave an intuitive explanation of why this is true using the mechanics of expectation-maximization (EM) algorithm applied to discrete case. When solving solving NPMLE for discrete time to events, the EM algorithm assigned equal mass to uncensored observations. The mass of doubly censored observations is redistributed to the uncensored observations that are located in their quadrant. Singly censored observations redistribute their mass onto to uncensored observations in their \emph{path}. When time to event is continuous, the probability that an uncensored observation lies in their path is zero. This means that the EM algorithm would not know how to redistribute the mass.\\
+
 Van Der Laan suggested a repaired NPMLE, where instead of the half-lines there were strips that were wide enough to contain the uncensored observations, and suggested a way of redistributing the mass for singly censored observations based on the uncensored observations that fell into the strips or quadrants.
 After comparing several estimator, the author came to conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators are better. With increased dependence however, the author's estimator performed better.\\
 
@@ -621,19 +620,36 @@ Because of the symmetry, we can write:
 
 \section{Appendix B} \label{appendixB}
 
-Dabrowska demonstrated that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator, point $(0.51,~0)$. She noted that this could be explained by the fact that $\Lambda_{11}$, $\Lambda_{10}$, and $\Lambda_{01}$ summarize three different portions of the data. 
+In the same paper where \cite{dabrowska1988kaplan} derived an estimator of bivariate survival surface, she gave an example data for which her estimator assigned a negative mass. Figure \ref{fig:bubbles} shows this data graphically. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components, $T_1$ and $T_2$. The values for each element of the Dabrowska's estimator can be found in Table \ref{dabrExTable}. The computations following this table show that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator in point $(0.51,~0)$. 
 
 \begin{figure}[!h]
-\includegraphics{figure1.pdf}
 \caption{Example that demonstrates assignment of negative point mass. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components.}
+\includegraphics{figure1.pdf}
 \label{fig:bubbles}
 \end{figure}
 
+We use Table \ref{dabrExTable} and the formula below to order to show that $\hat{S}(t_1=0.51,~t_2=0) < \hat{S}(t_1=0.51,~t_2=0.02)$:
+
+	$$
+	\begin{aligned}
+		\hat{S}(t_1,t_2) &= \hat{S}(t_1,0)\hat{S}(0,t_2)\cdot \prod_{{0<u\leq t_1~0<v\leq t_2}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
+	\end{aligned}
+	$$
 
 \input{dabrowskaExampTable}
 
+	$$
+	\begin{aligned}
+		&\hat{S}(0.51,~0)  = 0.375\\
+		&\hat{S}(0,~0.02)  = 0.75\\
+		&\hat{S}(0.51,~0.02) = \hat{S}(0.51,~0)\hat{S}(0,~0.02) \times 
+		\prod_{{0<u\leq t_1~0<v\leq t_2}}\{1 - \hat{L}(\Delta u, \Delta v)\}=\\
+		&~~~~~~~~~~~~~= 0.375 \cdot 0.75 \cdot (1-0.111)\cdot (1-0)\cdot (1-(-1)) = \\
+		&~~~~~~~~~~~~~= 0.5
+	\end{aligned}
+	$$
 
-
+From the computations above, we see that $\hat{S}(0.51,~0) = 0.375 < 0.5 = \hat{S}(0.51,~0.02)$.
 
 \end{document}          
 
