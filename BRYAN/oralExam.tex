@@ -327,15 +327,17 @@ Now let's consider a bivariate case with three points $A$, $B$, and $C$, such th
 
 Van Der Laan explained the same problem, but in terms of the EM algorithm that attempts to solve NPMLE. The algorithm works by assigning equal mass to uncensored observations. The mass of doubly censored observations is redistributed to the uncensored observations that are located in their quadrant. The mass for singly censored observations is redistributed onto to the uncensored observations that are contained in their \emph{half-line}. But if the time to event is continuous, the probability that any uncensored observation is contained in the \emph{half-line} of any singly censored observation is $0$. This means that the EM algorithm would not know how to redistribute the mass.\\
 
-Van Der Laan suggested a repaired NPMLE. He introduced partition strips that were wide enough that in addition to singly censored observations they contained the uncensored observations. According to his approach, the mass of singly censored observations was redistributed to the uncensored observations that happened after censoring and that were in the same strip (see left panel of Figure \ref{fig:bcMoodie}). The author compared performance of several estimators and came to the conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators performed better. With increased dependence however, the author's estimator performed better.\\
+Van Der Laan suggested a repaired NPMLE. He introduced partition strips that were wide enough that in addition to singly censored observations they contained the uncensored observations. According to his approach, the mass of singly censored observations was redistributed to the uncensored observations that happened after censoring and that were in the same strip. The left panel of figure \ref{fig:bcMoodie} illustrates this approach. Point $A$ is censored in coordinate $T_1$, and its mass is assigned to point $B$ because $B$ is in the same strip and has a greater coordinate $T_1$ compared to the censorng time of $A$.  The author compared performance of several estimators and came to the conclusion that with no or small dependence, the Dabrowska's and Prentice and Cai's estimators performed better. With increased dependence however, the author's estimator performed better.\\
 
 \begin{figure}[!h]
-\caption{Mass redistribution in repaired NPMLE suggested by \cite{van1996efficient} (left panel) and repaired NPMLE with adjustment suggested by \cite{moodie2005adjustment} (right panel).}
+\caption{Mass redistribution in repaired NPMLE suggested by \cite{van1996efficient} (left panel) and repaired NPMLE with adjustment suggested by \cite{moodie2005adjustment} (right panel). The horizontal dotted lines denote the strips that define what censored points have their mass assigned to what uncensored points. The left panel shows that point $A$ is censored in coordinate $T_1$, and its mass is assigned to point $B$ because $B$ is in the same strip as point $A$. The right panel shows a different approach: instead of $B$ getting the mass of point $A$, an additional point is created and is assigned a mass according to the algorithm of \cite{moodie2005adjustment}.}
 \includegraphics{Simulations/bivariateCaseStrips.pdf}
 \label{fig:bcMoodie}
 \end{figure}
 
-\cite{moodie2005adjustment} pointed out that the method of Van Der Laan could be inefficient when the strips were large because the uncensored points could borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. For example, Figure \ref{fig:bcMoodie} (left panel) shows mass redistribution for repaired NPMLE: points $A$ and $C$ are \emph{closer} in coordinate $T_2$, yet it is point $B$ that is assigned the mass because it is in the same strip as point $A$. The authors suggested an improvement. They first applied Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistributed the mass from uncensored observations on to points that were located on the half lines of the singly censored observations from the same strip. They reported that this method improved efficiency and reduced computational complexity when computing the variance.
+\cite{moodie2005adjustment} pointed out that the method of Van Der Laan could be inefficient when the strips were large because the uncensored points could borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. For example, Figure \ref{fig:bcMoodie} (left panel) shows mass redistribution for repaired NPMLE: points $A$ and $C$ are \emph{closer} in coordinate $T_2$, yet it is point $B$ that is assigned the mass because it is in the same strip as point $A$. The authors suggested an improvement. They first applied Van Der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistributed the mass from uncensored observations onto points that were located on the half lines of the singly censored observations from the same strip. This is illustrated on the right panel of Figure \ref{fig:bcMoodie}. Point $A$ is censored in coordinate $T_1$, and instead of $B$ getting the mass of point $A$, an additional point is created and is assigned a mass according to the algorithm of \cite{moodie2005adjustment}.
+
+They reported that this method improved efficiency and reduced computational complexity when computing the variance.
 
 % \begin{figure}[!h]
 % \includegraphics{MoodiePrentice2005.png}
@@ -594,7 +596,7 @@ Another goal of our future work is to compare the performance of test based on c
 %\bibliographystyle{plainnat}
 
 \bibliography{summaryOfRef}
-\clearpage
+%\clearpage
 
 \addcontentsline{toc}{section}{Appendix A}
 \section*{Appendix A} \label{appendixA}
@@ -640,8 +642,7 @@ Because of the symmetry, we can write:
 \addcontentsline{toc}{section}{Appendix B}
 \section*{Appendix B} \label{appendixB}
 
-In the same paper where \cite{dabrowska1988kaplan} derived the estimator of bivariate survival surface, she gave an example data for which her estimator assigned a negative mass. Figure \ref{fig:bubbles} shows this data graphically. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components, $T_1$ and $T_2$. The values for each element of the Dabrowska's estimator can be found in Table \ref{dabrExTable}. The computations following this table show that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator in point $(0.51,~0)$. 
-
+In the same paper where \cite{dabrowska1988kaplan} derived the estimator of bivariate survival surface, she gave an example data for which her estimator assigned a negative mass. Figure \ref{fig:bubbles} shows this data graphically. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components, $T_1$ and $T_2$. The values for each element of the Dabrowska's estimator can be found in Table \ref{dabrExTable}. The computations following this table show that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator in point $(0.51,~0)$.
 \begin{figure}[!h]
 \caption{Example that demonstrates assignment of negative point mass. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components. The number at risk is plotted near each point.}
 \includegraphics{figure1.pdf}
@@ -656,6 +657,15 @@ We use Table \ref{dabrExTable} and the formula below to order to show that $\hat
 		\hat{L}(\Delta u, \Delta v) &= \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u, \Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}
 	\end{aligned}
 	$$
+Where:
+	$$
+	\begin{aligned}
+	&\hat{\Lambda}(\Delta u, \Delta v) = \#(T_1=u, T_2=v, \delta_1=\delta_2=1)/\#(T_1\geq u, T_2\geq v)\\
+	&\hat{\Lambda}_{10}(\Delta u, v^-) = \#(T_1=u, \delta_1=1, T_2\geq v)/\#(T_1\geq u, T_2\geq v)\\
+	&\hat{\Lambda}_{01}(u^-,\Delta  v) = \#(T_2=v, \delta_2=1, T_1\geq u)/\#(T_1\geq u, T_2\geq v)
+	\end{aligned}
+	$$
+
 
 \input{dabrowskaExampTable}
 From Table \ref{dabrExTable} we have:
@@ -665,12 +675,21 @@ From Table \ref{dabrExTable} we have:
 		&\hat{S}(0,~0.02)  = 0.75\\
 		&\hat{S}(0.51,~0.02) = \hat{S}(0.51,~0)\hat{S}(0,~0.02) \times 
 		\prod_{{0<u\leq t_1~0<v\leq t_2}}\{1 - \hat{L}(\Delta u, \Delta v)\}=\\
-		&~~~~~~~~~~~~~= 0.375 \cdot 0.75 \cdot (1-0.111)\cdot (1-0)\cdot (1-(-1)) = \\
+		&~~~~~~~~~~~~~= 0.375 \cdot 0.75 \cdot (1-0.1111)\cdot (1-0)\cdot (1-(-1)) = \\
 		&~~~~~~~~~~~~~= 0.5
 	\end{aligned}
 	$$
 
-We observe that $\hat{S}(0.51,~0) = 0.375 < 0.5 = \hat{S}(0.51,~0.02)$.
+We observe that $\hat{S}(0.51,~0) = 0.375 < 0.5 = \hat{S}(0.51,~0.02)$.\\
+
+Note that when there is no censoring, there is no negative mass in point $(0.51,~0.02)$: .
+	$$
+	\begin{aligned}
+		&\hat{S}(0.51,~0.02) = 0.375 \cdot 0.75 \cdot (1-0.1111)\cdot (1-0.25)\cdot (1-(-1)) = \\
+    &~~~~~~~~ = 0.375 = \\
+    &~~~~~~~~ =\hat{S}(0.51,~0)
+	\end{aligned}
+	$$
 
 
 
