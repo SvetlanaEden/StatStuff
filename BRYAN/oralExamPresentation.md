@@ -297,13 +297,20 @@ $$\hat{\Lambda}_{01}(u^-,\Delta  v) = \#(T_2=v, \delta_2=1, T_1\geq u)/\#(T_1\ge
 ---
 
 ### Modeling Survival Surface 
+##### _Prentice, Cai, 1992_
+
+$$~$$
+
+---
+
+### Modeling Survival Surface 
 ##### _Mass redistribution, univariate case_:
 ![inline](Simulations/kaplanMeierExplanation.pdf)
 
 ---
 
-##### On the left: Uncensored observations are contained in the half-line
-##### On the right: Uncensored observations are not contained in the half-line
+##### Left panel: Uncensored observations are contained in the half-line
+##### Right panel: Uncensored observations are not contained in the half-line
 ![inline](Simulations/bivariateCase.pdf)
 
 ---
@@ -446,7 +453,7 @@ Therefore $$~~~~~\rho_S=\rho_{PSR}$$
 ---
 
 ### Linear Rank Tests
-##### _Prentice, 1978_,  _Cuzick, 1982_
+##### _Prentice, 1978_;  _Cuzick, 1982_
 $$Y_1 = aZ + e_1 ~~~~~~~~ Y_2 = bZ + e_2$$
 
 $$b=a\lambda$$, $$~~~~~0<|\lambda|<\infty$$
@@ -462,7 +469,15 @@ He tested:  $$~~~~~~~~~~H_0:~a=0~~~~~~~~~~$$ vs  $$~~~~~~~~~H_1:~a\neq 0$$
 ---
 
 ### Linear Rank Tests
-##### _Prentice, 1978_, _Dabrowska, 1986_
+##### _Cuzick, 1982_
+
+For Cuzick's model in case of logistic distribution of the error terms, $$f_k(x) = 2\pi^{-1} e^{-x}/(1+e^{-x})^2$$, the statistic he suggested was equivalent to the _Spearman_ correlation for censored data.
+
+---
+
+
+### Linear Rank Tests
+##### _Prentice, 1978_; _Dabrowska, 1986_
 It is also assumed that $$F = F_{\theta}(x_{1n}, x_{2n})$$ and $$H_0:~F=F_1 F_2$$ is equivalent to $$H_0:~\theta=0$$
 
 $$S_n = \sum_{n=1}^N (\delta_{1n} - (1+\delta_{1n})F_1)\cdot (\delta_{2n} - (1+\delta_{2n})F_2)$$

@@ -44,7 +44,7 @@
 % Title Page: Modify as needed
 \title{Association of Bivariate Survival Data}
 \author{Svetlana Eden, Department of Biostatistics, Vanderbilt University}
-\date{Month Day, 2015}
+\date{\today}
 
 \hypersetup{hidelinks}
 
@@ -350,7 +350,7 @@ $$
 $$
 
 Where $E\{sign(t,T)\}$ is $-1$, $0$, and $1$ for $t<T$, $t=T$, and $t>T$ respectively.
-The authors also extended this definition to two cases: censored time to event and current status data. In order to understand how the PSR were extended for censored data, let's assume that $T$ is time to event, but we only observe $Y = min(T, C)$, where $C$ is time to censoring. When we do not observe $T$, the PSR are defined in terms of $Y$ (time to event or censoring) and $\Delta$, where $\Delta = 1$ when $min(T, C)=T$ (we observe the event) and $\Delta =0$ when $min(T, C)=C$ (the event is not observed because of censoring). \textbf{By definition}, if $\Delta = 1$, then $Y=T$ and $r(y,F, \delta=1) = F(y^-) - 1 + F(y)$. If $\Delta = 0$, then $T$ is unknown, except that it occurs some time after the censoring time $C$, so \textbf{by definition} $r(t,F, \delta=0) = E\{r(t,F)|T>y\}$. The authors prove that:
+\cite{shepherd2016probability} extended this definition to two cases: censored time to event and current status data. In order to understand how the PSR were extended for censored data, let's assume that $T$ is time to event, but we only observe $Y = min(T, C)$, where $C$ is time to censoring. When we do not observe $T$, the PSR are defined in terms of $Y$ (time to event or censoring) and $\Delta$, where $\Delta = 1$ when $min(T, C)=T$ (we observe the event) and $\Delta =0$ when $min(T, C)=C$ (the event is not observed because of censoring). \textbf{By definition}, if $\Delta = 1$, then $Y=T$ and $r(y,F, \delta=1) = F(y^-) - 1 + F(y)$. If $\Delta = 0$, then $T$ is unknown, except that it occurs some time after the censoring time $C$, so \textbf{by definition} $r(t,F, \delta=0) = E\{r(t,F)|T>y\}$. The authors prove that:
 
 	$$
 	\begin{aligned}
@@ -488,7 +488,7 @@ Using the results of Prentice's work, \cite{cuzick1982rank} considered a general
 	\end{aligned}
 	$$
 where $Y_1$, and $Y_2$ were event times that could be censored, and random variable $Z$ and $e_1$ and $e_2$ were indenpendent, and finally $b=a\lambda,~~0<|\lambda|<\infty$. The model suggested that two random variables $(Y_1, Y_2)$ were related to a third unobserved covariate.\\
-Cuzick assumed the same generalized ranking of censored data as \cite{prentice1978linear}: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation on the left. Although his approach was rather general, it did require knowing $f_i(x)$, the density of $e_i$, and as an illustration, he assumed a logistic density of $e_1$ and $e_2$:  $f(x) = 2\pi_{-1} e^{-x}/(1+e^{-x})^2$. It turned out that for this particular case the rank of each observation with no censoring was $F(x)$, and in the presence of censoring, the rank was $\frac{1+F(x)}{2}$, which resulted in the association test statistic equivalent to \emph{Spearman} correlation.\\
+Cuzick assumed the same generalized ranking of censored data as \cite{prentice1978linear}: the uncensored observations were ranked among themselves and the censored observations were given the same rank as its closest uncensored observation on the left. Although his approach was rather general, it did require knowing $f_i(x)$, the density of $e_i$, and as an illustration, he assumed a logistic density of $e_1$ and $e_2$:  $f(x) = 2\pi^{-1} e^{-x}/(1+e^{-x})^2$. It turned out that for this particular case the rank of each observation with no censoring was $F(x)$, and in the presence of censoring, the rank was $\frac{1+F(x)}{2}$, which resulted in the association test statistic equivalent to \emph{Spearman} correlation.\\
 
 \cite{dabrowska1986rank} derived a similar semi-parametric statistic but under different assumptions and for a different null hypothesis: $H_0:~F=F_1 F_2$. In order to test this hypothesis, the author further developed the results of \cite{prentice1978linear} and \cite{cuzick1982rank} , and suggested a linear rank statistic and its simplification in the following form:
 	$$
