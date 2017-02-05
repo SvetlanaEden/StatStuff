@@ -1048,14 +1048,60 @@ Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_
 		&~~~~where~\wedge~is~minimum
 	\end{aligned}
 	$$
-
-	Oakes also noted that $\tau(s_1, s_2)$ can be written as:
+\cite{oakes1989bivariate} noted that \emph{Kendal's} $\tau$ can be written as
 	$$
 	\begin{aligned}
-		\tau(s_1, s_2) &= \frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
+		\tau(s_1, s_2) &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1} =\frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
 	\end{aligned}
 	$$
-The authors propose to weight this $\tau(s_1, s_2)$ proportionally to the density. After some algebra, it can be shown that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
+  
+\subsubsection{Local version of \emph{Kendal's} $\tau$}
+Here we explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
+	$$
+	\begin{aligned}
+		\tau(s_1, s_2) &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}
+	\end{aligned}
+	$$
+For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12})$ to $(X_{1},Y_{1})$ and $(X_{2},Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$:
+  
+	$$
+	\begin{aligned}
+		P\{ X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y \} + \\
+    &+ P\{ X_{1} \geq x, X_{2} = x, Y_{1}= y, Y_{2} = \geq y \} + \\
+    &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}= y, Y_{2} \geq y \} + \\
+    &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}\geq y, Y_{2} = y \} =\\
+     = &P\{ X_1 \geq x, Y_1 \geq y, X_2 = x, Y_2 = x\} + P\{ X_1 \geq x, Y_1 = y, X_2 = x, Y_2 \geq x\} +\\
+    &+ P\{ X_1 = x, Y_1 \geq y, X_2 \geq x, Y_2 = x\}+ P\{ X_1 = x, Y_1 = y, X_2 \geq x, Y_2 \geq x\} = \\
+    = &S(x^-,y^-)f(x, y) + \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} + \frac{\partial S(x,y^-)}{\partial x}\frac{\partial S(x^-,y)}{\partial y} + f(x, y)S(x^-,y^-) = \\
+     = &2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} 
+	\end{aligned}
+	$$
+It is somewhat straight forward (but confusing) to show that the joint distribution of concordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ is the following:
+	$$
+	\begin{aligned}
+		P\{ [(X_1>X_2, Y_1>Y_2)  \cup (X_1<X_2, Y_1<Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y] \} = \\
+     = &2S(x^-,y^-)f(x, y)
+	\end{aligned}
+	$$
+Similarly, one can show that distribution of discordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ is the following:
+	$$
+	\begin{aligned}
+		P\{ [(X_1>X_2, Y_1<Y_2)  \cup (X_1<X_2, Y_1>Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y] \} = \\
+     = & 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} 
+	\end{aligned}
+	$$
+  
+Therefore
+  $$
+  \begin{aligned}
+    \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\   
+     &= \frac{2S(x^-,y^-)f(x, y) - 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} }{ 2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} } =\\
+     &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}
+  \end{aligned}
+  $$
+
+
+We go back to \cite{fan2000class} who proposed to weight this $\tau(s_1, s_2)$ proportionally to the density. They show that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
 	$$
 	\begin{aligned}
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
