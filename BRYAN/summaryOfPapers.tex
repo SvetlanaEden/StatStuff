@@ -719,6 +719,67 @@ Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also 
 	\end{aligned}
 	$$
 
+\subsection{Local version of \emph{Spearman's} $\rho$}
+Inspired by \cite{fan2000class} we derive a local version of \emph{Spearman's} $\rho$, $\rho_S(x, y)$ can be written as:
+We use the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution for $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$:
+  
+	$$
+	\begin{aligned}
+		P\{X_{0}\wedge X_{1} = x,&~Y_{0}\wedge Y_{2} = y \} = P\{ X_{0} \geq x, X_{1} = x, Y_{0}\geq y, Y_{2} = y \} + \\
+    &+ P\{ X_{0} \geq x, X_{1} = x, Y_{0}= y, Y_{2} = \geq y \} + \\
+    &+ P\{ X_{0} = x, X_{1} \geq x, Y_{0}= y, Y_{2} \geq y \} + \\
+    &+ P\{ X_{0} = x, X_{1} \geq x, Y_{0}\geq y, Y_{2} = y \} =\\
+     = &P\{ X_0 \geq x, Y_0 \geq y\}P\{X_1 = x\}P\{Y_2 = x\} + P\{ X_0 \geq x, Y_0 = y\}P\{X_1 = x\}P\{Y_2 \geq x\} + \\
+    &+ P\{ X_0 = x, Y_0 \geq y\}P\{X_1 \geq x\}P\{Y_2 = x\}+ P\{ X_0 = x, Y_0 = y\} P\{X_1 \geq x\}P\{Y_2 \geq x\} = \\
+    = &S(x^-,y^-)f_X(x)f_Y(y) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)  + f(x, y)S_X(x^-)S_Y(y^-) 
+	\end{aligned}
+	$$
+Next, we show that the \textbf{joint} distribution of concordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
+	$$
+	\begin{aligned}
+		P\{ [(X_0>X_1, Y_0>Y_2) & \cup (X_0<X_1, Y_0<Y_2)] \cap [X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} = \\
+    &=P\{ X_{0} \geq x, X_{1} = x, Y_{0}\geq y, Y_{2} = y] \} + P\{ X_{0}= x, X_{1} \geq x, Y_{0}= y, Y_{2} \geq y] \} =\\
+     &= S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) 
+	\end{aligned}
+	$$
+Similarly, we show that the \textbf{joint} distribution of discordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
+	$$
+	\begin{aligned}
+		P\{ [(X_0>X_1, Y_0<Y_2) & \cup (X_0<X_1, Y_0>Y_2)] \cap [X_0\wedge X_1 = x,~Y_0\wedge Y_{2} = y \} = \\
+    &=P\{ X_0 \geq x, X_1 = x, Y_0\geq y, Y_{2} = y] \} + P\{ X_0 \geq x, X_1 = x, Y_0\geq y, Y_{2} = y] \} = \\
+    & =  \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)
+	\end{aligned}
+	$$
+  
+Therefore
+  $$
+  \begin{aligned}
+    \rho_S(x, y) &= \frac{P\{concord| X_0\wedge X_1 = x,~Y_0\wedge Y_2 = y\} - P\{discord|X_0\wedge X_1 = x,~Y_0\wedge Y_2 = y\}}{P\{X_0\wedge X_1 = x,~Y_1\wedge Y_2 = y\}} = \\   
+     &= \frac{ S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-)  - \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) } { S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-)  + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)}\\
+  \end{aligned}
+  $$
+~\\
+
+Let's introduce the following notation:
+	$$
+	\begin{aligned}
+		h(x, y) = P\{X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y\}
+	\end{aligned}
+	$$
+Similar to \cite{fan2000class} (also see section \ref{deriveWeightedTau}), we proposed to weight $\rho_S(x, y)$ using the following weight: $w(x, y) = \frac{h(x, y)}{\int_0^x \int_0^y h(u, v) dudv}$: 
+	$$
+	\begin{aligned}
+		\mathcal{R}_S&(t_x, t_y) = \int_0^{t_x} \int_0^{t_y}  \rho_S(x, y)\frac{h(x, y)}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy} dxdy = \\
+    &= \int_0^{t_x} \int_0^{t_y}  \frac{  S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) - \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)  }{ \cancel{h(x,y)}}    
+   \frac{\cancel{h(x, y)}dxdy}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy}  = \\
+    &=   \frac{ \int_0^{t_x} \int_0^{t_y} \left\{S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) - \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) \right\}dxdy }{\int_0^{t_x} \int_0^{t_y} \left\{S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) \right\}dxdy}\\
+	\end{aligned}
+	$$
+
+
+
+
+
 
 
 \subsection{Rank tests for independence for bivariate censored data (Dabrowska) \cite{dabrowska1986rank}}
@@ -1056,6 +1117,7 @@ Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_
 	$$
   
 \subsubsection{Local version of \emph{Kendal's} $\tau$}
+\label{deriveWeightedTau}
 Here we explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
 	$$
 	\begin{aligned}
@@ -1079,15 +1141,13 @@ For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12
 It is somewhat straight forward (but confusing) to show that the joint distribution of concordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ is the following:
 	$$
 	\begin{aligned}
-		P\{ [(X_1>X_2, Y_1>Y_2)  \cup (X_1<X_2, Y_1<Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y] \} = \\
-     = &2S(x^-,y^-)f(x, y)
+		P\{ [(X_1>X_2, Y_1>Y_2)  \cup (X_1<X_2, Y_1<Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &2S(x^-,y^-)f(x, y)
 	\end{aligned}
 	$$
 Similarly, one can show that distribution of discordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ is the following:
 	$$
 	\begin{aligned}
-		P\{ [(X_1>X_2, Y_1<Y_2)  \cup (X_1<X_2, Y_1>Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y] \} = \\
-     = & 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} 
+		P\{ [(X_1>X_2, Y_1<Y_2)  \cup (X_1<X_2, Y_1>Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} 
 	\end{aligned}
 	$$
   
@@ -1096,12 +1156,27 @@ Therefore
   \begin{aligned}
     \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\   
      &= \frac{2S(x^-,y^-)f(x, y) - 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} }{ 2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} } =\\
-     &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}
+     &= \frac{\theta(x, y) - 1}{\theta(x, y) + 1}
   \end{aligned}
   $$
+~\\
 
+Let's introduce the following notation:
+	$$
+	\begin{aligned}
+		h(x, y) = P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}
+	\end{aligned}
+	$$
+\cite{fan2000class} proposed to weight $\tau(x, y)$ using the following weight: $w(x, y) = \frac{h(x, y)}{\int_0^x \int_0^y h(u, v) dudv}$: 
+	$$
+	\begin{aligned}
+		\mathcal{T}(t_x, t_y) &= \int_0^{t_x} \int_0^{t_y}  \tau(x, y)\frac{h(x, y)}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy} dxdy = \\
+    &= \int_0^{t_x} \int_0^{t_y}  \frac{S(x^-,y^-)f(x, y) - \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} }{ \cancel{S(x^-,y^-)f(x, y) + \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} }} \frac{\cancel{h(x, y)}}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy} dxdy = \\
+    &= \frac{ \int_0^{t_x} \int_0^{t_y} S(x^-,y^-)f(x, y)dxdy -  \int_0^{t_x} \int_0^{t_y} \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x}dxdy }{\int_0^{t_x} \int_0^{t_y} S(x^-,y^-)f(x, y)dxdy  +   \int_0^{t_x} \int_0^{t_y} \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x}dxdy }\\
+	\end{aligned}
+	$$
 
-We go back to \cite{fan2000class} who proposed to weight this $\tau(s_1, s_2)$ proportionally to the density. They show that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
+They say (it must be true, but I have not figured it out yet) that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
 	$$
 	\begin{aligned}
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
