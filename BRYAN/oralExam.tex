@@ -329,13 +329,6 @@ Van der Laan suggested a repaired NPMLE. He introduced partition strips that wer
 
 \cite{moodie2005adjustment} pointed out that the method of Van der Laan could be inefficient when the strips were large because the uncensored points could borrow the mass from singly censored on one coordinate observations that have very different event time for the other coordinate. For example, Figure \ref{fig:bcMoodie} (left panel) shows mass redistribution for repaired NPMLE: points $A$ and $C$ are \emph{closer} in coordinate $T_2$, yet it is point $B$ that is assigned the mass because it is in the same strip as point $A$. The authors suggested an improvement. They first applied Van der Laan's method (including dividing the plane into strips containing uncensored and censored observations), and then redistributed the mass from the uncensored observations onto the points that were located on the half lines of the singly censored observations from the same strip. This is illustrated on the right panel of Figure \ref{fig:bcMoodie}. Point $A$ is censored in coordinate $T_1$, and instead of $B$ getting the mass of point $A$, an additional point $A_1$ is created and is assigned a mass according to the algorithm of \cite{moodie2005adjustment}. They reported that this method improved efficiency and reduced computational complexity when computing the variance.
 
-% \begin{figure}[!h]
-% \includegraphics{MoodiePrentice2005.png}
-% \caption{Moodie and Prentice suggestion.}
-% \label{fig:bubbles}
-% \end{figure}
-% \clearpage
-
 \subsection{Linear Rank Tests}
 One might argue that there is no need to estimate a bivariate survival surface if our main question is the existence of association. We now summarize several papers whose authors developed tests that do just that. We chose these papers because their tests use cumulative distribution function of time to survival, which is the basis of the defintion of Probability Scale Residuals (PSR) defined by \cite{li2012new}. In order for us to show advantages of testing association using PSR compared to the previous literature, we need to summarize PSR first.
 
@@ -640,7 +633,7 @@ Because of the symmetry, we can write:
 In the same paper where \cite{dabrowska1988kaplan} derived the estimator of bivariate survival surface, she gave an example data for which her estimator assigned a negative mass. Figure \ref{fig:bubbles} shows this data graphically. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components, $T_1$ and $T_2$. The values for each element of the Dabrowska's estimator can be found in Table \ref{dabrExTable}. The computations following this table show that the bivariate survival function estimator in point $(0.51,~0.02)$ (see Figure \ref{fig:bubbles}) was greater than its marginal estimator in point $(0.51,~0)$.
 \begin{figure}[!h]
 \caption[Example that demonstrates assignment of negative point mass.]{Example that demonstrates assignment of negative point mass. The red points represent uncensored observations. The orange point is a singly censored observation (it is censored on the $T_2$ axis). The white point is an observation censored in both components. The number at risk is plotted near each point.}
-\includegraphics{figure1.pdf}
+\includegraphics{Simulations/figure1.pdf}
 \label{fig:bubbles}
 \end{figure}
 

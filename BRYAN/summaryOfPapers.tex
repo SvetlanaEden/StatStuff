@@ -551,6 +551,38 @@ Where
 	\end{aligned}
 	$$
 
+\section{Simulation of Survival Data}
+\subsection{Simulation of Gumbel distribution using copulas}
+Here we use a method described in the book of \cite{nelsen2007introduction}. The method utilizes \emph{copulas} in order to simulate bivariate data. We describe this method using example of \emph{Gumbel} distribution (p.23):
+	$$
+	\begin{aligned}
+    &H_{\theta}(x, y) = 1-e^{-x} - e^{-y} + e^{-(x+y+\theta xy)}, ~~~ x\geq 0, ~~~y\geq 0\\
+    &H(x,y) = 0, ~~~otherwise
+	\end{aligned}
+	$$
+According to \cite{nelsen2007introduction}, the marginal distributions of this function are exponentials and the quasi-inverses (see definitoin in the book) are $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$, hense the corresponding copula is:
+  $$
+  \begin{aligned}
+      C_{\theta}(u, v) = u+v-1+(1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)}
+  \end{aligned}
+  $$
+The simulations can be performed based on the algorithm described in the book on pages 41-42. We first have to find $\frac{\partial C_{\theta}(u, v)}{\partial u}$:
+
+  $$
+  \begin{aligned}
+     \frac{\partial C_{\theta}(u, v)}{\partial u} &= 1-(1-v)e^{-\theta ln(1-u) ln(1-v)} + \cancel{(1-u)}(1-v)e^{-\theta ln(1-u) ln(1-v)} \theta \frac{ln(1-v)}{\cancel{1-u}} =\\
+     &= 1 - (1-v)e^{-\theta ln(1-u) ln(1-v)}(1 + \theta ln(1-v))
+  \end{aligned}
+  $$
+According to the book: $\frac{\partial C_{\theta}(u, v)}{\partial u} = P(U= u, V\leq v)$, which means that $\frac{\partial C_{\theta}(u, v)}{\partial u}$ is simply a conditional \emph{cdf} for $V$. Let's denote $t=\frac{\partial C_{\theta}(u, v)}{\partial u}$.\\
+We next simulate independetly $(t_1, t_2, ..., )$, and $(u_1, u_2, ...)$, which are both uniform variables. Next, we and proceed in the following manner. For each values of $t_i$  $u_i$, we numerically invert function:
+  $$
+  \begin{aligned}
+      t_i = 1 - (1-v)e^{-\theta ln(1-u_i) ln(1-v)}(1 + \theta ln(1-v))
+  \end{aligned}
+  $$
+In order to get $v_i=v$. Then we use expressions $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$ in order to back transform $u_i$ and $v_i$ into $x_i$ and $y_i$: $x_i = -ln (1-u_i)$ and $y_i = -ln (1-v_i)$.
+
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
 % \begin{itemize}
@@ -706,6 +738,19 @@ We have that \emph{Spearman's}, $\rho_S$, defined for censored data and the corr
     & where~c^*=\frac{1}{4}
 	\end{aligned}
 	$$
+  
+  
+
+\subsection{PSR covariance under censoring: proof that it is 0 if two times are independent.}
+First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We fix two points $S_0$ and $T_0$ and find the covariance of PRS under the assumption of independence. For brevity, we denote $F(S)=F$, $G(T)=G$, $F(S_0)=F_0$, and $G(T_0)=G_0$. We also assume continuous case:
+
+	$$
+	\begin{aligned}
+    E(PRS_S, PSR_T) = E_{S_0,T_0} E_{\cdot, \cdot|S_0,T_0} \left\{   \left[ I_{(S\leq S_0)}(2F - 1) + I_{(S>S_0)}F \right] \cdot  \left[ I_{(T\leq T_0)}(2G - 1) + I_{(T>T_0)}G \right]    \right\}
+	\end{aligned}
+	$$
+
+
 
 \subsection{Spearman correlation and cov of PSR for uncensored data, yet another proof.}
 Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also assume that $S(\cdot)$ is a survival function and $F(\cdot)$ is a distribution function, then
@@ -1017,7 +1062,7 @@ He also shows how to find $S(t)$ based on $\theta(v)$. He gives several examples
 
 
 	
-{\tiny{\textbf{We recall Kendal's $\tau$, 1938 \cite{kendall1938new}}: If we have two independent paris of variables (with the same bivariate distribution) $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendal's $\tau$ is a probability of concordance minus probability of discordance:
+{\tiny{\textbf{We recall Kendall's $\tau$, 1938 \cite{kendall1938new}}: If we have two independent paris of variables (with the same bivariate distribution) $(U_1, Z_1)$ and $(U_2, Z_2)$, Kendall's $\tau$ is a probability of concordance minus probability of discordance:
 $\tau = P[(U_1 - U_2)(Z_1 - Z_2)>0] - P[(U_1 - U_2)(Z_1 - Z_2)<0] = E[sign((U_1 - U_2)(Z_1 - Z_2))]$}}
 
  
@@ -1063,7 +1108,7 @@ They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defin
 
 \subsection{Alvo and Cabilio, 1995 citation ?????}
 UNDER CONSTRUCTION.\\
-The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendal} correlation measure in order to build a test that can deal with missing data. 
+The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendall} correlation measure in order to build a test that can deal with missing data. 
 
 
 
@@ -1109,14 +1154,14 @@ Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_
 		&~~~~where~\wedge~is~minimum
 	\end{aligned}
 	$$
-\cite{oakes1989bivariate} noted that \emph{Kendal's} $\tau$ can be written as
+\cite{oakes1989bivariate} noted that \emph{Kendall's} $\tau$ can be written as
 	$$
 	\begin{aligned}
 		\tau(s_1, s_2) &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1} =\frac{1 - c(s_1, s_2)}{1+c(s_1, s_2)}
 	\end{aligned}
 	$$
   
-\subsubsection{Local version of \emph{Kendal's} $\tau$}
+\subsubsection{Local version of \emph{Kendall's} $\tau$}
 \label{deriveWeightedTau}
 Here we explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
 	$$
