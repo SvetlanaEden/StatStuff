@@ -560,7 +560,20 @@ Here we use a method described in the book of \cite{nelsen2007introduction}. The
     &H(x,y) = 0, ~~~otherwise
 	\end{aligned}
 	$$
-According to \cite{nelsen2007introduction}, the marginal distributions of this function are exponentials and the quasi-inverses (see definitoin in the book) are $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$, hense the corresponding copula is:
+According to \cite{nelsen2007introduction}, the marginal distributions of this function are exponentials. Indeed, let's find the $f_X(x)$ of this distribution:
+
+	$$
+	\begin{aligned}
+    f(x,y) & = \frac{\partial^2}{\partial x \partial y}H_{\theta}(x, y) = \frac{\partial}{\partial y}(e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}) =\\
+      & = e^{-(x+y+\theta xy)}((1+\theta y)(1+\theta x) - \theta)\\
+    f_X(x) & = \int_0^{\inf} f(x,y)dy = e^{-x}(1 + \theta x)\int_0^{\inf}e^{-y(1+\theta x)} (1 + \theta y) dy  - \theta e^{-x} \int_0^{\inf} e^{-y(1+\theta x)} dy = \\
+    & = e^{-x}\cancel{(1 + \theta x)} \frac{1+\theta x + \theta}{(1+\theta x)^{\cancel{2}}} + e^{-x}\frac{-\theta}{1 + \theta x} = e^{-x}
+	\end{aligned}
+	$$
+
+\textbf{Note} that in order to simmulate this distribution, it is not necessary to use copulas, we do this in order to practice the technique of using copulas. We can simulate the marginal distribution for $X$ first ($X \sim f_X(x) = e^{-x}$). Then we can use conditional distribution function for $Y$ in order to sample $Y$: $F_Y(y|X=x) = e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}$. We first simmulate $x_i \sim e^{-x}$ and $t_i \sim Unif(t)$ and then for each $x_i$ and $t_i$ we find $y_i$ by numerically inverting expression: $t_i = e^{-x_i} - (1+\theta y_i)e^{-(x_i+y_i+\theta x_iy_i)}$ \\
+~\\
+If we do decide to use copulas, next, we need to find the quasi-inverses (see definition in the book) are $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$, hense the corresponding copula is:
   $$
   \begin{aligned}
       C_{\theta}(u, v) = u+v-1+(1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)}
@@ -574,14 +587,14 @@ The simulations can be performed based on the algorithm described in the book on
      &= 1 - (1-v)e^{-\theta ln(1-u) ln(1-v)}(1 + \theta ln(1-v))
   \end{aligned}
   $$
-According to the book: $\frac{\partial C_{\theta}(u, v)}{\partial u} = P(U= u, V\leq v)$, which means that $\frac{\partial C_{\theta}(u, v)}{\partial u}$ is simply a conditional \emph{cdf} for $V$. Let's denote $t=\frac{\partial C_{\theta}(u, v)}{\partial u}$.\\
-We next simulate independetly $(t_1, t_2, ..., )$, and $(u_1, u_2, ...)$, which are both uniform variables. Next, we and proceed in the following manner. For each values of $t_i$  $u_i$, we numerically invert function:
+\textbf{Note}: $\frac{\partial C_{\theta}(u, v)}{\partial u} = P(U= u, V\leq v)$, which is simply a conditional \emph{cdf} for $V$. Let's denote $t=\frac{\partial C_{\theta}(u, v)}{\partial u}$.\\
+We next simulate independently $(t_1, t_2, ..., )$, and $(u_1, u_2, ...)$, which are both uniform variables. Next, we and proceed in the following manner. For each values of $t_i$  $u_i$, we numerically invert function:
   $$
   \begin{aligned}
       t_i = 1 - (1-v)e^{-\theta ln(1-u_i) ln(1-v)}(1 + \theta ln(1-v))
   \end{aligned}
   $$
-In order to get $v_i=v$. Then we use expressions $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$ in order to back transform $u_i$ and $v_i$ into $x_i$ and $y_i$: $x_i = -ln (1-u_i)$ and $y_i = -ln (1-v_i)$.
+and get a value of $v=v_i$. Then we use the quasi-inverses $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$ in order to back transform $u_i$ and $v_i$ into $x_i$ and $y_i$: $x_i = -ln (1-u_i)$ and $y_i = -ln (1-v_i)$.
 
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
