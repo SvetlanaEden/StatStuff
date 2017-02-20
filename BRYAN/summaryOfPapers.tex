@@ -562,16 +562,27 @@ Here we use a method described in the book of \cite{nelsen2007introduction}. The
 	$$
 According to \cite{nelsen2007introduction}, the marginal distributions of this function are exponentials. Indeed, let's find the $f_X(x)$ of this distribution:
 
-	$$
-	\begin{aligned}
+$$
+\begin{aligned}
     f(x,y) & = \frac{\partial^2}{\partial x \partial y}H_{\theta}(x, y) = \frac{\partial}{\partial y}(e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}) =\\
       & = e^{-(x+y+\theta xy)}((1+\theta y)(1+\theta x) - \theta)\\
     f_X(x) & = \int_0^{\inf} f(x,y)dy = e^{-x}(1 + \theta x)\int_0^{\inf}e^{-y(1+\theta x)} (1 + \theta y) dy  - \theta e^{-x} \int_0^{\inf} e^{-y(1+\theta x)} dy = \\
     & = e^{-x}\cancel{(1 + \theta x)} \frac{1+\theta x + \theta}{(1+\theta x)^{\cancel{2}}} + e^{-x}\frac{-\theta}{1 + \theta x} = e^{-x}
-	\end{aligned}
-	$$
+\end{aligned}
+$$
 
-\textbf{Note} that in order to simmulate this distribution, it is not necessary to use copulas, we do this in order to practice the technique of using copulas. We can simulate the marginal distribution for $X$ first ($X \sim f_X(x) = e^{-x}$). Then we can use conditional distribution function for $Y$ in order to sample $Y$: $F_Y(y|X=x) = e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}$. We first simmulate $x_i \sim e^{-x}$ and $t_i \sim Unif(t)$ and then for each $x_i$ and $t_i$ we find $y_i$ by numerically inverting expression: $t_i = e^{-x_i} - (1+\theta y_i)e^{-(x_i+y_i+\theta x_iy_i)}$ \\
+\textbf{Note} that in order to simulate this distribution, it is not necessary to use copulas, we do this in order to practice the technique of using copulas. We can simulate the marginal distribution for $X$ first ($X \sim f_X(x) = e^{-x}$). Then we can use conditional distribution function for $Y$ in order to sample $Y$: 
+
+
+$$
+\begin{aligned}
+F_{Y|X}(y|X=x) &= \frac{F(X\leq x,Y=y)}{f_X(x)}= \frac{\frac{\partial F(x,y)}{\partial x}}{f_X(x)} =\frac{ e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}}{e^{-x}} =\\
+&= 1 - (1+\theta y)e^{-y(1+\theta x)}.
+\end{aligned}
+$$
+
+
+ We first simulate $x_i \sim e^{-x}$ and $t_i \sim Unif(t)$ and then for each $x_i$ and $t_i$ we find $y_i$ by numerically inverting expression: $t_i = 1 - (1+\theta y_i)e^{-y_i(1+\theta x_i)}$ \\
 ~\\
 If we do decide to use copulas, next, we need to find the quasi-inverses (see definition in the book) are $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$, hense the corresponding copula is:
   $$
