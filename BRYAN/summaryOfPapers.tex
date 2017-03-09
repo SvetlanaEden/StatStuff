@@ -869,9 +869,21 @@ Summing up all four integrals, we have an expression for \emph{Spearman} for cas
 	\end{aligned}
 	$$
 
+\subsubsection{Perfect correlation under censoring, general case}
+In case of perfect correlation, the expression for conditional (on censoring times) \emph{Spearman} correlation remains is the same for any time of functional dependency as long as the dependency is strictly increasing or decreasing. Suppose we have two variables $S$ and $T$ such that, $T = g(S)$, so $S = g^{-1}(T)$. Given that the distribution of $S$ is $F_S(s)$, let's find the distribution of $T$:
+	$$
+	\begin{aligned}
+    F_T(t) = P(T \leq t) = P\left(g(S) \leq t\right) = P(S\leq g^{-1}(t)) = P(S\leq s) = F_S(s) 
+	\end{aligned}
+	$$
 
-
-
+Following the logic in the previous two section, we know that we have to take an integral on a curve. We define this curve in space of distribution functions (with support of $[0, 1] \times [0, 1]$). Because in general, $F_T(t) = F_S(s)$, we still have the same normalizing constant:
+	$$
+	\begin{aligned}
+    C_{norm} = \int_{0}^{1} \sqrt{(F_T'(t))^2 + (F_S'(s))^2}dt = \int_{0}^{1} \sqrt{2}dt = \sqrt{2}
+	\end{aligned}
+	$$
+which will cancel out with a similar term that appears because of integration on the curve, so we get the same expressions as before for any strictly decreasing or strictly increasing $g(\cdot)$.
 
 \subsection{Spearman correlation and cov of PSR for uncensored data, yet another proof.}
 Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also assume that $S(\cdot)$ is a survival function and $F(\cdot)$ is a distribution function, then
@@ -904,16 +916,16 @@ Next, we show that the \textbf{joint} distribution of concordance \textbf{and} o
 	$$
 	\begin{aligned}
 		P\{ [(X_0>X_1, Y_0>Y_2) & \cup (X_0<X_1, Y_0<Y_2)] \cap [X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} = \\
-    &=P\{ X_{0} \geq x, X_{1} = x, Y_{0}\geq y, Y_{2} = y] \} + P\{ X_{0}= x, X_{1} \geq x, Y_{0}= y, Y_{2} \geq y] \} =\\
-     &= S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) 
+    &=P\{ X_{0} > x, X_{1} = x, Y_{0} > y, Y_{2} = y] \} + P\{ X_{0}= x, X_{1} > x, Y_{0}= y, Y_{2} > y] \} =\\
+     &= S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) 
 	\end{aligned}
 	$$
 Similarly, we show that the \textbf{joint} distribution of discordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
 	$$
 	\begin{aligned}
 		P\{ [(X_0>X_1, Y_0<Y_2) & \cup (X_0<X_1, Y_0>Y_2)] \cap [X_0\wedge X_1 = x,~Y_0\wedge Y_{2} = y \} = \\
-    &=P\{ X_0 \geq x, X_1 = x, Y_0\geq y, Y_{2} = y] \} + P\{ X_0 \geq x, X_1 = x, Y_0\geq y, Y_{2} = y] \} = \\
-    & =  \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)
+    &=P\{ X_0 > x, X_1 = x, Y_0 = y, Y_{2} > y] \} + P\{ X_0 = x, X_1 > x, Y_0> y, Y_{2} = y] \} = \\
+    & =  \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y)
 	\end{aligned}
 	$$
   
