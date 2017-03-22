@@ -767,9 +767,28 @@ We have that \emph{Spearman's}, $\rho_S$, defined for censored data and the corr
 
 \subsection{PSR covariance of perfectly correlated variables under censoring}
 \subsubsection{Positive correlation under censoring, $T\equiv S$}
-First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We fix two points $S_0$ and $T_0$ and find the covariance of PRS under the assumption of perfect dependence expressed in the functional form $S\equiv T$. For brevity, we denote $F(S)=U$, $G(T)=V$, $F(S_0)=U_0$, and $G(T_0)=V_0$.\\
+First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We fix two points $s_0$ and $t_0$ and find the covariance of PRS under the assumption of perfect dependence expressed in the functional form $S =\nu( T)$, where $\nu(\cdot)$ is a strictly increasing function. For brevity, we denote $F(s)=U$, $G(t)=V$, $F(s_0)=U_0$, and $G(t_0)=V_0$.\\
 ~\\
-Before we continue, let's make sure we understand the probability distribution function of $(S, T)$. From \cite{nelsen2007introduction} we know that the joint \emph{cdf} of these two variables is $min(F(S), G(T))$. This does not help to derive the joint \emph{pdf} though (at least it did not help me). Let's denote the joint \emph{pdf} as $h(u, v)$. In order to figure our joint \emph{pdf}, let's use conditionality principle, $h(u, v)=h_{U|V=v}(u|v)\cdot h_V(v)$. We know that $F(S)=U \sim Unif(0, 1)$. This means that the marginal \emph{pdf} of $U$ is uniform, $h_V(v)=I_{[0\leq U \leq 1]}$. The conditional \emph{pdf}, $h_{U|V=v}$, equals $1$ when $U=v$ and $0$ when $U\neq v$, or, $h_{U|V=v} = C_{norm}I_{[0\leq V \leq 1]}\cdot I_{[U=v]}$, where $C_{norm}$ is a normalizing constant. This is a strange function that can be visualized as a piece of a plain, perpendicular to $(U,V)$ plain. It stretches from $(U,V) = (0, 0)$ to $(U,V) = (1,1)$. We will call this piece of plain a \emph{segment mass}. It has a height of 1 and a length of $\sqrt{2}$, therefore, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$ or $C_{norm}=\sqrt{2}$.\\
+
+Next, let's show how two distribution functions are related in case of perfect correlation. The following statements are somewhat straight forward:
+	$$
+	\begin{aligned}
+    &Because~T = \nu(S)\\
+    &We~have~S = \nu^{-1}(T)\\
+    &F_T(t) = P(T \leq t) = P\left(g(S) \leq t\right) = P(S\leq g^{-1}(t)) = P(S\leq s) = F_S(s) 
+	\end{aligned}
+	$$
+Therefore, as long as $s=h(t)$, we have: $U=F(s) = G(t) = V$
+% Following the logic in the previous two section, we know that we have to take an integral on a curve. We define this curve in space of distribution functions (with support of $[0, 1] \times [0, 1]$). Because in general, $F_T(t) = F_S(s)$, we still have the same normalizing constant:
+%   $$
+%   \begin{aligned}
+%     C_{norm} = \int_{0}^{1} \sqrt{(F_T'(t))^2 + (F_S'(s))^2}dt = \int_{0}^{1} \sqrt{2}dt = \sqrt{2}
+%   \end{aligned}
+%   $$
+% which will cancel out with a similar term that appears because of integration on the curve, so we get the same expressions as before for any strictly decreasing or strictly increasing $g(\cdot)$.
+% ~\\
+
+Now, let's find the marginal and joint distributions of $U$ and $V$. First, let's point out that the marginal distributions of $U$ and $V$ are uniform. Next, from \cite{nelsen2007introduction} we know that the joint \emph{cdf} of these two variables is $min(U, V)$. This does not help to derive the joint \emph{pdf} though (at least it did not help me). Let's denote the joint \emph{pdf} of $(U, V)$ as $h(u, v)$. In order to figure our joint \emph{pdf}, let's use conditionality principle: $h(u, v)=h_{U|V=v}(u|v)\cdot h_V(v)$. We know that $U,V \sim Unif(0, 1)$. The conditional \emph{pdf}, $h_{U|V=v}$, equals $1$ when $u=v$ and $0$ when $u\neq v$, or, $h_{U|V=v} = C_{norm}I_{[0\leq U \leq 1]}\cdot I_{[U=v]}$, where $C_{norm}$ is a normalizing constant. This is a strange function that can be visualized as a piece of a plain, perpendicular to the $(U,V)$ plain. It stretches from $(U,V) = (0, 0)$ to $(U,V) = (1,1)$. We will call this piece of plain a \emph{segment mass}. It has a height of 1 and a length of $\sqrt{2}$, therefore, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$ or $C_{norm}=\sqrt{2}$.\\
 ~\\
 Because $h(u, v)$ is a \emph{segment mass}, in order to find covariance, we cannot just take a regular integral, we have to take an integral on a curve $U=V$, or $V(t)=t$ and $U(t) = t$. We know that the integral over a curve has to have a term $\sqrt{\left(\frac{dU(t)}{dt}\right)^2 + \left(\frac{dV(t)}{dt}\right)^2}$. This term equals to $\sqrt{1^2 + 1^2} = \sqrt{2}$, therefore two terms of $\sqrt{2}$ cancel out in the following integrals.\\
 ~\\
@@ -803,19 +822,19 @@ Because $u_0 < v_0$,  integral $D$ becomes:
 	\end{aligned}
 	$$
 
-Summing up all four integrals and taking into account the symmetry, we have an expression for \emph{Spearman} correlation of two identical variables, $S\equiv T$ conditional on the censoring point $(u_0, v_0)$:
+Summing up all four integrals and taking into account the symmetry, we have an expression for \emph{Spearman} correlation of two identical variables, $S = \nu( T)$ conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
-    \rho_{S\equiv T}(u_0, v_0) &= \frac{1}{6}\left\{  (2u_0 - 1)^3 +1\right\} +  \frac{u_0}{4}\left\{  (2v_0 - 1)^2 -(2u_0 - 1)^2 \right\} + u_0 v_0 (1 - v_0), ~~~~when~u_0 < v_0\\
+    \rho_{S = \nu( T)}(u_0, v_0)/3 &= \frac{1}{6}\left\{  (2u_0 - 1)^3 +1\right\} +  \frac{u_0}{4}\left\{  (2v_0 - 1)^2 -(2u_0 - 1)^2 \right\} + u_0 v_0 (1 - v_0), ~~~~when~u_0 < v_0\\
     &= \frac{1}{6}\left\{  (2v_0 - 1)^3 +1\right\} +  \frac{v_0}{4}\left\{  (2u_0 - 1)^2 -(2v_0 - 1)^2 \right\} + v_0 u_0 (1 - u_0), ~~~~when~u_0 \geq v_0
 	\end{aligned}
 	$$
 
 
 \subsubsection{Negative correlation under censoring, $T\equiv 1-S$}
-The derivations are very similar to the previous section with minor differences. When $T\equiv 1-S$, we have a \emph{segment-mass} again, but this time it stretches from $(U,V) = (1,0)$ to $(U,V) = (0,1)$. And again, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$.\\
+The derivations are very similar to the previous section with some differences. When $S = \nu( T)$ and $\nu(\cdot)$ is strictly decreasing, we have: $U = 1-V^-$. Assuming a continuous case we have a \emph{segment-mass} again, but this time it stretches from $(U,V) = (1,0)$ to $(U,V) = (0,1)$. And again, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$.\\
 ~\\
-It can be shown that when $T\equiv 1-S$ the \emph{cdf}'s are related in the same way: $V = 1-U$. Because are taking an integral on a curve $U=V$ again ($U(t) = t$ and $V(t)=1-t$) and because we remember that integral on a curve has to have a term $\sqrt{\left(\frac{dU(t)}{dt}\right)^2 + \left(\frac{dV(t)}{dt}\right)^2}$. This term again equals to $\sqrt{1^2 + 1^2} = \sqrt{2}$, therefore two terms of $\sqrt{2}$ cancel out in the following integrals.\\
+It can be shown that when $T\equiv 1-S$ the \emph{cdf}'s are related in the same way: $V = 1-U$. Because are taking an integral on a curve $U=V$ again ($U(t) = t$ and $V(t)=1-t$) and because we remember that integral on a curve has to have a term $\sqrt{\left(\frac{dU(t)}{dt}\right)^2 + \left(\frac{-dV(t)}{dt}\right)^2}$. This term again equals to $\sqrt{1^2 + (-1)^2} = \sqrt{2}$, therefore two terms of $\sqrt{2}$ cancel out in the following integrals.\\
 ~\\
 Suppose now that we need to find the covariance of PSR for a fixed $(u_0, v_0)$. Similar to the previous case, let's compute each integral separately. First, we assume a case when $u_0 + v_0 < 1$. Let's also note that $PSR_U = 2U(t) - 1 = 2t - 1$ and $PSR_V = 2V(t) - 1 = -2t + 1$.
 
@@ -828,7 +847,7 @@ Integral $B$ is the following:
     &=u_0v_0(u_0 - 1)
 	\end{aligned}
 	$$
-Integral $C$ is very similar and keeping in mind that it should be symmetric:
+Integral $C$ is very similar and keeping in mind that it should be symmetric to $B$:
 	$$
 	\begin{aligned}
     C &=\int_{0}^{u_0} (2t - 1)u_0 dt  = u_0v_0(v_0 - 1)
@@ -860,30 +879,16 @@ Integrals $B$ and $C$ are:
 	$$
 Integral $D$ is $0$.
 
-We did not consider a case when $u_0+v0 = 1$ because it is very similar to the previous cases, except that both $A=0$ and $D=0$.\\
-Summing up all four integrals, we have an expression for \emph{Spearman} for case $S\equiv 1-T$ conditional on the censoring point $(u_0, v_0)$:
+We did not consider a case when $u_0+v_0 = 1$ because it is very similar to the previous cases, except that both $A=0$ and $D=0$.\\
+Summing up all four integrals, we have an expression for \emph{Spearman} for case $S\nu(T)$, where $\nu(\cdot)$ is strictly decreasing conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
-    \rho_{S\equiv T}(u_0, v_0) &= -u_0v_0, ~~~~when~u_0 + v_0 < 1\\
-    &= -\frac{1}{6}\left\{  (2u_0 - 1)^3 + (2v_0 - 1)^3 \right\} + u_0^2(u_0 - 1) + v_0^2(v_0 - 1), ~~~~when~u_0 \geq v_0
+    \rho_{S\equiv T}(u_0, v_0)/3 &= -u_0v_0, &when~u_0 + v_0 < 1\\
+    &= -\frac{1}{6}\left\{  (2u_0 - 1)^3 + (2v_0 - 1)^3 \right\} + u_0^2(u_0 - 1) + v_0^2(v_0 - 1), &when~u_0 + v_0 \geq 1
 	\end{aligned}
 	$$
 
-\subsubsection{Perfect correlation under censoring, general case}
-In case of perfect correlation, the expression for conditional (on censoring times) \emph{Spearman} correlation remains is the same for any time of functional dependency as long as the dependency is strictly increasing or decreasing. Suppose we have two variables $S$ and $T$ such that, $T = g(S)$, so $S = g^{-1}(T)$. Given that the distribution of $S$ is $F_S(s)$, let's find the distribution of $T$:
-	$$
-	\begin{aligned}
-    F_T(t) = P(T \leq t) = P\left(g(S) \leq t\right) = P(S\leq g^{-1}(t)) = P(S\leq s) = F_S(s) 
-	\end{aligned}
-	$$
-
-Following the logic in the previous two section, we know that we have to take an integral on a curve. We define this curve in space of distribution functions (with support of $[0, 1] \times [0, 1]$). Because in general, $F_T(t) = F_S(s)$, we still have the same normalizing constant:
-	$$
-	\begin{aligned}
-    C_{norm} = \int_{0}^{1} \sqrt{(F_T'(t))^2 + (F_S'(s))^2}dt = \int_{0}^{1} \sqrt{2}dt = \sqrt{2}
-	\end{aligned}
-	$$
-which will cancel out with a similar term that appears because of integration on the curve, so we get the same expressions as before for any strictly decreasing or strictly increasing $g(\cdot)$.
+%\subsubsection{Perfect correlation under censoring, general case}
 
 \subsection{Spearman correlation and cov of PSR for uncensored data, yet another proof.}
 Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also assume that $S(\cdot)$ is a survival function and $F(\cdot)$ is a distribution function, then
@@ -899,32 +904,29 @@ Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also 
 
 \subsection{Local version of \emph{Spearman's} $\rho$}
 Inspired by \cite{fan2000class} we derive a local version of \emph{Spearman's} $\rho$, $\rho_S(x, y)$ can be written as:
-We use the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution for $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$:
+We use the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the following probability:
   
 	$$
 	\begin{aligned}
-		P\{X_{0}\wedge X_{1} = x,&~Y_{0}\wedge Y_{2} = y \} = P\{ X_{0} \geq x, X_{1} = x, Y_{0}\geq y, Y_{2} = y \} + \\
-    &+ P\{ X_{0} \geq x, X_{1} = x, Y_{0}= y, Y_{2} = \geq y \} + \\
-    &+ P\{ X_{0} = x, X_{1} \geq x, Y_{0}= y, Y_{2} \geq y \} + \\
-    &+ P\{ X_{0} = x, X_{1} \geq x, Y_{0}\geq y, Y_{2} = y \} =\\
-     = &P\{ X_0 \geq x, Y_0 \geq y\}P\{X_1 = x\}P\{Y_2 = x\} + P\{ X_0 \geq x, Y_0 = y\}P\{X_1 = x\}P\{Y_2 \geq x\} + \\
-    &+ P\{ X_0 = x, Y_0 \geq y\}P\{X_1 \geq x\}P\{Y_2 = x\}+ P\{ X_0 = x, Y_0 = y\} P\{X_1 \geq x\}P\{Y_2 \geq x\} = \\
+		P\{X_{0}\wedge X_{1} > x,~Y_{0}\wedge Y_{2} > y \} &= P\{ X_{0} > x, X_{1} > x, Y_{0} > y, Y_{2} > y \} = S(x, y)\cdot S_X(x) \cdot S_Y(y)\\
+    &therefore\\
+    f(X_{0}\wedge X_{1} > x,~Y_{0}\wedge Y_{2} > y)& = \frac{\partial^2 [S(x^-, y^-)\cdot S_X(x^-) \cdot S_Y(y^-)]}{\partial x \partial y}=\\
     = &S(x^-,y^-)f_X(x)f_Y(y) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)  + f(x, y)S_X(x^-)S_Y(y^-) 
 	\end{aligned}
 	$$
 Next, we show that the \textbf{joint} distribution of concordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
 	$$
 	\begin{aligned}
-		P\{ [(X_0>X_1, Y_0>Y_2) & \cup (X_0<X_1, Y_0<Y_2)] \cap [X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} = \\
-    &=P\{ X_{0} > x, X_{1} = x, Y_{0} > y, Y_{2} = y] \} + P\{ X_{0}= x, X_{1} > x, Y_{0}= y, Y_{2} > y] \} =\\
+		P\{ [(X_0>X_1, Y_0>Y_2) & \cup (X_0<X_1, Y_0<Y_2)] \cap [X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y ]\} = \\
+    &=P\{ X_{0} > x, X_{1} = x, Y_{0} > y, Y_{2} = y \} + P\{ X_{0}= x, X_{1} > x, Y_{0}= y, Y_{2} > y \} =\\
      &= S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) 
 	\end{aligned}
 	$$
 Similarly, we show that the \textbf{joint} distribution of discordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
 	$$
 	\begin{aligned}
-		P\{ [(X_0>X_1, Y_0<Y_2) & \cup (X_0<X_1, Y_0>Y_2)] \cap [X_0\wedge X_1 = x,~Y_0\wedge Y_{2} = y \} = \\
-    &=P\{ X_0 > x, X_1 = x, Y_0 = y, Y_{2} > y] \} + P\{ X_0 = x, X_1 > x, Y_0> y, Y_{2} = y] \} = \\
+		P\{ [(X_0>X_1, Y_0<Y_2) & \cup (X_0<X_1, Y_0>Y_2)] \cap [X_0\wedge X_1 = x,~Y_0\wedge Y_{2} = y ]\} = \\
+    &=P\{ X_0 > x, X_1 = x, Y_0 = y, Y_{2} > y \} + P\{ X_0 = x, X_1 > x, Y_0> y, Y_{2} = y \} = \\
     & =  \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y)
 	\end{aligned}
 	$$
@@ -933,7 +935,7 @@ Therefore
   $$
   \begin{aligned}
     \rho_S(x, y) &= \frac{P\{concord| X_0\wedge X_1 = x,~Y_0\wedge Y_2 = y\} - P\{discord|X_0\wedge X_1 = x,~Y_0\wedge Y_2 = y\}}{P\{X_0\wedge X_1 = x,~Y_1\wedge Y_2 = y\}} = \\   
-     &= \frac{ S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-)  - \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) } { S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-)  + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)}\\
+     &= \frac{ S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y)  - \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y) } { S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-)  + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)}\\
   \end{aligned}
   $$
 ~\\
@@ -948,9 +950,9 @@ Similar to \cite{fan2000class} (also see section \ref{deriveWeightedTau}), we pr
 	$$
 	\begin{aligned}
 		\mathcal{R}_S&(t_x, t_y) = \int_0^{t_x} \int_0^{t_y}  \rho_S(x, y)\frac{h(x, y)}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy} dxdy = \\
-    &= \int_0^{t_x} \int_0^{t_y}  \frac{  S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) - \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)  }{ \cancel{h(x,y)}}    
+    &= \int_0^{t_x} \int_0^{t_y}  \frac{  S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y)  }{ \cancel{h(x,y)}}    
    \frac{\cancel{h(x, y)}dxdy}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy}  = \\
-    &=   \frac{ \int_0^{t_x} \int_0^{t_y} \left\{S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) - \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) \right\}dxdy }{\int_0^{t_x} \int_0^{t_y} \left\{S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) \right\}dxdy}\\
+    &=   \frac{ \int_0^{t_x} \int_0^{t_y} \left\{S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y) \right\}dxdy }{\int_0^{t_x} \int_0^{t_y} \left\{S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) \right\}dxdy}\\
 	\end{aligned}
 	$$
 
@@ -1302,38 +1304,82 @@ Here we explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can b
 		\tau(s_1, s_2) &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}
 	\end{aligned}
 	$$
-For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12})$ to $(X_{1},Y_{1})$ and $(X_{2},Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$:
+For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12})$ to $(X_{1},Y_{1})$ and $(X_{2},Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution (\emph{pdf}) for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$. We will do this using a trick. We'll first find $S(x, y)$ for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ and then we will use the relationship: $f(x,y) = \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y}$
+  
+  % $$
+  % \begin{aligned}
+  %   P\{ X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y \} + \\
+  %     &+ P\{ X_{1} \geq x, X_{2} = x, Y_{1}= y, Y_{2} = \geq y \} + \\
+  %     &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}= y, Y_{2} \geq y \} + \\
+  %     &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}\geq y, Y_{2} = y \} =\\
+  %      = &P\{ X_1 \geq x, Y_1 \geq y, X_2 = x, Y_2 = x\} + P\{ X_1 \geq x, Y_1 = y, X_2 = x, Y_2 \geq x\} +\\
+  %     &+ P\{ X_1 = x, Y_1 \geq y, X_2 \geq x, Y_2 = x\}+ P\{ X_1 = x, Y_1 = y, X_2 \geq x, Y_2 \geq x\} = \\
+  %     = &S(x^-,y^-)f(x, y) + \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} + \frac{\partial S(x,y^-)}{\partial x}\frac{\partial S(x^-,y)}{\partial y} + f(x, y)S(x^-,y^-) = \\
+  %      = &2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x}
+  % \end{aligned}
+  % $$
   
 	$$
 	\begin{aligned}
-		P\{ X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y \} + \\
-    &+ P\{ X_{1} \geq x, X_{2} = x, Y_{1}= y, Y_{2} = \geq y \} + \\
-    &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}= y, Y_{2} \geq y \} + \\
-    &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}\geq y, Y_{2} = y \} =\\
-     = &P\{ X_1 \geq x, Y_1 \geq y, X_2 = x, Y_2 = x\} + P\{ X_1 \geq x, Y_1 = y, X_2 = x, Y_2 \geq x\} +\\
-    &+ P\{ X_1 = x, Y_1 \geq y, X_2 \geq x, Y_2 = x\}+ P\{ X_1 = x, Y_1 = y, X_2 \geq x, Y_2 \geq x\} = \\
-    = &S(x^-,y^-)f(x, y) + \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} + \frac{\partial S(x,y^-)}{\partial x}\frac{\partial S(x^-,y)}{\partial y} + f(x, y)S(x^-,y^-) = \\
-     = &2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} 
+		S_{min(X_1, X_2),min(Y_1, Y_2)}(x, y) &= P\{ X_{1}\wedge X_{2} > x,~Y_{1}\wedge Y_{2} > y \} = P\{ X_{1} > x, X_{2} > x, Y_{1}> y, Y_{2} > y \} =\\
+    &= P\{ X_{1} > x, Y_{2} > y, X_{2} > x, Y_{1}> y\} = P\{ X_{1} > x, Y_{2} > y \}  \cdot P\{X_{2} > x, Y_{1}> y\}  =\\
+    &= S^2(x, y)\\
 	\end{aligned}
 	$$
-It is somewhat straight forward (but confusing) to show that the joint distribution of concordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ is the following:
+  Using the trick:
 	$$
 	\begin{aligned}
-		P\{ [(X_1>X_2, Y_1>Y_2)  \cup (X_1<X_2, Y_1<Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &2S(x^-,y^-)f(x, y)
+    f_{min(X_1, X_2),min(Y_1, Y_2)}(x, y) &= \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y} = \frac{\partial}{\partial y} \left(2\cdot S(x^-, y^-) \frac{\partial S(x^-, y^-)}{\partial x}  \right)  =\\
+     &=2S(x^-, y^-) \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y}   + 2 \frac{\partial S(x^-, y^-)}{\partial x}\frac{\partial S(x^-, y^-)}{\partial y}\\
+     & or~in~terms~of~the~authors:\\
+     &~\\
+     &= 2 S(x^-, y^-) S(dx, dy) + 2 S(x^-, dy) S(dx, y^-)
 	\end{aligned}
 	$$
-Similarly, one can show that distribution of discordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ is the following:
+
+Now, let's find the joint distribution of concordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ by finding first the following:
 	$$
 	\begin{aligned}
-		P\{ [(X_1>X_2, Y_1<Y_2)  \cup (X_1<X_2, Y_1>Y_2)] \cap [X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} 
+		P\{ (X_1>X_2, Y_1>Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &=P\{ X_1>x, X_2=x, Y_1>y, Y_2=y)\} = \\
+    &= P\{ X_1>x, Y_1>y, X_2=x, Y_2=y)\} = S(x, y)f(x,y)
 	\end{aligned}
 	$$
+  Because of symmetry:
+	$$
+	\begin{aligned}
+		P\{ (X_1<X_2, Y_1<Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &= S(x, y)f(x,y)
+	\end{aligned}
+	$$
+  For discordance:
+	$$
+	\begin{aligned}
+		P\{ (X_1>X_2, Y_1<Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &=P\{ X_1>x, X_2=x, Y_1=y, Y_2>y)\} = \\
+    &= P\{ X_1>x, Y_1=y, X_2=x, Y_2>y)\} = \frac{\partial S(x, y^-)}{\partial y} \frac{\partial S(x^-, y)}{\partial x} 
+	\end{aligned}
+	$$
+  Because of symmetry:
+	$$
+	\begin{aligned}
+		P\{ (X_1<X_2, Y_1>Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &= \frac{\partial S(x, y^-)}{\partial y} \frac{\partial S(x^-, y)}{\partial x} 
+	\end{aligned}
+	$$
+  
+  Therefore, 
+  
+	$$
+	\begin{aligned}
+  P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} =\\
+  = 2S(x, y)f(x,y) - 2S(x, dy)S(dx, y)
+	\end{aligned}
+	$$
+  
   
 Therefore
   $$
   \begin{aligned}
-    \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\   
-     &= \frac{2S(x^-,y^-)f(x, y) - 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} }{ 2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} } =\\
+    \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\ 
+     &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} } =\\
+     &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2 S(x^-, y^-) S(dx, dy) + 2 S(x^-, dy) S(dx, y^-) } =\\     
      &= \frac{\theta(x, y) - 1}{\theta(x, y) + 1}
   \end{aligned}
   $$
@@ -1399,7 +1445,112 @@ If we represent $R(t_1, t_2) = e^{log(R(t_1, t_2))}$, then $log(R)$ is  an addit
 There is a problem (with consistency) with finding these estimators for continuous using EM algorithm because we need to redistribute the mass and there is a problem with it for singly censored observations. This problem was corrected by Pruitt(1991) by using kernel-density estimators. Van der Laan proposed NPMLE based on interval censored singly-censored observations.\\
 \\
 Under complete independence of events and censoring events, Dabrowska's and Prentice and Cai's estimators did better. With increased dependence, Laan's estimator did better.
+
+\section{M-estimation}
+In this section we are trying to understand how to compute variance of PSR correlation using \emph{M-estimation}. First we need the following vector:
+
+\[
+\psi_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta}) = \begin{bmatrix}
+    \psi_X(X_i,\pmb{Z}_i; \pmb{\theta}_X) \\
+    \psi_Y(Y_i,\pmb{Z}_i; \pmb{\theta}_Y) \\
+    PSR_{X_{i}} -\theta_1 \\
+    PSR_{X_{i}} -\theta_2 \\
+    PSR_{X_{i}}PSR_{Y_i} -\theta_3 \\
+    PSR_{X_{i}}^2 -\theta_4 \\
+    PSR_{Y_{i}}^2 -\theta_1 \\
+    \frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_5 - \theta_2^2}} - \theta_6
+\end{bmatrix}
+\]
+
+Where $\psi_X(X_i,Z_i; \theta_X)$ and $\psi_Y(Y_i,Z_i; \theta_Y)$ are score functions for models of association of $X\sim Z $ and $Y \sim Z$ respectively.\\
+According to \cite{stefanski2002calculus}, we need to construct the following two matrices:
+
 	
+	$$
+	\begin{aligned}
+		\pmb{A}_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) &= \frac{1}{n} \sum_{i = 1}^{n}\left[ -\frac{\partial}{\partial \pmb{\theta}^T}\psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \right]\\
+		\pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) &= \frac{1}{n} \sum_{i = 1}^{n} \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}})^T\\
+ 	\end{aligned}
+	$$
+
+So the resulting variance is:
+	$$
+	\begin{aligned}
+		\frac{\pmb{V}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})}{n} = \frac{1}{n}\pmb{A}_n^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})  \{\pmb{A}_n^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \}^T
+ 	\end{aligned}
+	$$
+
+Let's understand what $\pmb{A}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})$ is for linear regression. First, let's note that $\pmb{A}_n$ is complex and can be viewed as:
+
+\[
+\pmb{A}_n = \begin{bmatrix}
+    \pmb{A}_X   &     0     &    0     &     0\\
+            0   & \pmb{A}_Y &    0     &     0\\
+            0   &     0     & \pmb{A}_{PSR_{X}}&     0\\
+            0   &     0     &    0     &    \pmb{A}_{PSR_{y}}\\
+\end{bmatrix}
+\]
+
+Let's figure out $\pmb{A}_Y$ and $\pmb{A}_{PSR_{y}}$, for example. For linear regression $Y\sim Z$, the score equations are obtained straight from the likelihood and for $\pmb{\theta} = (\beta_0, \beta_1, \beta_2)$, for example, they are:
+	$$
+	\begin{aligned}
+		&y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2}=0\\
+		&z_{1i}(y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})=0\\
+		&z_{2i}(y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})=0\\
+		&-\sigma^2 + (y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})^2=0\\
+ 	\end{aligned}
+	$$
+Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$, and write the $Y$ portion of $\pmb{A}$, $\pmb{A}_Y$ as :  
+
+\[
+\pmb{A}_Y = -\frac{1}{n}\sum_i^n\begin{bmatrix}
+    -1   & - z_{i1}   &- z_{i2}  &  0\\
+    -z_{i1}   & - z_{i1}^2   &- z_{i1}z_{i2}  &  0 \\
+    -z_{i2}   & - z_{i1}z_{i2}   &- z_{i2}^2  &  0 \\
+    -2 \cdot res_i   & - 2 \cdot res_iz_{i1}   &- 2 \cdot res_iz_{i2}  &  -1 \\
+\end{bmatrix}=
+\begin{bmatrix}
+  \pmb{A}_{Y,11} & \pmb{0}\\
+  \pmb{A}_{Y,21} & 1\\
+  \end{bmatrix}
+\]
+Where:
+  $$
+  \begin{aligned}
+    \pmb{A}_{Y,11} &= \frac{1}{n}\pmb{Z}^T\pmb{Z}\\
+    \pmb{A}_{Y,21} &= \frac{1}{n}2 \cdot \pmb{res}^T\pmb{Z}\\
+   \end{aligned}
+  $$
+
+Now let's see what $\pmb{A}_{PSR_{y}}$ is. Let's denote $\rho_S = \frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_5 - \theta_2^2}}$. It is straight forward to show that:
+
+\[
+\pmb{A}_{PSR_{Y}} = \sum_i^n\begin{bmatrix}
+    1   &  0  &  0  &  0  &  0  &  0\\
+    0   &  1  &  0  &  0  &  0  &  0\\
+    0   &  0  &  1  &  0  &  0  &  0\\
+    0   &  0  &  0  &  1  &  0  &  0\\
+    0   &  0  &  0  &  0  &  1  &  0\\
+    a_1   &  a_2  &  a_3  &  a_4  &  a_5  &  1\\
+\end{bmatrix}
+\]
+Where:
+  $$
+  \begin{aligned}
+    a_1 &= \frac{\partial \rho_S}{\partial \theta_1} = \frac{\theta_1\theta_3 - \theta_2\theta_4}{\sqrt{\theta_5 - \theta_2^2}(\theta_4 - \theta_1^2)^{3/2}}\\
+    a_2 &= \frac{\partial \rho_S}{\partial \theta_2} = \frac{\theta_2\theta_3 - \theta_1\theta_5}{(\theta_5 - \theta_2^2)^{3/2} \sqrt{\theta_4 - \theta_1^2}}\\
+    a_3 &= \frac{\partial \rho_S}{\partial \theta_3} = \frac{1}{\sqrt{\theta_5 - \theta_2^2}\sqrt{\theta_4 - \theta_1^2}}\\
+    a_4 &= \frac{\partial \rho_S}{\partial \theta_4} = -\frac{1}{2}\frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_5 - \theta_2^2}(\theta_4 - \theta_1^2)^{3/2}}\\
+    a_5 &= \frac{\partial \rho_S}{\partial \theta_5} = -\frac{1}{2}\frac{\theta_3 - \theta_1\theta_2}{(\theta_5 - \theta_2^2)^{3/2} \sqrt{\theta_4 - \theta_1^2}}\\
+   \end{aligned}
+  $$
+Note that $\frac{\partial \rho_S}{\partial \theta_6} = 1$
+
+\section{M-estimation by Qi}
+\subsection{Linear regression scores}
+In this section we are trying to understand how Qi is computing \emph{p-value} for \emph{Spearman correlation} (or correlation of PSR). We first try to understand function \texttt{lm.scores()}.
+
+
 \printbibliography
 
 \end{document}          
