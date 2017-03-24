@@ -1465,7 +1465,7 @@ In this section we are trying to understand how to compute variance of PSR corre
 \end{bmatrix}
 \]
 
-Where $\psi_X(X_i,Z_i; \pmb{\theta}_X)$ and $\psi_Y(Y_i,Z_i; \pmb{\theta}_Y)$ are score functions for models of association of $X\sim Z $ and $Y \sim Z$ respectively.\\
+Where $\pmb{\psi}_X(X_i,Z_i; \pmb{\theta}_X)$ and $\pmb{\psi}_Y(Y_i,Z_i; \pmb{\theta}_Y)$ are log-likelihood functions for models of association of $X\sim Z $ and $Y \sim Z$ respectively.\\
 According to \cite{stefanski2002calculus}, we need to construct the following two matrices:
 
 	
@@ -1503,19 +1503,19 @@ The main challenge is to accurately define and code $\pmb{A}_n(\pmb{X}, \pmb{Y},
 Or:
 \[
 \pmb{A}_n = \frac{1}{n} \sum_{i = 1}^{n} \begin{bmatrix}
-   \frac{\partial \pmb{\psi}_X}{\partial \theta_{X, 1}}    &  \frac{\partial \pmb{\psi}_X}{\partial \theta_{X, 2}}    &   0   &   0   &     0     &     0    &    0    &    0    &    0    &   0 \\
+   -\frac{\partial \pmb{\psi}_X}{\partial \theta_{X, 1}}    &  -\frac{\partial \pmb{\psi}_X}{\partial \theta_{X, 2}}    &   0   &   0   &     0     &     0    &    0    &    0    &    0    &   0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    0   &   0   &   \frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y, 1}} &   \frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y,2}}      &     0     &     0    &    0    &    0    &    0    &   0  \\
+    0   &   0   &   -\frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y, 1}} &   -\frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y,2}}      &     0     &     0    &    0    &    0    &    0    &   0  \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \frac{\partial PSR_X}{\partial \theta_{X,1}}   &  \frac{\partial PSR_X}{\partial \theta_{X,2}}   & 0   &   0   &   1   &   0  & 0 & 0 & 0 & 0\\
+    -\frac{\partial PSR_X}{\partial \theta_{X,1}}   &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}   & 0   &   0   &   1   &   0  & 0 & 0 & 0 & 0\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    0 & 0 &    \frac{\partial PSR_Y}{\partial \theta_{Y,1}}   &  \frac{\partial PSR_Y}{\partial \theta_{Y,2}}   & 0 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 0 &    -\frac{\partial PSR_Y}{\partial \theta_{Y,1}}   &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}   & 0 & 1 & 0 & 0 & 0 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     \frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_Y  &  \frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_Y & \frac{\partial PSR_Y}{\partial \theta_{Y,1}} PSR_X  &  \frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_X & 0 & 0 &  1 & 0 & 0 & 0 \\
+     -\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_Y  &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_Y & -\frac{\partial PSR_Y}{\partial \theta_{Y,1}} PSR_X  &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_X & 0 & 0 &  1 & 0 & 0 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    2\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_X  &  2\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_X & 0 & 0 & 0 & 0 &  0 & 1 & 0 & 0 \\
+    -2\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_X  &  -2\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_X & 0 & 0 & 0 & 0 &  0 & 1 & 0 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    0 & 0 & 2\frac{\partial PSR_Y}{\partial \theta_{Y,1}}PSR_Y  &  2\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_Y & 0 & 0 &  0 & 0 & 1 & 0 \\
+    0 & 0 & -2\frac{\partial PSR_Y}{\partial \theta_{Y,1}}PSR_Y  &  -2\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_Y & 0 & 0 &  0 & 0 & 1 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     0 & 0 & 0 & 0 & a_1 & a_2 &  a_3 & a_4 & a_5 & 1 \\
 \end{bmatrix}
@@ -1571,7 +1571,7 @@ Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$:
   \end{bmatrix}
 \]
 
-Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
+Where $\pmb{res}=\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y$. Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
   $$
   \begin{aligned}
     PSR_Y(\pmb{\theta}_Y) = 2F_{\pmb{\theta}_Y}(\pmb{Y}) - 1 = 2 \Phi\left(\frac{\pmb{Y} - \pmb{Z}\pmb{\theta}_Y}{\sigma}\right) - 1
@@ -1581,28 +1581,62 @@ Where $F_{\pmb{\theta}_Y}(\cdot)$ is a \emph{cdf} of $Normal(\pmb{Z} \cdot \pmb{
 
   $$
   \begin{aligned}
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_0} = -2f\left(\frac{\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{1}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_1} = -2f\left(\frac{\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,1}}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_2} = -2f\left(\frac{\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,2}}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \sigma} = -2f\left(\frac{\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma^2}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_0} &= -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{1}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_1} &= -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,1}}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_2} &= -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,2}}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \sigma} &= +2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma^2}\\
   \end{aligned}
   $$
 
+Therefore:
+\[
+\pmb{A}_{Y,4,2} = \frac{1}{n}\sum_i^n\begin{bmatrix}
+   2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{1}{\sigma}   &  2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,1}}{\sigma}   & 2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,2}}{\sigma}  &  -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma^2}\\
+\end{bmatrix}\]
+
+Or
+\[
+\pmb{A}_{Y,4,2} = \frac{2}{n\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \frac{\pmb{res}}{\sigma} \\
+\end{bmatrix}
+\]
+$A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we have:
 
 
- results in 
-In addition to $\pmb{A}_{Y,11}$ and $\pmb{A}_{Y,21}$ specified above, Qi's function \texttt{lm.scores()} returns \texttt{dpresid.dtheta}, which is:
-  $$
-  \begin{aligned}
-    -2\cdot \frac{f\left(  \frac{y_i - \hat{y}_i}{\hat{\sigma}}  \right) }{\hat{\sigma}}
-  \end{aligned}
-  $$
-Where $f(\cdot)$ is a normal density. This expression is probably obtained as a derivative of \emph{PSR}: $-2\cdot F\left(  \frac{y_i - \hat{y}_i}{\hat{\sigma}}  \right) - 1$
-  $$
-  \begin{aligned}
-    \frac{\partial}{\partial \sigma}
-  \end{aligned}
-  $$
+
+%%%%%%%%%%% A_{Y,2,2}
+\[
+\pmb{A}_{Y,2,2} = \frac{1}{n}
+\begin{bmatrix}
+  \pmb{Z}^T\pmb{Z} & \pmb{0}\\
+  2 \cdot \pmb{res}^T\pmb{Z} & 1\\
+  \end{bmatrix}
+\]
+%%%%%%%%%%% A_{Y,4,2}
+\[
+\pmb{A}_{Y,4,2} = \frac{2}{n\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \frac{\pmb{res}}{\sigma} \\
+\end{bmatrix}
+\]
+%%%%%%%%%%% A_{Y,5,2}
+\[
+\pmb{A}_{Y,5,2} = \frac{2}{n\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_X\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_X\right]^T \frac{\pmb{res}}{\sigma} \\
+\end{bmatrix}
+\]
+%%%%%%%%%%% A_{Y,7,2}
+\[
+\pmb{A}_{Y,7,2} = \frac{4}{n\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_Y\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_Y\right]^T \frac{\pmb{res}}{\sigma} \\
+\end{bmatrix}
+\]
+
+\subsubsection{M-estimation in case of normal distribution, Qi's approach}
+Another way of approaching this problem was suggested by \cite{lui2015covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.
 
 
 \subsection{Linear regression scores}
