@@ -42,7 +42,7 @@
 \setlength\parindent{0pt}
 
 % Title Page: Modify as needed
-\title{Association of Bivariate Survival Data}
+\title{Association for Bivariate Survival Data}
 \author{Svetlana Eden, Department of Biostatistics, Vanderbilt University}
 \date{\today}
 
@@ -62,12 +62,12 @@
 \clearpage
 
 \section{INTRODUCTION}
-The interest in survival data can be traced back to at least 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, recorded the rate of death from childbed fever (\cite{wiki:IgnazSemmelweis}). After excluding several other hypotheses, he suggested that when a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever was higher because of a disease that was caused by cadaverous particles that medical students and doctors had on their hands after dissecting cadavers. As you might know, his theory was dismissed, and he died alienated from the medical community. The rational for his hypothesis was discovered decades later, when the germ theory of the disease was developed. 
+The interest in survival data can be traced back to at least 1846, when a Hungarian doctor of the Vienna General Hospital maternity clinic, Ignaz Semmelweis, recorded the rate of death from childbed fever (\cite{wiki:IgnazSemmelweis}). After excluding several other hypotheses, he suggested that when a child birth is helped by a doctor or a medical student, the women's rate of death from childbed fever was higher because of a disease that was caused by cadaverous particles that medical students and doctors had on their hands after dissecting cadavers. As you might know, his theory was dismissed, and he died alienated from the medical community. The rational for his hypothesis was discovered decades later, when the germ theory of the disease was developed. \\
 
 
 Another example was Florence Nightingale, who was born into a rich upper-class British family, and in spite of her status she pursued a career of a nurse (\cite{wiki:FlorenceNightingale}). She was credited for significantly reducing hospital mortality of British soldiers during the Crimean War, in 1854 (with hand-washing being one of the most important practices implemented under her supervision). She also published some of her works in simple English in order to popularize medical knowledge.\\
 
-In these two examples, survival data was collected as a binary variable: died or lived. For studies with longer follow-up, a better way of collecting survival data is to record time to the event. The problem with collecting time to event though, is that not all events can be observed. For example, suppose a five-year longitudinal study aims to test an association of blood pressure and time to cardiovascular event. Not all patients will necessarily have the event during these five years. Such patients would be labeled as \emph{censored}.  \cite{fisher1931truncated},  \cite{hald1949maximum}, and \cite{swan1969computing} were probably one of the first to suggest a more complex view of survival data by introducing a concept of \emph{censoring} and suggested methods of dealing with it. Censoring is \emph{non-informative} if it is not associated with the potential event time. Otherwise it is called \emph{informative}. Assumption of non-informative censoring somewhat simplifies estimation of survival probability, but still requires complex theoretical tools. It was \cite{kaplan1958nonparametric} who suggested an estimate of survival probability in the presence of censoring for a univariate case. They introduced a well known Product-Limit estimator of the survival curve. \cite{david1972regression} extended their work by introducing a regression model for censored survival outcome. His model utilized a concept of a \emph{hazard rate}, and we define it here in order to understand better the rest of the paper. \emph{Hazard rate} is defined as follows:
+In these two examples, survival data were collected as a binary variable: died or lived. For studies with longer follow-up, a better way of collecting survival data is to record time to the event. The problem with collecting time to event though, is that not all events can be observed. For example, suppose a five-year longitudinal study aims to test an association of blood pressure and time to cardiovascular event. Not all patients will necessarily have the event during these five years. Such patients would be labeled as \emph{censored}.  \cite{fisher1931truncated},  \cite{hald1949maximum}, and \cite{swan1969computing} were probably some of the first to suggest a more complex view of survival data by introducing a concept of \emph{censoring} and suggested methods of dealing with it. Censoring is \emph{non-informative} if it is not associated with the potential event time. Otherwise it is called \emph{informative}. Assumption of non-informative censoring somewhat simplifies estimation of survival probability, but still requires complex theoretical tools. Following the work of researches of actuarial methods (comment of Dr. Harrell), \cite{kaplan1958nonparametric} suggested an estimate of survival probability in the presence of censoring for a univariate case. They introduced a well known product-limit estimator of the survival curve. Others suggested parametric survival models (comment of Dr. Harrell) \cite{david1972regression} extended their work by introducing a regression model for censored survival outcome. His model utilized a previously suggested definition of a \emph{hazard rate}, and we define it here in order to understand better the rest of the paper. \emph{Hazard rate} is defined as follows:
 
 $$
 \begin{aligned}
@@ -112,16 +112,16 @@ $$
  \end{aligned}
 $$
  
-The problem with this approach is that a parent may not live long enough to experience time to cardiovascular disease. This means that not only our outcome, time to cardiovascular disease, but also our covariate, parental history may be censored. This is what motivated \cite{clayton1978model} to think of a different approach for epidemiological studies of chronic disease with familial tendency. Following the intuition of the hazard ratio in the context of Cox regression, he defined a measure similar to hazard ratio, that had the following properties:
+The problem with this approach is that a parent may not live long enough to experience time to cardiovascular disease. This means that not only our outcome, time to cardiovascular disease, but also our covariate, parental history may be censored (this approach may work for censored data (comment of Dr. Harrell)). This is what motivated \cite{clayton1978model} to think of a different approach for epidemiological studies of chronic disease with familial tendency. Following the intuition of the hazard ratio in the context of Cox regression, he defined a measure similar to hazard ratio, that had the following properties:
 \begin{enumerate}
 	\item Easy to compute
 	\item Expressible as a constant ratio of age-specific rates
   \item Symmetrical in two variables
 \end{enumerate}
-Let's denote time to event for fathers to be $t$ and time to event for sons to be $s$. Also, let's denote $\lambda_s(s_0|t=t_0) = \frac{f(s_0|t=t_0)}{S(s_0|t=t_0)}$ and $\lambda_s(s_0|t>t_0) = \frac{f(s_0|t>t_0)}{S(s_0|t>t_0)}$. Then Clayton's \emph{cross ratio}, $\theta$, is defined in the following way:
+Let's denote time to event for fathers to be $t$ and time to event for sons to be $s$. Also, let's denote $\lambda_s(s_0|T=t_0) = \frac{f(s_0|T=t_0)}{S(s_0|T=t_0)}$ and $\lambda_s(s_0|T>t_0) = \frac{f(s_0|T>t_0)}{S(s_0|T>t_0)}$. Then Clayton's \emph{cross ratio}, $\theta$, is defined in the following way:
 $$
 \begin{aligned}
-	\theta = \frac{\lambda_s(s_0|t=t_0)}{\lambda_s(s_0|t>t_0)} = \frac{\lambda_t(t_0|s=s_0)}{\lambda_t(t_0|s>s_0)}
+	\theta = \frac{\lambda_s(s_0|t=t_0)}{\lambda_s(s_0|T>t_0)} = \frac{\lambda_t(t_0|S=s_0)}{\lambda_t(t_0|S>s_0)}
 \end{aligned}
 $$
 We clearly see a similarity between the hazard ratio of Cox model and the \emph{cross ratio} defined by Clayton. The requirement of symmetry was motivated by the fact than neither son nor father were causes of the event, rather, there was an unobservable variable that was associated with the event for both of them.\\
@@ -136,7 +136,7 @@ S(t_1,t_2) = \left[\left\{ \frac{1}{S_1(t_1)} \right\}^{\theta - 1} + \left\{ \f
 $$
 where $S_1(t_1)$ and $S_2(t_2)$ are marginal survival functions. Although this bivariate function has a very specific form, Clayton's non-parametric likelihood approach allowed to estimate $\theta$ without knowing specific forms of $S_1(t_1)$ and $S_2(t_2)$.\\
 ~\\
-\cite{oakes1982model} studied Clayton's model extensively and showed that: $\frac{\theta - 1}{\theta + 1} = \tau$, where $\tau$ is another association measure introduced by  \cite{kendall1938new} for two independent pairs of variables, $(U_1, Z_1)$ and $(U_2, Z_2)$, with the same bivariate distribution. We say that pairs $(U_1, Z_1)$ and $(U_2, Z_2)$ are \emph{concordant} if $(U_1 - U_2)(Z_1 - Z_2)>0$ and \emph{discordant} if $(U_1 - U_2)(Z_1 - Z_2)<0$. Kendal's $\tau$ is the probability of concordance minus the probability of discordance:
+\cite{oakes1982model} studied Clayton's model extensively and showed that: $\frac{\theta - 1}{\theta + 1} = \tau$, where $\tau$ is another association measure introduced by  \cite{kendall1938new} for two independent pairs of variables, $(U_1, Z_1)$ and $(U_2, Z_2)$, with the same bivariate distribution. We say that pairs $(U_1, Z_1)$ and $(U_2, Z_2)$ are \emph{concordant} if $(U_1 - U_2)(Z_1 - Z_2)>0$ and \emph{discordant} if $(U_1 - U_2)(Z_1 - Z_2)<0$. Kendall's $\tau$ is the probability of concordance minus the probability of discordance:
 $\tau = P[(U_1 - U_2)(Z_1 - Z_2)>0] - P[(U_1 - U_2)(Z_1 - Z_2)<0] = E[sign((U_1 - U_2)(Z_1 - Z_2))]$. This fact suggested that $\theta$ can be estimated through $\tau$ as well.\\
 
 In order to generalize these results, \cite{oakes1989bivariate} introduced a bivariate survival model based on \emph{frailties}, unobservable random variables. If we denote an unobservable random variable as $W$, the probability of survival can be written as: $Pr(T>t|W=w)$. In the bivariate case, we assume that both survival times depend on the same unobservable random variable, $W$:
@@ -156,14 +156,14 @@ $$
 He showed that bivariate distributions introduced by frailty models were part of a larger class, the class of \emph{archimedian} distributions studied by \cite{genest1986copules}:
 $$
 \begin{aligned}
-	S(t) = p\left[ q\left\{ S_1(t_1) \right\}  + q\left\{ S_2(t_2) \right\}  \right]
+	S(t_1,t_2) = p\left[ q\left\{ S_1(t_1) \right\}  + q\left\{ S_2(t_2) \right\}  \right]
 \end{aligned}
 $$
 
 Where $p(u)$ is a non-negative decreasing function with non-negative second derivative, with $p(0)=1$, and $q(u)$ is an inverse function of $p(v)$. It can be shown (see \nameref{appendixA}) that  the following equality holds:
 	$$
 	\begin{aligned}
-		\theta(t_1,t_2) = \frac{\lambda_{t_1}(t_1|T_2=t_2)}{\lambda_{t_1}(t_1|T>t_2)} = \frac{ \frac{\partial^2 S(t_1,t_2)}{\partial t_1 \partial t_2} S(t_1, t_2)}    {\frac{\partial S(t_1, t_2)}{\partial t_2} \frac{\partial S(t_1, t_2)}{\partial t_1}}
+		\theta(t_1,t_2) = \frac{\lambda_{t_1}(t_1|T_2=t_2)}{\lambda_{t_1}(t_1|T_2>t_2)} = \frac{ \frac{\partial^2 S(t_1,t_2)}{\partial t_1 \partial t_2} S(t_1, t_2)}    {\frac{\partial S(t_1, t_2)}{\partial t_2} \frac{\partial S(t_1, t_2)}{\partial t_1}}
 	\end{aligned}
 	$$
 Using this equality, Oakes showed that for \emph{archimedian} class of models, $\theta$ depends on $t$ only through $S(t)$, which allowed him to show the following:
@@ -176,7 +176,7 @@ where $v=S(t_1, t_2)$. He also pointed out that because $\theta$ and \emph{Kenda
 ~\\
 As a side note, the \emph{archimedian} class of survival function used by Oakes is a subclass of functions called \emph{copulas}. According to \cite{nelsen2007introduction}, a two-dimensional \emph{copula} is a function with support on $[0, 1] \times [0, 1]$ and values in $[0, 1]$. We omit the formal defintion of a \emph{copula} and only mention its important quality summarized in \emph{Sklar's theorem}: if $H(x,y)$ is a joint distribution function with margins $F(x)$ and $G(y)$, there exists a copula $C$ such that for all $x,y$: $H(x,y) = C(F(x), G(y))$, where, if $F$ and $G$ are continuous then $C$ is unique. Nelson also defines a \emph{survival copula} that holds the same property: $\bar{H}(x,y) = C_S(\bar{F}(x), \bar{G}(y))$, where $\bar{H}(x,y)$, $\bar{F}(x)$, and $\bar{G}(y)$ are joint and marginal survival functions respectively. The implication of this property is that for any type of survival copula, the marginal distributions and their association parameter can be estimated separately. 
 %Without going into the details, we mention a few papers that used copula approach, . 
-In addition to this important property, the theory of copulas for continuous data allows to express two popular association measures, \emph{Kendal's} $\tau$ and \emph{Spearman} correlation, in terms of copulas. Without going into details, we only mention few papers where authors used the theory of copulas for inference in bivariate survival: \cite{shih1996tests}, \cite{shih1995inferences}, and \cite{zhang2008inference}.\\
+In addition to this important property, the theory of copulas for continuous data allows to express two popular association measures, \emph{Kendall's} $\tau$ and \emph{Spearman} correlation, in terms of copulas. Without going into details, we only mention few papers where authors used the theory of copulas for inference in bivariate survival: \cite{shih1996tests}, \cite{shih1995inferences}, and \cite{zhang2008inference}.\\
 ~\\
 Now we go back to the \emph{cross ratio} $\theta$, defined by Clayton and later developed by Oakes. In survival studies, the age of participants is often restricted by inclusion criteria. For example, the age of mothers could be restricted to 50-80, and of daughters to 30-60. This created a need for an association measure that would take this restriction into account and would be well suited for censored time to event. This argument lead \cite{fan2000dependence} to consider a weighted average of Clayton's \textit{cross ratio} $\theta = \frac{ \lambda_2(t_2|T_1=t_1)}{\lambda_2(t_2|T_1 \geq t_1)}$ over $[0,t_1] \times [0, t_2]$. As a reminder, $\theta$ can be interpreted as a risk for daughters of age $t_2$ whose mothers developed a disease at age $t_1$, compared to daughters of age $t_2$ whose mothers were disease free at age $t_1$. The authors chose this measure because of its interpretability, and suggested that in order to increase comparability across studies, the weighting should be independent of censoring mechanism. The following weights were proposed: $\frac{F(dt_1,dt_2)}{\int_0^{t_1}\int_0^{t_2} F(du_1, du_2)}$, where $F(dt_1,dt_2) = f(t_1,t_2)dt_1dt_2 $. For one dimension, this weight could be interpreted as a probability of an event at point $t$ given that the subject survived until $t$.\\
 
@@ -190,20 +190,20 @@ Instead of weighting $\theta(t_1, t_2)$, the authors chose to weight $c(t_1, t_2
 	The above measure can be estimated non-parametrically using $\hat{F}$ of \cite{dabrowska1988kaplan} or \cite{prentice1992covariance}, and $\hat{\Lambda}$ can be estimated using a Nelson-Aalen type estimator.
 	%??? Nelson-Aalen
 Note that $C(t_1, t_2)$ may be interpreted as an average relative risk over $[0,t_1] \times [0, t_2]$. When $C(t_1, t_2)=1$, there is no association. When $C(t_1, t_2)<1$, there is positive association. It can also be interpreted as a weighted average hazard ratio with weights proportional to the failure time density at $(t_1,t_2)$.\\
-Because \cite{oakes1989bivariate} noted that \emph{Kendal's} $\tau(t_1, t_2)$ can be written as:
+Because \cite{oakes1989bivariate} noted that \emph{Kendall's} $\tau(t_1, t_2)$ can be written as:
 	$$
 	\begin{aligned}
 		\tau(t_1, t_2) &= \frac{1 - c(t_1, t_2)}{1+c(t_1, t_2)}
 	\end{aligned}
 	$$
-	The authors also proposed to weight conditional version of \emph{Kendal's} $\tau=\tau(t_1, t_2)$:
+	The authors also proposed to weight conditional version of \emph{Kendall's} $\tau=\tau(t_1, t_2)$:
 	$$
 	\begin{aligned}
 		&\tau(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} = t_1,~T_{21}\wedge T_{22} = t_2  \}
 		&~~~~where~\wedge~is~minimum
 	\end{aligned}
 	$$
-The above measure can be viewed as an association between paired subjects who reached certain age. After weighting $\tau(t_1, t_2)$ proportionally to the density, they obtained a weighted conditional \emph{Kendal's} $\tau(t_1, t_2)$:
+The above measure can be viewed as an association between paired subjects who reached certain age. After weighting $\tau(t_1, t_2)$ proportionally to the density, they obtained a weighted conditional \emph{Kendall's} $\tau(t_1, t_2)$:
 	$$
 	\begin{aligned}
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
@@ -278,9 +278,9 @@ Where $\hat{S}(t_1,0)$ and $\hat{S}(0,t_2)$ are usual Kaplan-Meier estimates, fo
 	\begin{aligned}
     \hat{L}(\Delta u, \Delta v) &= \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
   &where\\
-	&\hat{\Lambda}(\Delta u, \Delta v) = \#(T_1=u, T_2=v, \delta_1=\delta_2=1)/\#(T_1\geq u, T_2\geq v)\\
-	&\hat{\Lambda}_{10}(\Delta u, v^-) = \#(T_1=u, \delta_1=1, T_2\geq v)/\#(T_1\geq u, T_2\geq v)\\
-	&\hat{\Lambda}_{01}(u^-,\Delta  v) = \#(T_2=v, \delta_2=1, T_1\geq u)/\#(T_1\geq u, T_2\geq v)
+	\hat{\Lambda}(\Delta u, \Delta v) &= \#(T_1=u, T_2=v, \delta_1=\delta_2=1)/\#(T_1\geq u, T_2\geq v)\\
+	\hat{\Lambda}_{10}(\Delta u, v^-) &= \#(T_1=u, \delta_1=1, T_2\geq v)/\#(T_1\geq u, T_2\geq v)\\
+	\hat{\Lambda}_{01}(u^-,\Delta  v) &= \#(T_2=v, \delta_2=1, T_1\geq u)/\#(T_1\geq u, T_2\geq v)
 	\end{aligned}
 	$$
 
@@ -293,12 +293,13 @@ This estimator is easy to compute, but as we see later, it assigns negative mass
 		\hat{S}(s,t) &= \hat{S}(s,0)\hat{S}(0,t)\cdot \prod_{{0<u\leq s~0<v\leq t}}\{1 - \hat{L}(\Delta u, \Delta v)\}\\
     1 - \hat{L}(\Delta u, \Delta v) &= 1 - \frac{\hat{\Lambda}_{10}(\Delta u,v^-)\hat{\Lambda}_{01}(u^-,\Delta v) - \hat{\Lambda}_{11}(\Delta u,\Delta v)}{\left(1-\hat{\Lambda}_{10}(\Delta u,v^-)\right)\left(1-\hat{\Lambda}_{01}(u^-,\Delta v)\right)}\\
   &where\\
-	&\hat{\Lambda}(\Delta u, \Delta v) = \#(T_1=u, T_2=v, \delta_1=\delta_2=1)/\#(T_1\geq u, T_2\geq v)\\
-	&\hat{\Lambda}_{10}(\Delta u, v^-) = \#(T_1=u, \delta_1=1, T_2\geq v)/\#(T_1\geq u, T_2\geq v)\\
-	&\hat{\Lambda}_{01}(u^-,\Delta  v) = \#(T_2=v, \delta_2=1, T_1\geq u)/\#(T_1\geq u, T_2\geq v)
+	\hat{\Lambda}(\Delta u, \Delta v) &= \#(T_1=u, T_2=v, \delta_1=\delta_2=1)/\#(T_1\geq u, T_2\geq v)\\
+	\hat{\Lambda}_{10}(\Delta u, v^-) &= \#(T_1=u, \delta_1=1, T_2\geq v)/\#(T_1\geq u, T_2\geq v)\\
+	\hat{\Lambda}_{01}(u^-,\Delta  v) &= \#(T_2=v, \delta_2=1, T_1\geq u)/\#(T_1\geq u, T_2\geq v)
 	\end{aligned}
 	$$
 It is possible that $\hat{S}(s,t\neq 0) > \hat{S}(s,0)$ when expression $1 - \hat{L}(\Delta u, \Delta v)$ is greater than one, which in turn may happen when  $\hat{\Lambda}_{01}(t_1^-,\Delta  t_2) \cdot \hat{\Lambda}_{10}(\Delta t_1, t_2^-)< \hat{\Lambda}_{11}(\Delta t_1, \Delta t_2)$. In the presence of censoring, $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, $\hat{\Lambda}_{11}$ are somewhat \emph{unsynchronized}, in the sense that the number at risk for single failures is the same as the number at risk for double failures in spite of the fact that marginally the number at risk can be larger. Also, because of the censoring, each term $1 - \hat{L}(\Delta u, \Delta v)$ is slightly contributing to the overall larger value that eventually can be bigger than one, which results in the fact that the bivariate survival function is not monotone.\\
+
 Simple simulations showed (not presented here) that term $1 - \hat{L}(\Delta u, \Delta v)$ is greater than $2$ when $\hat{\Lambda}_{01}$ is very large and $\hat{\Lambda}_{10}$ is very small (or the other way around), and when $\hat{\Lambda}_{11}$ is very large. Even for $\hat{\Lambda}_{01} = \hat{\Lambda}_{10} = \hat{\Lambda}_{11} = 0.5$, term $1 - \hat{L}(\Delta u, \Delta v) = 2$.  Dabrowska's example presented in \nameref{appendixB} can also illustrates that when all observations are not censored, the values of $\hat{\Lambda}_{01}$, $\hat{\Lambda}_{10}$, and $\hat{\Lambda}_{11}$ balance out and the negative mass disappears.\\
 
 \cite{prentice1992covariance} introduced an estimator similar to Dabrowska's. It had similar performance, and the same negative mass problem. In fact, \cite{van1997nonparametric} sited the work of \cite{gill1990survey} who proved that the estimators of Dabrowska and Prentice and Cai were equivalent and performed similarly well under the assumption of complete independence of events and censoring. Van der Laan further discussed difficulties of evaluating bivariate survival using non-parametric likelihood (NPMLE). He cited the work of \cite{tsai1986nonparametric}, who give an example showing that NPMLE for continuous bivariate survival case is not consistent. Without formally proving this, Van der Laan gave an intuitive explanation of why this is true using the mechanics of expectation-maximization (EM) algorithm. In his explanation, Van der Laan talks about \emph{mass redistribution}, and in order to understand the explanation let's consider a univariate case, Kaplan-Meier estimator. Suppose we have three events, $A$, $B$, and $C$. According to Kaplan-Meier estimator, each of them has a mass $p_i = \frac{1}{3},~i = \{A,B,C\}$ (see left panel of Figure \ref{fig:km}). Now suppose that the earliest event ($i=A$) is censored. Then the Kaplan-Meier curve looks a little different (see right panel of Figure \ref{fig:km}). We say that the mass of the censored observation, $p_A=\frac{1}{3}$ was redistributed to the uncensored observations in equal amounts: $p_B=p_C=\frac{1}{3}+\frac{p_A}{2} = \frac{1}{2}$. We are able to redistribute the mass because we know that observations $B$ and $C$ happened after observation $A$ was censored.\\
@@ -306,6 +307,7 @@ Simple simulations showed (not presented here) that term $1 - \hat{L}(\Delta u, 
 \begin{figure}[!h]
 \caption[Example of mass redistribution in univariate case.]{Example of mass redistribution in univariate case. The left panel shows Kaplan-Meier curve for three uncensored observations, $A$, $B$, and $C$. The right panel shows Kaplan-Meier curve for one censored observation $A$ and two uncensored observations $B$ and $C$. When observation $A$ is censored its mass gets redistributed equally between $B$ and $C$: $p_B=p_C=\frac{1}{3}+\frac{p_A}{2} = \frac{1}{2}$. The light gray curve on the right panel traces the Kaplan-Meier curve for three uncensored observations, $A$, $B$, and $C$ for comparison.}
 \includegraphics{Simulations/kaplanMeierExplanation.pdf}
+%\includegraphics{kaplanMeierExplanation.pdf}
 \label{fig:km}
 \end{figure}
 
@@ -314,6 +316,7 @@ Now let's consider a bivariate case with three points $A$, $B$, and $C$, such th
 \begin{figure}[!h]
 \caption[Illustration of mass redistribution problem in the bivariate case.]{Illustration of mass redistribution problem in the bivariate case. When uncensored points are contained in the \emph{half-line} of a censored point (see left panel), the mass redistribution is similar to the bivariate case and is straight forward. When no uncensored points are contained in the \emph{half-line} of a censored point (see right panel), there is a problem which uncensored observation should get the mass and what proportion of the mass.}
 \includegraphics{Simulations/bivariateCase.pdf}
+%\includegraphics{bivariateCase.pdf}
 \label{fig:bc}
 \end{figure}
 
@@ -324,6 +327,7 @@ Van der Laan suggested a repaired NPMLE. He introduced partition strips that wer
 \begin{figure}[!h]
 \caption[Mass redistribution in repaired NPMLE suggested by \cite{van1996efficient} (left panel) and repaired NPMLE with adjustment suggested by \cite{moodie2005adjustment} (right panel).]{Mass redistribution in repaired NPMLE suggested by \cite{van1996efficient} (left panel) and repaired NPMLE with adjustment suggested by \cite{moodie2005adjustment} (right panel). The horizontal dotted lines denote the strips that define which censored points have their mass assigned to which uncensored points. The left panel shows that point $A$ is censored in coordinate $T_1$, and its mass is assigned to point $B$ because $B$ is in the same strip as point $A$. The right panel shows a different approach: instead of $B$ getting the mass of point $A$, an additional point $A_1$ is created and is assigned a mass according to the algorithm of \cite{moodie2005adjustment}.}
 \includegraphics{Simulations/bivariateCaseStrips.pdf}
+%\includegraphics{bivariateCaseStrips.pdf}
 \label{fig:bcMoodie}
 \end{figure}
 
@@ -527,7 +531,7 @@ $$
 $$
 where $r_{si}$ and $r_{ti}$ are PSR and $\bar{r}_s = \frac{1}{n}\sum_{i=1}^{n} r_{si}$ and $\bar{r}_t = \frac{1}{n}\sum_{i=1}^{n} r_{ti}$. For ordinal uncensored data, \cite{li2010test} suggested two ways of performing the inference: 1) a bootstrap procedure and 2) a large sample approximation. In our future work we will focus on proving the validity of applying bootstrap procedure to finding the confidence intervals for $T$, and on finding the asymptotic distribution for $T$ for discrete censored data and \emph{current status} data.\\
 
-We also plan to focus on conditional and partial correlation of PSR for censored and current status data in order to test adjusted association of time to event and adjusted association of \emph{current status}. Partial correlation can be obtain by fitting a parametric or semi-parametric survival model using covariates of interest, and then computing correlation of the resulting PSRs. Conditional correlation can also be computed by first fitting a parametric or semi-parametric survival model, and then evaluating conditional moments that approximate conditional correlation of PSR.
+We also plan to focus on conditional and partial correlation of PSR for censored and current status data in order to test adjusted association of time to event and adjusted association of \emph{current status}. Partial correlation can be obtain by fitting a parametric or semi-parametric survival model using covariates of interest, and then computing correlation of the resulting PSRs. Conditional correlation can also be computed by first fitting a parametric or semi-parametric survival model, and then evaluating conditional moments that approximate conditional correlation of PSR.\\
 
 Another goal of our future work is to compare the performance of test based on covariance of PSR with the performance of test described in \cite{shih1996tests}. The authors suggested two test statistics based on the covariance process of the martingale residuals: a supremum of covariance and a weighted covariance. \cite{shepherd2016probability} have already established the connection between PSR and martingale residuals and have compared the performance of these two residuals when checking functional adequacy of model fit. In the future we are planning to compare the performance of PRS correlation with the performance of the statistics suggested by \cite{shih1996tests} using optimal and suboptimal weights and with varying fraction of censored data.
 
@@ -680,251 +684,254 @@ Note that when there is no censoring, there is no negative mass in point $(0.51,
 	$$
 
 
+\subsubsection{Code used for figures}
+{\tiny{
+\begin{verbatim}
+### simulate events at times S and T and censoring times C, D, and produce X,Y, delta,epsilon
+############################# figure out X-:
+xMinus = function(X){
+  sortedX = X
+  sortedX = c(0, sortedX[1:(length(X)-1)])
+  sortedX[order(order(X))]
+}
 
-% \begin{verbatim}
-% ### simulate events at times S and T and censoring times C, D, and produce X,Y, delta,epsilon
-% ############################# figure out X-:
-% xMinus = function(X){
-%   sortedX = X
-%   sortedX = c(0, sortedX[1:(length(X)-1)])
-%   sortedX[order(order(X))]
-% }
-%
-% set.seed(20160919)
-% subjNum = 100
-% simNum = 2000
-% data = matrix(NA, nrow=subjNum, ncol=8)
-% one = rep(NA, simNum)
-% two = rep(NA, simNum)
-% two1 = rep(NA, simNum)
-% colnames(data) = c("S", "C", "X", "delta", "T", "D", "Y", "epsilon")
-%
-% for (si in 1:simNum){
-%   ### first simulate zero correlation using exponential distribution
-%   ### unequal rate
-%   rates = c(3, 5, 4, 6)
-%   names(rates) = c("S", "T", "C", "D")
-%   for (ri in names(rates)){
-%     data[,ri] = rexp(n=subjNum, rate = rates[ri])
-%   }
-%
-%   data[,"delta"] = as.numeric(data[,"S"] <= data[,"C"])
-%   data[,"X"] = data[,"C"]
-%   data[,"X"][data[,"delta"] == 1] = data[,"S"][data[,"delta"]==1]
-%
-%   data[,"epsilon"] = as.numeric(data[,"T"] <= data[,"D"])
-%   data[,"Y"] = data[,"D"]
-%   data[,"Y"][data[,"epsilon"] == 1] = data[,"T"][data[,"epsilon"]==1]
-%
-%   # Fs <- ecdf(data[,"S"])
-%   # PSRsx = Fs(data[,"X"]) - data[,"delta"]*(1 - Fs(xMinus(data[,"X"])))
-%
-%   Fx <- ecdf(data[,"X"])
-%   PSRxx = Fx(data[,"X"]) - data[,"delta"]*(1 - Fx(xMinus(data[,"X"])))
-%   #PSRxx = Fx(data[,"X"]) - data[,"delta"]*(1 - Fx((data[,"X"])))
-%   Fy <- ecdf(data[,"Y"])
-%   PSRyy = Fy(data[,"Y"]) - data[,"epsilon"]*(1 - Fy(xMinus(data[,"Y"])))
-%   #PSRyy = Fy(data[,"Y"]) - data[,"epsilon"]*(1 - Fy((data[,"Y"])))
-%
-%   one[si] = cor(PSRxx, PSRyy)
-%   # spearman correlation assuming continuous outcome
-%   #two[si] = cor((Fx(data[,"X"]) + (1-data[,"delta"]))*(1+data[,"delta"])/2, (Fy(data[,"Y"]) + (1-data[,"epsilon"]))*(1+data[,"epsilon"])/2)
-%   # spearman correlation twicked for discrete censored outcome
-%   #two[si] = cor(Fx(data[,"X"]) + data[,"delta"]*Fx(xMinus(data[,"X"])) + 1-data[,"delta"]^2, Fy(data[,"Y"]) + data[,"epsilon"]*Fy(xMinus(data[,"Y"]))+1-data[,"epsilon"]^2)
-%
-%   ### The correct way of defining spearman as (F(x)+F(x-))/2 for discrete case:
-%   censoredPartX = 1+Fx(data[,"X"])
-%   censoredPartY = 1+Fy(data[,"Y"])
-%   censoredPartX[!is.finite(censoredPartX) | is.na(censoredPartX)] = 0
-%   censoredPartY[!is.finite(censoredPartY) | is.na(censoredPartY)] = 0
-%   two[si] = cor((data[,"delta"]/2)*(Fx(data[,"X"]) + Fx(xMinus(data[,"X"])))   +   ((1-data[,"delta"])/2) * censoredPartX,   (data[,"epsilon"]/2)*(Fy(data[,"Y"]) + Fy(xMinus(data[,"Y"])))   +   ((1-data[,"epsilon"])/2) * censoredPartY )
-% }
-%
-% plot(one, two, xlim=range(c(one, two)), ylim=range(c(one, two)), col="#55555533", pch=19, cex=.7)
-% abline(0, 1, col="#55555533")
-% cor(one, two)
-%
-% # plot(PSRsx, PSRxx)
-% # plot(PSRxx)
-%
-% # formally show PRS = what you have
-% # paper of Dabrowska and Prentice (and the book)
-% # try to get another definition of Spearman correlation
-%
-% ### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
-% ### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
-% ### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
-% ### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
-% library(survival)
-% kmdata = data.frame(Y1 = c(.51, .68, .11, .24), d1 = c(1, 1, 1, 0), Y2 = c(.02, .68, .62, .24), d2 = c(1, 1, 0, 0))
-% KM1 <- survfit( Surv(kmdata$Y1, kmdata$d1)~ 1)$surv
-% KM2 <- survfit( Surv(kmdata$Y2, kmdata$d2)~ 1)$surv
-% KM1
-% KM2
-%
-% X = c(rep(.11, 4), rep(.24, 4), rep(.51, 4), rep(.68, 4))
-% Y = c(rep(c(.02, .24, .62, .68), 4))
-% lam11 = c(rep(0, 8),   .5,   rep(0, 6),   1)
-% lam10 = c(c(.25, 1/3, 1/2, 1),    rep(0, 4),   0.5,   rep(1,7))
-% lam01 = c(.25, c(0, 0, 1),   1/3,   c(0, 0, 1),   .5,   c(0, 0, 1),   1,   c(0, 0, 1) )
-% numAtRisk = c(4,3,2,1,   3,2,1,1,   2,1,1,1,   1,1,1,1)
-% L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
-% bivarSurvEstData = data.frame(X=X, d1=NaN, Y=Y, d2=NaN, lam11=lam11, lam10=lam10, lam01=lam01, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L, numAtRisk = numAtRisk)
-% bivarSurvEstData[bivarSurvEstData$X == 0.51 & bivarSurvEstData$Y == 0.02, c("d1", "d2")] = c(1, 1)
-% bivarSurvEstData[bivarSurvEstData$X == 0.68 & bivarSurvEstData$Y == 0.68, c("d1", "d2")] = c(1, 1)
-% bivarSurvEstData[bivarSurvEstData$X == 0.11 & bivarSurvEstData$Y == 0.62, c("d1", "d2")] = c(1, 0)
-% bivarSurvEstData[bivarSurvEstData$X == 0.24 & bivarSurvEstData$Y == 0.24, c("d1", "d2")] = c(0, 0)
-%
-% ############## estimator at point (X,Y) = (.51, .02):
-% L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
-% L_24_02 = bivarSurvEstData$L[bivarSurvEstData$X == .24 & bivarSurvEstData$Y == .02]
-% L_51_02 = bivarSurvEstData$L[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-% KM1_51_02 = bivarSurvEstData$KM1[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-% KM2_51_02 = bivarSurvEstData$KM2[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
-%
-% BivarSurvEstimate_51_02 = KM1_51_02 * KM2_51_02 * (1-L_11_02) * (1-L_24_02) * (1-L_51_02)
-% BivarSurvEstimate_51_02
-%
-% BivarSurvEstimate_51_02 > KM1_51_02
-%
-% ############# plot of Dabrowska example:
-% ############# plot of Dabrowska example:
-% ############# plot of Dabrowska example:
-% ylim = range(c(X, Y))
-% cex = 0.7
-% par(mar=c(4, 4, 2, 2))
-% plot(ylim, ylim, type="n", axes=FALSE, xlab="T1", ylab="T2")
-% segments(x0=c(0, unique(X)), y0=0, y1 = range(Y)[2], lty=3, col="gray")
-% segments(x0=0, y0=c(0, unique(Y)), x1 = range(X)[2], lty=3, col="gray")
-% axis(side=1, at = unique(X), col = "gray", cex.axis=cex)
-% axis(side=2, at = unique(Y), col = "gray", cex.axis=cex)
-% koef = .06/sqrt(2)
-% segments(x0=c(.11, .24), y0=c(.62, .24), x1=c(.11, .24+koef), y1=c(.68, .24+koef))
-% points(unique(X), c(.62, .24, .02, .68), cex=1.2, pch=21, bg=c("orange", "orange", "red", "red"), col="black")
-% offset = 0.015
-% text(bivarSurvEstData$X-offset, bivarSurvEstData$Y-offset, bivarSurvEstData$numAtRisk, cex=cex)
-%
-%
-%
-% setwd("/Users/svetlanaeden/stuff/StatStuff/BRYAN/Simulations")
-% source("latextablezoo.R")
-%
-% tableData = bivarSurvEstData
-% for (ni in c("lam10", "lam01", "L")){
-%   tableData[[ni]] = round(tableData[[ni]], 4)
-% }
-% for (ni in c("d1", "d2", "L")){
-%   tableData[[ni]][is.na(tableData[[ni]])] = ""
-% }
-% tableData[["L"]][tableData["L"]==Inf] = "$\\infty$"
-% # pattern = rep(0, nrow(bivarSurvEstData))
-% # pattern[bivarSurvEstData$Y==0.02] = 1
-% pattern = rep("lightwhite", nrow(bivarSurvEstData))
-% pattern[tableData$Y==0.02 & tableData$X != .68] = "lightgray"
-% zebraTable(file="../dabrowskaExampTable.tex", caption = "Elements of Dabrowska's Bivariate Surface Estimator. The highlighted rows are the points used in the computation of the negative mass at: $(t_1,t_2) = (0.51, 0.02)$", fontSize="small", dataframe=tableData, zebraPattern="none", vars = c("numAtRisk", "X", "d1", "Y", "d2", "lam11", "lam10", "lam01", "KM1", "KM2", "L"), colNames = c("Number at risk", "$t_1$", "$\\delta_1$", "$t_2$", "$\\delta_2$", "$\\hat{\\Lambda}_{11}(\\Delta t_1, \\Delta t_2)$", "$\\hat{\\Lambda}_{10}(\\Delta t_1, t^-_2)$", "$\\hat{\\Lambda}_{01}(t^-_1, \\Delta t_2)$", "$\\hat{S}(t_1, 0)$", "$\\hat{S}(0, t_2)$", "$\\hat{L}$"), pattern = pattern, fixedColVars = c("numAtRisk"), fixedColWdths = c(33), marker = "dabrExTable", toLatexChar=FALSE)
-% #, by=names(dataframe)[1], orderGroups=FALSE, rightVars=c(), centerVars=c(), fixedColVars=c(), fixedColWdths=c(), toLatexChar=TRUE, pallet=NULL, pattern=NULL, marker=NULL, append=FALSE)
-%
-% ####################### Problem with bivariate survaval surface estimation
-% ####################### Problem with bivariate survaval surface estimation
-% ####################### Problem with bivariate survaval surface estimation
-%
-% ####################### kaplan-meier plots:
-% ####################### kaplan-meier plots:
-% pdf("kaplanMeierExplanation.pdf", width=7, height=2.5)
-% par(mfrow=c(1, 2), mar=c(3,4,2,2))
-%
-% x = c(.6, .8, 1.2, 1.5)
-% y = c(1, 2/3, 1/3, 0)
-% plot(c(0, max(x)), range(y), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
-% axis(1, c (0, x), labels=c("0", "A", "B", "C", ""), cex.axis = .7)
-% axis(2, y, labels=c("1", "2/3", "1/3", "0"), cex.axis = .7)
-% segments(x0=c(0, x), y0=c(y, 0), x1=x[c(1:4, 4)], y1=y[c(1:4, 4)])
-% segments(x0=x[1:3], y0=y[1:3], x1=x[1:3], y1=y[2:4], lty=3)
-% text(x[1:3], y[2:4], labels=rep("1/3", 3), cex=.5, pos=2)
-% #mtext("Time", 1, cex=.7, line=2)
-% points(x[1:3], y[1:3], pch=21, bg="white", col="black", cex=.7)
-% points(x[1:3], y[2:4], pch=21, bg="black", col="black", cex=.7)
-%
-% x1 = c(.8, 1.2, 1.5)
-% y1 = c(1, 1/2, 0)
-% plot(c(0, max(x)), range(y), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
-% # segments(x0=c(0, x), y0=c(y, 0), x1=x[c(1:4, 4)], y1=y[c(1:4, 4)], col="gray", lwd=3)
-% # segments(x0=x[1:3], y0=y[1:3], x1=x[1:3], y1=y[2:4], lty=3, col="gray", lwd=3)
-% # points(x[1:3], y[2:4], pch=21, bg="red", col="black", cex=.7)
-% axis(1, c (0, x), labels=c("0", "A", "B", "C", ""), cex.axis = .7)
-% axis(2, y1, labels=c("1", "1/2", "0"), cex.axis = .7)
-% lines(x=c(0, x), y=c(y, 0), type="s", col=gray(.9), lwd=4)
-% segments(x0=c(0, x1), y0=c(y1, 0), x1=x1[c(1:3, 3)], y1=y1[c(1:3, 3)])
-% segments(x0=x1[1:2], y0=y1[1:2], x1=x1[1:2], y1=y1[2:3], lty=3)
-% mtext("(censored)", side=1, at= x[1], cex=.7, line=1.6)
-% text(x1[1:2], y1[2:3], labels=rep("1/3 + 1/6 = 1/2", 2), cex=.5, pos=2)
-% points(x1[1:2], y1[1:2], pch=21, bg="white", col="black", cex=.7)
-% points(x1[1:2], y1[2:3], pch=21, bg="black", col="black", cex=.7)
-% dev.off()
-%
-% ####################### bivariate case:
-% ####################### bivariate case:
-% pdf("bivariateCase.pdf", width=7, height=3)
-% par(mfrow=c(1, 2), mar=c(3,4,2,2))
-%
-% x = c(.6, .8, 1.2, 1.5)
-% y = rep(.5, 4)
-% plot(c(0, max(x)), c(.3, .7), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
-% box(col="gray")
-% segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
-% segments(x0=x[1], y0=unique(y), x1=x[1] + .1, y1=unique(y))
-% points(x[1:3], y[2:4], pch=21, bg=c("yellow", "red", "red"), col="black")
-% mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
-% mtext("T2", 2, line=.5, cex=.7, at=.7, las=2)
-% text(x, y, c("A", "B", "C", ""), pos=3, cex=.7)
-% text(x, y, labels=c("", rep("1/3 + 1/6", 2), ""), cex=.5, pos=1)
-% #points(x[1:3], y[1:3], pch=21, bg="white", col="black", cex=.7)
-%
-% y2 = c(0.5, .35, .6, .5)
-% plot(c(0, max(x)), c(.3, .7), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
-% box(col="gray")
-% segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
-% segments(x0=x[1], y0=y2[1], x1=x[1] + .1, y1=y2[1])
-% points(x[1:3], y2[1:3], pch=21, bg=c("yellow", "red", "red"), col="black")
-% mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
-% mtext("T2", 2, line=.5, cex=.7, at=.7, las=2)
-% text(x, y2, c("A", "B", "C", ""), pos=3, cex=.7)
-% text(x, y2, labels=c("", rep("1/3 + ?", 2), ""), cex=.5, pos=4)
-% dev.off()
-%
-% ####################### bivariate case with strips:
-% ####################### bivariate case with strips:
-% pdf("bivariateCaseStrips.pdf", width=7, height=3)
-% par(mfrow=c(1, 2), mar=c(3,4,2,2))
-% x = c(.6, .8, 1.2, 1.5)
-% y2 = c(0.5, .35, .6, .5)
-% stripY = c(.33, .55, .77)
-%
-% plot(c(0, max(x)), c(.2, .8), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
-% box(col="gray")
-% abline(h=stripY, col="gray", lty=3)
-% segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
-% segments(x0=x[1], y0=y2[1], x1=x[1] + .1, y1=y2[1])
-% points(x[1:3], y2[1:3], pch=21, bg=c("yellow", "red", "red"), col="black")
-% mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
-% mtext("T2", 2, line=.5, cex=.7, at=.8, las=2)
-% text(x, y2, c("A", "B", "C", ""), pos=3, cex=.7)
-% text(x, y2, labels=c("", "1/3 + 1/3", "1/3", ""), cex=.5, pos=4)
-%
-% plot(c(0, max(x)), c(.2, .8), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
-% box(col="gray")
-% abline(h=stripY, col="gray", lty=3)
-% segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
-% segments(x0=x[1], y0=y2[1], x1=x[1] + .1, y1=y2[1])
-% points(x[2], y2[1], pch=21, bg=c("red"), col="black")
-% points(x[1:3], y2[1:3], pch=21, bg=c("yellow", "red", "red"), col="black")
-% mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
-% mtext("T2", 2, line=.5, cex=.7, at=.8, las=2)
-% text(x, y2, c("A", "B", "C", ""), pos=3, cex=.7)
-% text(x, y2, labels=c("", rep("1/3", 2), ""), cex=.5, pos=4)
-% text(x[c(2,2)], y2[c(1,1)], labels=c("A1", "1/3"), cex=c(.7, .5), pos=c(3,4))
-% dev.off()
-%   \end{verbatim}
+set.seed(20160919)
+subjNum = 100
+simNum = 2000
+data = matrix(NA, nrow=subjNum, ncol=8)
+one = rep(NA, simNum)
+two = rep(NA, simNum)
+two1 = rep(NA, simNum)
+colnames(data) = c("S", "C", "X", "delta", "T", "D", "Y", "epsilon")
+
+for (si in 1:simNum){
+  ### first simulate zero correlation using exponential distribution
+  ### unequal rate
+  rates = c(3, 5, 4, 6)
+  names(rates) = c("S", "T", "C", "D")
+  for (ri in names(rates)){
+    data[,ri] = rexp(n=subjNum, rate = rates[ri])
+  }
+
+  data[,"delta"] = as.numeric(data[,"S"] <= data[,"C"])
+  data[,"X"] = data[,"C"]
+  data[,"X"][data[,"delta"] == 1] = data[,"S"][data[,"delta"]==1]
+
+  data[,"epsilon"] = as.numeric(data[,"T"] <= data[,"D"])
+  data[,"Y"] = data[,"D"]
+  data[,"Y"][data[,"epsilon"] == 1] = data[,"T"][data[,"epsilon"]==1]
+
+  # Fs <- ecdf(data[,"S"])
+  # PSRsx = Fs(data[,"X"]) - data[,"delta"]*(1 - Fs(xMinus(data[,"X"])))
+
+  Fx <- ecdf(data[,"X"])
+  PSRxx = Fx(data[,"X"]) - data[,"delta"]*(1 - Fx(xMinus(data[,"X"])))
+  #PSRxx = Fx(data[,"X"]) - data[,"delta"]*(1 - Fx((data[,"X"])))
+  Fy <- ecdf(data[,"Y"])
+  PSRyy = Fy(data[,"Y"]) - data[,"epsilon"]*(1 - Fy(xMinus(data[,"Y"])))
+  #PSRyy = Fy(data[,"Y"]) - data[,"epsilon"]*(1 - Fy((data[,"Y"])))
+
+  one[si] = cor(PSRxx, PSRyy)
+  # spearman correlation assuming continuous outcome
+  #two[si] = cor((Fx(data[,"X"]) + (1-data[,"delta"]))*(1+data[,"delta"])/2, (Fy(data[,"Y"]) + (1-data[,"epsilon"]))*(1+data[,"epsilon"])/2)
+  # spearman correlation twicked for discrete censored outcome
+  #two[si] = cor(Fx(data[,"X"]) + data[,"delta"]*Fx(xMinus(data[,"X"])) + 1-data[,"delta"]^2, Fy(data[,"Y"]) + data[,"epsilon"]*Fy(xMinus(data[,"Y"]))+1-data[,"epsilon"]^2)
+
+  ### The correct way of defining spearman as (F(x)+F(x-))/2 for discrete case:
+  censoredPartX = 1+Fx(data[,"X"])
+  censoredPartY = 1+Fy(data[,"Y"])
+  censoredPartX[!is.finite(censoredPartX) | is.na(censoredPartX)] = 0
+  censoredPartY[!is.finite(censoredPartY) | is.na(censoredPartY)] = 0
+  two[si] = cor((data[,"delta"]/2)*(Fx(data[,"X"]) + Fx(xMinus(data[,"X"])))   +   ((1-data[,"delta"])/2) * censoredPartX,   (data[,"epsilon"]/2)*(Fy(data[,"Y"]) + Fy(xMinus(data[,"Y"])))   +   ((1-data[,"epsilon"])/2) * censoredPartY )
+}
+
+plot(one, two, xlim=range(c(one, two)), ylim=range(c(one, two)), col="#55555533", pch=19, cex=.7)
+abline(0, 1, col="#55555533")
+cor(one, two)
+
+# plot(PSRsx, PSRxx)
+# plot(PSRxx)
+
+# formally show PRS = what you have
+# paper of Dabrowska and Prentice (and the book)
+# try to get another definition of Spearman correlation
+
+### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
+### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
+### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
+### Example from Dabrowska, 1988, Kaplan-Meier estimate of the plane
+library(survival)
+kmdata = data.frame(Y1 = c(.51, .68, .11, .24), d1 = c(1, 1, 1, 0), Y2 = c(.02, .68, .62, .24), d2 = c(1, 1, 0, 0))
+KM1 <- survfit( Surv(kmdata$Y1, kmdata$d1)~ 1)$surv
+KM2 <- survfit( Surv(kmdata$Y2, kmdata$d2)~ 1)$surv
+KM1
+KM2
+
+X = c(rep(.11, 4), rep(.24, 4), rep(.51, 4), rep(.68, 4))
+Y = c(rep(c(.02, .24, .62, .68), 4))
+lam11 = c(rep(0, 8),   .5,   rep(0, 6),   1)
+lam10 = c(c(.25, 1/3, 1/2, 0),    rep(0, 4),   0.5,   rep(0,3),   rep(1,4))
+lam01 = c(.25, c(0, 0, 1),   1/3,   c(0, 0, 1),   .5,   c(0, 0, 1),   c(0, 0, 0, 1) )
+numAtRisk = c(4,3,2,1,   3,2,1,1,   2,1,1,1,   1,1,1,1)
+L = (lam10*lam01 - lam11)/((1 - lam10)*(1 - lam01))
+bivarSurvEstData = data.frame(X=X, d1=NaN, Y=Y, d2=NaN, lam11=lam11, lam10=lam10, lam01=lam01, KM1=rep(KM1, each=4), KM2 = rep(KM2, 4), L=L, numAtRisk = numAtRisk)
+bivarSurvEstData[bivarSurvEstData$X == 0.51 & bivarSurvEstData$Y == 0.02, c("d1", "d2")] = c(1, 1)
+bivarSurvEstData[bivarSurvEstData$X == 0.68 & bivarSurvEstData$Y == 0.68, c("d1", "d2")] = c(1, 1)
+bivarSurvEstData[bivarSurvEstData$X == 0.11 & bivarSurvEstData$Y == 0.62, c("d1", "d2")] = c(1, 0)
+bivarSurvEstData[bivarSurvEstData$X == 0.24 & bivarSurvEstData$Y == 0.24, c("d1", "d2")] = c(0, 0)
+
+############## estimator at point (X,Y) = (.51, .02):
+L_11_02 = bivarSurvEstData$L[bivarSurvEstData$X == .11 & bivarSurvEstData$Y == .02]
+L_24_02 = bivarSurvEstData$L[bivarSurvEstData$X == .24 & bivarSurvEstData$Y == .02]
+L_51_02 = bivarSurvEstData$L[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+KM1_51_02 = bivarSurvEstData$KM1[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+KM2_51_02 = bivarSurvEstData$KM2[bivarSurvEstData$X == .51 & bivarSurvEstData$Y == .02]
+
+BivarSurvEstimate_51_02 = KM1_51_02 * KM2_51_02 * (1-L_11_02) * (1-L_24_02) * (1-L_51_02)
+BivarSurvEstimate_51_02
+
+BivarSurvEstimate_51_02 > KM1_51_02
+
+############# plot of Dabrowska example:
+############# plot of Dabrowska example:
+############# plot of Dabrowska example:
+pdf("figure1.pdf", width=6, height=6)
+  ylim = range(c(X, Y))
+  cex = 0.7
+  par(mar=c(4, 4, 2, 2))
+  plot(ylim, ylim, type="n", axes=FALSE, xlab="T1", ylab="T2")
+  segments(x0=c(0, unique(X)), y0=0, y1 = range(Y)[2], lty=3, col="gray")
+  segments(x0=0, y0=c(0, unique(Y)), x1 = range(X)[2], lty=3, col="gray")
+  axis(side=1, at = unique(X), col = "gray", cex.axis=cex)
+  axis(side=2, at = unique(Y), col = "gray", cex.axis=cex)
+  koef = .06/sqrt(2)
+  segments(x0=c(.11, .24), y0=c(.62, .24), x1=c(.11, .24+koef), y1=c(.68, .24+koef))
+  points(unique(X), c(.62, .24, .02, .68), cex=1.2, pch=21, bg=c("orange", "orange", "red", "red"), col="black")
+  offset = 0.015
+  text(bivarSurvEstData$X-offset, bivarSurvEstData$Y-offset, bivarSurvEstData$numAtRisk, cex=cex)
+dev.off()
+
+
+setwd("/Users/svetlanaeden/stuff/StatStuff/BRYAN/Simulations")
+source("latextablezoo.R")
+
+tableData = bivarSurvEstData
+for (ni in c("lam10", "lam01", "L")){
+  tableData[[ni]] = round(tableData[[ni]], 4)
+}
+for (ni in c("d1", "d2", "L")){
+  tableData[[ni]][is.na(tableData[[ni]])] = ""
+}
+tableData[["L"]][tableData["L"]==Inf] = "$\\infty$"
+# pattern = rep(0, nrow(bivarSurvEstData))
+# pattern[bivarSurvEstData$Y==0.02] = 1
+pattern = rep("lightwhite", nrow(bivarSurvEstData))
+pattern[tableData$Y==0.02 & tableData$X != .68] = "lightgray"
+zebraTable(file="../dabrowskaExampTable.tex", caption = "Elements of Dabrowska's Bivariate Surface Estimator. The highlighted rows are the points used in the computation of the negative mass at: $(t_1,t_2) = (0.51, 0.02)$", fontSize="small", dataframe=tableData, zebraPattern="none", vars = c("numAtRisk", "X", "d1", "Y", "d2", "lam11", "lam10", "lam01", "KM1", "KM2", "L"), colNames = c("Number at risk", "$t_1$", "$\\delta_1$", "$t_2$", "$\\delta_2$", "$\\hat{\\Lambda}_{11}(\\Delta t_1, \\Delta t_2)$", "$\\hat{\\Lambda}_{10}(\\Delta t_1, t^-_2)$", "$\\hat{\\Lambda}_{01}(t^-_1, \\Delta t_2)$", "$\\hat{S}(t_1, 0)$", "$\\hat{S}(0, t_2)$", "$\\hat{L}$"), pattern = pattern, fixedColVars = c("numAtRisk"), fixedColWdths = c(33), marker = "dabrExTable", toLatexChar=FALSE)
+#, by=names(dataframe)[1], orderGroups=FALSE, rightVars=c(), centerVars=c(), fixedColVars=c(), fixedColWdths=c(), toLatexChar=TRUE, pallet=NULL, pattern=NULL, marker=NULL, append=FALSE)
+
+####################### Problem with bivariate survaval surface estimation
+####################### Problem with bivariate survaval surface estimation
+####################### Problem with bivariate survaval surface estimation
+
+####################### kaplan-meier plots:
+####################### kaplan-meier plots:
+pdf("kaplanMeierExplanation.pdf", width=7, height=2.5)
+par(mfrow=c(1, 2), mar=c(3,4,2,2))
+
+x = c(.6, .8, 1.2, 1.5)
+y = c(1, 2/3, 1/3, 0)
+plot(c(0, max(x)), range(y), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
+axis(1, c (0, x), labels=c("0", "A", "B", "C", ""), cex.axis = .7)
+axis(2, y, labels=c("1", "2/3", "1/3", "0"), cex.axis = .7)
+segments(x0=c(0, x), y0=c(y, 0), x1=x[c(1:4, 4)], y1=y[c(1:4, 4)])
+segments(x0=x[1:3], y0=y[1:3], x1=x[1:3], y1=y[2:4], lty=3)
+text(x[1:3], y[2:4], labels=rep("1/3", 3), cex=.5, pos=2)
+#mtext("Time", 1, cex=.7, line=2)
+points(x[1:3], y[1:3], pch=21, bg="white", col="black", cex=.7)
+points(x[1:3], y[2:4], pch=21, bg="black", col="black", cex=.7)
+
+x1 = c(.8, 1.2, 1.5)
+y1 = c(1, 1/2, 0)
+plot(c(0, max(x)), range(y), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
+# segments(x0=c(0, x), y0=c(y, 0), x1=x[c(1:4, 4)], y1=y[c(1:4, 4)], col="gray", lwd=3)
+# segments(x0=x[1:3], y0=y[1:3], x1=x[1:3], y1=y[2:4], lty=3, col="gray", lwd=3)
+# points(x[1:3], y[2:4], pch=21, bg="red", col="black", cex=.7)
+axis(1, c (0, x), labels=c("0", "A", "B", "C", ""), cex.axis = .7)
+axis(2, y1, labels=c("1", "1/2", "0"), cex.axis = .7)
+lines(x=c(0, x), y=c(y, 0), type="s", col=gray(.9), lwd=4)
+segments(x0=c(0, x1), y0=c(y1, 0), x1=x1[c(1:3, 3)], y1=y1[c(1:3, 3)])
+segments(x0=x1[1:2], y0=y1[1:2], x1=x1[1:2], y1=y1[2:3], lty=3)
+mtext("(censored)", side=1, at= x[1], cex=.7, line=1.6)
+text(x1[1:2], y1[2:3], labels=rep("1/3 + 1/6 = 1/2", 2), cex=.5, pos=2)
+points(x1[1:2], y1[1:2], pch=21, bg="white", col="black", cex=.7)
+points(x1[1:2], y1[2:3], pch=21, bg="black", col="black", cex=.7)
+dev.off()
+
+####################### bivariate case:
+####################### bivariate case:
+pdf("bivariateCase.pdf", width=7, height=3)
+par(mfrow=c(1, 2), mar=c(3,4,2,2))
+
+x = c(.6, .8, 1.2, 1.5)
+y = rep(.5, 4)
+plot(c(0, max(x)), c(.3, .7), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
+box(col="gray")
+segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
+segments(x0=x[1], y0=unique(y), x1=x[1] + .1, y1=unique(y))
+points(x[1:3], y[2:4], pch=21, bg=c("yellow", "red", "red"), col="black")
+mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
+mtext("T2", 2, line=.5, cex=.7, at=.7, las=2)
+text(x, y, c("A", "B", "C", ""), pos=3, cex=.7)
+text(x, y, labels=c("", rep("1/3 + 1/6", 2), ""), cex=.5, pos=1)
+#points(x[1:3], y[1:3], pch=21, bg="white", col="black", cex=.7)
+
+y2 = c(0.5, .35, .6, .5)
+plot(c(0, max(x)), c(.3, .7), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
+box(col="gray")
+segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
+segments(x0=x[1], y0=y2[1], x1=x[1] + .1, y1=y2[1])
+points(x[1:3], y2[1:3], pch=21, bg=c("yellow", "red", "red"), col="black")
+mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
+mtext("T2", 2, line=.5, cex=.7, at=.7, las=2)
+text(x, y2, c("A", "B", "C", ""), pos=3, cex=.7)
+text(x, y2, labels=c("", rep("1/3 + ?", 2), ""), cex=.5, pos=4)
+dev.off()
+
+####################### bivariate case with strips:
+####################### bivariate case with strips:
+pdf("bivariateCaseStrips.pdf", width=7, height=3)
+par(mfrow=c(1, 2), mar=c(3,4,2,2))
+x = c(.6, .8, 1.2, 1.5)
+y2 = c(0.5, .35, .6, .5)
+stripY = c(.33, .55, .77)
+
+plot(c(0, max(x)), c(.2, .8), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
+box(col="gray")
+abline(h=stripY, col="gray", lty=3)
+segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
+segments(x0=x[1], y0=y2[1], x1=x[1] + .1, y1=y2[1])
+points(x[1:3], y2[1:3], pch=21, bg=c("yellow", "red", "red"), col="black")
+mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
+mtext("T2", 2, line=.5, cex=.7, at=.8, las=2)
+text(x, y2, c("A", "B", "C", ""), pos=3, cex=.7)
+text(x, y2, labels=c("", "1/3 + 1/3", "1/3", ""), cex=.5, pos=4)
+
+plot(c(0, max(x)), c(.2, .8), type="n", xlab="", ylab="", cex=.5, axes = FALSE)
+box(col="gray")
+abline(h=stripY, col="gray", lty=3)
+segments(x0=x[1], y0=y2[1], x1=x[1] + 10, y1=y2[1], col="gray")
+segments(x0=x[1], y0=y2[1], x1=x[1] + .1, y1=y2[1])
+points(x[2], y2[1], pch=21, bg=c("red"), col="black")
+points(x[1:3], y2[1:3], pch=21, bg=c("yellow", "red", "red"), col="black")
+mtext(c("0", "T1"), 1, line=.2, cex=.7, at=c(-.15, x[length(x)]))
+mtext("T2", 2, line=.5, cex=.7, at=.8, las=2)
+text(x, y2, c("A", "B", "C", ""), pos=3, cex=.7)
+text(x, y2, labels=c("", rep("1/3", 2), ""), cex=.5, pos=4)
+text(x[c(2,2)], y2[c(1,1)], labels=c("A1", "1/3"), cex=c(.7, .5), pos=c(3,4))
+dev.off()
+  \end{verbatim}
+  }}
 
 
 \end{document}          

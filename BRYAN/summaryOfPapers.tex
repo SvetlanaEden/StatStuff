@@ -552,7 +552,7 @@ Where
 	$$
 
 \section{Simulation of Survival Data}
-\subsection{Simulation of Gumbel distribution using copulas}
+\subsection{Simulation of bivariate Gumbel distribution using copulas}
 Here we use a method described in the book of \cite{nelsen2007introduction}. The method utilizes \emph{copulas} in order to simulate bivariate data. We describe this method using example of \emph{Gumbel} distribution (p.23):
 	$$
 	\begin{aligned}
@@ -606,6 +606,26 @@ We next simulate independently $(t_1, t_2, ..., )$, and $(u_1, u_2, ...)$, which
   \end{aligned}
   $$
 and get a value of $v=v_i$. Then we use the quasi-inverses $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$ in order to back transform $u_i$ and $v_i$ into $x_i$ and $y_i$: $x_i = -ln (1-u_i)$ and $y_i = -ln (1-v_i)$.
+
+\subsection{Figuring out \emph{Spearman's} correlation of bivariate Gumbel distribution}
+According to \cite{nelsen2007introduction}, for continuous distributions, \emph{Spearman's} correlation can be expressed through \emph{copula} as:
+	$$
+	\begin{aligned}
+		 \rho_S = 12{\int\int}_{I^2}C(u, v)dudv - 3
+	\end{aligned}
+	$$
+  
+Therefore, for Gumbel distribution we have:
+	$$
+	\begin{aligned}
+		 \rho_S &= 12\int\int_{I^2}\left[ u+v-1+(1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} \right]dudv - 3 =\\
+     &= 12\int\int_{I^2}\left[ u+v-1 \right]dudv +  12\int\int_{I^2} (1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} dudv - 3\\
+     &= 12\int_0^1\left[ \frac{1}{2} + (v-1) \right]dv -  12\int_0^1(1-v)\int_0^1 (1-u)^{-\theta ln(1-v) + 1} d(1-u)dv - 3 = \\
+     &= 0  - 12\int_0^1(1-v)  \left[ \left. \frac{(1-u)^{-\theta ln(1-v) + 2}}{-\theta ln(1-v) + 2}\right|_0^1 \right]  dv - 3 = \\
+     &= 12\int_0^1\frac{1-v}{-\theta ln(1-v) + 2}  dv - 3
+	\end{aligned}
+	$$
+As far as I know, the integral above is \emph{non-elementary} and cannot be expressed algebraically, therefore, in order to find it, we can use numeric integration, for example R-function \texttt{integrate($\cdot$)}. We keep in mind that according to \cite{nelsen2007introduction}, $0 \leq \theta \leq 1$.
 
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
@@ -1460,7 +1480,7 @@ In this section we are trying to understand how to compute variance of PSR corre
     PSR_{Y_{i}}(\pmb{\theta}_Y) -\theta_2 \\
     PSR_{X_{i}}(\pmb{\theta}_X) \cdot PSR_{Y_i}(\pmb{\theta}_Y) -\theta_3 \\
     (PSR_{X_{i}}(\pmb{\theta}_X))^2 -\theta_4 \\
-    (PSR_{Y_{i}}(\pmb{\theta}_Y))^2 -\theta_1 \\
+    (PSR_{Y_{i}}(\pmb{\theta}_Y))^2 -\theta_5 \\
     \frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_5 - \theta_2^2}} - \theta_6
 \end{bmatrix}
 \]
@@ -1547,31 +1567,45 @@ Note that $\frac{\partial \rho_S}{\partial \theta_6} = -1$
 \]
 
 \subsection{M-estimation in case of normal distribution}
-Let's figure out $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{Y, 7,2}$, for normally distributed $Y$'s (the corresponding matrices for $X$, $\pmb{A}_{X,1,1}$, $\pmb{A}_{X, 3,1}$, $\pmb{A}_{X,5,1}$, $\pmb{A}_{X, 6,1}$, can be found in a similar manner). For linear regression $Y\sim Z$, the score equations are obtained straight from the likelihood and for $\pmb{\theta} = (\beta_0, \beta_1, \beta_2)$, for example, they are:
-	$$
-	\begin{aligned}
-		&y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2}=0\\
-		&z_{1i}(y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})=0\\
-		&z_{2i}(y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})=0\\
-		&-\sigma^2 + (y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})^2=0\\
- 	\end{aligned}
-	$$
+Let's figure out $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{Y, 7,2}$, for normally distributed $Y$'s (the corresponding matrices for $X$, $\pmb{A}_{X,1,1}$, $\pmb{A}_{X, 3,1}$, $\pmb{A}_{X,5,1}$, $\pmb{A}_{X, 6,1}$, can be found in a similar manner). For linear regression $Y\sim Z$, the score equations, $\psi_Y$, are obtained straight from the likelihood. Let's denote $\pmb{res}=\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y$, then for $\pmb{\theta} = (\beta_0, \beta_1, \beta_2)$, for example, we have:
+\[
+\pmb{\psi}_{Y_i} = 
+	\begin{bmatrix}
+		y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2}\\
+		z_{1i}(y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})\\
+		z_{2i}(y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})\\
+		-\sigma^2 + (y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})^2\\
+ 	\end{bmatrix} = 
+	\begin{bmatrix}
+		res\\
+		z_{1i}res\\
+		z_{2i}res\\
+		-\sigma^2 + res^2\\
+ 	\end{bmatrix} = 
+\]
+
 Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$:  
 
 \[
 \pmb{A}_{Y,2,2} = \frac{1}{n}\sum_i^n\begin{bmatrix}
-    1   &  z_{i1}   & z_{i2}  &  0\\
-    z_{i1}   &  z_{i1}^2   & z_{i1}z_{i2}  &  0 \\
-    z_{i2}   &  z_{i1}z_{i2}   & z_{i2}^2  &  0 \\
+    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_0} \right)^T \\
+    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_1} \right)^T \\
+    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_2} \right)^T \\
+    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial (\sigma^2)} \right)^T \\
+\end{bmatrix}
+ = \frac{1}{n}\sum_i^n\begin{bmatrix}
+    1   &  z_{i1}   & z_{i2}  &  2 \cdot res_i\\
+    z_{i1}   &  z_{i1}^2   & z_{i1}z_{i2}  &  2 \cdot res_iz_{i1} \\
+    z_{i2}   &  z_{i1}z_{i2}   & z_{i2}^2  &  2 \cdot res_iz_{i2}  \\
     2 \cdot res_i   & 2 \cdot res_iz_{i1}   & 2 \cdot res_iz_{i2}  &  1 \\
 \end{bmatrix}=\frac{1}{n}
 \begin{bmatrix}
-  \pmb{Z}^T\pmb{Z} & \pmb{0}\\
+  \pmb{Z}^T\pmb{Z} & 2 \cdot \pmb{Z}^T \pmb{res}\\
   2 \cdot \pmb{res}^T\pmb{Z} & 1\\
   \end{bmatrix}
 \]
 
-Where $\pmb{res}=\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y$. Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
+Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
   $$
   \begin{aligned}
     PSR_Y(\pmb{\theta}_Y) = 2F_{\pmb{\theta}_Y}(\pmb{Y}) - 1 = 2 \Phi\left(\frac{\pmb{Y} - \pmb{Z}\pmb{\theta}_Y}{\sigma}\right) - 1
@@ -1602,8 +1636,6 @@ Or
 \end{bmatrix}
 \]
 $A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we have:
-
-
 
 %%%%%%%%%%% A_{Y,2,2}
 \[
@@ -1644,6 +1676,7 @@ In this section we are trying to understand how Qi is computing \emph{p-value} f
 
 
 \printbibliography
+
 
 \end{document}          
 
