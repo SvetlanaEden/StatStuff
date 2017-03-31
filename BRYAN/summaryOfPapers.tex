@@ -1566,8 +1566,14 @@ Note that $\frac{\partial \rho_S}{\partial \theta_6} = -1$
 \end{bmatrix}
 \]
 
-\subsection{M-estimation in case of normal distribution}
-Let's figure out $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{Y, 7,2}$, for normally distributed $Y$'s (the corresponding matrices for $X$, $\pmb{A}_{X,1,1}$, $\pmb{A}_{X, 3,1}$, $\pmb{A}_{X,5,1}$, $\pmb{A}_{X, 6,1}$, can be found in a similar manner). For linear regression $Y\sim Z$, the score equations, $\psi_Y$, are obtained straight from the likelihood. Let's denote $\pmb{res}=\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y$, then for $\pmb{\theta} = (\beta_0, \beta_1, \beta_2)$, for example, we have:
+\subsection{M-estimation in case of normal distribution and its implementation using Qi's code.}
+In this section, we refer to two functions in Qi's code: \texttt{corTS()} and \texttt{lm.scores()}. Function  \texttt{corTS()} takes score equations and computes partial correlation. The mapping from the above notations to its parameters is the following:\\
+\texttt{yresid} and \texttt{yresid} are $PSR_X$ $PSR_Y$.\\
+\texttt{xz.dl.dtheta} and \texttt{yz.dl.dtheta} are $\pmb{\psi}_{X}$ and $\pmb{\psi}_{Y}$.\\
+\texttt{xz.d2l.dtheta.dtheta} and \texttt{yz.d2l.dtheta.dtheta} are $A_{X,1,1}$ and $A_{Y,2,2}$.\\
+\texttt{dxresid.dthetax} and \texttt{dxresid.dthetax} are $\frac{PSR_X}{\partial \pmb{\theta}_X}$ and $\frac{PSR_Y}{\partial \pmb{\theta}_Y}$\\
+
+The above is all that is needed for M-estimation. Now we consider linear regression as an example and map our notations to Qi's function \texttt{lm.scores()} return variables. Let's figure out $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{Y, 7,2}$, for normally distributed $Y$'s (the corresponding matrices for $X$, $\pmb{A}_{X,1,1}$, $\pmb{A}_{X, 3,1}$, $\pmb{A}_{X,5,1}$, $\pmb{A}_{X, 6,1}$, can be found in a similar manner). For linear regression $Y\sim Z$, the score equations, $\psi_Y$, are obtained straight from the likelihood. Let's denote $\pmb{res}_i=\pmb{Y}_i - \pmb{Z}_i\pmb{\theta}_Y$, then for $\pmb{\theta} = (\beta_0, \beta_1, \beta_2)$, for example, we have:
 \[
 \pmb{\psi}_{Y_i} = 
 	\begin{bmatrix}
@@ -1577,12 +1583,24 @@ Let's figure out $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb
 		-\sigma^2 + (y_i - \beta_0 - \beta_1z_{i1} - \beta_2z_{i2})^2\\
  	\end{bmatrix} = 
 	\begin{bmatrix}
-		res\\
-		z_{1i}res\\
-		z_{2i}res\\
-		-\sigma^2 + res^2\\
- 	\end{bmatrix} = 
+		res_i\\
+		z_{1i}res_i\\
+		z_{2i}res_i\\
+		-\sigma^2 + res_i^2\\
+ 	\end{bmatrix} 
 \]
+In order to find $B_n$ using matrix multipliction, we actually have:
+\[
+\pmb{\psi}_{Y} = 
+	\begin{bmatrix}
+		res_1 & res_2 & ... & res_N\\
+		z_{11}res_1 & z_{12}res_1 & ... & z_{1N}res_N\\
+		z_{21}res_1 & z_{22}res_1 & ... & z_{2N}res_N\\
+		-\sigma^2 + res_1^2 & -\sigma^2 + res_2^2 & ... & -\sigma^2 + res_N^2\\
+ 	\end{bmatrix} 
+\]
+
+I think Qi was not including the derivative by $\sigma^2$, and her $\pmb{\psi}_{Y}$ is transposed, probably because she solves matrixes in a little bit different way. With this in mind, we map (somewhat loosely) the return variable \texttt{dl.dtheta} to $\pmb{\psi}_{Y}$.\\
 
 Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$:  
 
@@ -1605,34 +1623,39 @@ Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$:
   \end{bmatrix}
 \]
 
-Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
+Because Qi was not including the derivative by $\sigma^2$, the return variable \texttt{d2l.dtheta.dtheta} can be mappedt to  $\pmb{Z}^T\pmb{Z}$, or $\pmb{A}_{X,1,1}$ ($\pmb{A}_{Y,2,2}$), again loosely.\\
+I am not sure why the function returns variable \texttt{resid} (linear regression residuals $Y_i - \pmb{Z}_i\pmb{\theta}_Y$), but I haven't learned the code well yet.\\
+
+In Qi's notations, return variable \texttt{presid} is $PSR_X$ (or $PSR_Y$). Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
   $$
   \begin{aligned}
     PSR_Y(\pmb{\theta}_Y) = 2F_{\pmb{\theta}_Y}(\pmb{Y}) - 1 = 2 \Phi\left(\frac{\pmb{Y} - \pmb{Z}\pmb{\theta}_Y}{\sigma}\right) - 1
   \end{aligned}
   $$
-Where $F_{\pmb{\theta}_Y}(\cdot)$ is a \emph{cdf} of $Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$ and $\Phi(\cdot)$ is a \emph{cdf} of a standard normal, $Normal(\pmb{0}, 1)$. In order to find $\pmb{A}_{Y, 4,2}$, we have to find  $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_0}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_1}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_2}$, and $ \frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \sigma}$:
+Where $F_{\pmb{\theta}_Y}(\cdot)$ is a \emph{cdf} of $Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$ and $\Phi(\cdot)$ is a \emph{cdf} of a standard normal, $Normal(\pmb{0}, 1)$.\\
+
+In order to find $\pmb{A}_{Y, 4,2}$, we have to find  $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_0}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_1}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_2}$, and $ \frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \sigma}$. In Qi's notations, they are mapped to return variable \texttt{dpresid.dtheta}:
 
   $$
   \begin{aligned}
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_0} &= -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{1}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_1} &= -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,1}}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_2} &= -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,2}}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \sigma} &= +2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma^2}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_0} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{1}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_1} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,1}}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_2} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,2}}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \sigma} &= +2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{res_{Y_i}}{\sigma^2}\\
   \end{aligned}
   $$
 
-Therefore:
+But without the last line. The remaining work is done by function \texttt{corTS()}, that I mentioned before. But, for the sake of completeness, we'll continue:
 \[
 \pmb{A}_{Y,4,2} = \frac{1}{n}\sum_i^n\begin{bmatrix}
-   2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{1}{\sigma}   &  2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,1}}{\sigma}   & 2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{z_{i,2}}{\sigma}  &  -2f\left(\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma}\right)\frac{Y_i - \pmb{Z}_i\pmb{\theta}_Y}{\sigma^2}\\
+   2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{1}{\sigma}   &  2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,1}}{\sigma}   & 2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,2}}{\sigma}  &  -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{res_{Y_i}}{\sigma^2}\\
 \end{bmatrix}\]
 
 Or
 \[
 \pmb{A}_{Y,4,2} = \frac{2}{n\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \frac{\pmb{res}}{\sigma} \\
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \frac{\pmb{res}_Y}{\sigma} \\
 \end{bmatrix}
 \]
 $A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we have:
@@ -1642,32 +1665,32 @@ $A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we ha
 \pmb{A}_{Y,2,2} = \frac{1}{n}
 \begin{bmatrix}
   \pmb{Z}^T\pmb{Z} & \pmb{0}\\
-  2 \cdot \pmb{res}^T\pmb{Z} & 1\\
+  2 \cdot \pmb{res}_Y^T\pmb{Z} & 1\\
   \end{bmatrix}
 \]
 %%%%%%%%%%% A_{Y,4,2}
 \[
 \pmb{A}_{Y,4,2} = \frac{2}{n\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\right]^T \frac{\pmb{res}}{\sigma} \\
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \frac{\pmb{res}_Y}{\sigma} \\
 \end{bmatrix}
 \]
 %%%%%%%%%%% A_{Y,5,2}
 \[
 \pmb{A}_{Y,5,2} = \frac{2}{n\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_X\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_X\right]^T \frac{\pmb{res}}{\sigma} \\
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_X\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_X\right]^T \frac{\pmb{res}_Y}{\sigma} \\
 \end{bmatrix}
 \]
 %%%%%%%%%%% A_{Y,7,2}
 \[
 \pmb{A}_{Y,7,2} = \frac{4}{n\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_Y\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}}{\sigma}\right)\pmb{PSR}_Y\right]^T \frac{\pmb{res}}{\sigma} \\
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_Y\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_Y\right]^T \frac{\pmb{res}_Y}{\sigma} \\
 \end{bmatrix}
 \]
 
-\subsubsection{M-estimation in case of normal distribution, Qi's approach}
+\subsubsection{M-estimation for partial and conditional correlation}
 Another way of approaching this problem was suggested by \cite{lui2015covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.
 
 
