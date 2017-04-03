@@ -1326,24 +1326,36 @@ Here we explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can b
 	$$
 For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12})$ to $(X_{1},Y_{1})$ and $(X_{2},Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution (\emph{pdf}) for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$. We will do this using a trick. We'll first find $S(x, y)$ for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ and then we will use the relationship: $f(x,y) = \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y}$
   
-  % $$
-  % \begin{aligned}
-  %   P\{ X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} = &P\{ X_{1} \geq x, X_{2} = x, Y_{1}\geq y, Y_{2} = y \} + \\
-  %     &+ P\{ X_{1} \geq x, X_{2} = x, Y_{1}= y, Y_{2} = \geq y \} + \\
-  %     &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}= y, Y_{2} \geq y \} + \\
-  %     &+ P\{ X_{1} = x, X_{2} \geq x, Y_{1}\geq y, Y_{2} = y \} =\\
-  %      = &P\{ X_1 \geq x, Y_1 \geq y, X_2 = x, Y_2 = x\} + P\{ X_1 \geq x, Y_1 = y, X_2 = x, Y_2 \geq x\} +\\
-  %     &+ P\{ X_1 = x, Y_1 \geq y, X_2 \geq x, Y_2 = x\}+ P\{ X_1 = x, Y_1 = y, X_2 \geq x, Y_2 \geq x\} = \\
-  %     = &S(x^-,y^-)f(x, y) + \frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} + \frac{\partial S(x,y^-)}{\partial x}\frac{\partial S(x^-,y)}{\partial y} + f(x, y)S(x^-,y^-) = \\
-  %      = &2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x}
-  % \end{aligned}
-  % $$
-  
-	$$
-	\begin{aligned}
-		S_{min(X_1, X_2),min(Y_1, Y_2)}(x, y) &= P\{ X_{1}\wedge X_{2} > x,~Y_{1}\wedge Y_{2} > y \} = P\{ X_{1} > x, X_{2} > x, Y_{1}> y, Y_{2} > y \} =\\
-    &= P\{ X_{1} > x, Y_{2} > y, X_{2} > x, Y_{1}> y\} = P\{ X_{1} > x, Y_{2} > y \}  \cdot P\{X_{2} > x, Y_{1}> y\}  =\\
-    &= S^2(x, y)\\
+  $$
+  \begin{aligned}
+    P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} =\\
+     &=P\{ X_{1} > x, X_{2} = x, Y_{1} > y, Y_{2} = y \}
+      + P\{ X_{1} > x, X_{2} = x, Y_{1}= y, Y_{2} = y \}
+        + P\{ X_{1} > x, X_{2} = x, Y_{1}= y, Y_{2} > y \} + \\
+     &+P\{ X_{1} = x, X_{2} = x, Y_{1} > y, Y_{2} = y \}
+      + P\{ X_{1} = x, X_{2} = x, Y_{1}= y, Y_{2} = y \}
+        + P\{ X_{1} = x, X_{2} = x, Y_{1}= y, Y_{2} > y \} + \\
+     &+P\{ X_{1} = x, X_{2} > x, Y_{1} > y, Y_{2} = y \}
+      + P\{ X_{1} = x, X_{2} > x, Y_{1}= y, Y_{2} = y \}
+        + P\{ X_{1} = x, X_{2} > x, Y_{1}= y, Y_{2} > y \} =\\
+  \end{aligned}
+  $$
+Because $(X_{1}, Y_{1}) \perp (X_{2}, Y_{2})$ we have:
+  $$
+  \begin{aligned}
+P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} 
+      = S(x,y)S(dx, dy) +  S(x,dy)S(dx, dy) + S(x,dy)S(dx, y) + \\
+      &+ S(dx,y)S(dx, dy) +  S(dx,dy)S(dx, dy) + S(dx,dy)S(dx, y) + \\
+      &+ S(dx,y)S(x, dy) +  S(dx,dy)S(x, dy) + S(dx,dy)S(x, y) = \\
+      &= 2S(x,y)S(dx, dy) +  2S(x,dy)S(dx, dy) + 2S(x,dy)S(dx, y) + 2S(dx,y)S(dx, dy) +  S^2(dx,dy) = \\
+      &= 2S(dx, dy)\left\{S(x,y) +  S(x,dy) + S(dx,y) +  S(dx,dy)\right\}  + 2S(x,dy)S(dx, y)= \\
+      &= 2S(dx, dy)\left\{\cancel{S(x,y)} +  \cancel{S(x,y^-)} - \cancel{S(x,y)} + \cancel{S(x^-,y)} - \cancel{S(x,y)} +  S(x^-,y^-) - \cancel{S(x,y^-)} - \cancel{S(x^-,y)} + \cancel{S(x,y)}\right\}\\
+      &~~~~~~~~~~~~~~~~~~~~~~~~  + 2S(x,dy)S(dx, y)= \\
+      &= 2S(dx, dy)S(x^-,y^-) + 2S(x,dy)S(dx, y)= \\
+      &= 2S(dx, dy)S(x^-,y^-) + 2(S(x^-,dy) - S(dx,dy))(S(dx, y^-) - S(dx, dy))= \\
+      &= 2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S(dx,dy)(S(dx, dy) - S(dx, y^-) - S(x^-,dy))= \\
+      &= 2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S(dx,dy)(S(x^-, y^-) - S(x^-, y) - S(x, y^-) + S(x, y)\\
+       &~~~~~~~~~~~~~~~~~~~~~~~~  - S(x^-, y^-)  + S(x, y^-) - S(x^-,y^-) +  S(x^-,y))= \\
 	\end{aligned}
 	$$
   Using the trick:
