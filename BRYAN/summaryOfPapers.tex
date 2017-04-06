@@ -1337,7 +1337,7 @@ For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12
         + P\{ X_{1} = x, X_{2} = x, Y_{1}= y, Y_{2} > y \} + \\
      &+P\{ X_{1} = x, X_{2} > x, Y_{1} > y, Y_{2} = y \}
       + P\{ X_{1} = x, X_{2} > x, Y_{1}= y, Y_{2} = y \}
-        + P\{ X_{1} = x, X_{2} > x, Y_{1}= y, Y_{2} > y \} =\\
+        + P\{ X_{1} = x, X_{2} > x, Y_{1}= y, Y_{2} > y \}\\
   \end{aligned}
   $$
 Because $(X_{1}, Y_{1}) \perp (X_{2}, Y_{2})$ we have:
@@ -1349,16 +1349,25 @@ P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \}
       &+ S(dx,y)S(x, dy) +  S(dx,dy)S(x, dy) + S(dx,dy)S(x, y) = \\
       &= 2S(x,y)S(dx, dy) +  2S(x,dy)S(dx, dy) + 2S(x,dy)S(dx, y) + 2S(dx,y)S(dx, dy) +  S^2(dx,dy) = \\
       &= 2S(dx, dy)\left\{S(x,y) +  S(x,dy) + S(dx,y) +  S(dx,dy)\right\}  + 2S(x,dy)S(dx, y)= \\
-      &= 2S(dx, dy)\left\{\cancel{S(x,y)} +  \cancel{S(x,y^-)} - \cancel{S(x,y)} + \cancel{S(x^-,y)} - \cancel{S(x,y)} +  S(x^-,y^-) - \cancel{S(x,y^-)} - \cancel{S(x^-,y)} + \cancel{S(x,y)}\right\}\\
+      &= 2S(dx, dy)\left\{\cancel{S(x,y)} +  S(x,y^-) - \cancel{S(x,y)} + S(x^-,y) - S(x,y) +  \frac{1}{2}S(x^-,y^-) - \frac{1}{2}S(x,y^-) - \frac{1}{2}S(x^-,y) + \frac{1}{2}S(x,y)\right\}\\
       &~~~~~~~~~~~~~~~~~~~~~~~~  + 2S(x,dy)S(dx, y)= \\
-      &= 2S(dx, dy)S(x^-,y^-) + 2S(x,dy)S(dx, y)= \\
-      &= 2S(dx, dy)S(x^-,y^-) + 2(S(x^-,dy) - S(dx,dy))(S(dx, y^-) - S(dx, dy))= \\
-      &= 2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S(dx,dy)(S(dx, dy) - S(dx, y^-) - S(x^-,dy))= \\
-      &= 2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S(dx,dy)(S(x^-, y^-) - S(x^-, y) - S(x, y^-) + S(x, y)\\
-       &~~~~~~~~~~~~~~~~~~~~~~~~  - S(x^-, y^-)  + S(x, y^-) - S(x^-,y^-) +  S(x^-,y))= \\
+      &= 2S(dx, dy)\left\{\frac{1}{2}S(x^-,y^-)  + \frac{1}{2}S(x,y^-)  + \frac{1}{2}S(x^-,y) - \frac{1}{2}S(x,y)\right\} + 2S(x,dy)S(dx, y) =\\
+      &= 2S(dx, dy)\left\{ S(x^-,y^-) -\frac{1}{2}S(dx,dy)\right\} + 2S(x,dy)S(dx, y) =\\
+      &= 2S(dx, dy) S(x^-,y^-) -S^2(dx,dy) + 2S(x,dy)S(dx, y)\\
 	\end{aligned}
 	$$
-  Using the trick:
+  It can be shown that the following expressions are equivalent:
+  $$
+  \begin{aligned}
+P\{ X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \}  &=  &\\
+      &= 2S(dx, dy)S(x^-,y^-) + 2S(x,dy)S(dx, y) -S^2(dx,dy)= \\
+      &= 2S(dx, dy)S(x,y)+ 2S(x^-,dy)S(dx, y^-)  -S^2(dx,dy)=\\
+      &= 2S(dx, dy)S(x^-,y^-) + 2[S(x^-,dy)-S(dx,dy)][S(dx, y^-)-S(dx,dy)]  -S^2(dx,dy)=\\
+      &= 2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S^2(dx,dy) - 2S(dx,dy)[S(x^-,dy)+S(dx, y^-)]\\
+	\end{aligned}
+	$$
+
+  The authors are doing something else. They probably assume continuous densities and use the fact that taking a derivative in point $x^-$ is the same as in point $x$ (????? under certain conditions, I guess...):
 	$$
 	\begin{aligned}
     f_{min(X_1, X_2),min(Y_1, Y_2)}(x, y) &= \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y} = \frac{\partial}{\partial y} \left(2\cdot S(x^-, y^-) \frac{\partial S(x^-, y^-)}{\partial x}  \right)  =\\
@@ -1369,55 +1378,62 @@ P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \}
 	\end{aligned}
 	$$
 
-Now, let's find the joint distribution of concordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ by finding first the following:
+Now, let's find the joint distribution of concordance and discordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ by finding first the following:
 	$$
 	\begin{aligned}
-		P\{ (X_1>X_2, Y_1>Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &=P\{ X_1>x, X_2=x, Y_1>y, Y_2=y)\} = \\
-    &= P\{ X_1>x, Y_1>y, X_2=x, Y_2=y)\} = S(x, y)f(x,y)
+		P\{ (X_1>X_2, Y_1>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_1>x, X_2=x, Y_1>y, Y_2=y)\} = \\
+    &= P\{ X_1>x, Y_1>y, X_2=x, Y_2=y)\} = S(x, y)S(dx,dy) = \\
+    &=S(dx,dy)\cdot[S(dx,dy) - S(x^-,dy) - S(dx,y^-) + S(x^-,y^-) ]\\
+    &=S(dx,dy) S(x^-,y^-) + S(dx,dy)\cdot[S(dx,dy) - S(x^-,dy) - S(dx,y^-)]\\
+    &=S(dx,dy) S(x^-,y^-) + [S(x^-,dy) - S(dx,dy)][S(dx,y^-) - S(dx,dy)] - S(x^-,dy)S(dx,y^-)\\
+		P\{ (X_1>X_2, Y_1<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_1>x, X_2=x, Y_1=y, Y_2>y)\} = \\
+    &= P\{ X_1>x, Y_1=y, X_2=x, Y_2>y)\} = S(x, dy)S(dx,y) = \\
+    &=[S(x^-,dy) - S(dx,dy)][S(dx,y^-)  - S(dx,dy)]
+	\end{aligned}
+	$$
+	$$
+	\begin{aligned}
 	\end{aligned}
 	$$
   Because of symmetry:
 	$$
 	\begin{aligned}
-		P\{ (X_1<X_2, Y_1<Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &= S(x, y)f(x,y)
-	\end{aligned}
-	$$
-  For discordance:
-	$$
-	\begin{aligned}
-		P\{ (X_1>X_2, Y_1<Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &=P\{ X_1>x, X_2=x, Y_1=y, Y_2>y)\} = \\
-    &= P\{ X_1>x, Y_1=y, X_2=x, Y_2>y)\} = \frac{\partial S(x, y^-)}{\partial y} \frac{\partial S(x^-, y)}{\partial x} 
-	\end{aligned}
-	$$
-  Because of symmetry:
-	$$
-	\begin{aligned}
-		P\{ (X_1<X_2, Y_1>Y_2) \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &= \frac{\partial S(x, y^-)}{\partial y} \frac{\partial S(x^-, y)}{\partial x} 
-	\end{aligned}
-	$$
-  
-  Therefore, 
-  
-	$$
-	\begin{aligned}
-  P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} =\\
-  = 2S(x, y)f(x,y) - 2S(x, dy)S(dx, y)
+		P\{&[Concord. - Discord.] \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} &= \\
+      &=2S(dx,dy) S(x^-,y^-) + \cancel{2[S(x^-,dy) - S(dx,dy)][S(dx,y^-) - S(dx,dy)]} - 2S(x^-,dy)S(dx,y^-) - \\
+      &~~~~~~~~-\cancel{2[S(x^-,dy) - S(dx,dy)][S(dx,y^-)  - S(dx,dy)]}=\\
+      &~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=~~2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)
 	\end{aligned}
 	$$
   
   
-Therefore
+Therefore, for the discrete case, we have:
   $$
   \begin{aligned}
-    \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\ 
+    \tau(x, y) = \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\ 
+      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2S(x,dy)S(dx, y) -S^2(dx,dy)}= \\
+      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x,y)+ 2S(x^-,dy)S(dx, y^-)  -S^2(dx,dy)}=\\
+      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2[S(x^-,dy)-S(dx,dy)][S(dx, y^-)-S(dx,dy)]  -S^2(dx,dy)}=\\
+      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S^2(dx,dy) - 2S(dx,dy)[S(x^-,dy)+S(dx, y^-)]}\\
+  \end{aligned}
+  $$
+
+The above expression shows that in discrete case, $\tau(s_1, s_2) = \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}$ is not true (as far as I can tell).
+~\\
+For the continuous case, however, everything works out kind of okay, if we don't care about the difference between $x$ and $x^-$:
+
+  $$
+  \begin{aligned}
+    P\{concord| &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} =\\
+    &= 2S(x, y)f(x,y) - 2S(x, dy)S(dx, y)\\
+    \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\
      &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} } =\\
-     &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2 S(x^-, y^-) S(dx, dy) + 2 S(x^-, dy) S(dx, y^-) } =\\     
+     &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2 S(x^-, y^-) S(dx, dy) + 2 S(x^-, dy) S(dx, y^-) } =\\
      &= \frac{\theta(x, y) - 1}{\theta(x, y) + 1}
   \end{aligned}
   $$
-~\\
+  ~\\
 
-Let's introduce the following notation:
+Since I want to get something that looks like the authors derive, I'll continue the derivations in the context of continuous case. Let's introduce the following notation:
 	$$
 	\begin{aligned}
 		h(x, y) = P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}
