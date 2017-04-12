@@ -552,7 +552,9 @@ Where
 	$$
 
 \section{Simulation of Survival Data}
+
 \subsection{Simulation of bivariate Gumbel distribution using copulas}
+
 Here we use a method described in the book of \cite{nelsen2007introduction}. The method utilizes \emph{copulas} in order to simulate bivariate data. We describe this method using example of \emph{Gumbel} distribution (p.23):
 	$$
 	\begin{aligned}
@@ -626,6 +628,27 @@ Therefore, for Gumbel distribution we have:
 	\end{aligned}
 	$$
 As far as I know, the integral above is \emph{non-elementary} and cannot be expressed algebraically, therefore, in order to find it, we can use numeric integration, for example R-function \texttt{integrate($\cdot$)}. We keep in mind that according to \cite{nelsen2007introduction}, $0 \leq \theta \leq 1$.
+
+\subsection{Figuring out \emph{Kendall's} $\tau$ of bivariate Gumbel distribution}
+According to \cite{nelsen2007introduction}, for continuous distributions, \emph{Spearman's} correlation can be expressed through \emph{copula} as:
+	$$
+	\begin{aligned}
+		 \rho_S = 4{\int\int}_{I^2}C(u, v)dC(u, v) - 1
+	\end{aligned}
+	$$
+Where $dC(u, v) = \frac{\partial^2 C(u,v)}{\partial u\partial v} = $
+Therefore:
+	$$
+	\begin{aligned}
+		 \rho_S &= 4\int\int_{I^2}\left[ u+v-1+(1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} \right]dudv - 1 =\\
+     &= 12\int\int_{I^2}\left[ u+v-1 \right]dudv +  12\int\int_{I^2} (1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} dudv - 3\\
+     &= 12\int_0^1\left[ \frac{1}{2} + (v-1) \right]dv -  12\int_0^1(1-v)\int_0^1 (1-u)^{-\theta ln(1-v) + 1} d(1-u)dv - 3 = \\
+     &= 0  - 12\int_0^1(1-v)  \left[ \left. \frac{(1-u)^{-\theta ln(1-v) + 2}}{-\theta ln(1-v) + 2}\right|_0^1 \right]  dv - 3 = \\
+     &= 12\int_0^1\frac{1-v}{-\theta ln(1-v) + 2}  dv - 3
+	\end{aligned}
+	$$
+
+
 
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
@@ -922,65 +945,131 @@ Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also 
 	\end{aligned}
 	$$
 
-\subsection{Local version of \emph{Spearman's} $\rho$}
-Inspired by \cite{fan2000class} we derive a local version of \emph{Spearman's} $\rho$, $\rho_S(x, y)$ can be written as:
-We use the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the following probability:
-  
-	$$
-	\begin{aligned}
-		P\{X_{0}\wedge X_{1} > x,~Y_{0}\wedge Y_{2} > y \} &= P\{ X_{0} > x, X_{1} > x, Y_{0} > y, Y_{2} > y \} = S(x, y)\cdot S_X(x) \cdot S_Y(y)\\
-    &therefore\\
-    f(X_{0}\wedge X_{1} > x,~Y_{0}\wedge Y_{2} > y)& = \frac{\partial^2 [S(x^-, y^-)\cdot S_X(x^-) \cdot S_Y(y^-)]}{\partial x \partial y}=\\
-    = &S(x^-,y^-)f_X(x)f_Y(y) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)  + f(x, y)S_X(x^-)S_Y(y^-) 
-	\end{aligned}
-	$$
-Next, we show that the \textbf{joint} distribution of concordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
-	$$
-	\begin{aligned}
-		P\{ [(X_0>X_1, Y_0>Y_2) & \cup (X_0<X_1, Y_0<Y_2)] \cap [X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y ]\} = \\
-    &=P\{ X_{0} > x, X_{1} = x, Y_{0} > y, Y_{2} = y \} + P\{ X_{0}= x, X_{1} > x, Y_{0}= y, Y_{2} > y \} =\\
-     &= S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) 
-	\end{aligned}
-	$$
-Similarly, we show that the \textbf{joint} distribution of discordance \textbf{and} of $X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y$ is the following:
-	$$
-	\begin{aligned}
-		P\{ [(X_0>X_1, Y_0<Y_2) & \cup (X_0<X_1, Y_0>Y_2)] \cap [X_0\wedge X_1 = x,~Y_0\wedge Y_{2} = y ]\} = \\
-    &=P\{ X_0 > x, X_1 = x, Y_0 = y, Y_{2} > y \} + P\{ X_0 = x, X_1 > x, Y_0> y, Y_{2} = y \} = \\
-    & =  \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y)
-	\end{aligned}
-	$$
-  
-Therefore
+\subsubsection{Local version of \emph{Spearman's} $\rho$}
+Inspired by \cite{fan2000class} we derive a local version of \emph{Spearman's} $\rho$, $\rho_S(x, y)$ using the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$
   $$
   \begin{aligned}
-    \rho_S(x, y) &= \frac{P\{concord| X_0\wedge X_1 = x,~Y_0\wedge Y_2 = y\} - P\{discord|X_0\wedge X_1 = x,~Y_0\wedge Y_2 = y\}}{P\{X_0\wedge X_1 = x,~Y_1\wedge Y_2 = y\}} = \\   
-     &= \frac{ S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y)  - \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y) } { S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-)  + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y)}\\
+    P\{ &X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} =\\
+     &=P\{ X_{0} > x, X_{1} = x, Y_{0} > y, Y_{2} = y \}
+      + P\{ X_{0} > x, X_{1} = x, Y_{0}= y, Y_{2} = y \}
+        + P\{ X_{0} > x, X_{1} = x, Y_{0}= y, Y_{2} > y \} + \\
+     &+P\{ X_{0} = x, X_{1} = x, Y_{0} > y, Y_{2} = y \}
+      + P\{ X_{0} = x, X_{1} = x, Y_{0}= y, Y_{2} = y \}
+        + P\{ X_{0} = x, X_{1} = x, Y_{0}= y, Y_{2} > y \} + \\
+     &+P\{ X_{0} = x, X_{1} > x, Y_{0} > y, Y_{2} = y \}
+      + P\{ X_{0} = x, X_{1} > x, Y_{0}= y, Y_{2} = y \}
+        + P\{ X_{0} = x, X_{1} > x, Y_{0}= y, Y_{2} > y \}\\
   \end{aligned}
   $$
-~\\
-
-Let's introduce the following notation:
-	$$
-	\begin{aligned}
-		h(x, y) = P\{X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y\}
+Let's further denote marginal \emph{pdf} and \emph{cdf} of $X$ as $F(dx)$ and $F(x)$, and marginal \emph{pdf} and \emph{cdf} of $Y$ as $G(dy)$ and $G(y)$
+Because $(X_{1}, Y_{1})$, $X_{1}$, and $Y_{2})$ are independent, we have:
+  $$
+  \begin{aligned}
+P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} =\\
+      &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)G(dy) + S(x,dy)F(dx)G(y) + \\
+      &~~~~+ S(dx,y)F(dx)G(dy) +  S(dx,dy)F(dx)G(dy) + S(dx,dy)F(dx)G(y) + \\
+      &~~~~+ S(dx,y)F(x)G(dy) +  S(dx,dy)F(x)G(dy) + S(dx,dy)F(x)G(y) = \\
+      &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)(G(dy)+G(y))  + S(dx,y)G(dy)(F(dx) + F(x)) +\\ &~~~~+S(dx,y)((F(dx) + F(x))(G(dy)+G(y))) = \\
+      &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)G(y^-)  + S(dx,y)G(dy)F(x^-) +S(dx,y)F(x^-)G(y^-) = \\
+      &= \{S(x^-,y^-)-S(x^-,y)-S(x,y^-) + S(x,y)\}F(dx)G(dy) +  \\
+      &~~~~+\{S(x,y^-) - S(x,y)\}F(dx)G(y^-)  +\\
+      &~~~~ +\{S(x^-,y) - S(x,y)\}G(dy)F(x^-) +\\
+      &~~~~+S(dx,y)F(x^-)G(y^-) = \\
+      &~~~~~~~~~~ skipping~some~algebra...\\
+      &= S(x^-,y^-)F(dx)G(dy) +  \\
+      &~~~~+S(x^-,dy)F(dx)(G(y^-) - G(dx))  +\\
+      &~~~~+S(dx,y^-)(F(x^-) - F(dx))G(dy)  +\\
+      &~~~~+S(dx,dy)(F(x^-) - F(dx))(G(y^-) - G(dx))\\
 	\end{aligned}
 	$$
-Similar to \cite{fan2000class} (also see section \ref{deriveWeightedTau}), we proposed to weight $\rho_S(x, y)$ using the following weight: $w(x, y) = \frac{h(x, y)}{\int_0^x \int_0^y h(u, v) dudv}$: 
+Now, let's find the joint distribution of concordance and discordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$:
 	$$
 	\begin{aligned}
-		\mathcal{R}_S&(t_x, t_y) = \int_0^{t_x} \int_0^{t_y}  \rho_S(x, y)\frac{h(x, y)}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy} dxdy = \\
-    &= \int_0^{t_x} \int_0^{t_y}  \frac{  S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y)  }{ \cancel{h(x,y)}}    
-   \frac{\cancel{h(x, y)}dxdy}{\int_0^{t_x} \int_0^{t_y} h(x, y) dxdy}  = \\
-    &=   \frac{ \int_0^{t_x} \int_0^{t_y} \left\{S(x,y)f_X(x)f_Y(y) + f(x, y)S_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial y}f_X(x)S_Y(y) - \frac{\partial S(x,y)}{\partial x}S_X(x)f_Y(y) \right\}dxdy }{\int_0^{t_x} \int_0^{t_y} \left\{S(x^-,y^-)f_X(x)f_Y(y) + f(x, y)S_X(x^-)S_Y(y^-) + \frac{\partial S(x^-,y)}{\partial y}f_X(x)S_Y(y) + \frac{\partial S(x,y^-)}{\partial x}S_X(x)f_Y(y) \right\}dxdy}\\
+		P\{ (X_0>X_1, Y_0>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0>y, Y_2=y)\} = S(x, y)F(dx)G(dy) \\
+		P\{ (X_0<X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0=y, Y_2>y)\} = S(dx, dy)F(x)G(dy) \\
+		P\{ (X_0>X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0=y, Y_2>y)\} = S(x, dy)F(dx)G(y) \\
+		P\{ (X_0<X_1, Y_0>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0>y, Y_2=y)\} = S(dx, y)F(x)G(dy) \\
+	\end{aligned}
+	$$
+ Therefore 
+	$$
+	\begin{aligned}
+		P\{&[Concord. - Discord.] \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} = \\
+    &~~~= \{S(dx,dy) + S(x^-,y^-)-S(x^-,dy)-S(dx,y^-)\}F(dx)G(dy) +  \\
+      &~~~~+S(dx,dy)(F(x^-) - F(dx))(G(y^-) - G(dy))+\\
+      &~~~~ -\{S(x^-,dy) - S(dx,dy)\}F(dy)(G(y^-) - G(dy)) +\\
+      &~~~~ -\{S(dx,y^-) - S(dx,dy)\}(F(x^-) - F(dx))G(dy) +\\
+      &~~~~~~~~~~ skipping~some~algebra...\\
+      &= S(x^-,y^-)F(dx)G(dy) -  \\
+      &~~~~-S(x^-,dy)F(dx)G(y^-)  -\\
+      &~~~~-S(dx,y^-)F(x^-)G(dy)  +\\
+      &~~~~+S(dx,dy)F(x^-)G(y^-)\\
+	\end{aligned}
+	$$
+  
+  
+Therefore, for the discrete case, we have:
+{\scriptsize{
+  $$
+  \begin{aligned}
+    \rho(x, y) &=P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} =\\
+    &= \frac{P\{concord, X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord,X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\ 
+    &=\frac{S(x^-,y^-)F(dx)G(dy) -S(x^-,dy)F(dx)G(y^-)-S(dx,y^-)F(x^-)G(dy) +S(dx,dy)F(x^-)G(y^-)}{S(x^-,y^-)F(dx)G(dy)+S(x^-,dy)F(dx)(G(y^-) - G(dx))+S(dx,y^-)(F(x^-) - F(dx))G(dy)+S(dx,dy)(F(x^-) - F(dx))(G(y^-) - G(dx))}=\\
+    &~~~~~~~let's~denote: ~h(x, y) = P\{X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y\}~~~ then:\\
+    &=\frac{S(x^-,y^-)F(dx)G(dy) -S(x^-,dy)F(dx)G(y^-)-S(dx,y^-)F(x^-)G(dy) +S(dx,dy)F(x^-)G(y^-)}{h(x, y)}=\\
+  \end{aligned}
+  $$
+}}
+If we weight $\rho(x, y)$ by $\frac{h(x, y)}{\int_0^x \int_0^y h(x, y)}$ and integrate the above expression over $[0,x]\times[0,y]$, we get a \emph{finate region Spearman} $\rho$:
+	$$
+	\begin{aligned}
+		\mathcal{R}(x, y) &=P\{concord| X_{1}\wedge X_{2} \leq x,~Y_{1}\wedge Y_{2} \leq y\} - P\{discord|X_{1}\wedge X_{2} \leq x,~Y_{1}\wedge Y_{2} \leq y\}=\\
+    &=\frac{\int_0^x \int_0^y [S(x^-,y^-)F(dx)G(dy) -S(x^-,dy)F(dx)G(y^-)-S(dx,y^-)F(x^-)G(dy) +S(dx,dy)F(x^-)G(y^-)]}{\int_0^x \int_0^y h(x, y)}
 	\end{aligned}
 	$$
 
+Let's write the numerator and the denominator in terms of hazards using the following notations:
+	$$
+	\begin{aligned}
+		&\Lambda_{11}(dx, dy) = \frac{S(dx,dy)}{S(x^-,y^-)};~~~\Lambda_{10}(dx, y^-) = \frac{S(dx,y^-)}{S(x^-,y^-)};~~~\Lambda_{01}(x^-, dy) = \frac{S(x^-,dy)}{S(x^-,y^-)}\\
+    &\lambda_X = \frac{F(dx)}{F(x^-)}; ~~~~~~\lambda_Y = \frac{G(dy)}{G(y^-)}
+	\end{aligned}
+	$$
 
+	$$
+	\begin{aligned}
+		\mathcal{R}(x, y) &=P\{concord| X_{1}\wedge X_{2} \leq x,~Y_{1}\wedge Y_{2} \leq y\} - P\{discord|X_{1}\wedge X_{2} \leq x,~Y_{1}\wedge Y_{2} \leq y\}=\\
+    &=\frac{\int_0^x \int_0^y S(x^-,y^-)F(x^-)G(y^-)[\lambda_X \lambda_Y -\Lambda_{01}\lambda_X-\Lambda_{10}\lambda_Y +\Lambda_{11}]}{\int_0^x \int_0^y S(x^-,y^-)F(x^-)G(y^-)[\lambda_X \lambda_Y+\Lambda_{01}\lambda_X(1 - \lambda_Y)+\Lambda_{10}(1 - \lambda_X)\lambda_Y+\Lambda_{11}(1 - \lambda_X)(1 - \lambda_Y)]}
+	\end{aligned}
+	$$
 
+We can estimate this expression using bivariate cumulative hazard estimates used by \cite{dabrowska1988kaplan}:
 
-
-
+	$$
+	\begin{aligned}
+    \hat{\Lambda}_{11}(x, y) &= \int_0^x \int_0^y \frac{\hat{K}_1(du, dv)}{\hat{H}(u^-, v^-)}\\
+    \hat{\Lambda}_{10}(x, y) &= -\int_0^x \frac{\hat{K}_2(du, y)}{\hat{H}(u^-, y)} ~~(not~sure~about~the~minus)\\ 
+    \hat{\Lambda}_{01}(x, y) &= -\int_0^y \frac{\hat{K}_3(x, dv)}{\hat{H}(x, v^-)}\\
+	\end{aligned}
+	$$
+  In the above, the minus is in the definition of Dabrowska: $\Lambda_{10} =- \frac{S(dx,y^-)}{S(x^-,y^-)}$ (instead of what is writtent here $\Lambda_{10} = \frac{S(dx,y^-)}{S(x^-,y^-)}$). Then she adds minus also to the sample versions of $\Lambda_{01}$ and $\Lambda_{10}$, see the above. I did not use minus, and I probably should. In any case it cancels out, I think.
+	$$
+	\begin{aligned}
+    \hat{H}(x, y)&= \frac{1}{n}\sum I(X_i > x, Y_i > y)\\
+    \hat{K}_1(x, y)&= \frac{1}{n}\sum I(X_i > x, Y_i > y, \delta_X = 1, \delta_Y = 1)\\
+    \hat{K}_2(x, y)&= \frac{1}{n}\sum I(X_i > x, Y_i > y, \delta_X = 1)\\
+    \hat{K}_3(x, y)&= \frac{1}{n}\sum I(X_i > x, Y_i > y, \delta_Y = 1)\\
+	\end{aligned}
+	$$
+It is easier to use notations of \cite{kalbfleisch2011statistical}:
+	$$
+	\begin{aligned}
+    \hat{\Lambda}_{11}(\Delta x, \Delta y) &= \frac{Number~of~(X=x, Y=y, ~~\delta_X = \delta_y = 1)}{Number~of~(X\geq x, Y\geq y)}\\
+    \hat{\Lambda}_{10}(\Delta x, ~~ y) &= \frac{Number~of~(X=x,~~\delta_X = 1)}{Number~of~(X\geq x, Y\geq y)} = ? =\frac{Number~of~(X=x, Y\geq y,~~\delta_X = 1)}{Number~of~(X\geq x, Y\geq y)}\\
+    \hat{\Lambda}_{01}(x, ~~ \Delta y) &= \frac{Number~of~(Y=y,~~\delta_Y = 1)}{Number~of~(X\geq x, Y\geq y)} = ? = \frac{Number~of~(X\geq x, Y=y,~~\delta_Y = 1)}{Number~of~(X\geq x, Y\geq y)}\\
+	\end{aligned}
+	$$
+I put the question marks in the above expressions because the book does not say that these are equal, but I am assuming they mean it because the denominator has these conditions ($X\geq x$, $ Y\geq y$).
 
 \subsection{Rank tests for independence for bivariate censored data (Dabrowska) \cite{dabrowska1986rank}}
 For null hypothesis $H_0:~F=F_1 F_2$, the following \emph{linear rank} statistic can be used
@@ -1316,16 +1405,18 @@ Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_
 	\end{aligned}
 	$$
   
-\subsubsection{Local version of \emph{Kendall's} $\tau$}
+\subsubsection{Local version of \emph{Kendall's} $\tau$. Discreate case, not covered by \cite{fan2000class}}
 \label{deriveWeightedTau}
-Here we explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
+Here we try to explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
 	$$
 	\begin{aligned}
 		\tau(s_1, s_2) &= \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}
 	\end{aligned}
 	$$
-For convenience let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12})$ to $(X_{1},Y_{1})$ and $(X_{2},Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution (\emph{pdf}) for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$. We will do this using a trick. We'll first find $S(x, y)$ for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$ and then we will use the relationship: $f(x,y) = \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y}$
-  
+
+In the process of explaining this, I realized that the equality $\tau(s_1, s_2) = \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}$ might not be true in the discrete case. I also show what the contionuous \emph{local version} of \emph{Kendall}'s $\tau$ derived by \cite{fan2000class} is different from the discrete case (which was not specificed in their paper).
+~\\
+For convenience, let's switch from notations $(T_{11},T_{12})$ and $(T_{21},T_{12})$ to $(X_{1},Y_{1})$ and $(X_{2},Y_{2})$. We denote the pdf and the survival functions as $f(x,y)$ and $S(x,y)$ respectively. Let's first find the distribution (\emph{pdf}) for $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$:
   $$
   \begin{aligned}
     P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} =\\
@@ -1345,8 +1436,8 @@ Because $(X_{1}, Y_{1}) \perp (X_{2}, Y_{2})$ we have:
   \begin{aligned}
 P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} 
       = S(x,y)S(dx, dy) +  S(x,dy)S(dx, dy) + S(x,dy)S(dx, y) + \\
-      &+ S(dx,y)S(dx, dy) +  S(dx,dy)S(dx, dy) + S(dx,dy)S(dx, y) + \\
-      &+ S(dx,y)S(x, dy) +  S(dx,dy)S(x, dy) + S(dx,dy)S(x, y) = \\
+      &~~~~~~+ S(dx,y)S(dx, dy) +  S(dx,dy)S(dx, dy) + S(dx,dy)S(dx, y) + \\
+      &~~~~~~+ S(dx,y)S(x, dy) +  S(dx,dy)S(x, dy) + S(dx,dy)S(x, y) = \\
       &= 2S(x,y)S(dx, dy) +  2S(x,dy)S(dx, dy) + 2S(x,dy)S(dx, y) + 2S(dx,y)S(dx, dy) +  S^2(dx,dy) = \\
       &= 2S(dx, dy)\left\{S(x,y) +  S(x,dy) + S(dx,y) +  S(dx,dy)\right\}  + 2S(x,dy)S(dx, y)= \\
       &= 2S(dx, dy)\left\{\cancel{S(x,y)} +  S(x,y^-) - \cancel{S(x,y)} + S(x^-,y) - S(x,y) +  \frac{1}{2}S(x^-,y^-) - \frac{1}{2}S(x,y^-) - \frac{1}{2}S(x^-,y) + \frac{1}{2}S(x,y)\right\}\\
@@ -1409,24 +1500,23 @@ Now, let's find the joint distribution of concordance and discordance and of $X_
 Therefore, for the discrete case, we have:
   $$
   \begin{aligned}
-    \tau(x, y) = \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\ 
-      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2S(x,dy)S(dx, y) -S^2(dx,dy)}= \\
-      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x,y)+ 2S(x^-,dy)S(dx, y^-)  -S^2(dx,dy)}=\\
-      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2[S(x^-,dy)-S(dx,dy)][S(dx, y^-)-S(dx,dy)]  -S^2(dx,dy)}=\\
-      = \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S^2(dx,dy) - 2S(dx,dy)[S(x^-,dy)+S(dx, y^-)]}\\
+    \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\ 
+      &= \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2S(x,dy)S(dx, y) -S^2(dx,dy)}= \\
+      &= \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x,y)+ 2S(x^-,dy)S(dx, y^-)  -S^2(dx,dy)}=\\
+      &= \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2[S(x^-,dy)-S(dx,dy)][S(dx, y^-)-S(dx,dy)]  -S^2(dx,dy)}=\\
+      &= \frac{2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)}{2S(dx, dy)S(x^-,y^-) + 2S(x^-,dy)S(dx, y^-) + S^2(dx,dy) - 2S(dx,dy)[S(x^-,dy)+S(dx, y^-)]}\\
   \end{aligned}
   $$
 
 The above expression shows that in discrete case, $\tau(s_1, s_2) = \frac{\theta(s_1, s_2) - 1}{\theta(s_1, s_2) + 1}$ is not true (as far as I can tell).
 ~\\
-For the continuous case, however, everything works out kind of okay, if we don't care about the difference between $x$ and $x^-$:
+For the continuous case, however, everything kind of works out, if we don't care about the difference between $x$ and $x^-$:
 
   $$
   \begin{aligned}
     P\{concord| &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} =\\
-    &= 2S(x, y)f(x,y) - 2S(x, dy)S(dx, y)\\
+    &= 2S(dx,dy) S(x^-,y^-) - 2S(x^-,dy)S(dx,y^-)\\
     \tau(x, y) &= \frac{P\{concord| X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\} - P\{discord|X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}}{P\{X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y\}} = \\
-     &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2S(x^-,y^-)f(x, y) + 2\frac{\partial S(x^-,y)}{\partial y}\frac{\partial S(x,y^-)}{\partial x} } =\\
      &= \frac{2S(x,y)S(dx,dy) - 2 S(x, dy)S(dx, y) }{ 2 S(x^-, y^-) S(dx, dy) + 2 S(x^-, dy) S(dx, y^-) } =\\
      &= \frac{\theta(x, y) - 1}{\theta(x, y) + 1}
   \end{aligned}
@@ -1448,13 +1538,24 @@ Since I want to get something that looks like the authors derive, I'll continue 
 	\end{aligned}
 	$$
 
-They say (it must be true, but I have not figured it out yet) that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
+They say that the weighted $\tau$ (denoted as $\mathcal{T}(t_1, t_2)$) can be written as:
 	$$
 	\begin{aligned}
 		&\mathcal{T}(t_1, t_2) = E\{sign(T_{11} - T_{12}) (T_{21} - T_{22})~|~ T_{11}\wedge T_{12} \leq t_1,~T_{21}\wedge T_{22} \leq t_2  \}
 	\end{aligned}
 	$$
 	so that $\mathcal{T}(t_1, t_2) \in [-1,1]$
+And in general, their weighting technique works because:
+	$$
+	\begin{aligned}
+		P(X=x|Y\leq y) &= \frac{P(X=x, Y\leq y)}{P(Y\leq y)} 
+    =\frac{\int_0^y P(X=x, Y = t)dF_Y}{\int_0^y P(Y= u)dF_Y}  = \\
+    &=\frac{\int_0^y \frac{P(X=x, Y = t)}{P(Y = t)}P(Y = t)dF_Y}{\int_0^y P(Y= u)dF_Y} =\frac{\int_0^y P(X=x | Y = t)P(Y = t)dF_Y}{\int_0^y P(Y= u)dF_Y}=\\
+&=\int_0^y P(X=x | Y = t)w(y)dF_Y\\
+&~~~~~~~~~~~~~~~~~~where~~~~w(y) = \frac{P(Y = t)}{\int_0^y P(Y= u)dF_Y}
+	\end{aligned}
+	$$
+
 
 \subsection{Prentice, 1992 \cite{prentice1992covariance}}
 ???
@@ -1718,13 +1819,65 @@ $A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we ha
 \end{bmatrix}
 \]
 
-\subsubsection{M-estimation for partial and conditional correlation}
-Another way of approaching this problem was suggested by \cite{lui2015covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.
+\subsection{M-estimation for parametric survival models}
+In the following section, I use the on-line source written by Daowen Zhang(ST 745,  \url{http://www4.stat.ncsu.edu/~dzhang2/st745/chap5.pdf}) in order to define parametric survival models. According to Zhang, in parametric survival models we model time as the following:
+  $$
+  \begin{aligned}
+    log(T_i) &= \beta_0 + \beta_1z_{i1} + ... + \beta_p z_{ip} + \sigma \epsilon_{i}\\
+    &or\\
+    T_i &= e^{\beta_0 + \beta_1z_{i1} + ... + \beta_p z_{ip} + \sigma \epsilon_{i}}\\
+    &therefore\\
+    S_{T_i}(t) &= P(T_i>t) = P\left( e^{\beta_0 + \beta_1z_{i1} + ... + \beta_p z_{ip} + \sigma \epsilon_{i}} >t \right ) = P\left( e^{\sigma \epsilon_{i}} > e^{-\beta_0 - \beta_1z_{i1} - ... - \beta_p z_{ip}}t \right )=\\
+    &=S_{e^{\sigma \epsilon_{i}}}(e^{-\pmb{z}_i \pmb{\beta}}t)\\
+  \end{aligned}
+  $$
+Where $e^{\sigma \epsilon_{i}}$ can have variety of distributions including Weibull, exponential, gamma, log-logistic, and log-normal.
+
+\subsubsection{M-estimation for exponential survival model}
+For exponential survival model, we assume that $\sigma = 1$, and:
+  $$
+  \begin{aligned}
+    e^{\epsilon_{i}} &\sim Exponential(e^{-\pmb{z}_i \pmb{\beta}})\\
+    F_{e^{\epsilon_{i}}}(t) &= 1 - e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
+    S_{e^{\epsilon_{i}}}(t) &= e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
+    f_{e^{\epsilon_{i}}}(t) &= e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
+  \end{aligned}
+  $$
+The likelihood and the log-likelihood are the following:
+  $$
+  \begin{aligned}
+    L &= \prod_{i=1}^N  \left[ e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} \right]^{\delta_i} \left[e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\right]^{1-\delta_i} =\prod_{i=1}^N   \left[e^{-\left(\pmb{z}_i \pmb{\beta}\right)}\right]^{\delta_i}   e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} = \prod_{i=1}^N   e^{-\pmb{z}_i \pmb{\beta}\delta_i-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\\
+    l &= \sum_{i=1}^N  \left[  -\pmb{z}_i \pmb{\beta}\delta_i-(e^{-\pmb{z}_i \pmb{\beta}})t_i \right]
+  \end{aligned}
+  $$
+If $\pmb{\beta} = (\beta_0, \beta_1, \beta_2)$ then:
+  $$
+  \begin{aligned}
+    l &= \sum_{i=1}^N  \left[  -\beta_0\delta_i-\beta_1 z_{i1}\delta_i-\beta_2z_{i1}\delta_i-(e^{-\beta_0-\beta_1 z_{i1}-\beta_2z_{i1} })t_i \right]\\
+    \frac{\partial l}{\partial \beta_0} &= \sum_{i=1}^N  \left[  -\delta_i+(e^{-\pmb{z}_i \pmb{\beta}})t_i \right]\\
+    \frac{\partial l}{\partial \beta_1} &= \sum_{i=1}^N  \left[  -\delta_i z_{i1}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i1}t_i \right]\\
+    \frac{\partial l}{\partial \beta_2} &= \sum_{i=1}^N  \left[  -\delta_i z_{i2}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i2}t_i \right]\\
+  \end{aligned}
+  $$
+
+We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\partial \beta_0}$, $\frac{\partial PSR_Y}{\partial \beta_1}$, $\frac{\partial PSR_Y}{\partial \beta_2}$. Because $PSR = (1+\delta)F(t) - \delta = (1+\delta)(1 - S(t)) - \delta = 1 - (1+\delta)S(t)$, we have:
+  $$
+  \begin{aligned}
+    PSR_{Y_i} &= 1 - (1+\delta_i)S_Y(t) = 1 - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})t} \\
+    \frac{\partial PSR_Y}{\partial \beta_0} = - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
+  \end{aligned}
+  $$
+
+\clearpage
+
+\subsection{M-estimation for partial and conditional correlation}
+Another way of approaching this problem was suggested by \cite{lui2015covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
+Under construction ...
 
 
-\subsection{Linear regression scores}
-In this section we are trying to understand how Qi is computing \emph{p-value} for \emph{Spearman correlation} (or correlation of PSR). We first try to understand function \texttt{lm.scores()}.
-
+% \subsection{Linear regression scores}
+% In this section we are trying to understand how Qi is computing \emph{p-value} for \emph{Spearman correlation} (or correlation of PSR). We first try to understand function \texttt{lm.scores()}.
+%
 
 \printbibliography
 
