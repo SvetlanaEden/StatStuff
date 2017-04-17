@@ -1598,6 +1598,8 @@ Under complete independence of events and censoring events, Dabrowska's and Pren
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%  M-Estimation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \section{M-estimation for partial correlation of PSR}
 In this section we are trying to understand how to compute variance of PSR correlation after adjusting for other covariates. We use \emph{M-estimation}. First we need the following vector:
 
@@ -1631,7 +1633,21 @@ So the resulting variance is:
 		\frac{\pmb{V}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})}{n} = \frac{1}{n}\pmb{A}_n^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})  \{\pmb{A}_n^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \}^T
  	\end{aligned}
 	$$
+  
+\subsubsection{Disclaimers, unresolved mysteries, notes}
+This text most surely has errors. I tried very hard, but because of remaining \emph{mysteries} I have not achieved clarity yet. The following misteries remain:
+\begin{enumerate}[1)]
+  \item In the paper of \cite{stefanski2002calculus} matrices $\pmb{A}_n$ and $\pmb{B}_n$ both have term $\frac{1}{n}$. This term in not in Qi's code, but her code agrees with simulations.
+  \item On top of the previous mystery, the variance of the estimator is supposed to be $\frac{\pmb{V}_n}{n}$, but this does not agree with simulations.
+  \item This would not bug me as much if I did not run simulations for linear regression sandwich estimator and for correlation of PSR estimated separately using M-estimation. According to the simulations, for linear regression, there should not be division by $n$, but for correlation of PSR, there should be division by $n$.
+  \item According to \cite{stefanski2002calculus}, vector $\psi_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$ is constructed using a) maximum likelihood, b) the stuff for PSR. The part for PSR is supposed to be coded as, for example, $PSR_{X_{i}}(\pmb{\theta}_X) -\theta_1$. But in Qi's code, it is coded as $-PSR_{X_{i}}(\pmb{\theta}_X) +\theta_1$ (while the score equations are coded in the same was as mine). This seemingly minor difference affects the SD. Qi's code agrees with simulations.
+\end{enumerate}
+My disclaimer is that my understanding of the method is not sufficient to resolve these \emph{mysteries}.\\
 
+\textbf{Note}: In Qi's code, instead of $\pmb{A}^{-1}\pmb{B} (\pmb{A}^{-1})^T$, she has $\pmb{A}^{-1}\psi (\pmb{A}^{-1}\psi)^T$, which is essentially the same.
+
+
+\subsubsection{Defining the matrices}
 The main challenge is to accurately define and code $\pmb{A}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})$ because it involves a lot of derivatives. Let's show what the matrix would look like if $\pmb{\theta}_X = (\theta_{X, 1}, \theta_{X, 2})$ and $\pmb{\theta}_Y= (\theta_{Y, 1}, \theta_{Y, 2})$. Also, let's denote $\rho_S = \frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_5 - \theta_2^2}}$:
 
 \[
@@ -1731,26 +1747,36 @@ In order to find $B_n$ using matrix multipliction, we actually have:
 
 I think Qi was not including the derivative by $\sigma^2$, and her $\pmb{\psi}_{Y}$ is transposed, probably because she solves matrixes in a little bit different way. With this in mind, we map (somewhat loosely) the return variable \texttt{dl.dtheta} to $\pmb{\psi}_{Y}$.\\
 
-Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$:  
+Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$ and use variable name $l$ for the likelihood:  
 
 \[
-\pmb{A}_{Y,2,2} = \frac{1}{n}\sum_i^n\begin{bmatrix}
-    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_0} \right)^T \\
-    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_1} \right)^T \\
-    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_2} \right)^T \\
-    \left(\frac{\partial \pmb{\psi}_{Y_i}}{ \partial (\sigma^2)} \right)^T \\
+\pmb{A}_{Y,2,2} = -\frac{1}{n}\sum_i^n\begin{bmatrix}
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_0},  &
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_1}, &
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_2}, &
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial (\sigma^2)} &
 \end{bmatrix}
- = \frac{1}{n}\sum_i^n\begin{bmatrix}
+ =-\frac{1}{n}\sum_i^n\begin{bmatrix}
+    \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0 \partial (\sigma^2)}\\
+    \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_o}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1 \partial (\sigma^2)}\\
+    \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2 \partial (\sigma^2)}\\
+    \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2)\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial (\sigma^2)}\\
+\end{bmatrix} =
+\]
+\[
+  =-\frac{1}{n}\sum_i^n\begin{bmatrix}
     1   &  z_{i1}   & z_{i2}  &  2 \cdot res_i\\
     z_{i1}   &  z_{i1}^2   & z_{i1}z_{i2}  &  2 \cdot res_iz_{i1} \\
     z_{i2}   &  z_{i1}z_{i2}   & z_{i2}^2  &  2 \cdot res_iz_{i2}  \\
     2 \cdot res_i   & 2 \cdot res_iz_{i1}   & 2 \cdot res_iz_{i2}  &  1 \\
-\end{bmatrix}=\frac{1}{n}
+\end{bmatrix}=-\frac{1}{n}
 \begin{bmatrix}
   \pmb{Z}^T\pmb{Z} & 2 \cdot \pmb{Z}^T \pmb{res}\\
   2 \cdot \pmb{res}^T\pmb{Z} & 1\\
   \end{bmatrix}
 \]
+
+
 
 Because Qi was not including the derivative by $\sigma^2$, the return variable \texttt{d2l.dtheta.dtheta} can be mappedt to  $\pmb{Z}^T\pmb{Z}$, or $\pmb{A}_{X,1,1}$ ($\pmb{A}_{Y,2,2}$), again loosely.\\
 I am not sure why the function returns variable \texttt{resid} (linear regression residuals $Y_i - \pmb{Z}_i\pmb{\theta}_Y$), but I haven't learned the code well yet.\\
@@ -1834,40 +1860,98 @@ In the following section, I use the on-line source written by Daowen Zhang(ST 74
 Where $e^{\sigma \epsilon_{i}}$ can have variety of distributions including Weibull, exponential, gamma, log-logistic, and log-normal.
 
 \subsubsection{M-estimation for exponential survival model}
-For exponential survival model, we assume that $\sigma = 1$, and:
+In this section we denote the values of random variable $Y_i$ as $t_i$. For exponential survival model, we assume that $\sigma = 1$, and:
   $$
   \begin{aligned}
     e^{\epsilon_{i}} &\sim Exponential(e^{-\pmb{z}_i \pmb{\beta}})\\
-    F_{e^{\epsilon_{i}}}(t) &= 1 - e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
-    S_{e^{\epsilon_{i}}}(t) &= e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
-    f_{e^{\epsilon_{i}}}(t) &= e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
+    F_{e^{\epsilon_{i}}}(t) &= 1 - e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\\
+    S_{e^{\epsilon_{i}}}(t) &= e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\\
+    f_{e^{\epsilon_{i}}}(t) &= e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\\
   \end{aligned}
   $$
 The likelihood and the log-likelihood are the following:
   $$
   \begin{aligned}
-    L &= \prod_{i=1}^N  \left[ e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} \right]^{\delta_i} \left[e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\right]^{1-\delta_i} =\prod_{i=1}^N   \left[e^{-\left(\pmb{z}_i \pmb{\beta}\right)}\right]^{\delta_i}   e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} = \prod_{i=1}^N   e^{-\pmb{z}_i \pmb{\beta}\delta_i-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\\
-    l &= \sum_{i=1}^N  \left[  -\pmb{z}_i \pmb{\beta}\delta_i-(e^{-\pmb{z}_i \pmb{\beta}})t_i \right]
-  \end{aligned}
+    L &= \prod_{i=1}^N  \left[ e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} \right]^{\delta_i} \left[e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}\right]^{1-\delta_i} =\prod_{i=1}^N   \left[e^{-\left(\pmb{z}_i \pmb{\beta}\right)}\right]^{\delta_i}   e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} = \prod_{i=1}^N   e^{-\pmb{z}_i \pmb{\beta}\delta_i-(e^{-\pmb{z}_i \pmb{\beta}})t_i}=\prod_{i=1}^N L_{Y_i}\\
+    l_i &=\sum_{i=1}^N log(L_{Y_i}) =\sum_{i=1}^N  \left[  -\pmb{z}_i \pmb{\beta}\delta_i-(e^{-\pmb{z}_i \pmb{\beta}})t_i \right]
+  \end{aligned}\\
   $$
 If $\pmb{\beta} = (\beta_0, \beta_1, \beta_2)$ then:
   $$
   \begin{aligned}
-    l &= \sum_{i=1}^N  \left[  -\beta_0\delta_i-\beta_1 z_{i1}\delta_i-\beta_2z_{i1}\delta_i-(e^{-\beta_0-\beta_1 z_{i1}-\beta_2z_{i1} })t_i \right]\\
-    \frac{\partial l}{\partial \beta_0} &= \sum_{i=1}^N  \left[  -\delta_i+(e^{-\pmb{z}_i \pmb{\beta}})t_i \right]\\
-    \frac{\partial l}{\partial \beta_1} &= \sum_{i=1}^N  \left[  -\delta_i z_{i1}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i1}t_i \right]\\
-    \frac{\partial l}{\partial \beta_2} &= \sum_{i=1}^N  \left[  -\delta_i z_{i2}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i2}t_i \right]\\
+    l_{Y_i} &=   -\beta_0\delta_i-\beta_1 z_{i1}\delta_i-\beta_2z_{i2}\delta_i-(e^{-\beta_0-\beta_1 z_{i1}-\beta_2z_{i2} })t_i \\
+    \psi_{Yi,\beta_0} &= \frac{\partial l_i}{\partial \beta_0} =  -\delta_i+(e^{-\pmb{z}_i \pmb{\beta}})t_i\\
+    \psi_{Yi,\beta_1} &= \frac{\partial l_i}{\partial \beta_1} =  -\delta_i z_{i1}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i1}t_i \\
+    \psi_{Yi,\beta_2} &= \frac{\partial l_i}{\partial \beta_2} =   -\delta_i z_{i2}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i2}t_i \\
   \end{aligned}
   $$
+  
+Then:
+  \[
+  \pmb{A}_{Y,2,2} = -\frac{1}{n}\sum_i^n\begin{bmatrix}
+      \frac{\partial \pmb{\psi}_{Yi,\beta_0}}{ \partial \beta_0} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_0}}{ \partial \beta_1} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_0}}{ \partial \beta_2} \\
+      %%%%%%%%%
+      \frac{\partial \pmb{\psi}_{Yi,\beta_1}}{ \partial \beta_0} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_1}}{ \partial \beta_1} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_1}}{ \partial \beta_2} \\
+      %%%%%%%%%
+      \frac{\partial \pmb{\psi}_{Yi,\beta_2}}{ \partial \beta_0} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_2}}{ \partial \beta_1} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_2}}{ \partial \beta_2}\\
+  \end{bmatrix}
+   =-\frac{1}{n}\sum_i^n\begin{bmatrix}
+      \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_2} \\
+      \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_o}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_2}\\
+      \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_2}
+  \end{bmatrix} =
+  \]
+  \[
+    =\frac{1}{n}\sum_i^n  \left(e^{-\pmb{z}_i \pmb{\beta}}\right)t_i
+  \begin{bmatrix}
+      1   &  z_{i1}   & z_{i2}   \\
+      z_{i1}   &  z_{i1}^2   & z_{i1}z_{i2} \\
+      z_{i2}   &  z_{i1}z_{i2}   & z_{i2}^2  \\
+  \end{bmatrix}=\]\\
+  \[
+  =\frac{1}{n}
+  \begin{bmatrix}
+      \pmb{C}^T\pmb{Z} \\
+  \end{bmatrix} 
+  \]
+  
+  Where
+  \[
+  \pmb{C} = 
+  \begin{bmatrix}
+      \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)t_1   &  \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)t_1  & \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)t_1 \\
+      \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)t_2   &  \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)t_2  & \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)t_2 \\
+       .......................... \\
+      \left(e^{-\pmb{z}_N \pmb{\beta}}\right)t_N   &  \left(e^{-\pmb{z}_N \pmb{\beta}}\right)t_N  & \left(e^{-\pmb{z}_N \pmb{\beta}}\right)t_N \\
+  \end{bmatrix} 
+    \circ \pmb{Z} \\
+  \]
+
+Where $\circ$ is \emph{Hadamard} product or element-wise multiplication.
 
 We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\partial \beta_0}$, $\frac{\partial PSR_Y}{\partial \beta_1}$, $\frac{\partial PSR_Y}{\partial \beta_2}$. Because $PSR = (1+\delta)F(t) - \delta = (1+\delta)(1 - S(t)) - \delta = 1 - (1+\delta)S(t)$, we have:
   $$
   \begin{aligned}
-    PSR_{Y_i} &= 1 - (1+\delta_i)S_Y(t) = 1 - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})t} \\
-    \frac{\partial PSR_Y}{\partial \beta_0} = - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})t}\\
+    PSR_{Y_i} &=  1 - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_0} &= - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i}  \left[ -(e^{-\pmb{z}_i \pmb{\beta}})t_i \right] (-1)=\\
+    &= - (1+\delta_i)t_i e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i-\pmb{z}_i \pmb{\beta}}\\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_1} &= - (1+\delta_i)~t_i ~z_{i1}~ e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i -\pmb{z}_i \pmb{\beta}}\\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_2} &= - (1+\delta_i)~t_i ~z_{i2}~ e^{-(e^{-\pmb{z}_i \pmb{\beta}})t_i -\pmb{z}_i \pmb{\beta}}\\
   \end{aligned}
   $$
 
+Now we can feed all this into function \texttt{corTS}. Then, we check the result using simulations.
+
+
+
+\subsubsection{Things to remember}
+Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 \clearpage
 
 \subsection{M-estimation for partial and conditional correlation}
