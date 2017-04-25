@@ -1859,16 +1859,17 @@ In the following section, I use the on-line source written by Daowen Zhang(ST 74
     &=S_{e^{\sigma \epsilon_{i}}}(e^{-\pmb{z}_i \pmb{\beta}}t)\\
   \end{aligned}
   $$
-Where $e^{\sigma \epsilon_{i}}$ can have variety of distributions including Weibull, exponential, gamma, log-logistic, and log-normal.
+Where $e^{\sigma \epsilon_{i}}$ can have variety of distributions including Weibull, exponential, gamma, log-logistic, and log-normal.\\
+In the following sections we denote random variable, time to outcome, as $Y_i$ and its values as $y_i$. 
 
 \subsubsection{M-estimation for \emph{exponential} survival model}
-In this section we denote random variable, time to outcome, as $Y_i$ and its values as $y_i$. For exponential survival model, we assume that $\sigma = 1$, and:
+For exponential survival model, we assume that $\sigma = 1$, and:
   $$
   \begin{aligned}
     e^{\epsilon_{i}} &\sim Exponential(e^{-\pmb{z}_i \pmb{\beta}})\\
-    F_{e^{\epsilon_{i}}}(t) &= 1 - e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i}\\
-    S_{e^{\epsilon_{i}}}(t) &= e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i}\\
-    f_{e^{\epsilon_{i}}}(t) &= e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i}\\
+    F_{e^{\epsilon_{i}}}(y_i) &= 1 - e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i}\\
+    S_{e^{\epsilon_{i}}}(y_i) &= e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i}\\
+    f_{e^{\epsilon_{i}}}(y_i) &= e^{-\left(\pmb{z}_i \pmb{\beta}\right)}e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i}\\
   \end{aligned}
   $$
 The likelihood and the log-likelihood are the following:
@@ -1882,9 +1883,9 @@ If $\pmb{\beta} = (\beta_0, \beta_1, \beta_2)$ then:
   $$
   \begin{aligned}
     l_{Y_i} &=   -\beta_0\delta_i-\beta_1 z_{i1}\delta_i-\beta_2z_{i2}\delta_i-(e^{-\beta_0-\beta_1 z_{i1}-\beta_2z_{i2} })y_i \\
-    \psi_{Yi,\beta_0} &= \frac{\partial l_i}{\partial \beta_0} =  -\delta_i+(e^{-\pmb{z}_i \pmb{\beta}})y_i\\
-    \psi_{Yi,\beta_1} &= \frac{\partial l_i}{\partial \beta_1} =  -\delta_i z_{i1}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i1}y_i \\
-    \psi_{Yi,\beta_2} &= \frac{\partial l_i}{\partial \beta_2} =   -\delta_i z_{i2}+(e^{-\pmb{z}_i \pmb{\beta}})z_{i2}y_i \\
+    \psi_{Yi,\beta_0} &= \frac{\partial l_i}{\partial \beta_0} =  -\delta_i+\left(e^{-\pmb{z}_i \pmb{\beta}}\right)y_i\\
+    \psi_{Yi,\beta_1} &= \frac{\partial l_i}{\partial \beta_1} =  \left\{-\delta_i+\left(e^{-\pmb{z}_i \pmb{\beta}}\right)y_i\right\}z_{i1} \\
+    \psi_{Yi,\beta_2} &= \frac{\partial l_i}{\partial \beta_2} =  \left\{-\delta_i+\left(e^{-\pmb{z}_i \pmb{\beta}}\right)y_i\right\}z_{i2} \\
   \end{aligned}
   $$
   
@@ -1927,17 +1928,17 @@ Then:
   \[
   \pmb{C} = 
   \begin{bmatrix}
-      \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)t_1   &  \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)t_1  & \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)t_1 \\
-      \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)t_2   &  \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)t_2  & \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)t_2 \\
+      \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)y_1   &  \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)y_1  & \left(e^{-\pmb{z}_1 \pmb{\beta}}\right)y_1 \\
+      \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)y_2   &  \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)y_2  & \left(e^{-\pmb{z}_2 \pmb{\beta}}\right)y_2 \\
        .......................... \\
-      \left(e^{-\pmb{z}_N \pmb{\beta}}\right)t_N   &  \left(e^{-\pmb{z}_N \pmb{\beta}}\right)t_N  & \left(e^{-\pmb{z}_N \pmb{\beta}}\right)t_N \\
+      \left(e^{-\pmb{z}_N \pmb{\beta}}\right)y_N   &  \left(e^{-\pmb{z}_N \pmb{\beta}}\right)y_N  & \left(e^{-\pmb{z}_N \pmb{\beta}}\right)y_N \\
   \end{bmatrix} 
     \circ \pmb{Z} \\
   \]
 
 Where $\circ$ is a \emph{Hadamard} product or element-wise multiplication.
 
-We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\partial \beta_0}$, $\frac{\partial PSR_Y}{\partial \beta_1}$, $\frac{\partial PSR_Y}{\partial \beta_2}$. Because $PSR_{Y_i} = (1+\delta)F_Y(y_i) - \delta_i = (1+\delta_i)(1 - S_Y(y_i)) - \delta_i = 1 - (1+\delta_i)S_Y(y_i)$, we have:
+We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\partial \beta_0}$, $\frac{\partial PSR_Y}{\partial \beta_1}$, $\frac{\partial PSR_Y}{\partial \beta_2}$. Because $PSR_{Y_i} = (1+\delta_i)F_Y(y_i) - \delta_i = (1+\delta_i)(1 - S_Y(y_i)) - \delta_i = 1 - (1+\delta_i)S_Y(y_i)$, we have:
   $$
   \begin{aligned}
     PSR_{Y_i} &=  1 - (1+\delta_i)e^{-(e^{-\pmb{z}_i \pmb{\beta}})y_i} \\
@@ -1950,13 +1951,167 @@ We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\pa
 
 Now we can feed all this into function \texttt{corTS} and check the result using simulations. One of the ways to make sure we are doing the right thing is to compare our matrix $A_n$ to the variance-covariance matrix of the regression with exponential distribution. They should be equal. Next, we can use library \texttt{sandwich}, in order to see if matrices $n\cdot(A_n)^{-1}$ and $B_n/n$ are \emph{bread} and \emph{meat} that library  \texttt{sandwich} computes. This should be done for each model separately because otherwise the results won't be exactly the same.
 
+\subsubsection{M-estimation for \emph{log-logistic} survival model}
+Language $R$ does not have \emph{log-logistic} distribution, but we still need to simulate it for our work. We first simulate $\sigma\epsilon_i = log(Y_i)$ and then get the time as $Y_i = e^{\sigma\epsilon}$. I am \textbf{guessing} that $\epsilon$ is distributed as logistic random variable. Let's write it down:
+  $$
+  \begin{aligned}
+    P(log(Y_i) \leq x) &= P(\pmb{z}_i\pmb{\beta} + \sigma\epsilon \leq x) = P\left(\epsilon \leq \frac{ x-\pmb{z}_i\pmb{\beta} }{\sigma}\right) = \frac{  1  }{  1 + e^{-\frac{ x-\pmb{z}_i\pmb{\beta} }{\sigma}}} \\
+  \end{aligned}
+  $$
+Which can be rewritten as:
+  $$
+  \begin{aligned}
+    P(log(Y_i) \leq x) &= \frac{  1  }{  1 + y_i^{-\frac{1}{\sigma}} e^{-\frac{-\pmb{z}_i\pmb{\beta}}{\sigma}}   } \\
+  \end{aligned}
+  $$
 
 
-\subsubsection{Things to remember}
-Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
+But this did not work because of (I am \textbf{guessing}) different parametrization. So I tried a different parametrization where $\sigma$ is \emph{absorbed} into $\beta$ coefficients, so we have according to \cite{bennett1983log}:
+
+ $$
+ \begin{aligned}
+   F_{Y_i}(y_i) &= \frac{  1  }{  1 + y_i^{-\gamma} e^{-\pmb{z}_i\pmb{\beta}}   } \\
+  \end{aligned}
+  $$
+  
+And it did not work either. So I found a presentation of \emph{Christoph Dätwyler} and \emph{Timon Stucki}(\url{https://stat.ethz.ch/education/semesters/ss2011/seminar/contents/handout_9.pdf}), and according to them, for log-logistic distribution, \texttt{R} uses parametrization of \emph{accelerated failure time} AFT model, which is:
+ $$
+ \begin{aligned}
+   F_{Y_i}(y_i) &= \frac{  1  }{  1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}   } \\
+   S_{Y_i}(y_i) &= \frac{  y_i^{-\gamma}\left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}   }{  1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}   } \\
+  f_{Y_i}(y_i) &=   \frac{  \gamma y_i^{-\gamma-1} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}  }{  \left(1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma} \right)^2   } \\
+  \end{aligned}
+  $$
+
+
+The likelihood and the log-likelihood are the following:
+  $$
+  \begin{aligned}
+    L &= \prod_{i=1}^N  \left[    \frac{  \gamma y_i^{-\gamma-1} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}  }{  \left(1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma} \right)^2   } \right]^{\delta_i} \left[  \frac{  y_i^{-\gamma}\left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}   }{  1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}   }  \right]^{1-\delta_i} = \prod_{i=1}^N      \frac{  (\gamma)^{\delta_i}   (y_i)^{-\delta_i-\gamma}   \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}   }{  \left(1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma}  \right)^{\delta_i + 1}  } \\
+    l_{Y_i} &=\sum_{i=1}^N log(L_{Y_i}) =\sum_{i=1}^N  \left[    \delta_i log(\gamma)   - (\delta_i + \gamma) log(y_i) +\pmb{z}_i\pmb{\beta}\gamma   - (\delta_i + 1)log\left(1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma} \right)\right]
+  \end{aligned}\\
+  $$
+If $\theta = (\pmb{\beta}, \gamma) = (\beta_0, \beta_1, \gamma)$ then:
+
+  $$
+  \begin{aligned}
+    l_{Y_i} &=    \delta_i log(\gamma)   - (\delta_i + \gamma) log(y_i) +\pmb{z}_i\pmb{\beta}\gamma   - (\delta_i + 1)log\left(1 + y_i^{-\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}} \right)^{-\gamma} \right)\\
+    \psi_{Yi,\beta_0} &= \frac{\partial l_i}{\partial \beta_0} =  \gamma \left\{1 - \frac{  (1+\delta_i)y_i^{-\gamma} \left(e^{\pmb{z}_i\pmb{\beta}\gamma}\right)  }{1 +  y_i^{-\gamma} \left(e^{\pmb{z}_i\pmb{\beta}\gamma}\right)}    \right\}   =    \gamma \left\{1 - \frac{  (1+\delta_i)  }{1 +  y_i^{\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}\gamma}\right)}    \right\}\\
+    \psi_{Yi,\beta_1} &= \frac{\partial l_i}{\partial \beta_1} =   z_{i1}\gamma \left\{1 - \frac{  (1+\delta_i)  }{1 +  y_i^{\gamma} \left(e^{-\pmb{z}_i\pmb{\beta}\gamma}\right)}    \right\}\\
+    \psi_{Yi,\gamma} &= \frac{\partial l_i}{\partial \gamma} =  \frac{\delta_i}{\gamma}  - log(y_i) + \pmb{z}_i\pmb{\beta}  - \frac{  (1+\delta_i)   \left(  -log(y_i) + \pmb{z}_i\pmb{\beta} \right)  }{1 +  y_i^{\gamma} e^{-\pmb{z}_i\pmb{\beta}\gamma}} \\
+  \end{aligned}
+  $$
+When computing score equations, language \texttt{R} uses $\gamma^* = -log(\gamma)$. If we take a derivative according to $\gamma^*$, the last score equation is:
+  $$
+  \begin{aligned}
+    \psi_{Yi,\gamma^*} &= \frac{\partial l_i}{\partial \gamma^*} =  -\delta_i  + e^{-\gamma^*}\left\{log(y_i)  - \pmb{z}_i\pmb{\beta} +  \frac{  (1+\delta_i)\left(  -log(y_i) + \pmb{z}_i\pmb{\beta} \right)  }{1 +  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ e^{-\gamma^*}}    }   \right\}\\
+  \end{aligned}
+  $$
+When we actually compute it we use $\gamma$ again:
+  $$
+  \begin{aligned}
+    \psi_{Yi,\gamma^*} &=\left.  \frac{\partial l_i}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)} =  -\delta_i  + \gamma\left\{log(y_i)  - \pmb{z}_i\pmb{\beta} +  \frac{  (1+\delta_i)\left(  -log(y_i) + \pmb{z}_i\pmb{\beta} \right)  }{1 +  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}    }   \right\}\\
+  \end{aligned}
+  $$
+
+Let's move onto the second derivatives:
+  \[
+  \pmb{A}_{Y,2,2} = -\sum_i^n\begin{bmatrix}
+      \frac{\partial \pmb{\psi}_{Yi,\beta_0}}{ \partial \beta_0} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_0}}{ \partial \beta_1} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_0}}{ \partial \gamma^*} \\
+      %%%%%%%%%
+      \frac{\partial \pmb{\psi}_{Yi,\beta_1}}{ \partial \beta_0} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_1}}{ \partial \beta_1} &
+      \frac{\partial \pmb{\psi}_{Yi,\beta_1}}{ \partial \gamma^*} \\
+      %%%%%%%%%
+      \frac{\partial \pmb{\psi}_{Yi,\gamma^*}}{ \partial \beta_0} &
+      \frac{\partial \pmb{\psi}_{Yi,\gamma^*}}{ \partial \beta_1} &
+      \frac{\partial \pmb{\psi}_{Yi,\gamma^*}}{ \partial \gamma^*}\\
+  \end{bmatrix}
+   =-\sum_i^n\begin{bmatrix}
+      \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \gamma^*} \\
+      \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_o}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \gamma^*}\\
+      \frac{\partial^2 l_{Y_i}}{ \partial \gamma^*\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \gamma^*\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \gamma^*\partial \gamma^*}
+  \end{bmatrix}
+  \]
+  
+Now, this is a handful, so we should go slowly and figure out each of these: 
+  $$
+  \begin{aligned}
+    \left. \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_0}  \right|_{\gamma^* = -log(\gamma)} &= - \gamma^2(1+\delta_i)  \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}   }{  \left( 1 +  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  } \\
+    \left. \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_1}  \right|_{\gamma^* = -log(\gamma)} &= - \gamma^2 z_{i1} (1+\delta_i)  \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}   }{   \left( 1 + \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  } \\
+    \left. \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_1}  \right|_{\gamma^* = -log(\gamma)} &= - \gamma^2  z_{i1}^2 (1+\delta_i)  \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}   }{   \left(1 +  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  } \\
+    %%%%%%%%%%%% derive by gamma:
+    \left. \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \gamma^*}  \right|_{\gamma^* = -log(\gamma)} &= - \gamma   \left[   1 -   (1+\delta_i)  \frac{   1 +   \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}     -\gamma \left( log(y_i) - \pmb{z}_i\pmb{\beta} \right)\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} }{  \left( 1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  }  \right]\\
+    \left. \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \gamma^*}  \right|_{\gamma^* = -log(\gamma)} &= - \gamma  z_{i1}  \left[   1 -   (1+\delta_i)  \frac{   1 +   \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}     -\gamma \left( log(y_i) - \pmb{z}_i\pmb{\beta} \right)\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} }{  \left( 1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  }  \right]\\
+    \left. \frac{\partial^2 l_{Y_i}}{ \partial  \gamma^*  \partial \gamma^*}  \right|_{\gamma^* = -log(\gamma)} &= - \gamma   \left[   log(y_i)  -  \pmb{z}_i\pmb{\beta} +  (1+\delta_i)  \frac{   \left( log(y_i) - \pmb{z}_i\pmb{\beta} \right)^2  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} }{  \left( 1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  }  \right]\\
+  \end{aligned}
+  $$
+    
+  \[
+    \pmb{A}_{Y,2,2} =
+  \begin{bmatrix}
+      c_i   &  c_i z_{i1}   & d_i   \\
+      c_i z_{i1}   &  c_i z_{i1}^2   & d_i z_{i1} \\
+      d_i   &  d_i z_{i1}   & d_{\gamma,\gamma}  \\
+  \end{bmatrix}\]\\
+
+  Where
+  $$
+  \begin{aligned}
+    c_i &=  \gamma^2(1+\delta_i)  \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}   }{  \left( 1 +  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  } \\
+    %%%%%%%%%%%% derive by gamma:
+    d_i &=  \gamma   \left[   1 -   (1+\delta_i)  \frac{   1 +   \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}     -\gamma \left( log(y_i) - \pmb{z}_i\pmb{\beta} \right)\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} }{  \left( 1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  }  \right]\\
+    d_{\gamma,\gamma} &=  \gamma   \left[   log(y_i)  -  \pmb{z}_i\pmb{\beta} +  (1+\delta_i)  \frac{   \left( log(y_i) - \pmb{z}_i\pmb{\beta} \right)^2  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} }{  \left( 1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma} \right)^2  }  \right]\\
+  \end{aligned}
+  $$
+  
+  
+  
+  
+  \[
+  \pmb{C} = 
+  \begin{bmatrix}
+      c_1   &  c_1  & c_1 \\
+      c_2   &  c_2  & c_2 \\
+       ... \\
+      c_N   &  c_N  & c_N \\
+  \end{bmatrix} 
+    \circ \pmb{Z} \\
+  \]
+
+Where $\circ$ is a \emph{Hadamard} product or element-wise multiplication, and:
+  $$
+  \begin{aligned}
+    c_i &=  \frac{\left(e^{-\pmb{z}_i \pmb{\beta}}\right)y_i }{\sigma}   \left\{  1 + \frac{(\delta_i + 1)\left( \frac{\left(e^{-\pmb{z}_i \pmb{\beta}}\right)y_i }{\sigma}-1 \right)  }{ 1 + e^{\frac{\left(e^{-\pmb{z}_i \pmb{\beta}}\right)y_i }{\sigma}} }  \right\}\\
+  \end{aligned}
+  $$
+
+
+We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\partial \beta_0}$, $\frac{\partial PSR_Y}{\partial \beta_1}$, $\frac{\partial PSR_Y}{\partial \beta_2}$. Because $PSR_{Y_i} = (1+\delta_i)F_Y(y_i) - \delta_i = (1+\delta_i)(1 - S_Y(y_i)) - \delta_i = 1 - (1+\delta_i)S_Y(y_i)$, we have:
+  $$
+  \begin{aligned}
+    PSR_{Y_i} &=  1 - (1+\delta_i) \frac{1}{1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_0} &= - \gamma(1+\delta_i) \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_1} &= - \gamma(1+\delta_i) \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2}  z_{i1}\\
+    \left. \frac{\partial PSR_{Y_i}}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)} &= ~~~ \gamma(1+\delta_i)\frac{    \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2}(log(y_i) - \pmb{z}_i\pmb{\beta}) \\
+  \end{aligned}
+  $$
+
+Now we can feed all this into function \texttt{corTS} and check the result using simulations. One of the ways to make sure we are doing the right thing is to compare our matrix $A_n$ to the variance-covariance matrix of the regression with exponential distribution. They should be equal. Next, we can use library \texttt{sandwich}, in order to see if matrices $n\cdot(A_n)^{-1}$ and $B_n/n$ are \emph{bread} and \emph{meat} that library  \texttt{sandwich} computes. This should be done for each model separately because otherwise the results won't be exactly the same.
+
+
+
 \clearpage
+\subsubsection{Miscellaneous}
+Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
+Questions to Bryan:
+\begin{enumerate}[1)]
+  \item should we include the score equation for scale, not only for $\beta$ coefficients?
+\end{enumerate}
 
-\subsection{M-estimation for partial and conditional correlation}
+\subsection{M-estimation for conditional and partial-conditional correlation}
 Another way of approaching this problem was suggested by \cite{lui2015covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
 Under construction ...
 
