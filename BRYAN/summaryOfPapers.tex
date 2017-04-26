@@ -2099,8 +2099,30 @@ We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\pa
   \end{aligned}
   $$
 
-Now we can feed all this into function \texttt{corTS} and check the result using simulations. One of the ways to make sure we are doing the right thing is to compare our matrix $A_n$ to the variance-covariance matrix of the regression with exponential distribution. They should be equal. Next, we can use library \texttt{sandwich}, in order to see if matrices $n\cdot(A_n)^{-1}$ and $B_n/n$ are \emph{bread} and \emph{meat} that library  \texttt{sandwich} computes. This should be done for each model separately because otherwise the results won't be exactly the same.
+I coded the above derivations and compared the results with the \texttt{sandwich} package. The \emph{meat} part matched exactly, but the \emph{bread} part almost matched. I did not pursue this further because both \emph{meat} and \emph{bread} can be extracted from the model. The only thing that we need to make sure is that when a survival model has $\sigma$,  the score equations are according to $\sigma$ or $log(\sigma)$.\\
+Qi has already written a function that computes \emph{PSR} for each distribution of \emph{survreg}. The only expressions that need to be coded are:  $\frac{\partial PSR_{Y_i}}{\partial \beta_i}$ and $\left. \frac{\partial PSR_{Y_i}}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)}$. For log-logistic distribution these are defined above. For the rest of the distributions, we define them in the next section.
 
+\subsubsection{M-estimation for the survival model. The rest of the distributions.}
+
+\textbf{Weilbull} distribution:
+  $$
+  \begin{aligned}
+    PSR_{Y_i} &=  1 - (1+\delta_i) \frac{1}{1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_0} &= - \gamma(1+\delta_i) \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_1} &= - \gamma(1+\delta_i) \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2}  z_{i1}\\
+    \left. \frac{\partial PSR_{Y_i}}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)} &= ~~~ \gamma(1+\delta_i)\frac{    \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2}(log(y_i) - \pmb{z}_i\pmb{\beta}) \\
+  \end{aligned}
+  $$
+
+\textbf{Weibull} distribution:\\
+\textbf{Gaussian} distribution:\\
+\textbf{Logistic} distribution:\\
+\textbf{Lognormal} distribution:\\
+  $$
+  \begin{aligned}
+    f(x) = \frac{1}{\sqrt{2 \pi }\sigma x} e^{-\frac{(log(x) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}
+  \end{aligned}
+  $$
 
 
 \clearpage
