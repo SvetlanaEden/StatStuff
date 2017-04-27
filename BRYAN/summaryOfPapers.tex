@@ -2102,25 +2102,56 @@ We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\pa
 I coded the above derivations and compared the results with the \texttt{sandwich} package. The \emph{meat} part matched exactly, but the \emph{bread} part almost matched. I did not pursue this further because both \emph{meat} and \emph{bread} can be extracted from the model. The only thing that we need to make sure is that when a survival model has $\sigma$,  the score equations are according to $\sigma$ or $log(\sigma)$.\\
 Qi has already written a function that computes \emph{PSR} for each distribution of \emph{survreg}. The only expressions that need to be coded are:  $\frac{\partial PSR_{Y_i}}{\partial \beta_i}$ and $\left. \frac{\partial PSR_{Y_i}}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)}$. For log-logistic distribution these are defined above. For the rest of the distributions, we define them in the next section.
 
-\subsubsection{M-estimation for the survival model. The rest of the distributions.}
+\subsubsection{M-estimation for \emph{Weibull} survival model}
 
-\textbf{Weilbull} distribution:
+In \textbf{R}, Weibull distribution (functions like \texttt{rweibull()}) is parameterized in the following way:
+
   $$
   \begin{aligned}
-    PSR_{Y_i} &=  1 - (1+\delta_i) \frac{1}{1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}\right]^{ \gamma}} \\
-    \frac{\partial PSR_{Y_i}}{\partial \beta_0} &= - \gamma(1+\delta_i) \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2} \\
-    \frac{\partial PSR_{Y_i}}{\partial \beta_1} &= - \gamma(1+\delta_i) \frac{  \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2}  z_{i1}\\
-    \left. \frac{\partial PSR_{Y_i}}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)} &= ~~~ \gamma(1+\delta_i)\frac{    \left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}  }{    \left(1+\left[y_i e^{-\pmb{z}_i\pmb{\beta}}    \right]^{ \gamma}\right)^2}(log(y_i) - \pmb{z}_i\pmb{\beta}) \\
+    F(y)  = 1-exp\left(-\left(\frac{y}{scale}\right)^{shape}\right)
+  \end{aligned}
+  $$
+But we are going to use different parameterization because this is what \texttt{survreg()} function is using:
+  $$
+  \begin{aligned}
+    scale &= e^{\pmb{z}_i\pmb{\beta}};~~~~~~~~~~shape =\frac{1}{\sigma}\\
+    F(y_i)  &= 1-exp\left(-\left(\frac{y}{e^{\pmb{z}_i\pmb{\beta}}}\right)^{\frac{1}{\sigma}}\right)\\
+  \end{aligned}
+  $$
+So the residuals and their derivatives by $\beta_j$ can be written as:
+  $$
+  \begin{aligned}
+    PSR_{Y_i} &=  (1+\delta_i) \left[  1-exp\left(-\left(\frac{y}{e^{\pmb{z}_i\pmb{\beta}}}\right)^{\frac{1}{\sigma}}\right)    \right]  -  \delta_i\\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &= -(1+\delta_i)\frac{z_{ji}}{\sigma}  y_i^{\frac{1}{\sigma}} e^{ \left(  y_i\cdot e^{-\pmb{z}_i\pmb{\beta}} \right)^{\frac{1}{\sigma}}  - \frac{\pmb{z}_i\pmb{\beta}}{\sigma} } \\
   \end{aligned}
   $$
 
-\textbf{Weibull} distribution:\\
-\textbf{Gaussian} distribution:\\
-\textbf{Logistic} distribution:\\
-\textbf{Lognormal} distribution:\\
+My \textbf{guess} is that R-code takes a derivative of $log(\sigma)$, so let's re-parameterize the distribution accordingly: 
+
   $$
   \begin{aligned}
-    f(x) = \frac{1}{\sqrt{2 \pi }\sigma x} e^{-\frac{(log(x) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}
+    \gamma &= ln(\sigma);~~~~~~~ \sigma = e^{\gamma};~~~~~~~ \frac{1}{\sigma} = e^{-\gamma}\\
+    %%%%%%%%%%%%%%%%%%
+    F(y_i)  &= 1-exp\left(-\left(\frac{y}{e^{\pmb{z}_i\pmb{\beta}}}\right)^{e^{-\gamma}}\right)\\
+    PSR_{Y_i} &=  (1+\delta_i) \left[  1-exp\left(-\left(\frac{y_i}{e^{\pmb{z}_i\pmb{\beta}}}\right)^{e^{-\gamma}}\right)    \right]  -  \delta_i\\
+    %%%%%%%%%%%%%%%%%%
+    \frac{\partial PSR_{Y_i}}{\partial \gamma} &= (1+\delta_i)   \left[   -exp\left(-\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{e^{-\gamma}}\right)   \frac{\partial}{\partial \gamma}\left(    -\left(   y_i e^{-\pmb{z}_i\pmb{\beta}}  \right) ^{e^{-\gamma}} \right)   \right] =\\
+    & = (1+\delta_i)      exp\left(-\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{e^{-\gamma}}\right)   ln\left( y_i e^{-\pmb{z}_i\pmb{\beta}}  \right)        \left(   y_i e^{-\pmb{z}_i\pmb{\beta}}  \right) ^{e^{-\gamma}} \left( -e^{-\gamma} \right)   = \\
+    %%%%%%%%%%%%%%%%%%
+    & = - (1+\delta_i)   \left(  ln(y_i) -\pmb{z}_i\pmb{\beta}  \right)     y_i ^{e^{-\gamma}} exp \left\{    -\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{e^{-\gamma}}      -\pmb{z}_i\pmb{\beta}e^{-\gamma}      -\gamma \right\}   = \\
+    %%%%%%%%%%%%%%%%%%
+    \left. \frac{\partial PSR_{Y_i}}{\partial \gamma} \right|_{\gamma = log(\sigma)} &= - (1+\delta_i)   \left(  ln(y_i) -\pmb{z}_i\pmb{\beta}  \right)     y_i ^{\frac{1}{\sigma}} exp \left\{    -\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{\frac{1}{\sigma}}      -\frac{\pmb{z}_i\pmb{\beta}}{\sigma}     -ln(\sigma) \right\}   = \\
+  \end{aligned}
+  $$
+
+\subsubsection{M-estimation for \emph{Lognormal} survival model}
+
+% \textbf{Gaussian} distribution:\\
+% \textbf{Logistic} distribution:\\
+  $$
+  \begin{aligned}
+    f(x) &= \frac{1}{\sqrt{2 \pi }\sigma x} e^{-\frac{(log(x) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}\\
+    F(x) &= \frac{1}{2} + \frac{1}{\sqrt{\pi}} \int_0^x  e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}} dt\\
   \end{aligned}
   $$
 
