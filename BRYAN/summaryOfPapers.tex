@@ -2118,11 +2118,11 @@ But we are going to use different parameterization because this is what \texttt{
     F(y_i)  &= 1-exp\left(-\left(\frac{y}{e^{\pmb{z}_i\pmb{\beta}}}\right)^{\frac{1}{\sigma}}\right)\\
   \end{aligned}
   $$
-So the residuals and their derivatives by $\beta_j$ can be written as:
+So the PSR and their derivatives by $\beta_j$ can be written as:
   $$
   \begin{aligned}
     PSR_{Y_i} &=  (1+\delta_i) \left[  1-exp\left(-\left(\frac{y}{e^{\pmb{z}_i\pmb{\beta}}}\right)^{\frac{1}{\sigma}}\right)    \right]  -  \delta_i\\
-    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &= -(1+\delta_i)\frac{z_{ji}}{\sigma}  y_i^{\frac{1}{\sigma}} e^{ \left(  y_i\cdot e^{-\pmb{z}_i\pmb{\beta}} \right)^{\frac{1}{\sigma}}  - \frac{\pmb{z}_i\pmb{\beta}}{\sigma} } \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &= -(1+\delta_i)\frac{z_{ji}}{\sigma}  y_i^{\frac{1}{\sigma}} e^{ \left( - y_i\cdot e^{-\pmb{z}_i\pmb{\beta}} \right)^{\frac{1}{\sigma}}  - \frac{\pmb{z}_i\pmb{\beta}}{\sigma} } \\
   \end{aligned}
   $$
 
@@ -2140,7 +2140,7 @@ My \textbf{guess} is that R-code takes a derivative of $log(\sigma)$, so let's r
     %%%%%%%%%%%%%%%%%%
     & = - (1+\delta_i)   \left(  ln(y_i) -\pmb{z}_i\pmb{\beta}  \right)     y_i ^{e^{-\gamma}} exp \left\{    -\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{e^{-\gamma}}      -\pmb{z}_i\pmb{\beta}e^{-\gamma}      -\gamma \right\}   = \\
     %%%%%%%%%%%%%%%%%%
-    \left. \frac{\partial PSR_{Y_i}}{\partial \gamma} \right|_{\gamma = log(\sigma)} &= - (1+\delta_i)   \left(  ln(y_i) -\pmb{z}_i\pmb{\beta}  \right)     y_i ^{\frac{1}{\sigma}} exp \left\{    -\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{\frac{1}{\sigma}}      -\frac{\pmb{z}_i\pmb{\beta}}{\sigma}     -ln(\sigma) \right\}   = \\
+    \left. \frac{\partial PSR_{Y_i}}{\partial \gamma} \right|_{\gamma = log(\sigma)} &= - (1+\delta_i)   \left(  ln(y_i) -\pmb{z}_i\pmb{\beta}  \right)     y_i ^{\frac{1}{\sigma}} exp \left\{    -\left(y_i e^{-\pmb{z}_i\pmb{\beta}}\right)^{\frac{1}{\sigma}}      -\frac{\pmb{z}_i\pmb{\beta}}{\sigma}     -ln(\sigma) \right\}\\
   \end{aligned}
   $$
 
@@ -2150,8 +2150,98 @@ My \textbf{guess} is that R-code takes a derivative of $log(\sigma)$, so let's r
 % \textbf{Logistic} distribution:\\
   $$
   \begin{aligned}
-    f(x) &= \frac{1}{\sqrt{2 \pi }\sigma x} e^{-\frac{(log(x) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}\\
-    F(x) &= \frac{1}{2} + \frac{1}{\sqrt{\pi}} \int_0^x  e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}} dt\\
+    f(y) &= \frac{1}{y \sigma\sqrt{2 \pi }} e^{-\frac{(log(y) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}\\
+    F(y) &= \Phi\left( \frac{ln(y) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)  % \frac{1}{2} + \frac{1}{\sqrt{\pi}} \int_0^y  e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}} dt = \\
+  \end{aligned}
+  $$
+Where $\Phi\left( \frac{ln(y) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)$ is a \emph{cdf} of \emph{normal} distribution.
+So the PSR and their derivatives by $\beta_j$ can be written as:
+  $$
+  \begin{aligned}
+    PSR_{Y_i} &=  (1+\delta_i) F(y)  -  \delta_i = (1+\delta_i)\Phi\left( \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)  -  \delta_i\\
+  \end{aligned}
+  $$
+  
+We know that if we take a derivative by $y$ we'll get $\frac{1}{y \sigma\sqrt{2 \pi }} e^{-\frac{(log(y) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}$. $\frac{1}{y}$ appears because following the chain rule we multiply by $\frac{d ln(y)}{d y}$ so if we take a derivative by $\beta_i$ we get about the same thing except that, due to the chain rule, we have to multiple it by $  \frac{\partial \left(log(y_i) - \pmb{z}_i\pmb{\beta} \right)}{\partial \beta_i}  $, therefore, we get:
+  $$
+  \begin{aligned}
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &= -(1+\delta_i)z_{ji}   \frac{1}{\sqrt{2\pi} \sigma}    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} } \\
+  \end{aligned}
+  $$
+
+Now, in order to check ourselves, let's do the same thing, but using the \emph{Leibniz} rule of taking a derivative under the integral (see \url{https://en.wikipedia.org/wiki/Leibniz_integral_rule}):
+  $$
+  \begin{aligned}
+    \frac{d\phi}{d\alpha} = \int_a^b   \frac{\partial}{\partial\alpha}f(x, \alpha)dx +  f(b, \alpha)\frac{\partial b}{\partial\alpha}  - f(a, \alpha)\frac{\partial a}{\partial\alpha} \\
+  \end{aligned}
+  $$
+In our case $\frac{\partial a}{\partial\beta_i} = \frac{\partial b}{\partial\beta_i} = 0$, so we have:
+  $$
+  \begin{aligned}
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=(1+\delta_i) \int_0^y  \frac{\partial}{\partial \beta_j}  \frac{1}{t \sigma\sqrt{2 \pi }} e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}} dt = (1+\delta_i) \int_0^y   \frac{1}{t \sigma\sqrt{2 \pi }} e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}  \left(   -\frac{1}{2\sigma^2}   \right)  2(ln(t) - \pmb{z}_i\pmb{\beta})(-z_{ji})dt  =\\
+    &= -(1+\delta_i)z_{ji} \int_0^y   \frac{1}{\sigma\sqrt{2 \pi }} e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}  d\left(   -\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}   \right) =  -(1+\delta_i)z_{ji}  \frac{1}{\sqrt{2\pi} \sigma}    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} }\\
+  \end{aligned}
+  $$
+Which is the same thing. Now, let's do $\frac{\partial PSR_{Y_i}}{\partial \sigma}$ using the \emph{Leibniz} rule. \texttt{R} language probably uses $\gamma = log(\sigma)$, so will we. 
+  $$
+  \begin{aligned}
+    \gamma &= ln(\sigma);~~~~~  = e^{\gamma}\\
+    \frac{\partial PSR_{Y_i}}{\partial \gamma} &=(1+\delta_i) \int_0^{y_i}  \frac{\partial}{\partial \gamma}  \frac{e^{-\gamma}}{t \sqrt{2 \pi }} e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma}} dt = \\
+    &=(1+\delta_i) \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi }} e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma} - \gamma} \left[   \cancel{-\frac{1}{2}} \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2  e^{-2\gamma}\cancel{(-2)} - 1  \right] dt  =\\
+    &=(1+\delta_i) \left[       \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi }}  \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2 e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma} - 3\gamma} dt     -     \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi }}  e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma} - \gamma}  dt  \right] = \\
+    & =(1+\delta_i) \left[       A + B  \right]
+  \end{aligned}
+  $$
+
+It is straight forward to show (using $\gamma = ln(\sigma)$) that $B = F_Y(y_i)$ (the \emph{cdf} of the corresponding \emph{log-normal} distribution). Let's focus on $A$ now. In the following we replace $\gamma$ with $ln(\sigma)$:
+
+  $$
+  \begin{aligned}
+    A &=   \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi } \sigma^3}  \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2 e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}} dt  = 
+    \int_0^{y_i}   \frac{1}{\sqrt{2 \pi } \sigma^3}  \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2 e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}} d(ln(t) - \pmb{z}_i\pmb{\beta})
+  \end{aligned}
+  $$
+
+Now, let's do the following variable substitution:
+  $$
+  \begin{aligned}
+    x &=  \frac{ln(t) - \pmb{z}_i\pmb{\beta}}{\sigma}\\
+    e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}   &=   e^{-\frac{x^2}{2}}\\
+    \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2   &=  x^2 \sigma^2\\
+    d(ln(t) - \pmb{z}_i\pmb{\beta}) &= \sigma dx\\
+    t=0~then~x &= -\infty\\
+    t = y_i ~then~x  &=\frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma} = x(y_i)
+  \end{aligned}
+  $$
+So we have:
+  $$
+  \begin{aligned}
+    A &=   \int_{-\infty}^{x(y_i)}   \frac{1}{ \sqrt{2 \pi } \cancel{\sigma^3}}   x^2 \cancel{\sigma^2} e^{-\frac{x^2}{2}} \cancel{\sigma} dx  =  \frac{1}{ \sqrt{2 \pi } }  \int_{-\infty}^{x(y_i)}     x^2  e^{-\frac{x^2}{2}} dx
+  \end{aligned}
+  $$
+We use integration by parts:
+  $$
+  \begin{aligned}
+    dV &= e^{-\frac{x^2}{2}} x dx = -e^{-\frac{x^2}{2}} d\left(-\frac{x^2}{2}\right);~~~ &V = - e^{-\frac{x^2}{2}}\\
+    U &= x;~~~ &dU = dx
+  \end{aligned}
+  $$
+Therefore:
+  $$
+  \begin{aligned}
+    A & =  \frac{1}{ \sqrt{2 \pi } }      \left\{    \left.-x\cdot e^{-\frac{x^2}{2}}\right|_{-\infty}^{x(y_i)}  + \int_{-\infty}^{x(y_i)} e^{-\frac{x^2}{2}} dx   \right\}      dx =  \frac{1}{ \sqrt{2 \pi } }   \left[-x(y_i)\cdot e^{-\frac{x(y_i)^2}{2}}  + 0  \right]  +  \frac{1}{ \sqrt{2 \pi } }  \int_{-\infty}^{x(y_i)} e^{-\frac{x^2}{2}} dx  =\\
+    & =  \frac{-(ln(y_i) - \pmb{z}_i\pmb{\beta})}{ \sigma\sqrt{2 \pi } }  \cdot e^{-\frac{(ln(y_i) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}   +  \Phi\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)\\
+  \end{aligned}
+  $$
+Where $\phi(\cdot)$ is the \emph{cdf} of the \emph{standard normal} distribution.\\
+Let's summarize:
+
+  $$
+  \begin{aligned}
+    %%%%%%%%%%%% deriv by beta_i
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} & =  -(1+\delta_i) \frac{z_{ji} }{\sigma\sqrt{2\pi} }    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} }\\
+    %%%%%%%%%%%% deriv by gamma
+    \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    \frac{-(ln(y_i) - \pmb{z}_i\pmb{\beta})}{ \sigma\sqrt{2 \pi } }  \cdot e^{-\frac{(ln(y_i) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}   +  \Phi\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) + F_Y(y_i)    \right]
   \end{aligned}
   $$
 
