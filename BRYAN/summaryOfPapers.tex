@@ -2230,10 +2230,10 @@ Therefore:
   $$
   \begin{aligned}
     A & =  \frac{1}{ \sqrt{2 \pi } }      \left\{    \left.-x\cdot e^{-\frac{x^2}{2}}\right|_{-\infty}^{x(y_i)}  + \int_{-\infty}^{x(y_i)} e^{-\frac{x^2}{2}} dx   \right\}      dx =  \frac{1}{ \sqrt{2 \pi } }   \left[-x(y_i)\cdot e^{-\frac{x(y_i)^2}{2}}  + 0  \right]  +  \frac{1}{ \sqrt{2 \pi } }  \int_{-\infty}^{x(y_i)} e^{-\frac{x^2}{2}} dx  =\\
-    & =  \frac{-(ln(y_i) - \pmb{z}_i\pmb{\beta})}{ \sigma\sqrt{2 \pi } }  \cdot e^{-\frac{(ln(y_i) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}   +  \Phi\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)\\
+    & =  \frac{-(ln(y_i) - \pmb{z}_i\pmb{\beta})}{ \sigma\sqrt{2 \pi } }  \cdot e^{-\frac{(ln(y_i) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)\\
   \end{aligned}
   $$
-Where $\phi(\cdot)$ is the \emph{cdf} of the \emph{standard normal} distribution.\\
+Where $\Phi_{St.N.}(\cdot)$ is the \emph{cdf} of the \emph{standard normal} distribution.\\
 Let's summarize:
 
   $$
@@ -2241,10 +2241,10 @@ Let's summarize:
     %%%%%%%%%%%% deriv by beta_i
     \frac{\partial PSR_{Y_i}}{\partial \beta_j} & =  -(1+\delta_i) \frac{z_{ji} }{\sigma\sqrt{2\pi} }    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} }\\
     %%%%%%%%%%%% deriv by gamma
-    \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    \frac{-(ln(y_i) - \pmb{z}_i\pmb{\beta})}{ \sigma\sqrt{2 \pi } }  \cdot e^{-\frac{(ln(y_i) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}   +  \Phi\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) + F_Y(y_i)    \right]
+    \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    -(ln(y_i) - \pmb{z}_i\pmb{\beta})\cdot\phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) + F_Y(y_i)    \right]
   \end{aligned}
   $$
-
+Where $\phi_{St.N.}$ and $\Phi_{St.N.}$ are the \emph{pdf} and the \emph{cdf} of the \emph{standard normal} distribution, and $F_Y(y_i)$ is the \emph{cdf} of the \emph{log-normal} distribution with $\mu = \pmb{z}_i\pmb{\beta}$ and $\sigma$.
 
 \clearpage
 \subsubsection{Miscellaneous}
