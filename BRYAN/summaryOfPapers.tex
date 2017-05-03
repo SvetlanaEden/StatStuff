@@ -2246,6 +2246,28 @@ Let's summarize:
   $$
 Where $\phi_{St.N.}$ and $\Phi_{St.N.}$ are the \emph{pdf} and the \emph{cdf} of the \emph{standard normal} distribution, and $F_Y(y_i)$ is the \emph{cdf} of the \emph{log-normal} distribution with $\mu = \pmb{z}_i\pmb{\beta}$ and $\sigma$.
 
+\subsubsection{M-estimation for \emph{Cox} survival model}
+
+We recall again the definition of PSR, $PSR_{Y_i} =  (1+\delta_i) F(y)  -  \delta_i$. Package \texttt{PResiduals} provides us with PSR through martingale residuals. We only need to get $\frac{\partial PSR}{\partial \beta_i}$:   $$
+  \begin{aligned}
+    F(y_i) &= 1 - S(y_i) = 1 - e^{-\Lambda(t) e^{\pmb{z}_i\pmb{\beta}}} \\
+    \frac{\partial F(y_i, \pmb{\beta})}{\partial \beta_j} &=  -\frac{\partial S(y_i, \pmb{\beta})}{\partial \beta_j} = -\frac{\partial}{\partial \beta_j}\left[  e^{-\Lambda(t) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   e^{-\Lambda(t) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{ij} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  (1+\delta_i)  e^{-\Lambda(t) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{ij}=  (1+\delta_i)  S(y_i, \pmb{\beta})  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{ij}
+  \end{aligned}
+  $$
+We compute $\frac{\partial PSR_{Y_i}}{\partial \beta_j}$ using martingale residuals provided by \texttt{coxph}: 
+  $$
+  \begin{aligned}
+    \hat{m}_i &= \delta_i + log\left(\hat{S}(y_i) \right) \\
+    \hat{S}(y_i) &= e^{\hat{m}_i - \delta_i} \\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  (1+\delta_i)  \hat{S}(y_i)  \cdot  e^{\pmb{z}_i \hat{\pmb{\beta}}}   \cdot z_{ij} =  (1+\delta_i)  e^{\hat{m}_i - \delta_i}  \cdot  e^{\pmb{z}_i  \hat{\pmb{\beta}}}   \cdot z_{ij}
+  \end{aligned}
+  $$
+  
+
+
+
+
 \clearpage
 \subsubsection{Miscellaneous}
 Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
