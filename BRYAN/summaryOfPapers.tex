@@ -1674,17 +1674,17 @@ Or:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     0   &   0   &   -\frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y, 1}} &   -\frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y,2}}      &     0     &     0    &    0    &    0    &    0    &   0  \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    -\frac{\partial PSR_X}{\partial \theta_{X,1}}   &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}   & 0   &   0   &   n   &   0  & 0 & 0 & 0 & 0\\
+    -\frac{\partial PSR_X}{\partial \theta_{X,1}}   &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}   & 0   &   0   &   1   &   0  & 0 & 0 & 0 & 0\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    0 & 0 &    -\frac{\partial PSR_Y}{\partial \theta_{Y,1}}   &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}   & 0 & n & 0 & 0 & 0 & 0 \\
+    0 & 0 &    -\frac{\partial PSR_Y}{\partial \theta_{Y,1}}   &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}   & 0 & 1 & 0 & 0 & 0 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     -\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_Y  &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_Y & -\frac{\partial PSR_Y}{\partial \theta_{Y,1}} PSR_X  &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_X & 0 & 0 &  n & 0 & 0 & 0 \\
+     -\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_Y  &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_Y & -\frac{\partial PSR_Y}{\partial \theta_{Y,1}} PSR_X  &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_X & 0 & 0 &  1 & 0 & 0 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    -2\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_X  &  -2\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_X & 0 & 0 & 0 & 0 &  0 & n & 0 & 0 \\
+    -2\frac{\partial PSR_X}{\partial \theta_{X,1}} PSR_X  &  -2\frac{\partial PSR_X}{\partial \theta_{X,2}}PSR_X & 0 & 0 & 0 & 0 &  0 & 1 & 0 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    0 & 0 & -2\frac{\partial PSR_Y}{\partial \theta_{Y,1}}PSR_Y  &  -2\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_Y & 0 & 0 &  0 & 0 & n & 0 \\
+    0 & 0 & -2\frac{\partial PSR_Y}{\partial \theta_{Y,1}}PSR_Y  &  -2\frac{\partial PSR_Y}{\partial \theta_{Y,2}}PSR_Y & 0 & 0 &  0 & 0 & 1 & 0 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    0 & 0 & 0 & 0 & a_1n & a_2n &  a_3n & a_4n & a_5n & n \\
+    0 & 0 & 0 & 0 & a_1 & a_2 &  a_3 & a_4 & a_5 & 1 \\
 \end{bmatrix}
 \]
 
@@ -2182,18 +2182,18 @@ In our case $\frac{\partial a}{\partial\beta_i} = \frac{\partial b}{\partial\bet
     &= -(1+\delta_i)z_{ji} \int_0^y   \frac{1}{\sigma\sqrt{2 \pi }} e^{-\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}}  d\left(   -\frac{(log(t) - \pmb{z}_i\pmb{\beta})^2}{2\sigma^2}   \right) =  -(1+\delta_i)z_{ji}  \frac{1}{\sqrt{2\pi} \sigma}    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} }\\
   \end{aligned}
   $$
-Which is the same thing. Now, let's do $\frac{\partial PSR_{Y_i}}{\partial \sigma}$ using the \emph{Leibniz} rule. \texttt{R} language probably uses $\gamma = log(\sigma)$, so will we. 
+Which is the same thing. Now, let's do $\frac{\partial PSR_{Y_i}}{\partial \sigma}$ using the \emph{Leibniz} rule. \texttt{R} language probably uses $\gamma = log(\sigma)$, so we have: 
   $$
   \begin{aligned}
-    \gamma &= ln(\sigma);~~~~~  = e^{\gamma}\\
+    \gamma &= ln(\sigma);~~~~~  \sigma= e^{\gamma}\\
     \frac{\partial PSR_{Y_i}}{\partial \gamma} &=(1+\delta_i) \int_0^{y_i}  \frac{\partial}{\partial \gamma}  \frac{e^{-\gamma}}{t \sqrt{2 \pi }} e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma}} dt = \\
     &=(1+\delta_i) \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi }} e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma} - \gamma} \left[   \cancel{-\frac{1}{2}} \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2  e^{-2\gamma}\cancel{(-2)} - 1  \right] dt  =\\
     &=(1+\delta_i) \left[       \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi }}  \left(  ln(t) -  \pmb{z}_i\pmb{\beta}  \right)^2 e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma} - 3\gamma} dt     -     \int_0^{y_i}   \frac{1}{t \sqrt{2 \pi }}  e^{-\frac{(ln(t) - \pmb{z}_i\pmb{\beta})^2}{2}e^{-2\gamma} - \gamma}  dt  \right] = \\
-    & =(1+\delta_i) \left[       A + B  \right]
+    & =(1+\delta_i) \left[       A - B  \right]
   \end{aligned}
   $$
 
-It is straight forward to show (using $\gamma = ln(\sigma)$) that $B = F_Y(y_i)$ (the \emph{cdf} of the corresponding \emph{log-normal} distribution). Let's focus on $A$ now. In the following we replace $\gamma$ with $ln(\sigma)$:
+It is straight forward to show (using $\gamma = ln(\sigma)$) that $B = F_Y(y_i)$ (the \emph{cdf} of the corresponding \emph{log-normal} distribution). Let's focus on $A$ now. In the following we replace $\gamma$ with $ln(\sigma)$ and remember that $\frac{dt}{t} = d\left(ln(t)\right)$:
 
   $$
   \begin{aligned}
@@ -2241,7 +2241,7 @@ Let's summarize:
     %%%%%%%%%%%% deriv by beta_i
     \frac{\partial PSR_{Y_i}}{\partial \beta_j} & =  -(1+\delta_i) \frac{z_{ji} }{\sigma\sqrt{2\pi} }    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} }\\
     %%%%%%%%%%%% deriv by gamma
-    \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    -(ln(y_i) - \pmb{z}_i\pmb{\beta})\cdot\phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) + F_Y(y_i)    \right]
+    \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    -\frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}\cdot\phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) - F_Y(y_i)    \right]
   \end{aligned}
   $$
 Where $\phi_{St.N.}$ and $\Phi_{St.N.}$ are the \emph{pdf} and the \emph{cdf} of the \emph{standard normal} distribution, and $F_Y(y_i)$ is the \emph{cdf} of the \emph{log-normal} distribution with $\mu = \pmb{z}_i\pmb{\beta}$ and $\sigma$.
