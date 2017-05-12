@@ -1458,7 +1458,7 @@ P\{ X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \}  &=  &\\
 	\end{aligned}
 	$$
 
-  The authors are doing something else. They probably assume continuous densities and use the fact that taking a derivative in point $x^-$ is the same as in point $x$ (????? under certain conditions, I guess...):
+  The authors are doing something else. They probably assume continuous densities and use the fact that taking a derivative in point $x^-$ is the same as in point $x$ (????? under certain conditions ...):
 	$$
 	\begin{aligned}
     f_{min(X_1, X_2),min(Y_1, Y_2)}(x, y) &= \frac{\partial^2 S(x^-, y^-)}{\partial x \partial y} = \frac{\partial}{\partial y} \left(2\cdot S(x^-, y^-) \frac{\partial S(x^-, y^-)}{\partial x}  \right)  =\\
@@ -1604,7 +1604,7 @@ Under complete independence of events and censoring events, Dabrowska's and Pren
 In this section we are trying to understand how to compute variance of PSR correlation after adjusting for other covariates. We use \emph{M-estimation}. First we need the following vector:
 
 \[
-\psi_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta}) = \begin{bmatrix}
+\pmb{\psi}_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta}) = \begin{bmatrix}
     \pmb{\psi}_X(X_i,\pmb{Z}_i; \pmb{\theta}_X) \\
     \pmb{\psi}_Y(Y_i,\pmb{Z}_i; \pmb{\theta}_Y) \\
     PSR_{X_{i}}(\pmb{\theta}_X) -\theta_1 \\
@@ -1712,6 +1712,70 @@ Note that $\frac{\partial \rho_S}{\partial \theta_6} = -1$
             \pmb{0}   & \pmb{0} &    a_1n & a_2n &  a_3n & a_4n & a_5n & n\\
 \end{bmatrix}
 \]
+
+% \subsubsection{Alternative (wrong) approach of defining the matrices}
+% This is something I wanted to try quickly, and it did not work. I don't understand yet why this is wrong, so without much explanation I am going to cut to the chase. Let's define vector $\pmb{\psi}_i$ in a different way:
+% \[
+% \pmb{\psi}_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta}) = \begin{bmatrix}
+%     \pmb{\psi}_X(X_i,\pmb{Z}_i; \pmb{\theta}_X) \\
+%     \pmb{\psi}_Y(Y_i,\pmb{Z}_i; \pmb{\theta}_Y) \\
+%     PSR_{X_{i}}(\pmb{\theta}_X) -\theta_1 \\
+%     PSR_{Y_{i}}(\pmb{\theta}_Y) -\theta_2 \\
+%     \theta_1 \cdot \theta_2 -\theta_3 \\
+%     \theta_1^2 -\theta_4 \\
+%     \theta_2^2 -\theta_5 \\
+%     \frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_5 - \theta_2^2}} - \theta_6
+% \end{bmatrix}
+% \]
+%
+%
+% Then:
+% \[
+% \pmb{A}_n =  \sum_{i = 1}^{n} \begin{bmatrix}
+%    -\frac{\partial \pmb{\psi}_X}{\partial \theta_{X, 1}}    &  -\frac{\partial \pmb{\psi}_X}{\partial \theta_{X, 2}}    &   0   &   0   &     0     &     0    &    0    &    0    &    0    &   0 \\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     0   &   0   &   -\frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y, 1}} &   -\frac{\partial \pmb{\psi}_Y}{\partial \theta_{Y,2}}      &     0     &     0    &    0    &    0    &    0    &   0  \\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     -\frac{\partial PSR_X}{\partial \theta_{X,1}}   &  -\frac{\partial PSR_X}{\partial \theta_{X,2}}   & 0   &   0   &   1   &   0  & 0 & 0 & 0 & 0\\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     0 & 0 &    -\frac{\partial PSR_Y}{\partial \theta_{Y,1}}   &  -\frac{\partial PSR_Y}{\partial \theta_{Y,2}}   & 0 & 1 & 0 & 0 & 0 & 0 \\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      0  &  0  &  0  &  0  & -\theta_2 & -\theta_1 &  1 & 0 & 0 & 0 \\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     0 & 0 & 0 & 0 & -2\theta_1 & 0 &  0 & 1 & 0 & 0 \\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     0 & 0 & 0 & 0 & 0 & -2\theta_2 &  0 & 0 & 1 & 0 \\
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     0 & 0 & 0 & 0 & a_1 & a_2 &  a_3 & a_4 & a_5 & 1 \\
+% \end{bmatrix}
+% \]
+%
+% Where:
+%   $$
+%   \begin{aligned}
+%     a_1 &= -\frac{\partial \rho_S}{\partial \theta_1} = -\frac{\theta_1\theta_3 - \theta_2\theta_4}{\sqrt{\theta_5 - \theta_2^2}(\theta_4 - \theta_1^2)^{3/2}}\\
+%     a_2 &= -\frac{\partial \rho_S}{\partial \theta_2} = -\frac{\theta_2\theta_3 - \theta_1\theta_5}{(\theta_5 - \theta_2^2)^{3/2} \sqrt{\theta_4 - \theta_1^2}}\\
+%     a_3 &= -\frac{\partial \rho_S}{\partial \theta_3} = -\frac{1}{\sqrt{\theta_5 - \theta_2^2}\sqrt{\theta_4 - \theta_1^2}}\\
+%     a_4 &= -\frac{\partial \rho_S}{\partial \theta_4} = \frac{1}{2}\frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_5 - \theta_2^2}(\theta_4 - \theta_1^2)^{3/2}}\\
+%     a_5 &= -\frac{\partial \rho_S}{\partial \theta_5} = \frac{1}{2}\frac{\theta_3 - \theta_1\theta_2}{(\theta_5 - \theta_2^2)^{3/2} \sqrt{\theta_4 - \theta_1^2}}\\
+%    \end{aligned}
+%   $$
+% \[
+% \pmb{A}_n = \begin{bmatrix}
+%     \pmb{A}_{X,1,1}   &    \pmb{0}     &    0     &     0 & 0 & 0 & 0 & 0\\
+%             \pmb{0}   &     \pmb{A}_{Y,2,2}     &    0     &     0 & 0 & 0 & 0 & 0\\
+%           \pmb{A}_{X, 3,1}   &     \pmb{0}     &    n     &     0 & 0 & 0 & 0 & 0\\
+%             \pmb{0}   & \pmb{A}_{Y, 4,2} &    0     &     n & 0 & 0 & 0 & 0\\
+%             \pmb{0}   & \pmb{0}     & -\theta_2n  & -\theta_1n & n & 0 & 0 & 0\\
+%             \pmb{0}   & \pmb{0}     & -2\theta_1n &     0 & 0 & n & 0 & 0\\
+%             \pmb{0}   & \pmb{0} &    0     &     2\theta_2n & 0 & 0 & n & 0\\
+%             \pmb{0}   & \pmb{0} &    a_1n & a_2n &  a_3n & a_4n & a_5n & n\\
+% \end{bmatrix}
+% \]
+
+
+
+
 
 \subsection{M-estimation in case of normal distribution and its implementation using Qi's code.}
 In this section, we refer to two functions in Qi's code: \texttt{corTS()} and \texttt{lm.scores()}. Function  \texttt{corTS()} takes score equations and computes partial correlation. The mapping from the above notations to its parameters is the following:\\
@@ -2260,7 +2324,7 @@ We compute $\frac{\partial PSR_{Y_i}}{\partial \beta_j}$ using martingale residu
   \begin{aligned}
     \hat{m}_i &= \delta_i + log\left(\hat{S}(y_i) \right) \\
     \hat{S}(y_i) &= e^{\hat{m}_i - \delta_i} \\
-    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  (1+\delta_i)  \hat{S}(y_i)  \cdot  e^{\pmb{z}_i \hat{\pmb{\beta}}}   \cdot z_{ij} =  (1+\delta_i)  e^{\hat{m}_i - \delta_i}  \cdot  e^{\pmb{z}_i  \hat{\pmb{\beta}}}   \cdot z_{ij}
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  (1+\delta_i)  \hat{S}(y_i)  \cdot  e^{\pmb{z}_i \hat{\pmb{\beta}}}   \cdot z_{ij} =  (1+\delta_i)  e^{\hat{m}_i - \delta_i+\pmb{z}_i  \hat{\pmb{\beta}}}   \cdot z_{ij}
   \end{aligned}
   $$
   
