@@ -1639,7 +1639,12 @@ So the resulting variance is:
  	\end{aligned}
 	$$
   
-\subsubsection{Disclaimers, unresolved mysteries, notes}
+\subsection{Important Notes, Disclaimers, unresolved mysteries}
+\textbf{Important Note}:\\
+When \textbf{checking} your derivations using \textbf{simulations}, remember that the diagonal of matrix $B^*_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) = \frac{1}{n} \sum_{i = 1}^{n} \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}})^T$ is basically an estimated variance of each component of $\pmb{\psi}_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$. It is \textbf{not} a variance of the estimator of each parameter. For example, the $6^{th}$ element from the bottom of the diagonal is the variance of $PSR_{X_{i}}(\pmb{\theta}_X)$, and \textbf{not} the variance of $\hat{\theta}_1 = \frac{1}{n}\sum_{i=1}^{n} PSR_{X_{i}}(\pmb{\theta}_X)$.\\
+
+
+\textbf{Disclaimers}:
 This text most surely has errors. I tried very hard, but because of remaining \emph{mysteries} I have not achieved clarity yet. The following mysteries remain:
 \begin{enumerate}[1)]
   \item According to \cite{stefanski2002calculus}, vector $\psi_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$ is constructed using a) maximum likelihood, b) the stuff for PSR. The part for PSR is supposed to be coded as, for example, $PSR_{X_{i}}(\pmb{\theta}_X) -\theta_1$. But in Qi's code, it is coded as $-PSR_{X_{i}}(\pmb{\theta}_X) +\theta_1$ (while the score equations are coded in the same was as mine). This seemingly minor difference affects the SD. Qi's code agrees with simulations.
