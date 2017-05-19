@@ -648,8 +648,6 @@ Therefore:
 	\end{aligned}
 	$$
 
-
-
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
 % \begin{itemize}
@@ -806,8 +804,6 @@ We have that \emph{Spearman's}, $\rho_S$, defined for censored data and the corr
 	\end{aligned}
 	$$
   
-  
-
 \subsection{PSR covariance of perfectly correlated variables under censoring}
 \subsubsection{Positive correlation under censoring, $T\equiv S$}
 First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We fix two points $s_0$ and $t_0$ and find the covariance of PRS under the assumption of perfect dependence expressed in the functional form $S =\nu( T)$, where $\nu(\cdot)$ is a strictly increasing function. For brevity, we denote $F(s)=U$, $G(t)=V$, $F(s_0)=U_0$, and $G(t_0)=V_0$.\\
@@ -1354,8 +1350,6 @@ They choose \emph{optimal} weights by somehow using the \emph{cross ratio} defin
 UNDER CONSTRUCTION.\\
 The authors use a concept of distance applied to \emph{Spearman} and \emph{Kendall} correlation measure in order to build a test that can deal with missing data. 
 
-
-
 \subsection{Fan, 1998 \cite{fan2000dependence}}
 There is a need in non-parametric measure of association between two survival times.\\
 Clayton suggested a \textit{cross ratio} (Clayton, 1978, Oaks, 1989) (see Clayton's $\theta$):
@@ -1556,7 +1550,6 @@ And in general, their weighting technique works because:
 	\end{aligned}
 	$$
 
-
 \subsection{Prentice, 1992 \cite{prentice1992covariance}}
 ???
 % If I understand correctly, the authors model bivariate survival as two marginal survivor functions and a covariance function (instead of joint survivor function).
@@ -1639,22 +1632,11 @@ So the resulting variance is:
  	\end{aligned}
 	$$
   
-\subsection{Important Notes, Disclaimers, unresolved mysteries}
-\textbf{Important Note}:\\
-When \textbf{checking} your derivations using \textbf{simulations}, remember that the diagonal of matrix $B^*_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) = \frac{1}{n} \sum_{i = 1}^{n} \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}})^T$ is basically an estimated variance of each component of $\pmb{\psi}_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$. It is \textbf{not} a variance of the estimator of each parameter. For example, the $6^{th}$ element from the bottom of the diagonal is the variance of $PSR_{X_{i}}(\pmb{\theta}_X)$, and \textbf{not} the variance of $\hat{\theta}_1 = \frac{1}{n}\sum_{i=1}^{n} PSR_{X_{i}}(\pmb{\theta}_X)$.\\
 
 
-\textbf{Disclaimers}:
-This text most surely has errors. I tried very hard, but because of remaining \emph{mysteries} I have not achieved clarity yet. The following mysteries remain:
-\begin{enumerate}[1)]
-  \item According to \cite{stefanski2002calculus}, vector $\psi_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$ is constructed using a) maximum likelihood, b) the stuff for PSR. The part for PSR is supposed to be coded as, for example, $PSR_{X_{i}}(\pmb{\theta}_X) -\theta_1$. But in Qi's code, it is coded as $-PSR_{X_{i}}(\pmb{\theta}_X) +\theta_1$ (while the score equations are coded in the same was as mine). This seemingly minor difference affects the SD. Qi's code agrees with simulations.
-\end{enumerate}
-My disclaimer is that my understanding of the method is not sufficient to resolve these \emph{mysteries}.\\
+\subsection{Defining the matrices}
+\label{Defining:Matr}
 
-\textbf{Note}: In Qi's code, instead of $\pmb{A}^{-1}\pmb{B} (\pmb{A}^{-1})^T$, she has $\pmb{A}^{-1}\psi (\pmb{A}^{-1}\psi)^T$, which is essentially the same.
-
-
-\subsubsection{Defining the matrices}
 The main challenge is to accurately define and code $\pmb{A}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})$ because it involves a lot of derivatives. Let's show what the matrix would look like if $\pmb{\theta}_X = (\theta_{X, 1}, \theta_{X, 2})$ and $\pmb{\theta}_Y= (\theta_{Y, 1}, \theta_{Y, 2})$. Also, let's denote $\rho_S = \frac{\theta_3 - \theta_1\theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_5 - \theta_2^2}}$:
 
 \[
@@ -1779,12 +1761,34 @@ Note that $\frac{\partial \rho_S}{\partial \theta_6} = -1$
 % \]
 
 
+\subsubsection{Important Notes}
+
+\begin{enumerate}[1)]
+\item
+When \textbf{checking} your derivations using \textbf{simulations}, remember that the diagonal of matrix $B^*_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) = \frac{1}{n} \sum_{i = 1}^{n} \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}})^T$ is basically an estimated variance of each component of $\pmb{\psi}_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$. It is \textbf{not} a variance of the estimator of each parameter. For example, the $6^{th}$ element from the bottom of the diagonal is the variance of $PSR_{X_{i}}(\pmb{\theta}_X)$, and \textbf{not} the variance of $\hat{\theta}_1 = \frac{1}{n}\sum_{i=1}^{n} PSR_{X_{i}}(\pmb{\theta}_X)$.\\
+The variance of the mean of $PSR$ (variance of $\hat{\theta}_1$) is the $6^{th}$ from the bottom diagonal element of the resulting sandwich estimator.
+
+\item In Qi's code, instead of $\pmb{A}^{-1}\pmb{B} (\pmb{A}^{-1})^T$, she has $\pmb{A}^{-1}\psi (\pmb{A}^{-1}\psi)^T$, which is essentially the same.\\
+
+\item In Qi's code (function \texttt{corTS()}), matrices $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{Y, 7,2}$ (see section \ref{Defining:Matr}) were multiplied by $-1$. I am planning to check if this she was using function \texttt{corTS()} in a way that this did not cause a problem.
+
+\item Derivations in section \ref{norm:QiCode} were not verified.
+
+\item \emph{Parametrization} of all parametric survival regressions was verified (\texttt{R} does not provide any documentation, so I used papers, online resources, and my own guesses, which were verified by simulations, the value of the likelihood, and similar techiniques).
+
+\item In section \ref{MEst:loglogistic} were only partially verified. I only verified the derivatives of $PSR$ by regression parameters (coefficients and scale).
+
+\item Derivations if sections \ref{MEst:exponential}, \ref{MEst:weibull}, and \ref{MEst:lognormal}  were thoroughly verified using simulation, numeric derivatives, and other techniques.
 
 
+\end{enumerate}
 
-\subsection{M-estimation in case of normal distribution and its implementation using Qi's code.}
+
+\subsubsection{Example: M-estimation in case of normal distribution and its implementation using Qi's code.}
+\label{norm:QiCode}
+
 In this section, we refer to two functions in Qi's code: \texttt{corTS()} and \texttt{lm.scores()}. Function  \texttt{corTS()} takes score equations and computes partial correlation. The mapping from the above notations to its parameters is the following:\\
-\texttt{yresid} and \texttt{yresid} are $PSR_X$ $PSR_Y$.\\
+\texttt{xresid} and \texttt{yresid} are $PSR_X$ $PSR_Y$.\\
 \texttt{xz.dl.dtheta} and \texttt{yz.dl.dtheta} are $\pmb{\psi}_{X}$ and $\pmb{\psi}_{Y}$.\\
 \texttt{xz.d2l.dtheta.dtheta} and \texttt{yz.d2l.dtheta.dtheta} are $A_{X,1,1}$ and $A_{Y,2,2}$.\\
 \texttt{dxresid.dthetax} and \texttt{dxresid.dthetax} are $\frac{PSR_X}{\partial \pmb{\theta}_X}$ and $\frac{PSR_Y}{\partial \pmb{\theta}_Y}$\\
@@ -1846,8 +1850,6 @@ Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$ and use var
   2 \cdot \pmb{res}^T\pmb{Z} & 1\\
   \end{bmatrix}
 \]
-
-
 
 Because Qi was not including the derivative by $\sigma^2$, the return variable \texttt{d2l.dtheta.dtheta} can be mapped to  $\pmb{Z}^T\pmb{Z}$, or $\pmb{A}_{X,1,1}$ ($\pmb{A}_{Y,2,2}$), again loosely.\\
 I am not sure why the function returns variable \texttt{resid} (linear regression residuals $Y_i - \pmb{Z}_i\pmb{\theta}_Y$), but I haven't learned the code well yet.\\
@@ -1916,6 +1918,8 @@ $A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we ha
 \end{bmatrix}
 \]
 
+The above matrices are combined to get matrix $A$.
+
 \subsection{M-estimation for parametric survival models}
 In the following section, I use the on-line source written by Daowen Zhang(ST 745,  \url{http://www4.stat.ncsu.edu/~dzhang2/st745/chap5.pdf}) in order to define parametric survival models. According to Zhang, in parametric survival models we model time as the following:
   $$
@@ -1932,6 +1936,8 @@ Where $e^{\sigma \epsilon_{i}}$ can have variety of distributions including Weib
 In the following sections we denote random variable, time to outcome, as $Y_i$ and its values as $y_i$. 
 
 \subsubsection{M-estimation for \emph{exponential} survival model}
+\label{MEst:exponential}
+
 For exponential survival model, we assume that $\sigma = 1$, and:
   $$
   \begin{aligned}
@@ -2021,6 +2027,8 @@ We only need to figure out the following derivatives: $\frac{\partial PSR_Y}{\pa
 Now we can feed all this into function \texttt{corTS} and check the result using simulations. One of the ways to make sure we are doing the right thing is to compare our matrix $A_n$ to the variance-covariance matrix of the regression with exponential distribution. They should be equal. Next, we can use library \texttt{sandwich}, in order to see if matrices $n\cdot(A_n)^{-1}$ and $B_n/n$ are \emph{bread} and \emph{meat} that library  \texttt{sandwich} computes. This should be done for each model separately because otherwise the results won't be exactly the same.
 
 \subsubsection{M-estimation for \emph{log-logistic} survival model}
+\label{MEst:loglogistic}
+
 Language $R$ does not have \emph{log-logistic} distribution, but we still need to simulate it for our work. We first simulate $\sigma\epsilon_i = log(Y_i)$ and then get the time as $Y_i = e^{\sigma\epsilon}$. I am \textbf{guessing} that $\epsilon$ is distributed as logistic random variable. Let's write it down:
   $$
   \begin{aligned}
@@ -2172,6 +2180,7 @@ I coded the above derivations and compared the results with the \texttt{sandwich
 Qi has already written a function that computes \emph{PSR} for each distribution of \emph{survreg}. The only expressions that need to be coded are:  $\frac{\partial PSR_{Y_i}}{\partial \beta_i}$ and $\left. \frac{\partial PSR_{Y_i}}{\partial \gamma^*} \right|_{\gamma^* = -log(\gamma)}$. For log-logistic distribution these are defined above. For the rest of the distributions, we define them in the next section.
 
 \subsubsection{M-estimation for \emph{Weibull} survival model}
+\label{MEst:weibull}
 
 In \textbf{R}, Weibull distribution (functions like \texttt{rweibull()}) is parameterized in the following way:
 
@@ -2214,6 +2223,7 @@ My \textbf{guess} is that R-code takes a derivative of $log(\sigma)$, so let's r
   $$
 
 \subsubsection{M-estimation for \emph{Lognormal} survival model}
+\label{MEst:lognormal}
 
 % \textbf{Gaussian} distribution:\\
 % \textbf{Logistic} distribution:\\
