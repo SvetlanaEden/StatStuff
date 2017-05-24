@@ -27,7 +27,7 @@
 \setlength\parindent{0pt}
 
 % Title Page: Modify as needed
-\title{Summary for Bryan's research}
+\title{Summary for Previous research related to Probability Scale Residuals}
 \author{Summarized by Svetlana Eden}
 \date{Month Day, 2015}
 
@@ -457,7 +457,6 @@ The function $T(r_j)$ can be viewed as a translation from the residual scale to 
 	
 \end{enumerate}
 ~\\
-
 
 \section{Regression Models for correlated Failure Time Data. Page 302, \cite{kalbfleisch2011statistical}}
 This summary is based on book of Kalbfleisch and Prentice \emph{The Statistical Analysis of Failure Time Data}
@@ -1399,7 +1398,7 @@ Instead, the authors propose to weight $c(s_1, s_2) = \frac{1}{\tilde{c}(s_1, s_
 	\end{aligned}
 	$$
   
-\subsubsection{Local version of \emph{Kendall's} $\tau$. Discreate case, not covered by \cite{fan2000class}}
+\subsubsection{Local version of \emph{Kendall's} $\tau$. Discrete case, not covered by \cite{fan2000class}}
 \label{deriveWeightedTau}
 Here we try to explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
 	$$
@@ -1631,8 +1630,6 @@ So the resulting variance is:
 		\pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) &=  \sum_{i = 1}^{n} \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}})^T\\
  	\end{aligned}
 	$$
-  
-
 
 \subsection{Defining the matrices}
 \label{Defining:Matr}
@@ -1760,29 +1757,42 @@ Note that $\frac{\partial \rho_S}{\partial \theta_6} = -1$
 % \end{bmatrix}
 % \]
 
-
 \subsubsection{Important Notes}
 
 \begin{enumerate}[1)]
 \item
 When \textbf{checking} your derivations using \textbf{simulations}, remember that the diagonal of matrix $B^*_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) = \frac{1}{n} \sum_{i = 1}^{n} \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}})^T$ is basically an estimated variance of each component of $\pmb{\psi}_i(X_i, Y_i, \pmb{Z}_i; \pmb{\theta})$. It is \textbf{not} a variance of the estimator of each parameter. For example, the $6^{th}$ element from the bottom of the diagonal is the variance of $PSR_{X_{i}}(\pmb{\theta}_X)$, and \textbf{not} the variance of $\hat{\theta}_1 = \frac{1}{n}\sum_{i=1}^{n} PSR_{X_{i}}(\pmb{\theta}_X)$.\\
-The variance of the mean of $PSR$ (variance of $\hat{\theta}_1$) is the $6^{th}$ from the bottom diagonal element of the resulting sandwich estimator.
+The variance of the mean of $PSR$ (variance of $\hat{\theta}_1$) is the $6^{th}$ (from the bottom) diagonal element of the resulting sandwich estimator.
 
 \item In Qi's code, instead of $\pmb{A}^{-1}\pmb{B} (\pmb{A}^{-1})^T$, she has $\pmb{A}^{-1}\psi (\pmb{A}^{-1}\psi)^T$, which is essentially the same.\\
 
-\item In Qi's code (function \texttt{corTS()}), matrices $\pmb{A}_{Y,2,2}$, $\pmb{A}_{Y, 4,2}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{Y, 7,2}$ (see section \ref{Defining:Matr}) were multiplied by $-1$. I am planning to check if this she was using function \texttt{corTS()} in a way that this did not cause a problem.
+\item In this comment we use notations of section \ref{Defining:Matr}. In this section we showed that matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are the double derivatives of the log-likelihood multiplied by $-1$, and  $\pmb{A}_{X,3,1}$, $\pmb{A}_{Y, 4,2}$,  $\pmb{A}_{X,5,1}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{X,6,1}$, $\pmb{A}_{Y, 7,2}$ are combinations of $\frac{\partial PSR}{\partial \theta}$  multiplied by $-1$.\\
+The function that we are using to perform M-estimation (function \texttt{corTS()}) does not multiply the double derivatives by $-1$, and as a result, we are observing a missmatch between the sandwich variance estimator and the simulated variance estimator of the mean of $PSR$s (the variance of $\hat{\theta}_1$ and $\hat{\theta}_2$).\\
+The fact that the sandwich variance estimator of $\hat{\theta}_1$ and $\hat{\theta}_2$ depends on the sign of these matrices might not make sense at first. Indeed, the derivative of log-likelihood should equal to zero and $PSR$ is supposed to equal to zero, so what does it matter what sign these matrices have. It turns out that the variance estimator (\textbf{for parametric survival models considered in this document}) is correct if we either multiply all these matrices by $-1$ or if we don't multiply them by $-1$. Here is why.\\
+
+Suppose, we are interested in the sandwich estimator of $\hat{\theta}_1$. For simplicity, let's assume that we are modeling survival time using exponential model with an intercept only, $\theta_X$. In this paragraph, we remember that $\psi_X = \frac{\partial l_X}{\partial \theta_X}$ (where $l_X$ is the log-likelihood for $\theta_X$). Let's denote the variance of $PSR_X$, $E\left[PSR_X^2 \right]$,  as $\sigma^2_X$. Let's also use the following notations: $\gamma_{31} = -E\left[ \frac{\partial PSR_X}{\partial \theta_X} \right]$ (this is essentially matrix $\pmb{A}_{X,3,1}$ ) and $\gamma_{11} = -E\left[ \frac{\partial^2 l_X}{\partial \theta_X^2} \right]$ (matrix $\pmb{A}_{X,1,1}$). Then, the sandwich estimator for variance of $\hat{\theta}_1$ is:
+  $$
+  \begin{aligned}
+    \widehat{var(\hat{\theta}_1)} = \left(  \frac{\gamma_{31}}{\gamma_{11}} \right)^2    E\left[ \left(\frac{\partial l_X}{\partial \theta_X} \right)^2  \right]   + 2\cdot  \left( \frac{\gamma_{31}}{\gamma_{11}}  \right)   E\left[\frac{\partial l_X}{\partial \theta_X}  PSR_X  \right]  + \sigma^2_X
+  \end{aligned}
+  $$
+
+We are interested in term $2\cdot  \left( \frac{\gamma_{31}}{\gamma_{11}}  \right)   E\left[\frac{\partial l_X}{\partial \theta_X}  PSR_X  \right]$. Note that the sign of this term depends on the signs of $\gamma_{31}$, $\gamma_{11}$, and $E\left[\frac{\partial l_X}{\partial \theta_X}  PSR_X  \right]$. For exponential model with an intercept, $\gamma_{31}<0$, $\gamma_{11}>0$, and $E\left[\frac{\partial l_X}{\partial \theta_X}  PSR_X  \right]>0$, which means that $E\left[ \frac{\partial PSR_X}{\partial \theta_X} \right]>0$ and $E\left[ \frac{\partial^2 l_X}{\partial \theta_X^2} \right] < 0$. Because we are looking for maximum likelihood, the fact that $E\left[ \frac{\partial^2 l_X}{\partial \theta_X^2} \right] < 0$ is a relief and should hold across all models. On the other hand, it seems to me that whether $E\left[ \frac{\partial PSR_X}{\partial \theta_X} \right]$ or $E\left[\frac{\partial l_X}{\partial \theta_X}  PSR_X  \right]$ are greater or less than zero might depend on parametrization of the model.\\
+Let me know what you think.\\
+My next to-do item is to check if PSR computation for other models takes parametrization into account.
+
+%In Qi's code (function \texttt{corTS()}), matrices $\pmb{A}_{X,3,1}$, $\pmb{A}_{Y, 4,2}$,  $\pmb{A}_{X,5,1}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{X,6,1}$, $\pmb{A}_{Y, 7,2}$ (see section \ref{Defining:Matr}) were multiplied by $-1$. Simulations showed that this caused the variance of $\hat{\theta}_1$ (see section \ref{Defining:Matr}) to be heavily overestimated. I am planning to check if she was using function \texttt{corTS()} in a way that this did not create a problem.
 
 \item Derivations in section \ref{norm:QiCode} were not verified.
 
-\item \emph{Parametrization} of all parametric survival regressions was verified (\texttt{R} does not provide any documentation, so I used papers, online resources, and my own guesses, which were verified by simulations, the value of the likelihood, and similar techiniques).
+\item In \textbf{all} parametric survival regressions considered in this document, their \emph{parametrization} (not provided by \texttt{R} documentation) was verified. In order to do so I used papers, online resources, and my own guesses, which were verified by simulations, the value of the likelihood, and similar techniques.
 
 \item In section \ref{MEst:loglogistic} were only partially verified. I only verified the derivatives of $PSR$ by regression parameters (coefficients and scale).
 
-\item Derivations if sections \ref{MEst:exponential}, \ref{MEst:weibull}, and \ref{MEst:lognormal}  were thoroughly verified using simulation, numeric derivatives, and other techniques.
+\item Derivations in sections \ref{MEst:exponential}, \ref{MEst:weibull}, and \ref{MEst:lognormal}  were thoroughly verified using simulation, numeric derivatives, and other techniques.
 
 
 \end{enumerate}
-
 
 \subsubsection{Example: M-estimation in case of normal distribution and its implementation using Qi's code.}
 \label{norm:QiCode}
@@ -2343,11 +2353,28 @@ We compute $\frac{\partial PSR_{Y_i}}{\partial \beta_j}$ using martingale residu
   \end{aligned}
   $$
   
+This is not the end of the story though. The survival function is estimated by something like this (needs to be verified for \texttt{R}):
+  $$
+  \begin{aligned}
+    \hat{S}(y_i) = e^{-\sum_{j\leq i} \hat{\lambda}_0(y_i)}
+  \end{aligned}
+  $$
+Where $\hat{\lambda}_0(y_i)$ is a parameter of a piece-wise baseline hazard for Cox model. Because this is a parameter, therefore its estimating equation needs to be including in M-estimation matrices. I need to talk to Cindy about this, but as an approximation, we can probably use the following equation:
 
+  $$
+  \begin{aligned}
+    \hat{\lambda}_0(y_i) &= \frac{\delta_i}{\sum_{j\in \mathcal{R}(y_i)} e^{\pmb{z_j}\pmb{\beta}}}~,~~~~
+    where~\mathcal{R}(y_i)~is~a~risk~set
+  \end{aligned}
+  $$
+
+
+Bryan has suggested that we need to take into account also the $\lambda_i$, 
 
 
 
 \clearpage
+
 \subsubsection{Miscellaneous}
 Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 Questions to Bryan:
@@ -2358,6 +2385,20 @@ Questions to Bryan:
 \subsection{M-estimation for conditional and partial-conditional correlation}
 Another way of approaching this problem was suggested by \cite{lui2015covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
 Under construction ...
+
+
+\section{To-Do List}
+\begin{enumerate}
+  \item Cox regression score equations for $\lambda_i$ !!!
+  \item Paper in the following order: section 2-3 (PS method), section 4 (simplier simulations), section 5 (CASSANet), section 6 (Discussion).
+  \item Chun: what if we integrate outside the covariance
+  \item Look at the papers produced by CASSANet data: look up the definitions of baseline RNA, and baseline CD4.
+  % \item Add age and site to the covariate list
+  % \item Add splines after transforming RNA as $log$ and transforming CD4 as $\sqrt{\cdot}$.
+  \item Check the definition of baseline RNA: it should be within -180 to 0 days.
+  \item Check virologic failure that should start 6 months after the starting point: Yours start right away.
+  \item
+\end{enumerate}
 
 
 % \subsection{Linear regression scores}
