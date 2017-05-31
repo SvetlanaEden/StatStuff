@@ -788,26 +788,30 @@ Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and t
 	$$
 When censoring takes place, we don't observe $S_0$, but we still obsere $x_0$, so similarly to the previous section, instead of $PSR = [ F_S(S_0^-) - 1 + F_S(S_0) ]$ we can take $PSR = E[ F_S(S_0^-) - 1 + F_S(S_0) | S_0>x_0]$.
 
-Above is the covariance of PSR. In order to scale it to $[-1, 1]$ we need to find the variance of PSR under censoring. \cite{shepherd2016probability} showed that for continuous censored data, the variance of PSR is $E[R^2] = \frac{1}{3} - \frac{1}{3}E_C[(1-F(C))^3]$, where $C$ is time to censoring. Because:
-
-	$$
-	\begin{aligned}
-		E_C[(1-F(C))^3] &= E_C[1-3F(C) + 3F^2{C} - F^3(C))^3] = 1 - 3 \left. \frac{F^2(C)}{2}  \right|_{(0, \infty)} + 3 \left. \frac{F^3(C)}{3}  \right|_{(0, \infty)} -  \left. \frac{F^4(C)}{4}  \right|_{(0, \infty)} =\\
-    &= \frac{1}{4}
-	\end{aligned}
-	$$
-We have that \emph{Spearman's}, $\rho_S$, defined for censored data and the correlation of PSR are the same if \emph{Spearman's} $\rho_S$ is scaled to $[-1, 1]$, or:
-
-	$$
-	\begin{aligned}
-		c^* \cdot \rho_S &= cor(PSR_X, PSR_Y)\\
-    & where~c^*=\frac{1}{4}
-	\end{aligned}
-	$$
+%%%%% the derivations below are incorrect because the Ec is not the same as Ex.
+% Above is the covariance of PSR. In order to scale it to $[-1, 1]$ we need to find the variance of PSR under censoring. \cite{shepherd2016probability} showed that for continuous censored data, the variance of PSR is $E[R^2] = \frac{1}{3} - \frac{1}{3}E_C[(1-F(C))^3]$, where $C$ is time to censoring. Because:
+%
+%   $$
+%   \begin{aligned}
+%     E_C[(1-F(C))^3] &= E_C[1-3F(C) + 3F^2{C} - F^3(C))^3] = 1 - 3 \left. \frac{F^2(C)}{2}  \right|_{(0, \infty)} + 3 \left. \frac{F^3(C)}{3}  \right|_{(0, \infty)} -  \left. \frac{F^4(C)}{4}  \right|_{(0, \infty)} =\\
+%     &= \frac{1}{4}
+%   \end{aligned}
+%   $$
+% We have that \emph{Spearman's}, $\rho_S$, defined for censored data and the correlation of PSR are the same if \emph{Spearman's} $\rho_S$ is scaled to $[-1, 1]$, or:
+%
+%   $$
+%   \begin{aligned}
+%     c^* \cdot \rho_S &= cor(PSR_X, PSR_Y)\\
+%     & where~c^*=\frac{1}{4}
+%   \end{aligned}
+%   $$
   
-\subsection{PSR covariance of perfectly correlated variables under censoring}
-\subsubsection{Positive correlation under censoring, $T\equiv S$}
-First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We fix two points $s_0$ and $t_0$ and find the covariance of PRS under the assumption of perfect dependence expressed in the functional form $S =\nu( T)$, where $\nu(\cdot)$ is a strictly increasing function. For brevity, we denote $F(s)=U$, $G(t)=V$, $F(s_0)=U_0$, and $G(t_0)=V_0$.\\
+\subsection{PSR covariance of perfectly correlated variables in the presence of \emph{deterministic censoring} censoring}
+
+\subsubsection{Perfect positive correlation under \emph{deterministic censoring}, $T\equiv S$}
+Our task in this section is to find what would be a covariance of two perfectly positively correlated PSRs, if we censor all subjects at a fixed point.\\
+
+First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We are studing the correlation of PSRs when all subjects are censored at point $s_0$ for variable $S$ and at point $t_0$ for variable $T$. Because we have perfect correlation, we have some kind of functional dependence between $S$ and $T$: $S =\nu( T)$, where $\nu(\cdot)$ is a strictly increasing function. For brevity, we denote $F(s)=U$, $G(t)=V$, $F(s_0)=U_0$, and $G(t_0)=V_0$.\\
 ~\\
 
 Next, let's show how two distribution functions are related in case of perfect correlation. The following statements are somewhat straight forward:
@@ -828,11 +832,11 @@ Therefore, as long as $s=h(t)$, we have: $U=F(s) = G(t) = V$
 % which will cancel out with a similar term that appears because of integration on the curve, so we get the same expressions as before for any strictly decreasing or strictly increasing $g(\cdot)$.
 % ~\\
 
-Now, let's find the marginal and joint distributions of $U$ and $V$. First, let's point out that the marginal distributions of $U$ and $V$ are uniform. Next, from \cite{nelsen2007introduction} we know that the joint \emph{cdf} of these two variables is $min(U, V)$. This does not help to derive the joint \emph{pdf} though (at least it did not help me). Let's denote the joint \emph{pdf} of $(U, V)$ as $h(u, v)$. In order to figure our joint \emph{pdf}, let's use conditionality principle: $h(u, v)=h_{U|V=v}(u|v)\cdot h_V(v)$. We know that $U,V \sim Unif(0, 1)$. The conditional \emph{pdf}, $h_{U|V=v}$, equals $1$ when $u=v$ and $0$ when $u\neq v$, or, $h_{U|V=v} = C_{norm}I_{[0\leq U \leq 1]}\cdot I_{[U=v]}$, where $C_{norm}$ is a normalizing constant. This is a strange function that can be visualized as a piece of a plain, perpendicular to the $(U,V)$ plain. It stretches from $(U,V) = (0, 0)$ to $(U,V) = (1,1)$. We will call this piece of plain a \emph{segment mass}. It has a height of 1 and a length of $\sqrt{2}$, therefore, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$ or $C_{norm}=\sqrt{2}$.\\
+Now, let's find the marginal and joint distributions of $U$ and $V$. First, let's point out that the marginal distributions of $U$ and $V$ are uniform. Next, from \cite{nelsen2007introduction} we know that the joint \emph{cdf} of these two variables is $min(U, V)$. This does not help to derive the joint \emph{pdf} though (at least it did not help me). Let's denote the joint \emph{pdf} of $(U, V)$ as $h(u, v)$. In order to figure our joint \emph{pdf}, let's use conditionality principle: $h(u, v)=h_{U|V=v}(u|v)\cdot h_V(v)$. We know that $U,V \sim Unif(0, 1)$. The conditional \emph{pdf}, $h_{U|V=v}$, equals $1$ when $u=v$ and $0$ when $u\neq v$, or, $h_{U|V=v} = C_{norm}I_{[0\leq U \leq 1]}\cdot I_{[U=v]}$, where $C_{norm}$ is a normalizing constant. $I_{[0\leq U \leq 1]}\cdot I_{[U=v]}$ is a strange function that can be visualized as a piece of a plain, perpendicular to the $(U,V)$ plain. It stretches from $(U,V) = (0, 0)$ to $(U,V) = (1,1)$. We will call this piece of plain a \emph{segment mass}. It has a height of 1 and a length of $\sqrt{2}$, therefore, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$, in other words $C_{norm}=\frac{1}{\sqrt{2}}$.\\
 ~\\
 Because $h(u, v)$ is a \emph{segment mass}, in order to find covariance, we cannot just take a regular integral, we have to take an integral on a curve $U=V$, or $V(t)=t$ and $U(t) = t$. We know that the integral over a curve has to have a term $\sqrt{\left(\frac{dU(t)}{dt}\right)^2 + \left(\frac{dV(t)}{dt}\right)^2}$. This term equals to $\sqrt{1^2 + 1^2} = \sqrt{2}$, therefore two terms of $\sqrt{2}$ cancel out in the following integrals.\\
 ~\\
-Suppose now that we need to find the covariance of PSR for a fixed $(u_0, v_0)$. Let's assume a continuous case, $U = U^-$, $V = V^-$:
+Suppose now that we need to find the covariance of PSR when the data is censored at a fixed $(u_0, v_0)$. Remememer, that we define PSR as $2V - 1$ if not censored and as $V$ if censored. Assuming a continuous case, $U = U^-$, $V = V^-$, we have:
 	$$
 	\begin{aligned}
     cov_{(u_0, v_0)}(U, V) &= \underbrace{\int_0^{v_0}\int_0^{u_0} (2U - 1)(2V - 1)dH}_{\text{A}} + \underbrace{\int_{v_0}^{1}\int_0^{u_0} (2U - 1)VdH}_{B} + \\
@@ -871,7 +875,10 @@ Summing up all four integrals and taking into account the symmetry, we have an e
 	$$
 
 
-\subsubsection{Negative correlation under censoring, $T\equiv 1-S$}
+\subsubsection{Negative correlation under \emph{deterministic censoring}, $T\equiv 1-S$}
+
+Our task in this section is to find what would be a covariance of two perfectly negatively correlated PSRs, if we censor all subjects at a fixed point.\\
+
 The derivations are very similar to the previous section with some differences. When $S = \nu( T)$ and $\nu(\cdot)$ is strictly decreasing, we have: $U = 1-V^-$. Assuming a continuous case we have a \emph{segment-mass} again, but this time it stretches from $(U,V) = (1,0)$ to $(U,V) = (0,1)$. And again, in order for it to sum up to 1, it has to be divided by $\sqrt{2}$.\\
 ~\\
 It can be shown that when $T\equiv 1-S$ the \emph{cdf}'s are related in the same way: $V = 1-U$. Because are taking an integral on a curve $U=V$ again ($U(t) = t$ and $V(t)=1-t$) and because we remember that integral on a curve has to have a term $\sqrt{\left(\frac{dU(t)}{dt}\right)^2 + \left(\frac{-dV(t)}{dt}\right)^2}$. This term again equals to $\sqrt{1^2 + (-1)^2} = \sqrt{2}$, therefore two terms of $\sqrt{2}$ cancel out in the following integrals.\\
@@ -2338,12 +2345,12 @@ Let's summarize:
 Where $\phi_{St.N.}$ and $\Phi_{St.N.}$ are the \emph{pdf} and the \emph{cdf} of the \emph{standard normal} distribution, and $F_Y(y_i)$ is the \emph{cdf} of the \emph{log-normal} distribution with $\mu = \pmb{z}_i\pmb{\beta}$ and $\sigma$.
 
 \subsubsection{M-estimation for \emph{Cox} survival model}
-M-estimation for Cox regression is more complicated than for parametric regressions because Cox regression provides score equations only for $\hat{\pmb{\beta}}$. We, however also need score equations for baseline hazard parameters $\lambda_k$. Let's denote unique time points as $t_k$ and try to makes sense of this. We recall again the definition of PSR, $PSR_{Y_i} =  (1+\delta_i) F(y_i)  -  \delta_i = 1- (1+\delta_i) S(y_i)$. 
+M-estimation for Cox regression is more complicated than for parametric regressions because Cox regression provides score equations only for $\hat{\pmb{\beta}}$. We, however also need score equations for baseline hazard parameters $\lambda_k$. In the following, we denote ordered unique failure times as $t_{(k)}$. We recall again the definition of PSR, $PSR_{Y_i} =  (1+\delta_i) F(y_i)  -  \delta_i = 1- (1+\delta_i) S(y_i)$. 
 As usual, we only need to get $\frac{\partial PSR}{\partial \beta_i}$ and $\frac{\partial PSR}{\partial \lambda_k}$:
 $$
   \begin{aligned}
     S(y_i) &=  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}} \\
-    \Lambda(y_i)  &= \sum_{k: t_k\leq y_i} \hat{\lambda}_k\\
+    \Lambda(y_i)  &= \sum_{k: t_{(k)}\leq y_i} \hat{\lambda}_k\\
     \frac{\partial S(y_i, \pmb{\beta})}{\partial \beta_j} &= \frac{\partial}{\partial \beta_j}\left[  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -\Lambda(y_i)e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{ij} \\
     \frac{\partial S(y_i, \pmb{\beta})}{\partial \lambda_0(y_i)} &= \frac{\partial}{\partial \lambda_0(y_i)}\left[  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}\\
     \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  (1+\delta_i)\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}   \cdot  z_{ij}  \cdot  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}\\
@@ -2368,35 +2375,20 @@ $$
   \end{aligned}
   $$
   
-Now, let's focus on defining matrix $\pmb{A}_{Y,2,2}$. Because baseline hazard is estimated in the following way (check please): 
+Now, let's focus on defining matrix $\pmb{A}_{Y,2,2}$. According to \cite{breslow1972discussion} and \cite{lin2007breslow} the Breslow estimator of the baseline hazard is (makes sure that R does it this way): 
   $$
   \begin{aligned}
-    \hat{\lambda}_k &= \frac{\sum_{\left\{m:~y_m = t_k\right\}} \delta_m}{\sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}}
+    \hat{\lambda}_k &= \frac{1}{t_{(k)} - t_{(k-1)}} \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}}
   \end{aligned}
   $$
-Where $\sum_{m:~ \left\{\delta_m=1,~ y_m = k\right\}} \delta_m$ is a number of events at time $t_k$, $\mathcal{R}(t_k)$ is a risk set and index $l$ denotes subjects that are in this risk set, or, in other words, have survived beyond time $t_k$: $\mathcal{R}(t_k) = \left\{y_l: ~y_l \geq t_k \right\}$. 
-So the score equation for $\lambda_k$ is:
+Where $\sum_{m:~ \left\{\delta_m=1,~ y_m = k\right\}} \delta_m$ is a number of events at time $t_{(k)}$, $\mathcal{R}(t_{(k)})$ is a risk set and index $l$ denotes subjects that are in this risk set, or, in other words, have survived beyond time $t_{(k)}$: $\mathcal{R}(t_{(k)}) = \left\{y_l: ~y_l \geq t_{(k)} \right\}$. In the above, $t_{(k)}$ is an ordered unique failure time, so if $y_i$ is one of the unique failure times, then the above equation defines $\psi_{Y_i,{\lambda}_k}$. But, if $y_i$ is a cesored time point, then we still use the above equation, but we find such $k$ that $t_{(k-1)} < y_i < t_{(k)}$. To summarize, the score equation for $\lambda_k$ is:
   $$
   \begin{aligned}
-    \psi_{{\lambda}_k} &= \frac{\sum_{\left\{m:~y_m = t_k\right\}} \delta_m}{\sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}}- {\lambda}_k = 0\\
-  \end{aligned}
-  $$
-The above equation looks like it makes sense, but there is a small problem. In M-estimation, we want to have $\psi_{{\lambda}_k} = \frac{1}{n}\sum_i\psi_{Y_i,{\lambda}_k}$, with $\psi_{Y_i,{\lambda}_k}$ defined for each $y_i$, but if you look at the above equation, it does not depend on $y_i$. To fix this problem in somewhat artificial way, let's denote an indicator having index $i$ such that $y_i=t_k$ as $I_{\left\{y_i=t_k   \right\}}(i)$, and define $\psi_{Y_i,{\lambda}_k}$ as:\\
-  $$
-  \begin{aligned}
-    \psi_{Y_i,{\lambda}_k} &= \frac{nI_{\left\{y_i=t_k   \right\}}(i)\cdot\delta_i}{\sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}}- {\lambda}_k =\\
-  \end{aligned}
-  $$
-Then 
-  $$
-  \begin{aligned}
-    \psi_{{\lambda}_k} &= \frac{1}{n}\sum_i\psi_{Y_i,{\lambda}_k} = \frac{\sum_i I_{\left\{y_i=t_k   \right\}}(i)\cdot\delta_i}{\sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}}- {\lambda}_k\\
+    \psi_{Y_i,{\lambda}_k} &= \frac{1}{t_{(k)} - t_{(k-1)}}  \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}}- \lambda_k = 0  &\text{ for any } y_i \text{ such that } t_{(k-1)} < y_i \leq t_{(k)}\\
   \end{aligned}
   $$
 
-
-
-In order not to loose track of what we are doing, let's consider an example with only had one $\beta_j$ (where $j$ is a fixed index) and two unique failure points, $t_1$ and $t_2$ (it's unrealistic, but saves us some space). The resulting $\pmb{A}_{Y,2,2}$ matrix should look like this: 
+In order not to loose track of what we are doing, let's consider an example with only had one $\beta_j$ (where $j$ is a fixed index) and two unique failure points, $t_1$ and $t_2$ (it's unrealistic, but saves us some space). The resulting $\pmb{A}_{Y,2,2}$ matrix (see section \ref{Defining:Matr} for  $\pmb{A}_{Y,2,2}$ definition) should look like this: 
 
   \[
   \pmb{A}_{Y,2,2} = -\sum_i^n\begin{bmatrix}
@@ -2422,7 +2414,8 @@ $$
   \frac{\partial \psi_{Y_i,\beta_j}}{ \partial \lambda_1} &= \frac{\partial \psi_{Y_i,\beta_j}}{ \partial \lambda_2} = 0~~~\text{because partial likelihood does not contain } \lambda_k\\
   \frac{\partial \psi_{Y_i,\lambda_1}}{  \partial \lambda_2} &= \frac{\partial \psi_{Y_i,\lambda_2}}{  \partial \lambda_1} = 0\\
   \frac{\partial \psi_{Y_i,\lambda_1}}{  \partial \lambda_1} &= \frac{\partial \psi_{Y_i,\lambda_2}}{  \partial \lambda_2} = - 1\\
-  \frac{\partial \psi_{Y_i,\lambda_k}}{  \partial \beta_j} &= -\frac{nI_{\left\{y_i=t_k   \right\}}(i)\cdot\delta_i}{\left(   \sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} \cdot \frac{ \partial \left(   \sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}  \right)}{\partial  \beta_j} = -\left[  nI_{\left\{y_i=t_k   \right\}}(i)\cdot\delta_i  \right] \frac{     \sum_{l\in \mathcal{R}(t_k)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} \\
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \frac{\partial \psi_{Y_i,\lambda_k}}{  \partial \beta_j} &= - \left( \frac{1}{t_{(k)} - t_{(k-1)}}  \right)   \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{\left(\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}\right)^2}   \cdot \frac{ \partial \left(   \sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}  \right)}{\partial  \beta_j} = -\left( \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{t_{(k)} - t_{(k-1)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(k)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} \\
 \end{aligned}
 $$
 As a result:
@@ -2431,17 +2424,17 @@ As a result:
    =-\sum_i^n\begin{bmatrix}
       \frac{\partial \pmb{\psi}_{Yi,\beta_j}}{ \partial \beta_j} & 0 & 0 \\
       %%%%%%%%%
-      -\left[  \sum_{\left\{m:~y_m = t_1\right\}} \delta_m  \right] \frac{     \sum_{l\in \mathcal{R}(t_1)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_1)} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & -1 & 0 \\
+      -\left( \frac{\sum_{\left\{m:~y_m = t_{(1)}\right\}} \delta_m}{t_{(1)} - t_{(0)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(1)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(1)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & -1 & 0 \\
       %%%%%%%%%
-      -\left[  \sum_{\left\{m:~y_m = t_2\right\}} \delta_m  \right] \frac{     \sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_2)} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & 0 & -1 \\
+      -\left( \frac{\sum_{\left\{m:~y_m = t_{(2)}\right\}} \delta_m}{t_{(2)} - t_{(1)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(2)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(2)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & 0 & -1 \\
   \end{bmatrix}
   \]
 
-And we remind ourselves that $\mathcal{R}(t_k) = \left\{y_l: ~y_l \geq t_k ~\cap~ ~y_i=t_k\right\}$. 
+And we remind ourselves that $\mathcal{R}(t_{(k)}) = \left\{y_l: ~y_l \geq t_{(k)} ~\cap~ ~y_i=t_{(k)}\right\}$. 
 
 
-From the above, we anticipate several challenges. One challenge is $\hat{\lambda}_k$ are not provided by \texttt{coxph()} so we need to compute $\sum_{l\in \mathcal{R}(t_k)} e^{\pmb{z}_l\pmb{\beta}}$ and $\sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}$ manually.\\
-The second challenge is to invert matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. From the previous example we saw that the we can take advantage of the fact that the  largest square submatrices parts of matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal.
+From the above, we anticipate several challenges. One challenge is $\hat{\lambda}_k$ are not provided by \texttt{coxph()} so we need to compute $\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}$ and $\sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}$ manually.\\
+The second challenge is to invert matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. From the previous example we saw that we can take advantage of the fact that the  largest square submatrices parts of matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal.
 
 
 
@@ -2461,6 +2454,17 @@ Under construction ...
 
 \section{To-Do List}
 \begin{enumerate}
+  \item cART Combined Antiretroviral therapy, HAART - Highly active Antiretroviral therapy
+  \item ARV - Antiretroviral, ART Antiretroviral therapy (first generation medicine) PI - protease inhibitor
+  \item instead of RNA use VL measurement
+  \item Change label for Qi's paper because now it is published now.
+  \item Make a literature list (Chun wanted it) (paper)
+  \item Check definition of $\rho_S$ for discreate data ???
+  \item Combine sections 2.1 and 2.2 in the paper
+  \item baseline hazard score equations: ???
+  Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
+  \item email Brian about moving the meeting to 12
+  \item look for papers for baseline hazard variance estimators in order to find estimating equations for baseline hazard.
   \item Cox regression score equations for $\lambda_i$ !!!
   \item Paper in the following order: section 2-3 (PS method), section 4 (simpler simulations), section 5 (CASSANet), section 6 (Discussion).
   \item Chun: what if we integrate outside the covariance
@@ -2468,8 +2472,11 @@ Under construction ...
   % \item Add age and site to the covariate list
   % \item Add splines after transforming RNA as $log$ and transforming CD4 as $\sqrt{\cdot}$.
   \item Check the definition of baseline RNA: it should be within -180 to 0 days.
+  \item Baseline CD4: the  closest CD4 count to the date of first HAART within a window of -180 prior to first HAART to 30 (or 7) days after.
   \item Check virologic failure that should start 6 months after the starting point: Yours start right away.
-  \item
+  \item Sort out the notations: is it $E_S[F_S(x)|S>X]$ or $E_S[F_S(s)|s>x]$?
+  \item Check the following: when we return residuals from the model, R may return only residuals for the unique time points. This might not be what the user wants. On the other hand, unique time points is all we need for M-estimation.
+  \item you have two functions \texttt{simSurvDataFromJointCDF()} in \texttt{tools.R} check which one is in use
 \end{enumerate}
 
 
