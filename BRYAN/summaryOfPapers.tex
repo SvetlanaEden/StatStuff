@@ -2557,10 +2557,9 @@ $$
   \begin{aligned}
    \frac{\partial \l_i}{\partial \beta_j}  &= \delta_iz_{ij}  - \left[  \sum_{k: t_{(k)}\leq y_i} (t_{(k)} - t_{(k-1)}) \lambda_k(y_i)   \right]  e^{\pmb{z}_i\pmb{\beta}} z_{ij}\\
     % %%%
-    \frac{\partial \l_i}{\partial \lambda_k(y_i)}  &= \frac{\delta_i}{\lambda_k(y_i)} -  \left(  t_{(k)} - t_{(k-1)}  \right) e^{\pmb{z}_i\pmb{\beta}}~~~~  &i,k:~~~t_{(k - 1)} < y_i \leq t_{(k)}\\
-    %%%
-      &= -  \left(  t_{(k)} - t_{(k-1)}  \right) e^{\pmb{z}_i\pmb{\beta}}~~~~  &i,k:~~~t_{(k)} \leq y_i\\
-      &= 0 ~~~~  &i,k:~~~y_i < t_{(k)}\\
+    \frac{\partial \l_i}{\partial \lambda_k(y_i)}  &= \frac{\delta_i}{\lambda_k(y_i)} -  \left(  t_{(k)} - t_{(k-1)}  \right) e^{\pmb{z}_i\pmb{\beta}}~~~~  &i,k:~~~ y_i \in (t_{(k - 1)}, t_{(k)}) ~\cap~ \delta_i = 0 ~~~  \cup   ~~~ y_i = t_{(k)} \cap \delta_i = 1\\
+      &= -  \left(  t_{(k)} - t_{(k-1)}  \right) e^{\pmb{z}_i\pmb{\beta}}~~~~  &i,k:~~~y_i > t_{(k)}\\
+      &= 0 ~~~~  &i,k:~~~y_i \leq t_{(k-1)}\\
     %%%
   \end{aligned}
 $$
@@ -2573,9 +2572,9 @@ $$
     %%%
       &= 0~~~~  &k \neq k' \cup   y_i \notin (t_{(k - 1)}, t_{(k)}] \\
     %%%
-   \frac{\partial^2 \l_i}{\partial \beta_j \partial \lambda_k(y_i)}  &= -\left(  t_{(k)} - t_{(k-1)}  \right) e^{\pmb{z}_i\pmb{\beta}} z_{ij}~~~~  &i,k:~~~ t_{(k)} \leq y_i\\
+   \frac{\partial^2 \l_i}{\partial \beta_j \partial \lambda_k(y_i)}  &= -\left(  t_{(k)} - t_{(k-1)}  \right) e^{\pmb{z}_i\pmb{\beta}} z_{ij}~~~~  &i,k:~~~y_i \in (t_{(k - 1)}, t_{(k)}) ~\cap~ \delta_i = 0 ~~~ \cup ~~~ y_i \geq t_{(k)}\\
     %%%
-      &= 0 ~~~~  &i,k:~~~t_{(k)} > y_i\\
+      &= 0 ~~~~  &i,k:~~~y_i \leq t_{(k-1)}\\
     %%%
   \end{aligned}
 $$
