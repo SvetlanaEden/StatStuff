@@ -611,6 +611,27 @@ We next simulate independently $(t_1, t_2, ..., )$, and $(u_1, u_2, ...)$, which
   $$
 and get a value of $v=v_i$. Then we use the quasi-inverses $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$ in order to back transform $u_i$ and $v_i$ into $x_i$ and $y_i$: $x_i = -ln (1-u_i)$ and $y_i = -ln (1-v_i)$.
 
+\subsection{Simulation of bivariate Clayton distribution with exponential marginals}
+Bivariate surival function of the \emph{Clayton}'s family looks like this:
+	$$
+	\begin{aligned}
+		 S(t_1,t_2) = \left\{  S_1^{1-\gamma}(t_1) + S_2^{1-\gamma}(t_2) - 1 \right\}^{\frac{1}{1-\gamma}}
+	\end{aligned}
+	$$
+We chose the marginals to be $S_1(t_1) = e^{-\lambda_1t_1}$ and $S_2(t_2) = e^{-\lambda_2t_2}$. We simulate values of $T_2 = t^*_2$ and values of uniform variable $U = u$, and invert conditional survival function of $T_1$ in order to get $t_1$:
+	$$
+	\begin{aligned}
+		 S(t_1|t^*_2) = u &= \left\{  S_1^{1-\gamma}(t_1) + S_2^{1-\gamma}(t^*_2) - 1 \right\}^{\frac{1}{1-\gamma}}\\
+		 u^{1-\gamma} &+ 1 -S_2^{1-\gamma}(t^*_2) =   S_1^{1-\gamma}(t_1)\\
+		 S_1(t_1) &=e^{-\lambda_1t_1}=  \left\{ u^{1-\gamma} + 1 -S_2^{1-\gamma}(t^*_2) \right\}^{\frac{1}{1-\gamma}} \\
+		 -\lambda_1 t_1&= \frac{1}{1-\gamma}  ln\left\{ u^{1-\gamma} + 1 -S_2^{1-\gamma}(t^*_2) \right\} \\
+		  t_1&= -\frac{1}{(1-\gamma)\lambda_1}  ln\left\{ u^{1-\gamma} + 1 - e^{-\lambda_2 t_2^*(1-\gamma)} \right\} \\
+	\end{aligned}
+	$$
+
+Note that expression $u^{1-\gamma} + 1 - e^{-\lambda_2 t_2^*(1-\gamma)}$ can be $\leq 0$. If this is the case, we resample $t_2$ and $u$. Also, we continue resampling the values of $t_2$ and $u$ until the values of $t_1$ are all positive.
+
+
 \subsection{Figuring out \emph{Spearman's} correlation of bivariate Gumbel distribution}
 According to \cite{nelsen2007introduction}, for continuous distributions, \emph{Spearman's} correlation can be expressed through \emph{copula} as:
 	$$
@@ -2605,6 +2626,23 @@ Questions to Bryan:
 \subsection{M-estimation for conditional and partial-conditional correlation}
 Another way of approaching this problem was suggested by \cite{liu2016covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
 Under construction ...
+\section{What I have been doing before this meeing}
+\begin{enumerate}
+  \item Implemented M-estimation for Cox using the full likelihood, but it did not work
+  \item Tried to do Savage scores, but still working on them
+  \item am trying to do Shih and Louis (martingale residuals paper), but don't understand it yet
+  \item look at the simulations in two papers: Shih and Louis and Some other one about Normal Copula. It looks like I will have to implement the bivariate survival distributions mentioned in these papers
+  \item tried to look at Qi's conditional correlation, but did not get it yet.
+  \item tried to derive the dependence of perfect correlation decreasing with percent censoring increasing, when cencoring is performed uniformly on the cdf scale. Still working on it.
+  \item tried to see if the loss in correlation can be evaluated using Hoeffding and Frescet bounds, but did not figure out this yet.
+\end{enumerate}
+
+\section{Questions to Bryan}
+\begin{enumerate}
+  \item Ask Bryan, what families of bivariate survial to implement
+  \item Ask what test characteristics to report in addition to type one error and power for different sample sizes and different cencoring proportions.
+\end{enumerate}
+
 
 
 \section{To-Do List}
@@ -2614,7 +2652,7 @@ Under construction ...
   \item instead of RNA use VL measurement
   \item Change label for Qi's paper because now it is published now.
   \item Make a literature list (Chun wanted it) (paper)
-  \item Check definition of $\rho_S$ for discreate data ???
+  \item Check definition of $\rho_S$ for discrete data ???
   \item Combine sections 2.1 and 2.2 in the paper
   \item baseline hazard score equations: ???
   Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
@@ -2633,6 +2671,7 @@ Under construction ...
   \item Check the following: when we return residuals from the model, R may return only residuals for the unique time points. This might not be what the user wants. On the other hand, unique time points is all we need for M-estimation.
   \item you have two functions \texttt{simSurvDataFromJointCDF()} in \texttt{tools.R} check which one is in use
   \item fix in function zebraTable: when pallet is customized, the function prints out the color names.
+  \item change the function of partial correlation in such way that $PSR_X$ could be adjusted and $PSR_Y$ unadjusted or the other way around. Currently, you have either both are adjusted (function corTS) or none (function $corTS_Simple$)
 \end{enumerate}
 
 %\include{Simulations/tmp1}
