@@ -553,7 +553,7 @@ Where
 	\end{aligned}
 	$$
 
-\section{Simulation of Survival Data}
+\section{Simulation of Bivariate Survival Data}
 
 \subsection{Simulation of bivariate Gumbel distribution using copulas}
 
@@ -580,7 +580,7 @@ $$
 
 $$
 \begin{aligned}
-F_{Y|X}(y|X=x) &= \frac{F(X\leq x,Y=y)}{f_X(x)}= \frac{\frac{\partial F(x,y)}{\partial x}}{f_X(x)} =\frac{ e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}}{e^{-x}} =\\
+F_{Y|X}(y|X=x) &= \frac{F(Y\leq y,X=x)}{f_X(x)}= \frac{\frac{\partial F(x,y)}{\partial x}}{f_X(x)} =\frac{ e^{-x} - (1+\theta y)e^{-(x+y+\theta xy)}}{e^{-x}} =\\
 &= 1 - (1+\theta y)e^{-y(1+\theta x)}.
 \end{aligned}
 $$
@@ -618,14 +618,23 @@ Bivariate surival function of the \emph{Clayton}'s family looks like this:
 		 S(t_1,t_2) = \left\{  S_1^{1-\gamma}(t_1) + S_2^{1-\gamma}(t_2) - 1 \right\}^{\frac{1}{1-\gamma}}
 	\end{aligned}
 	$$
-We chose the marginals to be $S_1(t_1) = e^{-\lambda_1t_1}$ and $S_2(t_2) = e^{-\lambda_2t_2}$. We simulate values of $T_2 = t^*_2$ and values of uniform variable $U = u$, and invert conditional survival function of $T_1$ in order to get $t_1$:
+We chose the marginals to be $S_1(t_1) = e^{-\lambda_1t_1}$ and $S_2(t_2) = e^{-\lambda_2t_2}$. We simulate values of $T_2 = t^*_2$ and values of uniform variable $U = u$, and invert conditional survival function of $T_1$ in order to get $t_1$. Let's find the conditional survival function first:
+
+  $$
+  \begin{aligned}
+  S_{T_1|T_2}(t_1|T_2=t_2^*) &= \frac{S(T_1 > t_1, T_2=t_2^*)}{f_{T_2}(t_2^*)}= \frac{\frac{-\partial S(t_1,t_2^*)}{\partial t_2}}{f_{T_2}(t_2^*)} =  \\
+  &= \frac{1}{\cancel{1-\gamma}}   \frac{ \left\{  e^{-\lambda_1t_1(1-\gamma)} + e^{-\lambda_2t_2(1-\gamma)} - 1   \right\}^{\frac{\gamma}{1-\gamma}} e^{-\lambda_2 t_2(\cancel{1}-\gamma)} \cancel{(1-\gamma)}\lambda_2}{\cancel{e^{-\lambda_2 t_2}}} =\\
+  &=    \left\{  e^{-\lambda_1t_1(1-\gamma)} + e^{-\lambda_2t_2(1-\gamma)} - 1   \right\}^{\frac{\gamma}{1-\gamma}} e^{\lambda_2 t_2\gamma} \lambda_2
+  \end{aligned}
+  $$
+
+Let's invert the conditional survival function now:
+
 	$$
 	\begin{aligned}
-		 S(t_1|t^*_2) = u &= \left\{  S_1^{1-\gamma}(t_1) + S_2^{1-\gamma}(t^*_2) - 1 \right\}^{\frac{1}{1-\gamma}}\\
-		 u^{1-\gamma} &+ 1 -S_2^{1-\gamma}(t^*_2) =   S_1^{1-\gamma}(t_1)\\
-		 S_1(t_1) &=e^{-\lambda_1t_1}=  \left\{ u^{1-\gamma} + 1 -S_2^{1-\gamma}(t^*_2) \right\}^{\frac{1}{1-\gamma}} \\
-		 -\lambda_1 t_1&= \frac{1}{1-\gamma}  ln\left\{ u^{1-\gamma} + 1 -S_2^{1-\gamma}(t^*_2) \right\} \\
-		  t_1&= -\frac{1}{(1-\gamma)\lambda_1}  ln\left\{ u^{1-\gamma} + 1 - e^{-\lambda_2 t_2^*(1-\gamma)} \right\} \\
+		 u &= \left\{  e^{-\lambda_1t_1(1-\gamma)} + e^{-\lambda_2t_2(1-\gamma)} - 1   \right\}^{\frac{\gamma}{1-\gamma}} e^{\lambda_2 t_2\gamma} \lambda_2\\
+		 \left(  \frac{u}{ e^{\lambda_2 t_2\gamma} \lambda_2}  \right)^{\frac{1-\gamma}{\gamma}} &+ 1 -e^{-\lambda_2t_2(1-\gamma)} =   e^{-\lambda_1t_1(1-\gamma)}\\
+		  t_1 &=  -\frac{1}{\lambda_1(1-\gamma)} ln  \left(   \left(  \frac{u}{ e^{\lambda_2 t_2\gamma} \lambda_2}  \right)^{\frac{1-\gamma}{\gamma}}  + 1 -e^{-\lambda_2t_2(1-\gamma)}   \right)
 	\end{aligned}
 	$$
 
