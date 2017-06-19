@@ -638,7 +638,6 @@ Let's invert the conditional survival function now:
 	\end{aligned}
 	$$
 
-Note that expression $u^{1-\gamma} + 1 - e^{-\lambda_2 t_2^*(1-\gamma)}$ can be $\leq 0$. If this is the case, we resample $t_2$ and $u$. Also, we continue resampling the values of $t_2$ and $u$ until the values of $t_1$ are all positive.
 
 
 \subsection{Figuring out \emph{Spearman's} correlation of bivariate Gumbel distribution}
@@ -2618,8 +2617,8 @@ $$
   \end{aligned}
   $$
   
-From the above, we anticipate several challenges. One challenge is $\hat{\lambda}_k$ are not provided by \texttt{coxph()} so we need to compute $\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}$ and $\sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}$ manually.\\
-The second challenge is to invert matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. From the previous example we saw that we can take advantage of the fact that the  largest square submatrices parts of matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal.
+% From the above, we anticipate several challenges. One challenge is $\hat{\lambda}_k$ are not provided by \texttt{coxph()} so we need to compute $\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}$ and $\sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}$ manually.\\
+One of the challenges is to invert matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. From the previous example we saw that we can take advantage of the fact that the  largest square submatrices parts of matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal.
 
 
 
@@ -2627,14 +2626,10 @@ The second challenge is to invert matrix $\pmb{A}$. This is a challenge because 
 
 \subsubsection{Miscellaneous}
 Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
-Questions to Bryan:
-\begin{enumerate}[1)]
-  \item should we include the score equation for scale, not only for $\beta$ coefficients?
-\end{enumerate}
 
-\subsection{M-estimation for conditional and partial-conditional correlation}
-Another way of approaching this problem was suggested by \cite{liu2016covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
-Under construction ...
+% \subsection{M-estimation for conditional and partial-conditional correlation}
+% Another way of approaching this problem was suggested by \cite{liu2016covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
+% Under construction ...
 \section{What I have been doing before this meeing}
 \begin{enumerate}
   \item Implemented M-estimation for Cox using the full likelihood, but it did not work
