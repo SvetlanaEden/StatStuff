@@ -2574,11 +2574,11 @@ The second challenge is to invert matrix $\pmb{A}$. This is a challenge because 
 $$
   \begin{aligned}
     S(y_i) &=  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}} \\
-    \Lambda(y_i)  &= \sum_{k: t_{(k)}\leq y_i} (t_{(k)} - t_{(k-1)}) \lambda_k(y_i)\\
+    \Lambda(y_i)  &= \sum_{k: t_{(k)}\leq y_i} \left(t_{(k)} - t_{(k-1)}\right) \lambda_k(y_i)\\
     %%%
     f(y_i) &= -\frac{\partial S(y_i)}{\partial y_i} =   e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}} \cdot e^{\pmb{z}_i\pmb{\beta}} \cdot \frac{\partial \Lambda(y_i)}{\partial y_i} =   e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}} \cdot e^{\pmb{z}_i\pmb{\beta}} \cdot \lambda_k(y_i) \\\\
     \L_i  &= f(y_i)^{\delta_i} S(y_i)^{1 - \delta_i} = \left[  \frac{f(y_i)}{S(y_i)}  \right]^{\delta_i}   S(y_i) = \left[   \lambda_k(y_i) \cdot e^{\pmb{z}_i\pmb{\beta}}   \right]^{\delta_i} e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}\\
-    \l_i  &= \delta_i [ln(\lambda_k(y_i)) + \pmb{z}_i\pmb{\beta}] -\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = \delta_i [ln(\lambda_k(y_i)) + \pmb{z}_i\pmb{\beta}] -\sum_{k: t_{(k)}\leq y_i} (t_{(k)} - t_{(k-1)}) \lambda_k(y_i) e^{\pmb{z}_i\pmb{\beta}}\\
+    \l_i  &= \delta_i [ln(\lambda_k(y_i)) + \pmb{z}_i\pmb{\beta}] -\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = \delta_i [ln(\lambda_k(y_i)) + \pmb{z}_i\pmb{\beta}] -\sum_{k: t_{(k)}\leq y_i} \left(t_{(k)} - t_{(k-1)}\right) \lambda_k(y_i) e^{\pmb{z}_i\pmb{\beta}}\\
   \end{aligned}
   $$
 Let's get our first derivatives:
@@ -2595,7 +2595,7 @@ $$
 Now, let's derive the second derivatives:
 $$
   \begin{aligned}
-   \frac{\partial^2 \l_i}{\partial \beta_j \partial \beta_{j'}}  &= -\left[  \sum_{k: t_{(k)}\leq y_i} (t_{(k)} - t_{(k-1)}) \lambda_k(y_i)   \right]  e^{\pmb{z}_i\pmb{\beta}} z_{ij} z_{ij'}\\
+   \frac{\partial^2 \l_i}{\partial \beta_j \partial \beta_{j'}}  &= -\left[  \sum_{k: t_{(k)}\leq y_i} \left(t_{(k)} - t_{(k-1)}\right) \lambda_k(y_i)   \right]  e^{\pmb{z}_i\pmb{\beta}} z_{ij} z_{ij'}\\
     % %%%
     \frac{\partial^2 \l_i}{\partial \lambda_k(y_i)\partial \lambda_{k'}(y_i)}  &= -\frac{\delta_i}{\lambda_k^2(y_i)} ~~~~  &k=k' \cap y_i \in (t_{(k - 1)}, t_{(k)}]\\
     %%%
@@ -2641,16 +2641,28 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item tried to see if the loss in correlation can be evaluated using Hoeffding and Frescet bounds, but did not figure out this yet.
 \end{enumerate}
 
-\section{Questions to Bryan}
+\section{Report}
 \begin{enumerate}
-  \item Ask Bryan, what families of bivariate survial to implement
-  \item Ask what test characteristics to report in addition to type one error and power for different sample sizes and different cencoring proportions.
+  \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. 
+  \item In order to simulate Clayton's family I used package copula. I've checked my simulation thoroughly and feel comfortable to use them. That said, because it is not clear what mechanizm of simulation was used in Shir&Lous paper, we don't have to stick to their scenario. Currently, it is: Clayton' family with about 0.1 kendall's tau. Each variable has exponential marginal with l=1 and l=2. Censoring is 30\% in each group and the censoring interval is from time 0 to 2.3, and uniformly distributed. Please let me know your suggestions about the simulatons.
+   
 \end{enumerate}
 
 
 
 \section{To-Do List}
 \begin{enumerate}
+  \item papametric model: M-estim 
+  \item papametric model: bootstrap
+  \item compare to bootstrap without using a parametric regression
+  \item incorporate the the KM estimator into the M-estimation (Stute, KM as estimating equations)
+  \item bootstrap for CDF and for Cox regression
+  \item incorporate the uncertainty of evaluating CDF into the M-estimation
+  \item orm with cloglog (or loglog) link, it should give the same beta (potential direction)
+  \item Look at Dabrowska and Cuzick for variance of spearman correlation
+  \item keep looking for the variance of the baseline hazard
+  \item check why the power goes down with the sample size
+  \item previous 
   \item cART Combined Antiretroviral therapy, HAART - Highly active Antiretroviral therapy
   \item ARV - Antiretroviral, ART Antiretroviral therapy (first generation medicine) PI - protease inhibitor
   \item instead of RNA use VL measurement
