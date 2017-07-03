@@ -557,7 +557,7 @@ Where
 
 \subsection{Simulation of bivariate Gumbel distribution using copulas}
 
-Here we use a method described in the book of \cite{nelsen2007introduction}. The method utilizes \emph{copulas} in order to simulate bivariate data. We describe this method using example of \emph{Gumbel} distribution (p.23):
+Here we use a method described in the book of \cite{nelsen2007introduction}. The method utilizes \emph{copulas} in order to simulate bivariate data. We describe this method using example of \emph{Gumbel}(\cite{gumbel1960bivariate}) distribution described in \cite{nelsen2007introduction} on p.23:
 	$$
 	\begin{aligned}
     &H_{\theta}(x, y) = 1-e^{-x} - e^{-y} + e^{-(x+y+\theta xy)}, ~~~ x\geq 0, ~~~y\geq 0\\
@@ -612,6 +612,7 @@ We next simulate independently $(t_1, t_2, ..., )$, and $(u_1, u_2, ...)$, which
 and get a value of $v=v_i$. Then we use the quasi-inverses $F^{(-1)}(u) = -ln (1-u)$ and $G^{(-1)}(v) = -ln (1-v)$ in order to back transform $u_i$ and $v_i$ into $x_i$ and $y_i$: $x_i = -ln (1-u_i)$ and $y_i = -ln (1-v_i)$.
 
 \subsection{Simulation of bivariate Clayton distribution with exponential marginals}
+The following derivations are not verified.\\
 Bivariate surival function of the \emph{Clayton}'s family looks like this:
 	$$
 	\begin{aligned}
@@ -660,24 +661,20 @@ Therefore, for Gumbel distribution we have:
 	$$
 As far as I know, the integral above is \emph{non-elementary} and cannot be expressed algebraically, therefore, in order to find it, we can use numeric integration, for example R-function \texttt{integrate($\cdot$)}. We keep in mind that according to \cite{nelsen2007introduction}, $0 \leq \theta \leq 1$.
 
-\subsection{Figuring out \emph{Kendall's} $\tau$ of bivariate Gumbel distribution}
-According to \cite{nelsen2007introduction}, for continuous distributions, \emph{Spearman's} correlation can be expressed through \emph{copula} as:
-	$$
-	\begin{aligned}
-		 \rho_S = 4{\int\int}_{I^2}C(u, v)dC(u, v) - 1
-	\end{aligned}
-	$$
-Where $dC(u, v) = \frac{\partial^2 C(u,v)}{\partial u\partial v} = $
-Therefore:
-	$$
-	\begin{aligned}
-		 \rho_S &= 4\int\int_{I^2}\left[ u+v-1+(1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} \right]dudv - 1 =\\
-     &= 12\int\int_{I^2}\left[ u+v-1 \right]dudv +  12\int\int_{I^2} (1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} dudv - 3\\
-     &= 12\int_0^1\left[ \frac{1}{2} + (v-1) \right]dv -  12\int_0^1(1-v)\int_0^1 (1-u)^{-\theta ln(1-v) + 1} d(1-u)dv - 3 = \\
-     &= 0  - 12\int_0^1(1-v)  \left[ \left. \frac{(1-u)^{-\theta ln(1-v) + 2}}{-\theta ln(1-v) + 2}\right|_0^1 \right]  dv - 3 = \\
-     &= 12\int_0^1\frac{1-v}{-\theta ln(1-v) + 2}  dv - 3
-	\end{aligned}
-	$$
+% \subsection{Figuring out \emph{Kendall's} $\tau$ of bivariate Gumbel distribution}
+% According to \cite{nelsen2007introduction}, for continuous distributions, \emph{Spearman's} correlation can be expressed through \emph{copula} as:
+%   $$
+%   \begin{aligned}
+%      \rho_S = 4{\int\int}_{I^2}C(u, v)dC(u, v) - 1
+%   \end{aligned}
+%   $$
+% Where $dC(u, v) = \frac{\partial^2 C(u,v)}{\partial u\partial v} = $
+% Therefore:.... the integral is complicated and I decided to use \emph{Spearman}'s $\rho$ anyway.
+%   $$
+%   \begin{aligned}
+%      \rho_S &= 4\int\int_{I^2}\left[ u+v-1+(1-u)(1-v)e^{-\theta ln(1-u) ln(1-v)} \right]dudv - 1 =\\
+%   \end{aligned}
+%   $$
 
 \section{PSR (probability scale residuals) for censored data}
 % Terms for residuals:
@@ -2644,7 +2641,7 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 \section{Report}
 \begin{enumerate}
   \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. 
-  \item In order to simulate Clayton's family I used package copula. I've checked my simulation thoroughly and feel comfortable to use them. That said, because it is not clear what mechanizm of simulation was used in Shir&Lous paper, we don't have to stick to their scenario. Currently, it is: Clayton' family with about 0.1 kendall's tau. Each variable has exponential marginal with l=1 and l=2. Censoring is 30\% in each group and the censoring interval is from time 0 to 2.3, and uniformly distributed. Please let me know your suggestions about the simulatons.
+  \item In order to simulate Clayton's family I used package copula. I've checked my simulation thoroughly and feel comfortable to use them. That said, because it is not clear what mechanizm of simulation was used in Shih\&Lous paper, we don't have to stick to their scenario. Currently, it is: Clayton' family with about 0.1 kendall's tau. Each variable has exponential marginal with l=1 and l=2. Censoring is 30\% in each group and the censoring interval is from time 0 to 2.3, and uniformly distributed. Please let me know your suggestions about the simulatons.
    
 \end{enumerate}
 
