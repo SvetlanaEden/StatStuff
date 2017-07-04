@@ -1086,23 +1086,23 @@ Inspired by \cite{fan2000class} we derive a local version of \emph{Spearman's} $
         + P\{ X_{0} = x, X_{1} > x, Y_{0}= y, Y_{2} > y \}\\
   \end{aligned}
   $$
-Let's further denote marginal \emph{pdf} and \emph{cdf} of $X$ as $F(dx)$ and $F(x)$, and marginal \emph{pdf} and \emph{cdf} of $Y$ as $G(dy)$ and $G(y)$
+Let's further denote marginal \emph{pdf} and \emph{survival functions} of $X$ as $F(dx)$ and $F(x)$, and marginal \emph{pdf} and \emph{survival functions} of $Y$ as $G(dy)$ and $G(y)$
 Because $(X_{1}, Y_{1})$, $X_{1}$, and $Y_{2})$ are independent, we have:
   $$
   \begin{aligned}
-P\{ &X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y \} =\\
+P\{ &X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} =\\
       &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)G(dy) + S(x,dy)F(dx)G(y) + \\
       &~~~~+ S(dx,y)F(dx)G(dy) +  S(dx,dy)F(dx)G(dy) + S(dx,dy)F(dx)G(y) + \\
       &~~~~+ S(dx,y)F(x)G(dy) +  S(dx,dy)F(x)G(dy) + S(dx,dy)F(x)G(y) = \\
       &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)(G(dy)+G(y))  + S(dx,y)G(dy)(F(dx) + F(x)) +\\ &~~~~+S(dx,y)((F(dx) + F(x))(G(dy)+G(y))) = \\
-      &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)G(y^-)  + S(dx,y)G(dy)F(x^-) +S(dx,y)F(x^-)G(y^-) = \\
-      &= \{S(x^-,y^-)-S(x^-,y)-S(x,y^-) + S(x,y)\}F(dx)G(dy) +  \\
-      &~~~~+\{S(x,y^-) - S(x,y)\}F(dx)G(y^-)  +\\
-      &~~~~ +\{S(x^-,y) - S(x,y)\}G(dy)F(x^-) +\\
-      &~~~~+S(dx,y)F(x^-)G(y^-) = \\
+      &= S(x,y)F(dx)G(dy) +  S(x,dy)F(dx)G(y^-)  + S(dx,y)G(dy)F(x^-) +S(dx,dy)F(x^-)G(y^-) = \\
+      &= \{S(x^-,y^-)-S(x^-,dy)-S(dx,y^-) + S(dx,dy)\}F(dx)G(dy) +  \\
+      &~~~~+\{S(x^-,dy) - S(dx,dy)\}F(dx)G(y^-)  +\\
+      &~~~~ +\{S(dx,y^-) - S(dx,dy)\}G(dy)F(x^-) +\\
+      &~~~~+S(dx,dy)F(x^-)G(y^-) = \\
       &~~~~~~~~~~ skipping~some~algebra...\\
       &= S(x^-,y^-)F(dx)G(dy) +  \\
-      &~~~~+S(x^-,dy)F(dx)(G(y^-) - G(dx))  +\\
+      &~~~~+S(x^-,dy)F(dx)(G(y^-) - G(dy))  +\\
       &~~~~+S(dx,y^-)(F(x^-) - F(dx))G(dy)  +\\
       &~~~~+S(dx,dy)(F(x^-) - F(dx))(G(y^-) - G(dx))\\
 	\end{aligned}
@@ -1111,7 +1111,7 @@ Now, let's find the joint distribution of concordance and discordance and of $X_
 	$$
 	\begin{aligned}
 		P\{ (X_0>X_1, Y_0>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0>y, Y_2=y)\} = S(x, y)F(dx)G(dy) \\
-		P\{ (X_0<X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0=y, Y_2>y)\} = S(dx, dy)F(x)G(dy) \\
+		P\{ (X_0<X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0=y, Y_2>y)\} = S(dx, dy)F(x)G(y) \\
 		P\{ (X_0>X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0=y, Y_2>y)\} = S(x, dy)F(dx)G(y) \\
 		P\{ (X_0<X_1, Y_0>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0>y, Y_2=y)\} = S(dx, y)F(x)G(dy) \\
 	\end{aligned}
@@ -1122,7 +1122,7 @@ Now, let's find the joint distribution of concordance and discordance and of $X_
 		P\{&[Concord. - Discord.] \cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} = \\
     &~~~= \{S(dx,dy) + S(x^-,y^-)-S(x^-,dy)-S(dx,y^-)\}F(dx)G(dy) +  \\
       &~~~~+S(dx,dy)(F(x^-) - F(dx))(G(y^-) - G(dy))+\\
-      &~~~~ -\{S(x^-,dy) - S(dx,dy)\}F(dy)(G(y^-) - G(dy)) +\\
+      &~~~~ -\{S(x^-,dy) - S(dx,dy)\}F(dx)(G(y^-) - G(dy)) \\
       &~~~~ -\{S(dx,y^-) - S(dx,dy)\}(F(x^-) - F(dx))G(dy) +\\
       &~~~~~~~~~~ skipping~some~algebra...\\
       &= S(x^-,y^-)F(dx)G(dy) -  \\
