@@ -10,12 +10,20 @@
 \usepackage{hyperref}
 \usepackage{color}
 \usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{pdfpages}
+% \usepackage[makeroom]{cancel}
+% \usepackage[toc,page]{appendix}
 
 %\linespread{1.3} for 1.5 space between lines
 
-%%% for citations. See Lucy's tutorial: https://github.com/LucyMcGowan/Tutorials/blob/master/BiblatexTutorial.md
-\usepackage[backend=biber,maxnames=10,citestyle=science]{biblatex}
-\addbibresource{summaryOfRef.bib}
+% %%% for citations. See Lucy's tutorial: https://github.com/LucyMcGowan/Tutorials/blob/master/BiblatexTutorial.md
+% \usepackage[backend=biber,maxnames=10,citestyle=science]{biblatex}
+% \addbibresource{summaryOfRef.bib}
+
+\usepackage{natbib}
+\bibliographystyle{unsrtnat}
+
 
 %%% when using biber as a "backend" compile like this:
 % pdflatex myFile
@@ -964,6 +972,8 @@ Summing up all four integrals, we have an expression for \emph{Spearman} for cas
 	$$
 
 \subsubsection{Random Uniform Censoring for \emph{perfect} positive and negative \emph{Spearman} correlation}
+
+{\LARGE{This section is under construction!!!}}\\
 Suppose now that we have perfect correlation, but $\gamma$ percent of records is censored uniformly on the \emph{CDF} scale for each variable. We also assume that the censoring distributions for $u_0$ and $v_0$ are independent. In the context of the previous two sections, this means:
   $$
   \begin{aligned}
@@ -1018,7 +1028,7 @@ We know that $\rho^+(u_0, v_0)$ is symetric, so we just do one integral:
     &=  \frac{-1}{12 \cdot 5}  + \frac{1}{12}     +     \frac{1}{10}  - \frac{1}{16} + \frac{1}{24}         -\frac{1}{16\cdot 5}  -  \frac{1}{48}  + \frac{1}{3} - \frac{1}{2}  =   \frac{1}{6}  - \frac{3}{8} + \frac{1}{48}  - \frac{1}{6} = -\frac{17}{48} (\text{ correct answer is } 0.2)\\
   \end{aligned}
 	$$
-I checked using :
+The above integral seems to be incorrect because I checked using this :
 
 {\tiny
 {\begin{verbatim}
@@ -1035,6 +1045,9 @@ So the resulting functional form is likely to be:
 	\end{aligned}
 	$$
 ~\\
+
+{\LARGE{I need to redo the above integral}}
+
 ~\\
 Now let's do the same thing but with \textbf{perfect negative correlation}:
 	$$
@@ -1055,6 +1068,8 @@ The second and third integrals in the above expression, each, are equal to $\fra
     & = -\int_0^1  v_0 \frac{(1 - v_0)^2}{2}dv_0
 	\end{aligned}
 	$$
+
+{\LARGE{Did not have time to do this integral, later perhaps}}
 
 %\subsubsection{Perfect correlation under censoring, general case}
 
@@ -1228,13 +1243,21 @@ Substituting $\mathcal{J}_i(u,d) =d-(1+d)u$ into the above expression, we get:
 		 &= \sum_{n=1}^N (-\hat{F}_1(Y_{1n}) + \delta_{1n}(1-\hat{F}_1(Y_{1n})))\cdot (-\hat{F}_2(Y_{2n}) + \delta_{2n}(1-\hat{F}_2(Y_{2n})))\\
 	\end{aligned}
 	$$
-Where $\hat{F}_i$ are estimators close to the usual \emph{Kaplan-Meier} estimators of the marginal \emph{CDF}'s. If we look at the above expression closely:
+If we look at the above expression closely:
 	$$
 	\begin{aligned}
 		 S_n &= \sum_{n=1}^N (\hat{F}_1 - \delta_{1n}(1-\hat{F}_1))\cdot (\hat{F}_2 - \delta_{2n}(1-\hat{F}_2))\\
 	\end{aligned}
 	$$
 it reminds us of $E[PSR_1 \cdot PSR_2]$, where $PSR(x, \delta) = F(x)-\delta(1-F(x))$ is a probability scale residual for \emph{continuous case}.
+
+So there are two differences between Dabrowska statistic and the sample covariance of PSR:
+\begin{enumerate}[1)]
+  \item The author uses $\mathcal{J}_i(u,d) =d-(1+d)u$ while PSR in her terms would be $-d + u + du^-$.
+  \item In order to estimate for $\hat{F}_i$, instead of using \emph{Kaplan-Meier} $\prod_{i=1}^n \left[ 1 - \frac{\delta_i}{n - i + 1} \right]$, the author uses an estimator that is very similar: $\prod_{i=1}^n \left[ 1 - \frac{\delta_i}{n - i + 2} \right]$. 
+\end{enumerate}
+The variance estimate for the above statistic is: $\sum_{i=1}^n \left( 1 - \hat{F}_{1,i} \right)^2  \left( 1 - \hat{F}_{2,i} \right)^2 \delta_{1,i} \delta_{2,i}$
+
 
 \subsection{Ding, Wang, 2012: Testing Independence for Bivariate Current Status Data, ref???}
 Suggested two statistics for testing independence for bivariate \emph{current status data}. One is based on counts (how many events, non-events, and so forth). The other one is:
@@ -1920,8 +1943,6 @@ My next to-do item is to check if PSR computation for other models takes paramet
 \item In section \ref{MEst:loglogistic} were only partially verified. I only verified the derivatives of $PSR$ by regression parameters (coefficients and scale).
 
 \item Derivations in sections \ref{MEst:exponential}, \ref{MEst:weibull}, and \ref{MEst:lognormal}  were thoroughly verified using simulation, numeric derivatives, and other techniques.
-
-
 \end{enumerate}
 
 \subsubsection{Example: M-estimation in case of normal distribution and its implementation using Qi's code.}
@@ -2059,6 +2080,41 @@ $A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we ha
 \]
 
 The above matrices are combined to get matrix $A$.
+
+
+\subsection{M-estimation for unadjusted PSR using Kaplan-Meier as an estimate of survival function.}
+\label{mEstForPSRUsingKM}
+When estimating the variance of PSR correlation, we use Kaplan-Meier as an estimate of survival function and treat it as a known \emph{parameter}. But, Kaplan-Meier also has variance and we need to take it into account in order get a good estimate for PSR correlation variance.\\
+Here how we are planning to proceed. \cite{breslow1974large} established limitting normality for the product limit (Kaplan-Meier) estimates. Because PSR is a function of product limit estimates, we can use delta method to derive variance estimate for this function. For convenience (because I don't want to be overwhelmed by a bunch of derivatives), I will use delta method twice. Using notations of section \ref{Defining:Matr}, the first delta method step is used to estimate the variance-covariance matrix of $\hat{\theta}_1$, $\hat{\theta}_2$, $\hat{\theta}_3$, $\hat{\theta}_4$, and $\hat{\theta}_5$. The second delta method step is used to estimate $\rho_S = \frac{\theta_3 - \theta_1 \theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_4 - \theta_2^2}}$. Let's proceed with the first delta method step. Let's further denote a Kaplan-Meier estimate of $F_X(x)$ in point $x_i$ as $\hat{F}_X(x_i)$. In the context of this kind of estimation, $\hat{F}_X(x_i^-) = \hat{F}_X(x_{i-1})$, so we can write the following: $\widehat{PSR}_{X_i} = \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i$. We remember that each $\hat{F}_X(x_i)$ is a random parameter estimate and proceed to write:
+
+{\footnotesize{  
+$$
+  \begin{aligned}
+    g_1(\pmb{PSR}_{X_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{X_i} = \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]\\
+    g_2(\pmb{PSR}_{Y_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{Y_i} = \sum_{i=1}^N \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]\\
+    g_3(\pmb{PSR}_{X_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{X_i}PSR_{Y_i} = \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]  \cdot  \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]\\
+    g_4(\pmb{PSR}_{X_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{X_i}^2 = \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]^2\\
+    g_5(\pmb{PSR}_{X_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{Y_i}^2 = \sum_{i=1}^N \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]^2\\
+  \end{aligned}
+  $$
+}}
+Let's write the derivatives while switching to shorter notations $F_X(x_1) = F_{X,1}$:
+{\footnotesize{  
+  $$
+  \begin{aligned}
+    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \left(   \delta_1, ~(1+\delta_2), ~(1+\delta_3), ...  , ~(1+\delta_{N-1}),  ~1,  \underbrace{~~0,~0,~0,...,~0,~0}_{N~for~Y} \right)\\
+    %%%%%%
+    \left. \left(    \frac{\partial g_2(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_2(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_2(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_2(., .)}{\partial F_{Y,N}}    \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \left( \underbrace{0,~0,~0,...,~0,~0}_{N~for~X},~~  \epsilon_1, ~(1+\epsilon_2), ~(1+\epsilon_3), ...  , ~(1+\epsilon_{N-1}),  ~1 \right)\\
+    %%%%%%
+    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]  \cdot  \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]\\
+    %%%%%%
+    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]^2\\
+    %%%%%%
+    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \sum_{i=1}^N \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]^2\\
+  \end{aligned}
+  $$
+}}
+
 
 \subsection{M-estimation for parametric survival models}
 In the following section, I use the on-line source written by Daowen Zhang(ST 745,  \url{http://www4.stat.ncsu.edu/~dzhang2/st745/chap5.pdf}) in order to define parametric survival models. According to Zhang, in parametric survival models we model time as the following:
@@ -2627,25 +2683,31 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 % \subsection{M-estimation for conditional and partial-conditional correlation}
 % Another way of approaching this problem was suggested by \cite{liu2016covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
 % Under construction ...
-\section{What I have been doing before this meeing}
+\section{Report}
 \begin{enumerate}
+  \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. I decided to use my own scenario for simulations.
+  \item I ended up using packages \texttt{lcopula} and \texttt{copula} for generating Clayton's and Frank's family.
+  \item I tried partial PSR simulation with a model that uses splines. They return a non-invertable variance matrix. It is a problem because the inverse of the variace matrix is necessary for M-estimation. I've rewritten the M-estimation function in order to accomodate for the fact that in survival regression, we can supply the inverse of sub matrix A.
+   
+\end{enumerate}
+
+\section{What I am planning to do}
+\begin{enumerate}
+  \item try Frank's family zero
+  \item try to find the original reference for Frank's family
+  \item show correlation mean for each simulation scenario: average point estimate, average estimated variance, variance of the estimates accross 1000.
+  \item Look for models that adjust for covariates
+  \item check the weired degrees of freedom
+  \item implement the function that uses the bootstrap in order to get the M-estimation for COX model, the p-value is defined as how often the CI included 0 times 2.
+  \item add to the section 2 some details. How is PSR related to Dabrowska (what is Dabrowska). How it is different from Dabrowska. Specify the fact that Dabrowska does not distinguish between x- and x.
+  \item Explain the difference in performance for different families
+  \item send the Summary...pdf
+  \item add confidence intervals for PSR correlation
   \item Implemented M-estimation for Cox using the full likelihood, but it did not work
-  \item Tried to do Savage scores, but still working on them
-  \item am trying to do Shih and Louis (martingale residuals paper), but don't understand it yet
-  \item look at the simulations in two papers: Shih and Louis and Some other one about Normal Copula. It looks like I will have to implement the bivariate survival distributions mentioned in these papers
   \item tried to look at Qi's conditional correlation, but did not get it yet.
   \item tried to derive the dependence of perfect correlation decreasing with percent censoring increasing, when cencoring is performed uniformly on the cdf scale. Still working on it.
   \item tried to see if the loss in correlation can be evaluated using Hoeffding and Frescet bounds, but did not figure out this yet.
 \end{enumerate}
-
-\section{Report}
-\begin{enumerate}
-  \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. 
-  \item In order to simulate Clayton's family I used package copula. I've checked my simulation thoroughly and feel comfortable to use them. That said, because it is not clear what mechanizm of simulation was used in Shih\&Lous paper, we don't have to stick to their scenario. Currently, it is: Clayton' family with about 0.1 kendall's tau. Each variable has exponential marginal with l=1 and l=2. Censoring is 30\% in each group and the censoring interval is from time 0 to 2.3, and uniformly distributed. Please let me know your suggestions about the simulatons.
-   
-\end{enumerate}
-
-
 
 \section{To-Do List}
 \begin{enumerate}
@@ -2667,8 +2729,8 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item Make a literature list (Chun wanted it) (paper)
   \item Check definition of $\rho_S$ for discrete data ???
   \item Combine sections 2.1 and 2.2 in the paper
-  \item baseline hazard score equations: ???
-  Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
+  %\item baseline hazard score equations: ???
+  %Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
   \item email Brian about moving the meeting to 12
   \item look for papers for baseline hazard variance estimators in order to find estimating equations for baseline hazard.
   \item Cox regression score equations for $\lambda_i$ !!!
@@ -2736,7 +2798,8 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 % In this section we are trying to understand how Qi is computing \emph{p-value} for \emph{Spearman correlation} (or correlation of PSR). We first try to understand function \texttt{lm.scores()}.
 %
 
-\printbibliography
+%\printbibliography
+\bibliography{summaryOfRef}
 
 
 \end{document}          
