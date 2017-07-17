@@ -963,7 +963,7 @@ Integrals $B$ and $C$ are:
 Integral $D$ is $0$.
 
 We did not consider a case when $u_0+v_0 = 1$ because it is very similar to the previous cases, except that both $A=0$ and $D=0$.\\
-Summing up all four integrals, we have an expression for \emph{Spearman} for case $S\nu(T)$, where $\nu(\cdot)$ is strictly decreasing conditional on the censoring point $(u_0, v_0)$:
+Summing up all four integrals, we have an expression for \emph{Spearman} for case $S=\nu(T)$, where $\nu(\cdot)$ is strictly decreasing conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
     \rho_{S\equiv T}(u_0, v_0)/3 &= -u_0v_0, &when~u_0 + v_0 < 1\\
@@ -2085,7 +2085,7 @@ The above matrices are combined to get matrix $A$.
 \subsection{M-estimation for unadjusted PSR using Kaplan-Meier as an estimate of survival function.}
 \label{mEstForPSRUsingKM}
 When estimating the variance of PSR correlation, we use Kaplan-Meier as an estimate of survival function and treat it as a known \emph{parameter}. But, Kaplan-Meier also has variance and we need to take it into account in order get a good estimate for PSR correlation variance.\\
-Here how we are planning to proceed. \cite{breslow1974large} established limitting normality for the product limit (Kaplan-Meier) estimates. Because PSR is a function of product limit estimates, we can use delta method to derive variance estimate for this function. For convenience (because I don't want to be overwhelmed by a bunch of derivatives), I will use delta method twice. Using notations of section \ref{Defining:Matr}, the first delta method step is used to estimate the variance-covariance matrix of $\hat{\theta}_1$, $\hat{\theta}_2$, $\hat{\theta}_3$, $\hat{\theta}_4$, and $\hat{\theta}_5$. The second delta method step is used to estimate $\rho_S = \frac{\theta_3 - \theta_1 \theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_4 - \theta_2^2}}$. Let's proceed with the first delta method step. Let's further denote a Kaplan-Meier estimate of $F_X(x)$ in point $x_i$ as $\hat{F}_X(x_i)$. In the context of this kind of estimation, $\hat{F}_X(x_i^-) = \hat{F}_X(x_{i-1})$, so we can write the following: $\widehat{PSR}_{X_i} = \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i$. We remember that each $\hat{F}_X(x_i)$ is a random parameter estimate and proceed to write:
+Here how we are planning to proceed. \textbf{First, we assume that every time point is unique!} \cite{breslow1974large} established limitting normality for the product limit (Kaplan-Meier) estimates. Because PSR is a function of product limit estimates, we can use delta method to derive variance estimate for this function. For convenience (because I don't want to be overwhelmed by a bunch of derivatives), I will use delta method twice. Using notations of section \ref{Defining:Matr}, the first delta method step is used to estimate the variance-covariance matrix for $\hat{\theta}_1$, $\hat{\theta}_2$, $\hat{\theta}_3$, $\hat{\theta}_4$, and $\hat{\theta}_5$. The second delta method step is used to estimate $\rho_S = \frac{\theta_3 - \theta_1 \theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_4 - \theta_2^2}}$. Let's proceed with the first delta method step. Let's further denote a Kaplan-Meier estimate of $F_X(x)$ in point $x_i$ as $\hat{F}_X(x_i)$. In the context of this kind of estimation, $\hat{F}_X(x_i^-) = \hat{F}_X(x_{i-1})$, so we can write the following: $\widehat{PSR}_{X_i} = \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i$. We remember that each $\hat{F}_X(x_i)$ is a random parameter estimate and proceed to write:
 
 {\footnotesize{  
 $$
@@ -2096,9 +2096,9 @@ $$
     g_4(\pmb{PSR}_{X_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{X_i}^2 = \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]^2\\
     g_5(\pmb{PSR}_{X_i}, \pmb{PSR}_{Y_i}) &= \sum_{i=1}^N PSR_{Y_i}^2 = \sum_{i=1}^N \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]^2\\
   \end{aligned}
-  $$
+$$
 }}
-Let's write the derivatives while switching to shorter notations $F_X(x_1) = F_{X,1}$:
+Let's write the derivatives while switching to shorter notations $F_X(x_1) = F_{X,1}$ and $PSR_{.,i} = R_{.,i}$:
 {\footnotesize{  
   $$
   \begin{aligned}
@@ -2106,15 +2106,34 @@ Let's write the derivatives while switching to shorter notations $F_X(x_1) = F_{
     %%%%%%
     \left. \left(    \frac{\partial g_2(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_2(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_2(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_2(., .)}{\partial F_{Y,N}}    \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \left( \underbrace{0,~0,~0,...,~0,~0}_{N~for~X},~~  \epsilon_1, ~(1+\epsilon_2), ~(1+\epsilon_3), ...  , ~(1+\epsilon_{N-1}),  ~1 \right)\\
     %%%%%%
-    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]  \cdot  \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]\\
+    \left. \left(    \frac{\partial g_3(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_3(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_3(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_3(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \left( \underbrace{R_{Y,1} +  R_{Y,2}\delta_2,  ...  , ~R_{Y,N-1} +  R_{Y,N}\delta_N,  ~R_{Y,N}}_{for~X},~~ \underbrace{R_{X,1} +  R_{X,2}\epsilon_2,  ...  , ~R_{X,N}}_{similar for Y} \right)\\
     %%%%%%
-    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \sum_{i=1}^N \left[  \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i   \right]^2\\
+    \left. \left(    \frac{\partial g_4(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_4(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_4(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_4(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= 2\left( R_{X,1} +  R_{X,2}\delta_2, ~R_{X,2} +  R_{X,3}\delta_3,  ...  , ~R_{X,N-1} +  R_{X,N}\delta_N,  ~R_{X,N},  \underbrace{~~0,~0,~0,...,~0,~0}_{N~for~Y} \right)\\
     %%%%%%
-    \left. \left(    \frac{\partial g_1(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_1(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_1(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_1(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= \sum_{i=1}^N \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i   \right]^2\\
+    \left. \left(    \frac{\partial g_5(., .)}{\partial F_{X,1}}, ..., \frac{\partial g_5(., .)}{\partial F_{X,N}}, ~ \frac{\partial g_5(., .)}{\partial F_{Y,1}},  ..., \frac{\partial g_5(., .)}{\partial F_{Y,N}}   \right)    \right|_{\hat{F}_X, \hat{F}_Y} &= 2\left( \underbrace{~~0,~0,~0,...,~0,~0}_{N~for~X},~~ R_{Y,1} +  R_{Y,2}\epsilon_2, ~R_{Y,2} +  R_{Y,3}\epsilon_3,  ...  , ~R_{Y,N-1} +  R_{Y,N}\epsilon_N,  ~R_{Y,N} \right)\\
   \end{aligned}
   $$
 }}
 
+We are still doing the first delta method step and now we are concerned with variance covariance matrix of $\hat{F_.(.)}$. According to \cite{breslow1974large}, it is defined as:
+$$
+  \begin{aligned}
+    Cov\left( F(s), F(t)  \right) &= (1 -F^o(s)) (1 -F^o(t)) \int_0^{s}  \frac{dF^o(x)}{ (1 -F(x^-))  (1 -F^o(x)) },
+    &\text{for }  s\leq t
+  \end{aligned}
+$$
+Where $F^o(s)$ is the true distribution function (when there is not censoring) and I am not sure what $F(.)$ is...\\
+
+I am just going to do the following substitution:
+$$
+  \begin{aligned}
+    \widehat{Cov}\left( F(s), F(t)  \right) &= (1 -\hat{F}^o(s)) (1 -\hat{F}^o(t)) \sum_{x_i \leq s } \frac{\delta_i(?)}{ (1 -\hat{F^o}(x_{i-1}))  (1 -\hat{F}^o(x_i)) },
+    &\text{for }  s\leq t
+  \end{aligned}
+$$
+
+The variance of survival curve using Greenwood formula (Survival Analysis by Klein and Moeschberger, p. 92) is: $\widehat{V}[\hat{S}(t)] = \hat{S}^2(t)\cdot \sum_{t_i\leq t} \frac{\delta_i}{Y_i(Y_i - \delta_i)}$, where $Y_i$ is number at risk. It looks sort of similar...\\
+So now, we only need to compute it...
 
 \subsection{M-estimation for parametric survival models}
 In the following section, I use the on-line source written by Daowen Zhang(ST 745,  \url{http://www4.stat.ncsu.edu/~dzhang2/st745/chap5.pdf}) in order to define parametric survival models. According to Zhang, in parametric survival models we model time as the following:
@@ -2685,10 +2704,11 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 % Under construction ...
 \section{Report}
 \begin{enumerate}
-  \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. I decided to use my own scenario for simulations.
-  \item I ended up using packages \texttt{lcopula} and \texttt{copula} for generating Clayton's and Frank's family.
-  \item I tried partial PSR simulation with a model that uses splines. They return a non-invertable variance matrix. It is a problem because the inverse of the variace matrix is necessary for M-estimation. I've rewritten the M-estimation function in order to accomodate for the fact that in survival regression, we can supply the inverse of sub matrix A.
-   
+  \item Implemented partial PSR simulation for a model that uses splines. The problem was that models that use splines return a non-invertable variance-cov. matrix, which we needed to invert for for M-estimation. I've rewritten the M-estimation function in order to accomodate for the fact that in survival regression, we can supply the inverse of sub matrix A.
+  \item Started estimating the variance covariance of K-M.
+  \item Question: Are the estimates of K-M for $X$ and $Y$ dependent on each other? If they are, we cannot do delta method because our K-Ms are estimated in a way that they don't depend on each other.
+  \item Added the plot of perfect correlation.
+  \item Question: what can we compare this to? Can we compare this plot to uncensored time to event and a binary variable (yes/no) that is a result of censoring and then assigning 1 to all people with event and 0 to those who did not have an event.
 \end{enumerate}
 
 \section{What I am planning to do}
@@ -2748,6 +2768,13 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item fix in function zebraTable: when pallet is customized, the function prints out the color names.
   \item change the function of partial correlation in such way that $PSR_X$ could be adjusted and $PSR_Y$ unadjusted or the other way around. Currently, you have either both are adjusted (function corTS) or none (function $corTS_Simple$)
 \end{enumerate}
+
+\section{What I've completed}
+\begin{enumerate}
+  \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. I decided to use my own scenario for simulations.
+  \item I ended up using packages \texttt{lcopula} and \texttt{copula} for generating Clayton's and Frank's family.
+\end{enumerate}
+
 
 %\include{Simulations/tmp1}
 
