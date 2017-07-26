@@ -2042,11 +2042,11 @@ $$
     V_{j,i} &= \phi_j(Y_i) \gamma_0(Y_i) \epsilon_i + \gamma_{j1}(Y_i)(1 - \epsilon_i) - \gamma_{j2}(Y_i)\\
     \phi_j(Y_i) &= I_{\{ Y_i \leq t_j \}}\\
     \gamma_0(Y_i) &= exp\left(  \int_{-\infty}^{Y_i^-}  \frac{H^0(dw)}{1-H(w)}    \right) \\
-    \gamma_1(Y_i) &=  \frac{1}{1-H(Y_i)}    \int I_{\{ Y_i<w \}} \phi_j(w)  \gamma_0(w)H^1(dw)   \\
-    \gamma_2(Y_i) &=   \int \int   \frac{I_{\{ v<Y_i,~v<w \}} \phi_j(w) \gamma_0(w)}{[1-H(v)]^2}   H^0(dv)   H^1(dw)   \\
-    H^0(y) &= P\{  Y\leq y, ~\epsilon = 0 \} = \frac{(1-\epsilon_i)I_{\{ Y_i \leq y \}}}{N} \\
-    H^1(y) &= P\{  Y\leq y, ~\epsilon = 1 \} = \frac{\epsilon_iI_{\{ Y_i \leq y \}}}{N} \\
-    H(y) &= P\{  Y\leq y\} = \frac{I_{\{ Y_i \leq y \}}}{N} \\
+    \gamma_{j,1}(Y_i) &=  \frac{1}{1-H(Y_i)}    \int I_{\{ Y_i<w \}} \phi_j(w)  \gamma_0(w)H^1(dw)   \\
+    \gamma_{j,2}(Y_i) &=   \int \int   \frac{I_{\{ v<Y_i,~v<w \}} \phi_j(w) \gamma_0(w)}{[1-H(v)]^2}   H^0(dv)   H^1(dw)   \\
+    H^0(y) &= P\{  Y\leq y, ~\epsilon = 0 \} = \frac{\sum_i(1-\epsilon_i)I_{\{ Y_i \leq y \}}}{N} \\
+    H^1(y) &= P\{  Y\leq y, ~\epsilon = 1 \} = \frac{\sum_i\epsilon_iI_{\{ Y_i \leq y \}}}{N} \\
+    H(y) &= P\{  Y\leq y\} = \frac{\sum_iI_{\{ Y_i \leq y \}}}{N} \\
   \end{aligned}
 $$
 
@@ -2054,12 +2054,16 @@ Now let's define matrices $\pmb{A}_{X,1,1}$, $\pmb{A}_{Y,2,2}$, $\pmb{A}_{X,3,1}
 
 $$
   \begin{aligned}
-    \frac{\partial \pmb{PSR}_{Y_i}}{\partial \hat{F}_{j,Y}} = \frac{\partial \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i  \right]}{\partial \hat{F}_{j,Y}} &= 1,~~~~\text{if}~\hat{F}_{j,Y} = F_Y(y_i)\\
-    &=\epsilon_i,~~~~\text{if}~\hat{F}_{j,Y} = F_Y(y_{i-1})\\ 
+    \frac{\partial \pmb{PSR}_{Y_i}}{\partial \hat{F}_{j,Y}} = \frac{\partial \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i  \right]}{\partial \hat{F}_{j,Y}} &= -1,~~~~\text{if}~\hat{F}_{j,Y} = F_Y(y_i)\\
+    &=-\epsilon_i,~~~~\text{if}~\hat{F}_{j,Y} = F_Y(y_{i-1})\\ 
     &=0,~~~~\text{otherwise}
   \end{aligned}
 $$
+The minuses result from the fact that the result of \cite{stute1995central} holds for Kaplan-Meier (not for CDF).
 In order to complete constructing matrices $\pmb{A}_{X,3,1}$, $\pmb{A}_{Y, 4,2}$,  $\pmb{A}_{X,5,1}$, $\pmb{A}_{Y,5,2}$, $\pmb{A}_{X,6,1}$, and $\pmb{A}_{Y, 7,2}$  we can follow \ref{Defining:Matr}, but we are not presenting the final result here because we have M-estimation \texttt{R} code that would do the rest for us.
+
+\subsection{M-estimation for Cumulative hazard using Stute's results.}
+
 
 % \ref{Defining:Matr}, the first delta method step is used to estimate the variance-covariance matrix for $\hat{\theta}_1$, $\hat{\theta}_2$, $\hat{\theta}_3$, $\hat{\theta}_4$, and $\hat{\theta}_5$. The second delta method step is used to estimate $\rho_S = \frac{\theta_3 - \theta_1 \theta_2}{\sqrt{\theta_4 - \theta_1^2}\sqrt{\theta_4 - \theta_2^2}}$. Let's proceed with the first delta method step. Let's further denote a Kaplan-Meier estimate of $F_X(x)$ in point $x_i$ as $\hat{F}_X(x_i)$. In the context of this kind of estimation, $\hat{F}_X(x_i^-) = \hat{F}_X(x_{i-1})$, so we can write the following: $\widehat{PSR}_{X_i} = \hat{F}_X(x_i) + \hat{F}_X(x_{i-1})\delta_i - \delta_i$. We remember that each $\hat{F}_X(x_i)$ is a random parameter estimate and proceed to write:
 %
@@ -2689,13 +2693,6 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \section{What I am planning to do}
 \begin{enumerate}
-  
-  \item heatmap for perfect pos and neg cor.
-  
-  \item double space the paper and send it to Bryan
-  
-  \item look for estimating equations for KM in Stute's paper
-  
   \item try Frank's family zero
   \item try to find the original reference for Frank's family
   \item show correlation mean for each simulation scenario: average point estimate, average estimated variance, variance of the estimates accross 1000.
@@ -2704,17 +2701,15 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item implement the function that uses the bootstrap in order to get the M-estimation for COX model, the p-value is defined as how often the CI included 0 times 2.
   \item add to the section 2 some details. How is PSR related to Dabrowska (what is Dabrowska). How it is different from Dabrowska. Specify the fact that Dabrowska does not distinguish between x- and x.
   \item Explain the difference in performance for different families
-  \item send the Summary...pdf
   \item add confidence intervals for PSR correlation
-  \item Implemented M-estimation for Cox using the full likelihood, but it did not work
-  \item tried to look at Qi's conditional correlation, but did not get it yet.
+  \item Implemented M-estimation for Cox using the full likelihood
+  \item implement conditional correlation
   \item tried to derive the dependence of perfect correlation decreasing with percent censoring increasing, when cencoring is performed uniformly on the cdf scale. Still working on it.
   \item tried to see if the loss in correlation can be evaluated using Hoeffding and Frescet bounds, but did not figure out this yet.
 \end{enumerate}
 
 \section{To-Do List}
 \begin{enumerate}
-  \item papametric model: M-estim 
   \item papametric model: bootstrap
   \item compare to bootstrap without using a parametric regression
   \item incorporate the the KM estimator into the M-estimation (Stute, KM as estimating equations)
@@ -2723,30 +2718,17 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item orm with cloglog (or loglog) link, it should give the same beta (potential direction)
   \item Look at Dabrowska and Cuzick for variance of spearman correlation
   \item keep looking for the variance of the baseline hazard
-  \item check why the power goes down with the sample size
-  \item previous 
   \item cART Combined Antiretroviral therapy, HAART - Highly active Antiretroviral therapy
   \item ARV - Antiretroviral, ART Antiretroviral therapy (first generation medicine) PI - protease inhibitor
   \item instead of RNA use VL measurement
   \item Change label for Qi's paper because now it is published now.
-  \item Make a literature list (Chun wanted it) (paper)
   \item Check definition of $\rho_S$ for discrete data ???
-  \item Combine sections 2.1 and 2.2 in the paper
-  %\item baseline hazard score equations: ???
-  %Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
-  \item email Brian about moving the meeting to 12
-  \item look for papers for baseline hazard variance estimators in order to find estimating equations for baseline hazard.
-  \item Cox regression score equations for $\lambda_i$ !!!
-  \item Paper in the following order: section 2-3 (PS method), section 4 (simpler simulations), section 5 (CASSANet), section 6 (Discussion).
-  \item Chun: what if we integrate outside the covariance
+  %\item baseline hazard score equations: tute The central limit theorem under random censorship. Bryan's number: 615-624-2220
   \item Look at the papers produced by CASSANet data: look up the definitions of baseline RNA, and baseline CD4.
-  % \item Add age and site to the covariate list
-  % \item Add splines after transforming RNA as $log$ and transforming CD4 as $\sqrt{\cdot}$.
   \item Check the definition of baseline RNA: it should be within -180 to 0 days.
   \item Baseline CD4: the  closest CD4 count to the date of first HAART within a window of -180 prior to first HAART to 30 (or 7) days after.
   \item Check virologic failure that should start 6 months after the starting point: Yours start right away.
   \item Sort out the notations: is it $E_S[F_S(x)|S>X]$ or $E_S[F_S(s)|s>x]$?
-  \item Check the following: when we return residuals from the model, R may return only residuals for the unique time points. This might not be what the user wants. On the other hand, unique time points is all we need for M-estimation.
   \item you have two functions \texttt{simSurvDataFromJointCDF()} in \texttt{tools.R} check which one is in use
   \item fix in function zebraTable: when pallet is customized, the function prints out the color names.
   \item change the function of partial correlation in such way that $PSR_X$ could be adjusted and $PSR_Y$ unadjusted or the other way around. Currently, you have either both are adjusted (function corTS) or none (function $corTS_Simple$)
@@ -2754,8 +2736,10 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \section{What I've completed}
 \begin{enumerate}
+  \item heatmap for perfect pos and neg cor.
   \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. I decided to use my own scenario for simulations.
   \item I ended up using packages \texttt{lcopula} and \texttt{copula} for generating Clayton's and Frank's family.
+  \item papametric model: M-estim 
 \end{enumerate}
 
 
