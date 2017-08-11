@@ -872,11 +872,11 @@ Now, let's find the marginal and joint distributions of $U$ and $V$. First, let'
 ~\\
 Because $h(u, v)$ is a \emph{segment mass}, in order to find covariance, we cannot just take a regular integral, we have to take an integral on a curve $U=V$, or $V(t)=t$ and $U(t) = t$. We know that the integral over a curve has to have a term $\sqrt{\left(\frac{dU(t)}{dt}\right)^2 + \left(\frac{dV(t)}{dt}\right)^2}$. This term equals to $\sqrt{1^2 + 1^2} = \sqrt{2}$, therefore two terms of $\sqrt{2}$ cancel out in the following integrals.\\
 ~\\
-Suppose now that we need to find the covariance of PSR when the data is censored at a fixed $(u_0, v_0)$. Remememer, that we define PSR as $2V - 1$ if not censored and as $V$ if censored. Assuming a continuous case, $U = U^-$, $V = V^-$, we have:
+Suppose now that we need to find the covariance of PSR when the data is censored at a fixed $(u_0, v_0)$. Assuming a continuous case ($U = U^-$, $V = V^-$), we define PSR as $2V - 1$ if not censored and as $V$ if censored, so we have:
 	$$
 	\begin{aligned}
-    cov_{(u_0, v_0)}(U, V) &= \underbrace{\int_0^{v_0}\int_0^{u_0} (2U - 1)(2V - 1)dH}_{\text{A}} + \underbrace{\int_{v_0}^{1}\int_0^{u_0} (2U - 1)VdH}_{B} + \\
-    &+\underbrace{\int_{0}^{v_0}\int_{u_0}^1 (2V - 1)UdH}_{C} + \underbrace{\int_{v_0}^{1}\int_{u_0}^1 VUdH}_{D}
+    cov_{(u_0, v_0)}(U, V) &= \underbrace{\int_0^{v_0}\int_0^{u_0} (2U - 1)(2V - 1)\cdot H(dU, dV)}_{\text{A}} + \underbrace{\int_{v_0}^{1}\int_0^{u_0} (2U - 1)V\cdot H(dU, dV)}_{B} + \\
+    &+\underbrace{\int_{0}^{v_0}\int_{u_0}^1 (2V - 1)U\cdot H(dU, dV)}_{C} + \underbrace{\int_{v_0}^{1}\int_{u_0}^1 VU\cdot H(dU, dV)}_{D}
 	\end{aligned}
 	$$
 Now let's compute each integral separately. Because $V(t)=t$, $U(t) = t$, and $u_0 < v_0$ integral $A$ on curve $V(t)=t,~U(t) = t$ is:
@@ -2058,14 +2058,14 @@ The above matrices are combined to get matrix $A$.
 \subsection{M-estimation for unadjusted PSR using Kaplan-Meier as an estimate of survival function.}
 \label{mEstForPSRUsingKM}
 When estimating the variance of PSR correlation, we use Kaplan-Meier, $\hat{S}_{j,Y}(y_i)$, as an estimate of survival function and treat it as a known \emph{parameter}. But, Kaplan-Meier also has variance and we need to take it into account in order get a good estimate for PSR correlation variance.\\
-\cite{stute1995central} has developed a representation of Kaplan-Meier as a sum of random variables. This representation can be used as estimating equations in M-estimation. Following the example of \cite{shepherd2007sensitivity}, assuming that the number of unique time points is $k$, and using notations of section \ref{Defining:Matr}, we have $k$ estimating equations for each time point $i$ for outcome $Y$ (similar process is followed for outcome $X$):
+\cite{stute1995central} has developed a representation of Kaplan-Meier as a sum of random variables. This representation can be used as estimating equations in M-estimation. Following the example of \cite{shepherd2007sensitivity}, assuming that the number of unique time points is $k$, and using notations of section \ref{Defining:Matr}, we have $k$ estimating equations for each time point $i$ for outcome $Y$ (similar process is followed for outcome $X$). Keeping in mind that $\hat{F}_{j,Y}(y_i) = 1-\hat{S}_{j,Y}(y_i)$, we have:
 
 $$
   \begin{aligned}
-    \psi_{Y}(\hat{F}_{1,Y}(y_i), y_i) &= V_{1,i,Y} - \hat{S}_{1,Y}(y_i)\\
-    \psi_{Y}(\hat{F}_{2,Y}(y_i), y_i) &= V_{2,i,Y} - \hat{S}_{2,Y}(y_i)\\
+    \psi_{Y}(\hat{F}_{1,Y}(y_i), y_i) &= V_{1,i,Y} - \left(   1- \hat{S}_{1,Y}(y_i)   \right)\\
+    \psi_{Y}(\hat{F}_{2,Y}(y_i), y_i) &= V_{2,i,Y} -  \left(   1- \hat{S}_{2,Y}(y_i)   \right)\\
     ...\\
-    \psi_{Y}(\hat{F}_{k,Y}(y_i), y_i) &= V_{k,i,Y} - \hat{S}_{k,Y}(y_i)\\
+    \psi_{Y}(\hat{F}_{k,Y}(y_i), y_i) &= V_{k,i,Y} -  \left(   1- \hat{S}_{k,Y}(y_i)   \right)\\
   \end{aligned}
 $$
 Where:
@@ -2073,6 +2073,7 @@ Where:
 $$
   \begin{aligned}
     V_{j,i} &= \phi_j(Y_i) \gamma_0(Y_i) \epsilon_i + \gamma_{j1}(Y_i)(1 - \epsilon_i) - \gamma_{j2}(Y_i)\\
+    ~\\
     \phi_j(Y_i) &= I_{\{ Y_i \leq t_j \}}\\
     \gamma_0(Y_i) &= exp\left(  \int_{-\infty}^{Y_i^-}  \frac{H^0(dw)}{1-H(w)}    \right) \\
     \gamma_{j,1}(Y_i) &=  \frac{1}{1-H(Y_i)}    \int I_{\{ Y_i<w \}} \phi_j(w)  \gamma_0(w)H^1(dw)   \\
@@ -2110,9 +2111,9 @@ In order to complete constructing matrices $\pmb{A}_{X,3,1}$, $\pmb{A}_{Y, 4,2}$
 \subsection{M-estimation for \emph{Cox} survival model  using Stute's results.}
 M-estimation for Cox regression is complicated because Cox regression provides score equations only for $\hat{\pmb{\beta}}$. We, however also need score equations for baseline hazard parameters. \\
 
-We denote ordered unique failure times as $t_{(k)}$. We can treat baseline hazard parameters either as instantaneous hazard rate $\lambda_{(k)}$ or cumulative hazard $\Lambda_{(k)}$. We choose the latter and here is why. \cite{stute1995central} derived estimating equations for the following integral, $\int \phi(x) F(dx)$, where $\phi(x)$ is a function with a property $\int \phi^2(x) F(dx) < \infty$, and $F(x)$ is a Kaplan-Meier estimate of the survival function. We know that cumulative hazard for continuous case can be written as: $\int \frac{F(dx)}{1 - F(x)}$, which is $\int \phi(x) F(dx)$ if we set $\phi(x) = \frac{1}{1-F(x)}$.\\
+We denote ordered unique failure times as $t_{(k)}$. We can treat baseline hazard parameters either as instantaneous hazard rate $\lambda_{(k)}$ or cumulative hazard $\Lambda_{(k)}$. We choose the latter and here is why. \cite{stute1995central} derived estimating equations for the following integral, $\int \phi(x) F(dx)$, where $\phi(x)$ is a function with a property $\int \phi^2(x) F(dx) < \infty$, and $F(x)$ is a Kaplan-Meier estimate of the survival function. We know that cumulative hazard for continuous case can be written as: $\int \frac{F(dx)}{1 - F(x)}$, which is $\int \phi(x) F(dx)$ if we set $\phi(x) = \frac{1}{1-F(x)}$. Note that although condition $\int \phi^2(x) F(dx) < \infty$ might not hold for $\phi(x) = \frac{1}{1-F(x)}$, this condition is sufficient and not necessary. Also, $F(x) = 1$ is an extreme case that is usually not achievable for continuous data, and we will try to watch for it in our computations.\\
 
-Similar to the previous sescion, we proceed by defining the equations derived by Stute:
+Similar to the previous section, we proceed by defining the estimating equations derived by Stute:
 
 $$
   \begin{aligned}
@@ -2122,47 +2123,49 @@ $$
     \psi_{Y}(\hat{F}_{k,Y}(y_i), y_i) &= V_{k,i,Y} - \hat{\Lambda}_{(k)}(y_i)\\
   \end{aligned}
 $$
-Where:
+Where $\hat{\Lambda}_{(1)}(y_i)$ is a Nelson-Aalen estimator of the baseline cumulative hazard and:
 
 $$
   \begin{aligned}
-    V_{j,i} &= \phi_j(Y_i) \gamma_0(Y_i) \epsilon_i + \gamma_{j1}(Y_i)(1 - \epsilon_i) - \gamma_{j2}(Y_i)\\
-    \phi_j(Y_i) &= I_{\{ Y_i \leq t_j \}} \cdot  \frac{1}{1-\hat{F}(Y_i)}\\
+    V_{j,i} &= \phi_j(y_i) \gamma_0(Y_i) \epsilon_i + \gamma_{j1}(y_i)(1 - \epsilon_i) - \gamma_{j2}(Y_i)\\
+    \phi_j(y_i) &= I_{\{ y_i \leq t_j \}} \cdot  \frac{1}{1-\hat{F}(y_i)}\\
   \end{aligned}
 $$
-Where $\gamma_0(Y_i)$, $\gamma_{j,1}(Y_i)$, $\gamma_{j,2}(Y_i)$, $H^0(y)$, $H^1(y)$, $H(y)$ are the same as in section \ref{mEstForPSRUsingKM}.\\
-We still need to define $ 1 - \hat{S_{baseline}(Y_i)}$:
+Where $\gamma_0(y_i)$, $\gamma_{j,1}(y_i)$, $\gamma_{j,2}(y_i)$, $H^0(y)$, $H^1(y)$, $H(y)$ are the same as in section \ref{mEstForPSRUsingKM}. In order to compute $\phi_j(y_i)$, we need to figure out $\hat{F}(y_i)$, let's do this in the following way: $\hat{F}(y_i) = 1 - \hat{S}_{baseline}(y_i) =  1 - e^{-\hat{\Lambda}(y_i)}$; and therefore: $\phi_j(y_i) = \frac{I_{\{ y_i \leq t_j \}}}{e^{-\hat{\Lambda}_{(j)}(y_i)}}$. To summarize, our estimating equations will look like this:
 
 $$
   \begin{aligned}
-    \hat{F}(Y_i) = 1 - \hat{S}_{baseline}(Y_i) =  1 - e^{-\hat{\Lambda}(Y_i)}\\
+    \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i) &= \frac{I_{\{ y_i \leq t_j \}}}{e^{-\hat{\Lambda}_{(j)}(y_i)}} \cdot \gamma_0(y_i) \epsilon_i + \gamma_{j1}(y_i)(1 - \epsilon_i) - \gamma_{j2}(y_i) - \hat{\Lambda}_{(j)}(y_i)\\
   \end{aligned}
 $$
 
-~\\
-\textbf{The rest of the section is a leftover from another section and needs to be modified !!!}\\
 
-We recall again the definition of PSR, $PSR_{Y_i} =  (1+\delta_i) F(y_i)  -  \delta_i = 1- (1+\delta_i) S(y_i)$. 
-As usual, we need to compute $\frac{\partial PSR}{\partial \beta_i}$ and $\frac{\partial PSR}{\partial \lambda_k}$:
+In order to use M-estimation, we need to compute $\frac{\partial \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i)}{ \partial \hat{\Lambda}_{(k)}(y_i)}$, $\frac{\partial \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i)}{ \partial \beta_l}$, $\frac{\partial PSR_{Y_i}}{ \partial \hat{\Lambda}_{(k)}(y_i)}$, and $\frac{\partial PSR_{Y_i}}{ \partial \beta_l}$. Let's deal with $\frac{\partial PSR_{Y_i}}{ \partial \hat{\Lambda}_{(k)}(y_i)}$ and $\frac{\partial PSR_{Y_i}}{ \partial \beta_l}$ first.
+We recall our definition: $PSR_{Y_i} =  F(y_i) + \delta_i (F(y_{i}^-) - 1) = 1 - S(y_i) + \delta_i S(y_i^-)$. So, we need to compute $\frac{\partial S(y_i)}{\partial \beta_i}$, $\frac{\partial S(y_i^-)}{\partial \beta_i}$, $\frac{\partial S(y_i)}{\partial \lambda_k}$, $\frac{\partial S(y_i^-)}{\partial \lambda_k}$:
+
+
+~\\ \textbf{The rest of the section is a leftover from another section and needs to be modified !!!}\\
 $$
   \begin{aligned}
-    S(y_i) &=  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}} \\
-    \Lambda(y_i)  &= \sum_{k: t_{(k)}\leq y_i} \hat{\lambda}_k\\
+    S_{(j)}(y_i) &=  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}} \\
     %%%
-    \frac{\partial S(y_i, \pmb{\beta})}{\partial \beta_j} &= \frac{\partial}{\partial \beta_j}\left[  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -\Lambda(y_i)e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{ij} &=  -\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}   \cdot  z_{ij}  \cdot  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}} \\
+    \frac{\partial S_{(j)}(y_i, \pmb{\beta})}{\partial \beta_l} &= \frac{\partial}{\partial \beta_l}\left[  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -\Lambda_{(j)}(y_i)  \cdot   e^{-\Lambda(y_i) \cdot e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{il} \\
     %%%
-    \frac{\partial S(y_i, \pmb{\beta})}{\partial \lambda_k} &= \frac{\partial}{\partial \lambda_k}\left[  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}\cdot \frac{\partial \Lambda(y_i)}{\partial \lambda_k}' &=   -e^{\pmb{z}_i\pmb{\beta}}   \cdot  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}\text{ if } t_{(k)}\leq y_i\\
-    & & = 0\text{ otherwise}
+    \frac{\partial S_{(j)}(y_i, \pmb{\beta})}{\partial \Lambda_{(k)}(y_i)} &= \frac{\partial}{\partial \Lambda_{(k)}(y_i)}\left[  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}  \cdot I(t_{(k)}\leq y_i)
   \end{aligned}
   $$
-Let's denote $I(t_{(k)}\leq y_i)$ and indicator function of the event $t_{(k)}\leq y_i$ and remember that $S(y_i) =  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}$ and $\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = -log\left(S(y_i)\right)$, then we have:
+
+Keeping in mind that $S(y_i) =  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}$ and $\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = -log\left(S(y_i)\right)$, then we have:
+
+
+
 $$
   \begin{aligned}
-    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  -(1+\delta_i)log\left(S(y_i)\right) \cdot  z_{ij}  \cdot  S(y_i)\\
+    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  -(1+\delta_i)log\left(S(y_i)\right) \cdot  S(y_i) \cdot  z_{ij} \\
     \frac{\partial PSR_{Y_i}}{\partial \lambda_k} &=  -(1+\delta_i)\cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot  S(y_i) \cdot I(t_{(k)}\leq y_i)
   \end{aligned}
   $$
-\texttt{coxph} provides us with martingale residuals, so we would like to use them in our computations. Because $\hat{m}_i = \delta_i + log\left(\hat{S}(y_i) \right)$ we can write $\hat{S}(y_i) = e^{\hat{m}_i - \delta_i} $, and therefore: 
+\texttt{R} function \texttt{coxph()} provides us with martingale residuals, so we would like to use them in our computations. Because $\hat{m}_i = \delta_i + log\left(\hat{S}(y_i) \right)$ we can write $\hat{S}(y_i) = e^{\hat{m}_i - \delta_i} $, and therefore: 
   $$
   \begin{aligned}
     \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  -(1+\delta_i)log\left(S(y_i)\right) \cdot  z_{ij}  \cdot  S(y_i)=  -(1+\delta_i)\left(\hat{m}_i - \delta_i \right) \cdot  z_{ij}  \cdot  e^{\hat{m}_i - \delta_i}\\
@@ -2170,6 +2173,9 @@ $$
   \end{aligned}
   $$
   
+  
+
+
 Now, let's focus on defining matrix $\pmb{A}_{Y,2,2}$. According to \cite{breslow1972discussion} and \cite{lin2007breslow} the Breslow estimator of the baseline hazard is (makes sure that R does it this way): 
   $$
   \begin{aligned}
@@ -2839,6 +2845,12 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \section{To-Do List}
 \begin{enumerate}
+  \item understand sample correlation without and with censoring. Why the one with censoring is not smaller than the one without censoring
+  \item connect (if possible) local version of Spearman rho and correlation of PSR
+  \item Do M-estimation for Cox using the paper of Stute
+  \item Report to Bryan about the fact that the variance according to Stute is very similar to Greenwood
+  \item do ACCRE
+  \item do PAPER
   \item papametric model: bootstrap
   \item compare to bootstrap without using a parametric regression
   \item incorporate the the KM estimator into the M-estimation (Stute, KM as estimating equations)
