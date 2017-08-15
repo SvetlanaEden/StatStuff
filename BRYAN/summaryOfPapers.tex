@@ -1241,7 +1241,7 @@ And in general, their weighting technique works because:
 
 \subsection{Local \emph{Spearman's} $\rho$}
 
-\subsubsection{Local  \emph{Spearman's} $\rho$ weight by the distribution of minimum}
+\subsubsection{Local  \emph{Spearman's} $\rho$ weighted by the distribution of minimum}
 Inspired by \cite{fan2000dependence} we derive a local version of \emph{Spearman's} $\rho$, $\rho_S(x, y)$ using the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$
   $$
   \begin{aligned}
@@ -1366,6 +1366,37 @@ Let's write the numerator and the denominator in terms of hazard \textbf{rates} 
 %   \end{aligned}
 %   $$
 % I put the question marks in the above expressions because the book does not say that these are equal, but I am assuming they mean it because the denominator has these conditions ($X\geq x$, $ Y\geq y$).
+
+
+\subsubsection{A note on the correlation of PSR and local \emph{Spearman's} $\rho$}
+If we let $x \rightarrow \infty$ and $y \rightarrow \infty$, then  $ \lim_{x \rightarrow \infty,~y \rightarrow \infty}\mathcal{R}(+\infty, +\infty) = Spearman~\rho$. Therefore, we can write an alternative expression for Spearman $\rho$:
+
+
+{\small{
+\begin{equation}
+		\rho_{\mathcal{R}} = \int_0^{+\infty} \int_0^{+\infty} \left\{S(x^-,y^-)F(dx)G(dy) -S(x^-,dy)F(dx)G(y^-)-S(dx,y^-)F(x^-)G(dy) +S(dx,dy)F(x^-)G(y^-)  \right\}
+    \label{SpearmanRhoSurvFunc}
+\end{equation}
+}}
+
+To see if this is the same as Spearman $\rho$, let's express the correlation of PSR in terms of $S(x,y)$, $F(x)$, and $G(y)$:
+	$$
+	\begin{aligned}
+		P_c - P_d &= P\left\{ (X_1 - X)(Y_2 - X) > 0 \right\} -  P\left\{ (X_1 - X)(Y_2 - X) < 0 \right\} = \\
+    &\text{skipping some algebra}\\
+    &= E \left\{   \left[ F(X^-) + F(X) - 1  \right]  \left[ G(Y^-) + G(Y) - 1  \right]  \right\} =\\
+    &= E \left\{   \left[ 2F(X^-) - F(dX) - 1  \right]  \left[ 2G(Y^-) - G(dY) - 1  \right]  \right\}
+	\end{aligned}
+	$$
+Which can be expressed as the following:
+{\small{
+\begin{equation}
+		\rho_{\text{PSR}} = \int_0^{+\infty} \int_0^{+\infty} \left\{   \left[ 2F(x^-) - F(dx) - 1  \right]  \left[ 2G(y^-) - G(dy) - 1  \right]  \right\}S(dx,dy)
+    \label{PSRrhoSurvFunc}
+\end{equation}
+}}
+
+Whether these two expressions are equivalent or not is still a question (work in progress). A small simulation study showed that they seem to be equivalent in the absence of censoring, but when the data is censored they are not equivalent. My current guess is that,  in general, they are not equivalent. In favor of his guess is the fact that the equation (\ref{SpearmanRhoSurvFunc}) was obtained by fixing values $min(X,X_1) = x$ and $min(Y,Y_1) = y$, while equation (\ref{PSRrhoSurvFunc}) was obtained by fixing values $X=x$ and $Y=y$.
 
 \subsubsection{Local  \emph{Spearman's} $\rho$ weighted by bivariate hazards}
 Inspired by paper of \cite{fan2000class}, we come up with another estimator of local Spearman's-like association. Instead of the weight $\frac{h(x, y)}{\int_0^x \int_0^y h(x, y)}$, we can use $\frac{\frac{h(x, y)}{S(x^-, y^-)F(x^-)G(y^-)}}{\int_0^x \int_0^y \frac{h(x, y)}{S(x^-, y^-)F(x^-)G(y^-)}}$, so we get:
@@ -2100,8 +2131,8 @@ Now let's define matrices $\pmb{A}_{X,1,1}$, $\pmb{A}_{Y,2,2}$, $\pmb{A}_{X,3,1}
 
 $$
   \begin{aligned}
-    \frac{\partial \pmb{PSR}_{Y_i}}{\partial \hat{F}_{j,Y}} = \frac{\partial \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i  \right]}{\partial \hat{F}_{j,Y}} &= -1,~~~~\text{if}~\hat{F}_{j,Y} = F_Y(y_i)\\
-    &=-\epsilon_i,~~~~\text{if}~\hat{F}_{j,Y} = F_Y(y_{i-1})\\ 
+    \frac{\partial \pmb{PSR}_{Y_i}}{\partial \hat{F}_{j,Y}} = \frac{\partial \left[  \hat{F}_Y(y_i) + \hat{F}_Y(y_{i-1})\epsilon_i - \epsilon_i  \right]}{\partial \hat{F}_{j,Y}} &= -1,~~~~\text{if}~\hat{F}_{j,Y} = \hat{F}_Y(y_i)\\
+    &=-\epsilon_i,~~~~\text{if}~\hat{F}_{j,Y} = \hat{F}_Y(y_{i-1})\\ 
     &=0,~~~~\text{otherwise}
   \end{aligned}
 $$
@@ -2111,9 +2142,42 @@ In order to complete constructing matrices $\pmb{A}_{X,3,1}$, $\pmb{A}_{Y, 4,2}$
 \subsection{M-estimation for \emph{Cox} survival model  using Stute's results.}
 M-estimation for Cox regression is complicated because Cox regression provides score equations only for $\hat{\pmb{\beta}}$. We, however also need score equations for baseline hazard parameters. \\
 
+Before we continue, let's remind ourselves that in the context of Cox model, with $\hat{m}(y_i)$ being martingale residuals, the following identities hold:
+
+% \begin{equation}
+%   S(y_i) =  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}
+%   \label(survFunForCoxModel)
+% \end{equation}
+
+\begin{equation}
+		\hat{m}(y_i) = \epsilon_i + log\left(\hat{S}(y_i) \right)
+    \label{martResCoxModel}
+\end{equation}
+
+\begin{equation}
+		S(y_i) =  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}
+    \label{survFunForCoxModel}
+\end{equation}
+
+\begin{equation}
+		\hat{S}(y_i) = e^{\hat{m}(y_i) - \epsilon_i}
+    \label{survFunForCoxModelThroughMartRes}
+\end{equation}
+
+\begin{equation}
+		\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = -log\left(S(y_i)\right)
+    \label{baseHazForCoxModelThroughSurvFun}
+\end{equation}
+
+\begin{equation}
+    \Lambda(y_i)  = \left( \epsilon_i -  \hat{m}(y_i)  \right)\cdot e^{-\pmb{z}_i \pmb{\beta}}
+    \label{baseHazForCoxModelThroughMartRes}
+\end{equation}
+
+
 We denote ordered unique failure times as $t_{(k)}$. We can treat baseline hazard parameters either as instantaneous hazard rate $\lambda_{(k)}$ or cumulative hazard $\Lambda_{(k)}$. We choose the latter and here is why. \cite{stute1995central} derived estimating equations for the following integral, $\int \phi(x) F(dx)$, where $\phi(x)$ is a function with a property $\int \phi^2(x) F(dx) < \infty$, and $F(x)$ is a Kaplan-Meier estimate of the survival function. We know that cumulative hazard for continuous case can be written as: $\int \frac{F(dx)}{1 - F(x)}$, which is $\int \phi(x) F(dx)$ if we set $\phi(x) = \frac{1}{1-F(x)}$. Note that although condition $\int \phi^2(x) F(dx) < \infty$ might not hold for $\phi(x) = \frac{1}{1-F(x)}$, this condition is sufficient and not necessary. Also, $F(x) = 1$ is an extreme case that is usually not achievable for continuous data, and we will try to watch for it in our computations.\\
 
-Similar to the previous section, we proceed by defining the estimating equations derived by Stute:
+Similar to the previous section, we proceed by defining the estimating equations derived by Stute. Keeping in mind that for Cox regression $\hat{\Lambda}_{(j)}(y_i) = (\epsilon_i - \hat{m}(y_i))e^{\pmb{z}_i\pmb{\beta}}$, where $\hat{m}(y_i)$ is martingale residuals, we have:
 
 $$
   \begin{aligned}
@@ -2131,123 +2195,129 @@ $$
     \phi_j(y_i) &= I_{\{ y_i \leq t_j \}} \cdot  \frac{1}{1-\hat{F}(y_i)}\\
   \end{aligned}
 $$
+
 Where $\gamma_0(y_i)$, $\gamma_{j,1}(y_i)$, $\gamma_{j,2}(y_i)$, $H^0(y)$, $H^1(y)$, $H(y)$ are the same as in section \ref{mEstForPSRUsingKM}. In order to compute $\phi_j(y_i)$, we need to figure out $\hat{F}(y_i)$, let's do this in the following way: $\hat{F}(y_i) = 1 - \hat{S}_{baseline}(y_i) =  1 - e^{-\hat{\Lambda}(y_i)}$; and therefore: $\phi_j(y_i) = \frac{I_{\{ y_i \leq t_j \}}}{e^{-\hat{\Lambda}_{(j)}(y_i)}}$. To summarize, our estimating equations will look like this:
 
-$$
-  \begin{aligned}
-    \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i) &= \frac{I_{\{ y_i \leq t_j \}}}{e^{-\hat{\Lambda}_{(j)}(y_i)}} \cdot \gamma_0(y_i) \epsilon_i + \gamma_{j1}(y_i)(1 - \epsilon_i) - \gamma_{j2}(y_i) - \hat{\Lambda}_{(j)}(y_i)\\
-  \end{aligned}
-$$
+  \begin{equation}
+    \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i) = I_{\{ y_i \leq t_j \}}e^{\hat{\Lambda}_{(j)}(y_i)} \cdot \gamma_0(y_i) \epsilon_i + \gamma_{j1}(y_i)(1 - \epsilon_i) - \gamma_{j2}(y_i) - \hat{\Lambda}_{(j)}(y_i)\\
+    \label{estEqForHazUsingStute}
+  \end{equation}
 
-
-In order to use M-estimation, we need to compute $\frac{\partial \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i)}{ \partial \hat{\Lambda}_{(k)}(y_i)}$, $\frac{\partial \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i)}{ \partial \beta_l}$, $\frac{\partial PSR_{Y_i}}{ \partial \hat{\Lambda}_{(k)}(y_i)}$, and $\frac{\partial PSR_{Y_i}}{ \partial \beta_l}$. Let's deal with $\frac{\partial PSR_{Y_i}}{ \partial \hat{\Lambda}_{(k)}(y_i)}$ and $\frac{\partial PSR_{Y_i}}{ \partial \beta_l}$ first.
-We recall our definition: $PSR_{Y_i} =  F(y_i) + \delta_i (F(y_{i}^-) - 1) = 1 - S(y_i) + \delta_i S(y_i^-)$. So, we need to compute $\frac{\partial S(y_i)}{\partial \beta_i}$, $\frac{\partial S(y_i^-)}{\partial \beta_i}$, $\frac{\partial S(y_i)}{\partial \lambda_k}$, $\frac{\partial S(y_i^-)}{\partial \lambda_k}$:
-
-
-~\\ \textbf{The rest of the section is a leftover from another section and needs to be modified !!!}\\
-$$
-  \begin{aligned}
-    S_{(j)}(y_i) &=  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}} \\
-    %%%
-    \frac{\partial S_{(j)}(y_i, \pmb{\beta})}{\partial \beta_l} &= \frac{\partial}{\partial \beta_l}\left[  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -\Lambda_{(j)}(y_i)  \cdot   e^{-\Lambda(y_i) \cdot e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{il} \\
-    %%%
-    \frac{\partial S_{(j)}(y_i, \pmb{\beta})}{\partial \Lambda_{(k)}(y_i)} &= \frac{\partial}{\partial \Lambda_{(k)}(y_i)}\left[  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \right] =   -e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}  \cdot I(t_{(k)}\leq y_i)
-  \end{aligned}
-  $$
-
-Keeping in mind that $S(y_i) =  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}$ and $\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = -log\left(S(y_i)\right)$, then we have:
-
-
-
-$$
-  \begin{aligned}
-    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  -(1+\delta_i)log\left(S(y_i)\right) \cdot  S(y_i) \cdot  z_{ij} \\
-    \frac{\partial PSR_{Y_i}}{\partial \lambda_k} &=  -(1+\delta_i)\cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot  S(y_i) \cdot I(t_{(k)}\leq y_i)
-  \end{aligned}
-  $$
-\texttt{R} function \texttt{coxph()} provides us with martingale residuals, so we would like to use them in our computations. Because $\hat{m}_i = \delta_i + log\left(\hat{S}(y_i) \right)$ we can write $\hat{S}(y_i) = e^{\hat{m}_i - \delta_i} $, and therefore: 
-  $$
-  \begin{aligned}
-    \frac{\partial PSR_{Y_i}}{\partial \beta_j} &=  -(1+\delta_i)log\left(S(y_i)\right) \cdot  z_{ij}  \cdot  S(y_i)=  -(1+\delta_i)\left(\hat{m}_i - \delta_i \right) \cdot  z_{ij}  \cdot  e^{\hat{m}_i - \delta_i}\\
-    \frac{\partial PSR_{Y_i}}{\partial \lambda_k} &= - (1+\delta_i)\cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot  e^{\hat{m}_i - \delta_i}\cdot I(t_{(k)}\leq y_i)
-  \end{aligned}
-  $$
-  
-  
-
-
-Now, let's focus on defining matrix $\pmb{A}_{Y,2,2}$. According to \cite{breslow1972discussion} and \cite{lin2007breslow} the Breslow estimator of the baseline hazard is (makes sure that R does it this way): 
-  $$
-  \begin{aligned}
-    \hat{\lambda}_k &= \frac{1}{t_{(k)} - t_{(k-1)}} \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}}
-  \end{aligned}
-  $$
-Where $\sum_{m:~ \left\{\delta_m=1,~ y_m = k\right\}} \delta_m$ is a number of events at time $t_{(k)}$, $\mathcal{R}(t_{(k)})$ is a risk set and index $l$ denotes subjects that are in this risk set, or, in other words, have survived beyond time $t_{(k)}$: $\mathcal{R}(t_{(k)}) = \left\{y_l: ~y_l \geq t_{(k)} \right\}$. In the above, $t_{(k)}$ is an ordered unique failure time, so if $y_i$ is one of the unique failure times, then the above equation defines $\psi_{Y_i,{\lambda}_k}$. But, if $y_i$ is a cesored time point, then we still use the above equation, but we find such $k$ that $t_{(k-1)} < y_i < t_{(k)}$. To summarize, the score equation for $\lambda_k$ is:
-  $$
-  \begin{aligned}
-    \psi_{Y_i,{\lambda}_k} &= \frac{1}{t_{(k)} - t_{(k-1)}}  \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}}- \lambda_k = 0  &\text{ for any } y_i \text{ such that } t_{(k-1)} < y_i \leq t_{(k)}\\
-    &=0,~~ &y_i \notin (t_{(k-1)}, t_{(k)}]
-  \end{aligned}
-  $$
-
-In order not to loose track of what we are doing, let's consider an example with only had one $\beta_j$ (where $j$ is a fixed index) and two unique failure points, $t_1$ and $t_2$ (it's unrealistic, but saves us some space). The resulting $\pmb{A}_{Y,2,2}$ matrix (see section \ref{Defining:Matr} for  $\pmb{A}_{Y,2,2}$ definition) should look like this: 
+Now, let's focus on defining matrix $\pmb{A}_{Y,2,2}$. 
+In order not to loose track of what we are doing, let's consider an example with only had one $\beta_l$ and two unique failure points, $t_1$ and $t_2$ (it's unrealistic, but saves us some space). The resulting $\pmb{A}_{Y,2,2}$ matrix (see section \ref{Defining:Matr} for  $\pmb{A}_{Y,2,2}$ definition) should look like this: 
 
   \[
   \pmb{A}_{Y,2,2} = -\sum_i^n\begin{bmatrix}
-      \frac{\partial \psi_{Yi,\beta_j}}{ \partial \beta_j} &
-      \frac{\partial \psi_{Yi,\beta_j}}{ \partial \lambda_1} &
-      \frac{\partial \psi_{Yi,\beta_j}}{ \partial \lambda_2} \\
+      \frac{\partial \psi_{Yi,\beta_l}}{ \partial \beta_l} &
+      \frac{\partial \psi_{Yi,\beta_l}}{ \partial \Lambda_{(1)}} &
+      \frac{\partial \psi_{Yi,\beta_l}}{ \partial \Lambda_{(2)}} \\
       %%%%%%%%%
-      \frac{\partial \psi_{Yi,\lambda_1}}{ \partial \beta_j} &
-      \frac{\partial \psi_{Yi,\lambda_1}}{ \partial \lambda_1} &
-      \frac{\partial \psi_{Yi,\lambda_1}}{ \partial \lambda_2} \\
+      \frac{\partial \psi_{Yi,\Lambda_{(1)}}}{ \partial \beta_l} &
+      \frac{\partial \psi_{Yi,\Lambda_{(1)}}}{ \partial \Lambda_{(1)}} &
+      \frac{\partial \psi_{Yi,\Lambda_{(1)}}}{ \partial \Lambda_{(2)}} \\
       %%%%%%%%%
-      \frac{\partial \psi_{Yi,\lambda_2}}{ \partial \beta_j} &
-      \frac{\partial \psi_{Yi,\lambda_2}}{ \partial \lambda_1} &
-      \frac{\partial \psi_{Yi,\lambda_2}}{ \partial \lambda_2}\\
+      \frac{\partial \psi_{Yi,\Lambda_{(2)}}}{ \partial \beta_l} &
+      \frac{\partial \psi_{Yi,\Lambda_{(2)}}}{ \partial \Lambda_{(1)}} &
+      \frac{\partial \psi_{Yi,\Lambda_{(2)}}}{ \partial \Lambda_{(2)}}\\
   \end{bmatrix}
   \]
 
-Now, let's define these derivatives for our example:
+We need to know $\frac{\partial \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i)}{ \partial \hat{\Lambda}_{(k)}(y_i)}$, $\frac{\partial \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i)}{ \partial \beta_l}$. From equation (\ref{estEqForHazUsingStute}) we have:
+
+\begin{equation}
+  \frac{\partial \psi_{Y_i,\Lambda_{(j)}}}{  \partial \Lambda_{(j)}} = \left(   e^{\hat{\Lambda}_{(j)}(y_i)}  I_{\{ y_i \leq t_j \}} \cdot \gamma_0(y_i) \epsilon_i  \right) - 1 
+  \label{derivOfStuteEstEqByHaz}
+\end{equation}
+
+In order to make the computation of equations (\ref{estEqForHazUsingStute}) and (\ref{derivOfStuteEstEqByHaz}) easier, we rewrite them using (\ref{baseHazForCoxModelThroughMartRes}):
+
 
 $$
 \begin{aligned}
-  \frac{\partial \psi_{Y_i,\beta_j}}{ \partial \beta_j} &\text{~is provided by }\texttt{coxph()}\\
-  \frac{\partial \psi_{Y_i,\beta_j}}{ \partial \lambda_1} &= \frac{\partial \psi_{Y_i,\beta_j}}{ \partial \lambda_2} = 0~~~\text{because partial likelihood does not contain } \lambda_k\\
-  \frac{\partial \psi_{Y_i,\lambda_1}}{  \partial \lambda_2} &= \frac{\partial \psi_{Y_i,\lambda_2}}{  \partial \lambda_1} = 0\\
-  \frac{\partial \psi_{Y_i,\lambda_1}}{  \partial \lambda_1} &= \frac{\partial \psi_{Y_i,\lambda_2}}{  \partial \lambda_2} = - 1\\
+    \psi_{Y}(\hat{\Lambda}_{(j)}(y_i), y_i) &= e^{ (\epsilon_i  -  \hat{m}(y_i)) e^{-\pmb{z}_i\pmb{\beta}}    }\cdot I_{\{ y_i \leq t_j \}}  \cdot \gamma_0(y_i) \epsilon_i + \gamma_{j1}(y_i)(1 - \epsilon_i) - \gamma_{j2}(y_i) - (\epsilon_i  -  \hat{m}(y_i)) e^{-\pmb{z}_i\pmb{\beta}} \\
+    %%%%%%%%%
+  \frac{\partial \psi_{Y_i,\Lambda_{(j)}}}{  \partial \Lambda_{(j)}} &= \left(   e^{ (\epsilon_i  -  \hat{m}(y_i)) e^{-\pmb{z}_i\pmb{\beta}}    } \cdot I_{\{ y_i \leq t_j \}} \cdot \gamma_0(y_i) \epsilon_i  \right) - 1
+\end{aligned}
+$$
+
+As for the rest of the derivatives, we have:
+
+$$
+\begin{aligned}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \frac{\partial \psi_{Y_i,\lambda_k}}{  \partial \beta_j} &= - \left( \frac{1}{t_{(k)} - t_{(k-1)}}  \right)   \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{\left(\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}\right)^2}   \cdot \frac{ \partial \left(   \sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}  \right)}{\partial  \beta_j} = -\left( \frac{\sum_{\left\{m:~y_m = t_{(k)}\right\}} \delta_m}{t_{(k)} - t_{(k-1)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(k)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} \\
-  & = 0, ~~~y_i \notin (t_{(k-1)}, t_{(k)}]
+  \frac{\partial \psi_{Y_i,\beta_l}}{ \partial \Lambda_{(j)}} &=  \frac{\partial \psi_{Y_i,\Lambda_{(j)}}}{ \partial \beta_l} = \frac{\partial \psi_{Y_i,\Lambda_{(1)}}}{  \partial \Lambda_{(2)}} = \frac{\partial \psi_{Y_i,\Lambda_{(2)}}}{  \partial \Lambda_{(1)}} = 0\\
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \frac{\partial \psi_{Y_i,\beta_l}}{ \partial \beta_l} &\text{~is provided by }\texttt{coxph()}\\
 \end{aligned}
 $$
 As a result:
+{\small{
   \[
   \pmb{A}_{Y,2,2}
    =-\begin{bmatrix}
-      \sum_i^n\frac{\partial \pmb{\psi}_{Yi,\beta_j}}{ \partial \beta_j} & 0 & 0 \\
+      \sum_i^n\frac{\partial \pmb{\psi}_{Yi,\beta_l}}{ \partial \beta_l} & 0 & 0 \\
       %%%%%%%%%
-      -\sum_i^n\left( \frac{\sum_{\left\{m:~y_m = t_{(1)}\right\}} \delta_m}{t_{(1)} - t_{(0)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(1)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(1)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & -n & 0 \\
+      0 & \sum_{i = 1}^n  \left(    e^{ (\epsilon_i  -  \hat{m}(y_i)) e^{-\pmb{z}_i\pmb{\beta}}}    I_{\{ y_i \leq t_{(1)} \}} \cdot \gamma_0(y_i) \epsilon_i  \right) - n & 0 \\
       %%%%%%%%%
-      -\sum_i^n\left( \frac{\sum_{\left\{m:~y_m = t_{(2)}\right\}} \delta_m}{t_{(2)} - t_{(1)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(2)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(2)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & 0 & -n \\
+      0 & 0 & \sum_{i = 1}^n  \left(    e^{ (\epsilon_i  -  \hat{m}(y_i)) e^{-\pmb{z}_i\pmb{\beta}}}  I_{\{ y_i \leq t_{(2)} \}} \cdot \gamma_0(y_i) \epsilon_i  \right) - n \\
   \end{bmatrix}
   \]
+}}
+  
 
-%And we remind ourselves that $\mathcal{R}(t_{(k)}) = \left\{y_l: ~y_l \geq t_{(k)} ~\cap~ ~y_i=t_{(k)}\right\}$. 
-Because $\frac{\partial \psi_{Y_i,\lambda_k}}{  \partial \beta_j} =0$ if $y_i \notin (t_{(k-1)}, t_{(k)}]$ we can write:
-  \[
-  \pmb{A}_{Y,2,2}
-   =-\begin{bmatrix}
-      \sum_i^n\frac{\partial \pmb{\psi}_{Yi,\beta_j}}{ \partial \beta_j} & 0 & 0 \\
-      %%%%%%%%%
-      -\left( \frac{\sum_{\left\{m:~y_m = t_{(1)}\right\}} \delta_m}{t_{(1)} - t_{(0)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(1)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(1)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & -n & 0 \\
-      %%%%%%%%%
-      -\left( \frac{\sum_{\left\{m:~y_m = t_{(2)}\right\}} \delta_m}{t_{(2)} - t_{(1)}}  \right)   \frac{     \sum_{l\in \mathcal{R}(t_{(2)})}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}  }{\left(   \sum_{l\in \mathcal{R}(t_{(2)})} e^{\pmb{z}_l\pmb{\beta}}  \right)^2} & 0 & -n \\
-  \end{bmatrix}
-  \]
+From the above, we anticipate a challenge of inverting matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. We can probably take advantage of the fact that the  largest square submatrices of $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal, and compute an overall $A^{-1}$ using these submatrices.\\
 
-From the above, we anticipate several challenges. One challenge is $\hat{\lambda}_k$ are not provided by \texttt{coxph()} so we need to compute $\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}$ and $\sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}$ manually.\\
-The second challenge is to invert matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. From the previous example we saw that we can take advantage of the fact that the  largest square submatrices parts of matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal.
+In order to complete M-estimation, we still need to compute $\frac{\partial PSR_{Y_i}}{ \partial \hat{\Lambda}_{(k)}(y_i)}$ and $\frac{\partial PSR_{Y_i}}{ \partial \beta_l}$. 
+We recall our definition: $PSR_{Y_i} =  F(y_i) + \epsilon_i F(y_{i}^-) - \epsilon_i  = \epsilon_i  - S(y_i) - \epsilon_i  S(y_i^-)$. So, we need to compute $\frac{\partial S(y_i)}{\partial \beta_i}$, $\frac{\partial S(y_i^-)}{\partial \beta_i}$, $\frac{\partial S(y_i)}{\partial \lambda_k}$, $\frac{\partial S(y_i^-)}{\partial \lambda_k}$. Keeping in mind that $S_{(j)}(y_i) =  e^{-\Lambda_{(j)}(y_i) e^{\pmb{z}_i\pmb{\beta}}}$, we have:
+
+
+$$
+  \begin{aligned}
+    \frac{\partial S_{(j)}(y_i, \pmb{\beta})}{\partial \beta_l} &=   -\hat{\Lambda}_{(j)}(y_i)  \cdot   e^{-\hat{\Lambda}_{(j)}(y_i) \cdot e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{il} \\
+    %%%
+    \frac{\partial S_{(j)}(y_i^-, \pmb{\beta})}{\partial \beta_l} &=   -\hat{\Lambda}_{(j)}(y_i^-)  \cdot   e^{-\hat{\Lambda}_{(j)}(y_i^-) \cdot e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{il}\\
+    %%%
+    \frac{\partial S_{(j)}(y_i, \pmb{\beta})}{\partial \Lambda_{(k)}(y_i)}  &=   -e^{-\hat{\Lambda}(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}  \cdot I_{  \left( \hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i, \pmb{\beta})  \right)}\\
+    %%%
+    \frac{\partial S_{(j)}(y_i^-, \pmb{\beta})}{\partial \Lambda_{(k)}(y_i)}  &=   -e^{-\hat{\Lambda}(y_i^-) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}  \cdot I_{  \left( \hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i^-, \pmb{\beta})  \right)}\\
+  \end{aligned}
+  $$
+  
+So we get the following expressions:
+
+$$
+  \begin{aligned}
+    \frac{\partial \pmb{PSR}_{Y_i}}{\partial \beta_l} &= \left\{    \hat{\Lambda}_{(j)}(y_i)  \cdot   e^{-\hat{\Lambda}_{(j)}(y_i) \cdot e^{\pmb{z}_i\pmb{\beta}}}  +   \epsilon_i \hat{\Lambda}_{(j)}(y_i^-)  \cdot   e^{-\hat{\Lambda}_{(j)}(y_i^-) \cdot e^{\pmb{z}_i\pmb{\beta}}}   \right\} \cdot  e^{\pmb{z}_i\pmb{\beta}}   \cdot z_{il} \\
+    %%%%%%%%%%%
+    \frac{\partial \pmb{PSR}_{Y_i}}{\Lambda_{(j)}} &= -\frac{\partial \left[  \hat{S}_Y(y_i) + \hat{S}_Y(y_{i-1}) \epsilon_i - \epsilon_i  \right]}{\partial \Lambda_{(j)}} = e^{-\hat{\Lambda}(y_i) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}  ,&~~~~\text{if}~\hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i, \pmb{\beta})\\
+    &=\epsilon_i e^{-\hat{\Lambda}(y_i^-) e^{\pmb{z}_i\pmb{\beta}}}  \cdot  e^{\pmb{z}_i\pmb{\beta}}  ,&~~~~\text{if}~\hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i^-, \pmb{\beta})\\
+    &=0,&~~~~\text{otherwise}
+  \end{aligned}
+$$
+
+
+
+%Keeping in mind that $S(y_i) =  e^{-\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}}}$ and $\Lambda(y_i) e^{\pmb{z}_i\pmb{\beta}} = -log\left(S(y_i)\right)$, then we have:
+
+
+
+$$
+  \begin{aligned}
+    \frac{\partial PSR_{Y_i}}{\partial \beta_l} &=  -\left\{  log\left(S(y_i)\right) \cdot  S(y_i) + \epsilon_i log\left(S(y_i^-)\right) \cdot  S(y_i^-) \right\}   \cdot  z_{il} \\
+    \frac{\partial PSR_{Y_i}}{\partial \Lambda_{(j)}} &=   \left\{    S(y_i)\cdot  I_{(\hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i, \pmb{\beta}))}  + \epsilon_i   S(y_i^-)   \cdot I_{(\hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i^-, \pmb{\beta}))} \right\}   \cdot  e^{\pmb{z}_i\pmb{\beta}} \\
+  \end{aligned}
+$$
+  
+  
+\texttt{R} function \texttt{coxph()} provides us with martingale residuals, so we would like to use them in our computations. Using equality (\ref{survFunForCoxModelThroughMartRes}) we have: 
+$$
+  \begin{aligned}
+    \frac{\partial PSR_{Y_i}}{\partial \beta_l} &=  -\left\{  (m(y_i) - \epsilon_i)  \cdot  e^{\hat{m}(y_i) - \epsilon_i} + \epsilon_i    (m(y_i^-) - \epsilon_{i-1})  \cdot  e^{\hat{m}(y_i^-) - \epsilon_{i-1}}   \right\}   \cdot  z_{il} \\
+    \frac{\partial PSR_{Y_i}}{\partial \Lambda_{(j)}} &=   \left\{    e^{\hat{m}(y_i) - \epsilon_i}  \cdot  I_{(\hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i, \pmb{\beta}))}  + \epsilon_i   e^{\hat{m}(y_i^-) - \epsilon_{i-1}}   \cdot I_{(\hat{\Lambda}_{(j)} = \hat{\Lambda}(y_i^-, \pmb{\beta}))} \right\}   \cdot  e^{\pmb{z}_i\pmb{\beta}} \\
+  \end{aligned}
+$$
+  
+
 
 
 \subsection{M-estimation for parametric survival models}
