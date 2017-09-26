@@ -847,16 +847,38 @@ When censoring takes place, we don't observe $S_0$, but we still obsere $x_0$, s
 %     & where~c^*=\frac{1}{4}
 %   \end{aligned}
 %   $$
-  
+
+\subsection{Spearman correlation and cov of PSR for uncensored data, yet another proof.}
+Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also assume that $S(\cdot)$ is a survival function and $F(\cdot)$ is a distribution function, then
+	$$
+	\begin{aligned}
+		P(concordance) &- P(discordance) = \\
+      &=P(T^a_1>T^b_1, T^a_2 > T^c_2 ~or ~T^a_1<T^b_1, T^a_2 < T^c_2) - P(T^a_1>T^b_1, T^a_2 < T^c_2 ~or ~T^a_1<T^b_1, T^a_2 > T^c_2)=\\
+      &=[F(T^{a-}_1)F(T^{a-}_2) + S(T^a_1) S(T^a_2)] - [ F(T^{a-}_1) S(T^a_2) + S(T^a_1)F(T^{a-}_2)]=\\
+      &=[S(T^a_1) - F(T^{a-}_1)][S(T^{a}_2) -F(T^{a-}_2)]=\\
+      &=PSR(T^a_1)\cdot PSR(T^a_2)\\
+	\end{aligned}
+	$$
+
 \subsection{PSR covariance of perfectly correlated variables in the presence of \emph{deterministic censoring} censoring}
+
+\subsection{PSR Correlation Under Censoring (Continuous Case)}
+
+Let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We need to compute the correlation of PSRs when all subjects are censored at point $s_0$ for variable $S$ and at point $t_0$ for variable $T$. In the following sections, instead of looking at $s_0$ and $t_0$, we think in terms of percentiles, more specifically, we say that we censor at points $u_0$ and $v_0$, where $u_0 = F(s_0)$ and $v_0 = G(t_0)$. And we also denote $F(s)=U$, $G(t)=V$. 
+
+\subsubsection{Variance under \emph{deterministic censoring}}
+When we censor data at points $u_0$ and $v_0$, we know that the mean of PSR is still 0, and in order to find the variance we need to find:
+	$$
+	\begin{aligned}
+    var(PSR)_{u_0} = \int_0^{u_0} (2U - 1)^2 dU + \int_{u_0}^1 u_0^2 dU &= \left. \frac{1}{2} \frac{(2U - 1)^3}{3}  \right|_0^{u_0}  + u_0^2(1 - u_0) = \frac{1}{6}(2u_0 - 1)^3 + \frac{1}{6} + u_0^2 - u_0^3 =\\
+    &= \frac{1}{3} u_0^3 - \frac{1}{3}u_0^2 + \frac{2}{3}u_0
+	\end{aligned}
+	$$
+
 
 \subsubsection{Perfect positive correlation under \emph{deterministic censoring}, $T\equiv S$}
 \label{perfPosCorDeterm}
-Our task in this section is to find what would be a covariance of two perfectly positively correlated PSRs, if we censor all subjects at a fixed point.\\
-
-First, let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We are studing the correlation of PSRs when all subjects are censored at point $s_0$ for variable $S$ and at point $t_0$ for variable $T$. Because we have perfect correlation, we have some kind of functional dependence between $S$ and $T$: $S =\nu( T)$, where $\nu(\cdot)$ is a strictly increasing function. For brevity, we denote $F(s)=U$, $G(t)=V$, $F(s_0)=U_0$, and $G(t_0)=V_0$.\\
-~\\
-
+Because we have perfect correlation, we have some kind of functional dependence between $S$ and $T$: $S =\nu( T)$, where $\nu(\cdot)$ is a strictly increasing function. Our task in this section is to find what would be a covariance of two perfectly positively correlated PSRs, if we censor all subjects at a fixed point.\\
 Next, let's show how two distribution functions are related in case of perfect correlation. The following statements are somewhat straight forward:
 	$$
 	\begin{aligned}
@@ -912,13 +934,16 @@ Because $u_0 < v_0$,  integral $D$ becomes:
 Summing up all four integrals and taking into account the symmetry, we have an expression for \emph{Spearman} correlation of two identical variables, $S = \nu( T)$ conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
-    \rho_{S = \nu( T)}(u_0, v_0)/3 &= \frac{1}{6}\left\{  (2u_0 - 1)^3 +1\right\} +  \frac{u_0}{4}\left\{  (2v_0 - 1)^2 -(2u_0 - 1)^2 \right\} + u_0 v_0 (1 - v_0), ~~~~when~u_0 < v_0\\
-    &= \frac{1}{6}\left\{  (2v_0 - 1)^3 +1\right\} +  \frac{v_0}{4}\left\{  (2u_0 - 1)^2 -(2v_0 - 1)^2 \right\} + v_0 u_0 (1 - u_0), ~~~~when~u_0 \geq v_0
+   cov^+_{(u_0, v_0)}(U, V) &= \frac{1}{6}\left\{  (2u_0 - 1)^3 +1\right\} +  \frac{u_0}{4}\left\{  (2v_0 - 1)^2 -(2u_0 - 1)^2 \right\} + u_0 v_0 (1 - v_0), ~~~~when~u_0 < v_0\\
+    &= \frac{1}{6}\left\{  (2v_0 - 1)^3 +1\right\} +  \frac{v_0}{4}\left\{  (2u_0 - 1)^2 -(2v_0 - 1)^2 \right\} + v_0 u_0 (1 - u_0), ~~~~when~u_0 \geq v_0\\
+    %%%%%%%%
+    &\text{and the correlation is:}\\
+    %%%%%%%%
+      \rho^+ (u_0, v_0) &= \frac{cov^+_{(u_0, v_0)}(U, V)}{\sqrt{\left(  \frac{1}{3} u_0^3 - \frac{1}{3}u_0^2 + \frac{2}{3}u_0  \right)  \left(  \frac{1}{3} v_0^3 - \frac{1}{3}v_0^2 + \frac{2}{3}v_0  \right)}}
 	\end{aligned}
 	$$
 
-
-\subsubsection{Negative correlation under \emph{deterministic censoring}, $T\equiv 1-S$}
+\subsubsection{Perfect negative correlation under \emph{deterministic censoring}, $T\equiv 1-S$}
 
 Our task in this section is to find what would be a covariance of two perfectly negatively correlated PSRs, if we censor all subjects at a fixed point.\\
 
@@ -973,12 +998,15 @@ We did not consider a case when $u_0+v_0 = 1$ because it is very similar to the 
 Summing up all four integrals, we have an expression for \emph{Spearman} for case $S=\nu(T)$, where $\nu(\cdot)$ is strictly decreasing conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
-    \rho_{S\equiv T}(u_0, v_0)/3 &= -u_0v_0, &when~u_0 + v_0 < 1\\
-    &= -\frac{1}{6}\left\{  (2u_0 - 1)^3 + (2v_0 - 1)^3 \right\} + u_0^2(u_0 - 1) + v_0^2(v_0 - 1), &when~u_0 + v_0 \geq 1
+    cov^-_{(u_0, v_0)}(U, V) &= -u_0v_0, &when~u_0 + v_0 < 1\\
+    &= -\frac{1}{6}\left\{  (2u_0 - 1)^3 + (2v_0 - 1)^3 \right\} + u_0^2(u_0 - 1) + v_0^2(v_0 - 1), &when~u_0 + v_0 \geq 1\\
+    &\text{and the correlation is:}\\
+    %%%%%%%%
+      \rho^- (u_0, v_0) &= \frac{cov^-_{(u_0, v_0)}(U, V)}{\sqrt{\left(  \frac{1}{3} u_0^3 - \frac{1}{3}u_0^2 + \frac{2}{3}u_0  \right)  \left(  \frac{1}{3} v_0^3 - \frac{1}{3}v_0^2 + \frac{2}{3}v_0  \right)}}
 	\end{aligned}
 	$$
 
-\subsubsection{Random Uniform Censoring for \emph{perfect} positive and negative \emph{Spearman} correlation}
+\subsubsection{Perfect positive and negative correlation under \emph{random uniform censoring} }
 
 Suppose now that we have perfect correlation, but $\gamma$ percent of records is censored uniformly on the \emph{CDF} scale for each variable. We also assume that the censoring distributions for $u_0$ and $v_0$ are independent. In the context of the previous two sections, this means:
   $$
@@ -1057,17 +1085,20 @@ If we want to compute correlation instead of covariance, we need to compute vari
     \rho^+(\gamma) = \frac{(1-\gamma)^2\cdot \frac{1}{3} + 2(1-\gamma)\gamma \frac{1}{4} +\gamma^2 \cdot \frac{1}{5}}{\frac{1}{3} - \gamma \frac{1}{12}}
 	\end{aligned}
 	$$
+For simplicity, we performed the derivations when the missing ratio is the same in each group ($\gamma_1 = \gamma_2$). When the missing ratio is not the same, it is straight forward to see that the formula is:
+  $$
+  \begin{aligned}
+      \rho^+(\gamma_1, \gamma_2) =  \frac{(1-\gamma_1)(1-\gamma_2)\cdot \frac{1}{3} + (1-\gamma_1)\gamma_2 \cdot \frac{1}{4} + (1-\gamma_2)\gamma_1 \cdot \frac{1}{4} +\gamma_1  \gamma_2 \cdot \frac{1}{5}}{\sqrt{\left(\frac{1}{3} - \gamma_1 \frac{1}{12}\right)    \left(\frac{1}{3} - \gamma_2 \frac{1}{12}\right)}} 
+  \end{aligned}
+  $$
+
 
 ~\\
   
 \textbf{Note} that the actual number of missing and half missing observations is not $(1-\gamma)^2$ and $2(1-\gamma)\gamma$, because the variables are perfectly correlated. Here is how this works. Suppose $X_1$ and $X_2$ are perfectly correlated, so let's just call them $X$. We sample their censoring time, and get $c_1$ and $c_2$. Let's compute $P\left\{ X \leq c_1 \cap X \leq c_2 \right\}$. Cases when $X \leq c_1 \leq c_2$ and $X \leq c_2 \leq c_1$ are symmetric, therefore, assuming uniform distribution for all variables, $P\left\{ X \leq c_1 \cap X \leq c_2 \right\} = 2 \int_0^1 \int_0^{c_2} \int_0^{c_1} dx dc_1 dc_2 = \frac{1}{3}$. So out of all subjects elegible for censoring only $\frac{1}{3}$ will be censored for both variables. When only one subject is elegible for censoring, then $P\left\{ X \leq c_1 \right\} = \frac{1}{2}$, because both have uniform distribution and are independent. So the number of observations that were not censored for both $X_1$ and $X_2$ is $(1 - \gamma)^2 + 2\gamma (1-\gamma) \frac{1}{2} + \gamma^2 \frac{1}{3}$, the number of observations censored either for $X_1$ or for $X_2$ is $2\gamma (1-\gamma) \frac{1}{2} + \gamma^2 \frac{1}{3}$, and the number of observations with both variables censored (not necessarily at the same time) is $\gamma^2 \frac{1}{3}$.
 ~\\
 
-{\LARGE{The rest of the section is under construction!!!}}\\
-
-
-~\\
-Now let's do the same thing but with \textbf{perfect negative correlation}:
+Now let's similar derivations for \textbf{perfect negative correlation}:
 	$$
 	\begin{aligned}
     \rho^-_{cov}(\gamma) &= \int_0^1 \int_0^1 \rho^-(u_0, v_0) h(u_0, v_0) du_0 dv_0= \\
@@ -1102,21 +1133,16 @@ $$
 \end{aligned}
 $$
 
+When $\gamma_1 \neq \gamma_2$, it is straight forward to see that:
+
+  $$
+  \begin{aligned}
+      \rho^-(\gamma_1, \gamma_2) =  -\frac{(1-\gamma_1)(1-\gamma_2)\cdot \frac{1}{3} + (1-\gamma_1)\gamma_2 \cdot \frac{1}{4} + (1-\gamma_2)\gamma_1 \cdot \frac{1}{4} +\gamma_1  \gamma_2 \cdot \frac{7}{40}}{\sqrt{\left(\frac{1}{3} - \gamma_1 \frac{1}{12}\right)    \left(\frac{1}{3} - \gamma_2 \frac{1}{12}\right)}} 
+  \end{aligned}
+  $$
 
 
 %\subsubsection{Perfect correlation under censoring, general case}
-
-\subsection{Spearman correlation and cov of PSR for uncensored data, yet another proof.}
-Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also assume that $S(\cdot)$ is a survival function and $F(\cdot)$ is a distribution function, then
-	$$
-	\begin{aligned}
-		P(concordance) &- P(discordance) = \\
-      &=P(T^a_1>T^b_1, T^a_2 > T^c_2 ~or ~T^a_1<T^b_1, T^a_2 < T^c_2) - P(T^a_1>T^b_1, T^a_2 < T^c_2 ~or ~T^a_1<T^b_1, T^a_2 > T^c_2)=\\
-      &=[F(T^{a-}_1)F(T^{a-}_2) + S(T^a_1) S(T^a_2)] - [ F(T^{a-}_1) S(T^a_2) + S(T^a_1)F(T^{a-}_2)]=\\
-      &=[S(T^a_1) - F(T^{a-}_1)][S(T^{a}_2) -F(T^{a-}_2)]=\\
-      &=PSR(T^a_1)\cdot PSR(T^a_2)\\
-	\end{aligned}
-	$$
 
 \section{Local measures of association}
 
