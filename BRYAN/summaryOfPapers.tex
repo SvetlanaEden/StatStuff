@@ -867,14 +867,15 @@ Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also 
 Let's introduce some notations. Times to event for sons and fathers are $S$ and $T$ respectively with the corresponding distribution functions of $F(S)$ and $G(T)$. We need to compute the correlation of PSRs when all subjects are censored at point $s_0$ for variable $S$ and at point $t_0$ for variable $T$. In the following sections, instead of looking at $s_0$ and $t_0$, we think in terms of percentiles, more specifically, we say that we censor at points $u_0$ and $v_0$, where $u_0 = F(s_0)$ and $v_0 = G(t_0)$. And we also denote $F(s)=U$, $G(t)=V$. 
 
 \subsubsection{Variance under \emph{deterministic censoring}}
+\label{determCensVariance}
 When we censor data at points $u_0$ and $v_0$, we know that the mean of PSR is still 0, and in order to find the variance we need to find:
 	$$
 	\begin{aligned}
-    var(PSR)_{u_0} = \int_0^{u_0} (2U - 1)^2 dU + \int_{u_0}^1 u_0^2 dU &= \left. \frac{1}{2} \frac{(2U - 1)^3}{3}  \right|_0^{u_0}  + u_0^2(1 - u_0) = \frac{1}{6}(2u_0 - 1)^3 + \frac{1}{6} + u_0^2 - u_0^3 =\\
-    &= \frac{1}{3} u_0^3 - \frac{1}{3}u_0^2 + \frac{2}{3}u_0
+    var_{PSR_X}(u_0) = \int_0^{u_0} (2U - 1)^2 dU + \int_{u_0}^1 u_0^2 dU &= \left. \frac{1}{2} \frac{(2U - 1)^3}{3}  \right|_0^{u_0}  + u_0^2(1 - u_0) = \frac{1}{6}(2u_0 - 1)^3 + \frac{1}{6} + u_0^2 - u_0^3 =\\
+    &= \frac{1}{3} u_0^3 - u_0^2 + u_0
 	\end{aligned}
 	$$
-
+We will use this result in order to compute correlation of PSR in the following two sections.
 
 \subsubsection{Perfect positive correlation under \emph{deterministic censoring}, $T\equiv S$}
 \label{perfPosCorDeterm}
@@ -904,7 +905,7 @@ Because $h(u, v)$ is a \emph{segment mass}, in order to find covariance, we cann
 Suppose now that we need to find the covariance of PSR when the data is censored at a fixed $(u_0, v_0)$. Assuming a continuous case ($U = U^-$, $V = V^-$), we define PSR as $2V - 1$ if not censored and as $V$ if censored, so we have:
 	$$
 	\begin{aligned}
-    cov_{(u_0, v_0)}(U, V) &= \underbrace{\int_0^{v_0}\int_0^{u_0} (2U - 1)(2V - 1)\cdot H(dU, dV)}_{\text{A}} + \underbrace{\int_{v_0}^{1}\int_0^{u_0} (2U - 1)V\cdot H(dU, dV)}_{B} + \\
+    cov(u_0, v_0) &= \underbrace{\int_0^{v_0}\int_0^{u_0} (2U - 1)(2V - 1)\cdot H(dU, dV)}_{\text{A}} + \underbrace{\int_{v_0}^{1}\int_0^{u_0} (2U - 1)V\cdot H(dU, dV)}_{B} + \\
     &+\underbrace{\int_{0}^{v_0}\int_{u_0}^1 (2V - 1)U\cdot H(dU, dV)}_{C} + \underbrace{\int_{v_0}^{1}\int_{u_0}^1 VU\cdot H(dU, dV)}_{D}
 	\end{aligned}
 	$$
@@ -934,12 +935,12 @@ Because $u_0 < v_0$,  integral $D$ becomes:
 Summing up all four integrals and taking into account the symmetry, we have an expression for \emph{Spearman} correlation of two identical variables, $S = \nu( T)$ conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
-   cov^+_{(u_0, v_0)}(U, V) &= \frac{1}{6}\left\{  (2u_0 - 1)^3 +1\right\} +  \frac{u_0}{4}\left\{  (2v_0 - 1)^2 -(2u_0 - 1)^2 \right\} + u_0 v_0 (1 - v_0), ~~~~when~u_0 < v_0\\
+   cov^+(u_0, v_0) &= \frac{1}{6}\left\{  (2u_0 - 1)^3 +1\right\} +  \frac{u_0}{4}\left\{  (2v_0 - 1)^2 -(2u_0 - 1)^2 \right\} + u_0 v_0 (1 - v_0), ~~~~when~u_0 < v_0\\
     &= \frac{1}{6}\left\{  (2v_0 - 1)^3 +1\right\} +  \frac{v_0}{4}\left\{  (2u_0 - 1)^2 -(2v_0 - 1)^2 \right\} + v_0 u_0 (1 - u_0), ~~~~when~u_0 \geq v_0\\
     %%%%%%%%
-    &\text{and the correlation is:}\\
+    &\text{and the correlation is (see section \ref{determCensVariance} for the formula of variance):}\\
     %%%%%%%%
-      \rho^+ (u_0, v_0) &= \frac{cov^+_{(u_0, v_0)}(U, V)}{\sqrt{\left(  \frac{1}{3} u_0^3 - \frac{1}{3}u_0^2 + \frac{2}{3}u_0  \right)  \left(  \frac{1}{3} v_0^3 - \frac{1}{3}v_0^2 + \frac{2}{3}v_0  \right)}}
+      \rho^+ (u_0, v_0) &= \frac{cov^+(u_0, v_0)}{\sqrt{\left(  \frac{1}{3} u_0^3 - u_0^2 + u_0  \right)  \left(  \frac{1}{3} v_0^3 - v_0^2 + v_0  \right)}}
 	\end{aligned}
 	$$
 
@@ -998,11 +999,11 @@ We did not consider a case when $u_0+v_0 = 1$ because it is very similar to the 
 Summing up all four integrals, we have an expression for \emph{Spearman} for case $S=\nu(T)$, where $\nu(\cdot)$ is strictly decreasing conditional on the censoring point $(u_0, v_0)$:
 	$$
 	\begin{aligned}
-    cov^-_{(u_0, v_0)}(U, V) &= -u_0v_0, &when~u_0 + v_0 < 1\\
+    cov^-(u_0, v_0) &= -u_0v_0, &when~u_0 + v_0 < 1\\
     &= -\frac{1}{6}\left\{  (2u_0 - 1)^3 + (2v_0 - 1)^3 \right\} + u_0^2(u_0 - 1) + v_0^2(v_0 - 1), &when~u_0 + v_0 \geq 1\\
-    &\text{and the correlation is:}\\
+    &\text{and the correlation is (see section \ref{determCensVariance} for the formula of variance):}\\
     %%%%%%%%
-      \rho^- (u_0, v_0) &= \frac{cov^-_{(u_0, v_0)}(U, V)}{\sqrt{\left(  \frac{1}{3} u_0^3 - \frac{1}{3}u_0^2 + \frac{2}{3}u_0  \right)  \left(  \frac{1}{3} v_0^3 - \frac{1}{3}v_0^2 + \frac{2}{3}v_0  \right)}}
+      \rho^- (u_0, v_0) &= \frac{cov^-(u_0, v_0)}{\sqrt{\left(  \frac{1}{3} u_0^3 - u_0^2 + u_0  \right)  \left(  \frac{1}{3} v_0^3 - v_0^2 + v_0  \right)}}
 	\end{aligned}
 	$$
 
@@ -1140,6 +1141,68 @@ When $\gamma_1 \neq \gamma_2$, it is straight forward to see that:
       \rho^-(\gamma_1, \gamma_2) =  -\frac{(1-\gamma_1)(1-\gamma_2)\cdot \frac{1}{3} + (1-\gamma_1)\gamma_2 \cdot \frac{1}{4} + (1-\gamma_2)\gamma_1 \cdot \frac{1}{4} +\gamma_1  \gamma_2 \cdot \frac{7}{40}}{\sqrt{\left(\frac{1}{3} - \gamma_1 \frac{1}{12}\right)    \left(\frac{1}{3} - \gamma_2 \frac{1}{12}\right)}} 
   \end{aligned}
   $$
+  
+  
+  
+
+\subsubsection{Zero correlation under \emph{determenistic censoring} }
+We consider a case when the two time-to-event variables are not associate, but the censoring times are fixed and equal (in percentile terms). Since variables $U$ and $V$ are not correlated, there joint density is $I_{[0,1]\times[0,1]}$ and the covariance is:
+
+{\small{
+  $$
+  \begin{aligned}
+  cov(u_0, u_0) &= \int_0^{u_0}\int_0^{u_0} (2U - 1)(2V - 1) dUdV + \int_{u_0}^{1} u_0 dV\int_0^{u_0} (2U - 1) dU + 
+  +\int_{0}^{u_0} (2V - 1) dV \int_{u_0}^1 u_0 dU  + \int_{u_0}^{1}\int_{u_0}^1 u_0^2 dUdV =\\
+  &= \left( \int_0^{u_0} (2U - 1) dU  +   \int_{u_0}^1 u_0 dU  \right)^2 =   \left(  [U^2 - U]  \left.  \right|_0^{u_0}  +  \left.  u_0 U \right|_{u_0}^1   \right)^2 = \left(u_0^2 - u_0  +  u_0(1-u_0)  \right)^2  =0
+  \end{aligned}
+  $$
+}}
+
+
+\subsubsection{Positive correlation, Clayton's family distribution.}
+In this section we compute the value of Spearman correlation under censoring. We consider a case when both variables, $X$ and $Y$, are distributed exponentially with mean $1/\lambda_1$ and with joint Clayton's distribution, and the censoring variables, $C_X$ and $C_Y$ are distributed exponentially with mean $1\lambda_2$ and are independent of each other:
+	$$
+	\begin{aligned}
+    F_X(x) & = 1 - e^{-\lambda_1 x}= U\\
+    F_Y(y) & = 1 - e^{-\lambda_1 y}= V\\
+    (U,V) &\sim H(u, v) = \left[  max \left(  u^{-\theta} + v^{-\theta} - 1,~0  \right)  \right]^{-\frac{1}{\theta}}~~~~\text{(Clayton's family)}\\
+    H(dU, dV) &= (1 - \theta) \left(  u^{-\theta} + v^{-\theta}  \right) ^{-\frac{1}{\theta} - 2} u^{-\theta - 1} v^{-\theta - 1},~~~~ & u^{-\theta} + v^{-\theta} - 1 >0\\
+      &= 0, &{otherwise}\\   
+    G_{C_X}(c_X) &= 1 - e^{- \lambda_2 c_X} = u_0\\
+    G_{C_Y}(c_Y) &= 1 - e^{- \lambda_2 c_Y} = v_0\\
+    (C_X,C_Y) &\sim e^{- \lambda_2 c_X} \cdot e^{- \lambda_2 c_Y}
+	\end{aligned}
+	$$
+
+If $C_X$ and $C_Y$ were fixed in such way that $1 - e^{- \lambda_2 c_X} = u_0$ and $1 - e^{- \lambda_2 c_Y} = v_0$,  from sections \ref{perfPosCorDeterm} and \ref{determCensVariance} we know that covariance and variance of PSR would be:
+
+	$$
+	\begin{aligned}
+    cov_{~Clayton}(u_0, v_0, \theta) &= \int_0^{v_0}\int_0^{u_0} (2u - 1)(2v - 1)\cdot H(du, dv) + \int_{v_0}^{1}\int_0^{u_0} (2u - 1)v\cdot H(du, dv) + \\
+    &+\int_{0}^{v_0}\int_{u_0}^1 (2v - 1)u\cdot H(du, dv) + \int_{v_0}^{1}\int_{u_0}^1 vu\cdot H(du, dv)\\
+    var_{PSR_X}(u_0)&= \frac{1}{3} u_0^3 - u_0^2 + u_0
+	\end{aligned}
+	$$
+
+So we can compute out the correlation of PSR numerically like this:
+	$$
+  \begin{aligned}
+      \rho_{~Clayton}(\theta) = \int_0^1\int_0^1  \frac{cov_{~Clayton}(u_0, v_0, \theta)}{\sqrt{var_{PSR_X}(u_0)\cdot var_{PSR_X}(v_0)}} du_0 ~dv_0
+  \end{aligned}
+	$$
+But we still need to figure out what $H(dU, dV)$ is
+
+	$$
+  \begin{aligned}
+      H(dU, dV) &= (1 - \theta) \left(  u^{-\theta} + v^{-\theta}  \right) ^{-\frac{1}{\theta} - 2} u^{-\theta - 1} v^{-\theta - 1},~~~~ & u^{-\theta} + v^{-\theta} - 1 >0\\
+        &= 0, &{otherwise}
+  \end{aligned}
+	$$
+
+
+
+\subsubsection{Positive, Negative correlation, Frank's family distribution.}
+
 
 
 %\subsubsection{Perfect correlation under censoring, general case}
@@ -3337,24 +3400,167 @@ Where $\phi_{St.N.}$ and $\Phi_{St.N.}$ are the \emph{pdf} and the \emph{cdf} of
 % From the above, we anticipate several challenges. One challenge is $\hat{\lambda}_k$ are not provided by \texttt{coxph()} so we need to compute $\sum_{l\in \mathcal{R}(t_{(k)})} e^{\pmb{z}_l\pmb{\beta}}$ and $\sum_{l\in \mathcal{R}(t_2)}  e^{\pmb{z}_l\pmb{\beta}} z_{lj}$ manually.\\
 % The second challenge is to invert matrix $\pmb{A}$. This is a challenge because if we have, for example, $n$ bivariate times to event, $(x_i,y_i)$, (where each $x_i$ and $y_i$ are unique) and suppose that each model has $p$ $\beta$ coefficients, then the dimension of matrix $\pmb{A}$ will be $2p + 2n + 6$. From the previous example we saw that we can take advantage of the fact that the  largest square submatrices parts of matrices $\pmb{A}_{X,1,1}$ and $\pmb{A}_{Y,2,2}$ are diagonal.
 
+\subsection{M-estimation for conditional and partial-conditional correlation of PSRs.}
+In order to estimate conditional correlation of PSRs, we follow the process discussed in Qi's paper (see \cite{liu2016covariate}). First we estimate PSRs for each of the two outcomes, then we fit five regressions with outcomes: $PSR_{X_i}$, $PSR_{Y_i}$, $(PSR_{X_i}\cdot PSR_{Y_i})$, $PSR_{X_i}^2$, and $PSR_{Y_i}^2$. From the predicted values, we compute $\frac{\widehat{PSR_{X_i}PSR_{Y_i}} - \widehat{PSR_{Y_i}}\widehat{PSR_{X_i}}}{\sqrt{\left(\widehat{PSR_{X_i}^2} - (\widehat{PSR_{X_i}})^2 \right)\left(\widehat{PSR_{Y_i}^2} - (\widehat{PSR_{Y_i}})^2 \right)}}$. Note that because $E\left[ PSR \right] = 0$ (given that the model is correctly specified), we can fit only three regressions and compute: $\frac{\widehat{PSR_{X_i}PSR_{Y_i}}}{\sqrt{\left(\widehat{PSR_{X_i}^2}  \right)\left(\widehat{PSR_{Y_i}^2}  \right)}}$.
+
+Now we need to estimate the variance of the conditional correlation. We do this, as one can guess, by using M-estimation. We keep in mind that in order to obtain conditional correlation, we need unadjusted PSRs (obtained from Kaplan-Meier (KM)), and in order to obtain partial-conditional correlation, we need adjusted PSRs (obtained from survival models (SM)), let's say with parameters $\pmb{\alpha}$. In either case, we need estimating equations for linear regression (LM) with parameters $\pmb{\beta}$ and estimating equations for either KM or SM. For generality, we use SM. Let's also assume that we compute a correlation conditional on some variable $T$. Let's also switch to $r$ instead of $PSR$
+
+\[
+\pmb{\psi}_{Y_i} = 
+	\begin{bmatrix}
+		\pmb{\psi}_{SM_{Y}}(\pmb{\alpha}_Y, Y_i)\\
+		\pmb{\psi}_{SM_{X}}(\pmb{\alpha}_X, X_i)\\
+		\pmb{\psi}_{LM_{r^2_Y}}(\pmb{\beta}_{Y^2}, ~r^2_{Y,i}(\pmb{\alpha}_Y), ~T_i)\\
+		\pmb{\psi}_{LM_{r^2_X}}(\pmb{\beta}_{X^2}, ~r^2_{X,i}(\pmb{\alpha}_X), ~T_i)\\
+		\pmb{\psi}_{LM_{r_Y\cdot r_X}}(\pmb{\beta}_{YX}, ~r_{YX,i}(\pmb{\alpha}_Y, \pmb{\alpha}_X),  ~T_i)\\
+     ~\\
+    \widehat{r_{X_i}r_{Y_i}}(\pmb{\alpha}_Y, \pmb{\alpha}_X, ~\pmb{\beta}_{YX}, ~T_i) - a(t) \\
+ \widehat{r_{X_i}^2} (\pmb{\alpha}_X, ~\pmb{\beta}_{X^2},~T_i) - b(t)\\
+ \widehat{r_{Y_i}^2} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y^2},~T_i) - c(t)\\
+    \frac{a(t)}{ \sqrt{b(t) \cdot c(t)}} - \rho_{r}(t)
+ 	\end{bmatrix} 
+\]
+
+Now, we have to take a LOT of derivatives: $\frac{\partial \cdot}{\partial \pmb{\alpha}_Y}$, $\frac{\partial \cdot}{\partial \pmb{\alpha}_X}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{Y^2}}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{X^2}}$, and $\frac{\partial \cdot}{\partial \pmb{\beta}_{YX}}$. One small relief is that $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\alpha_{\cdot}}}$ and $\frac{\partial \pmb{\psi}_{LM_{\cdot}}}{\partial \pmb{\beta{\cdot}}}$ are provided (or derived earlier) and $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\beta_{\cdot}}} = 0$.
+
+Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$. Let's remind ourselves that for linear regression, the score equation looks like this: 
+\[
+\pmb{\psi}_{LM_{r^2_Y}} = 
+	\begin{bmatrix}
+		res_i\\
+		t_{1i}res_i\\
+		t_{2i}res_i\\
+		-\sigma^2 + res_i^2\\
+ 	\end{bmatrix} 
+\]
+
+Where $res_i = r^2_i(\pmb{\alpha}) - \pmb{\beta}\pmb{t}_i$
+\[
+\frac{\partial \pmb{\psi}_{LM_{r}}}{\partial \pmb{\alpha}} = 
+	\begin{bmatrix}
+		2\cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}} \\
+		t_{1i} \cdot 2 \cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}}\\
+		t_{2i} \cdot 2 \cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}}\\
+		4(r^2_i(\pmb{\alpha}) - \pmb{\beta}\pmb{t}_i)\cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}}\\
+ 	\end{bmatrix} 
+\]
+
+Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$ and use variable name $l$ for the likelihood:  
+
+\[
+\pmb{A}_{Y,2,2} = -\sum_i^n\begin{bmatrix}
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_0},  &
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_1}, &
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_2}, &
+    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial (\sigma^2)} &
+\end{bmatrix}
+ =-\sum_i^n\begin{bmatrix}
+    \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0 \partial (\sigma^2)}\\
+    \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_o}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1 \partial (\sigma^2)}\\
+    \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2 \partial (\sigma^2)}\\
+    \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2)\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial (\sigma^2)}\\
+\end{bmatrix} =
+\]
+\[
+  =\sum_i^n\begin{bmatrix}
+    1   &  z_{i1}   & z_{i2}  &  2 \cdot res_i\\
+    z_{i1}   &  z_{i1}^2   & z_{i1}z_{i2}  &  2 \cdot res_iz_{i1} \\
+    z_{i2}   &  z_{i1}z_{i2}   & z_{i2}^2  &  2 \cdot res_iz_{i2}  \\
+    2 \cdot res_i   & 2 \cdot res_iz_{i1}   & 2 \cdot res_iz_{i2}  &  1 \\
+\end{bmatrix}=
+\begin{bmatrix}
+  \pmb{Z}^T\pmb{Z} & 2 \cdot \pmb{Z}^T \pmb{res}\\
+  2 \cdot \pmb{res}^T\pmb{Z} & 1\\
+  \end{bmatrix}
+\]
+
+Because Qi was not including the derivative by $\sigma^2$, the return variable \texttt{d2l.dtheta.dtheta} can be mapped to  $\pmb{Z}^T\pmb{Z}$, or $\pmb{A}_{X,1,1}$ ($\pmb{A}_{Y,2,2}$), again loosely.\\
+I am not sure why the function returns variable \texttt{resid} (linear regression residuals $Y_i - \pmb{Z}_i\pmb{\theta}_Y$), but I haven't learned the code well yet.\\
+
+In Qi's notations, return variable \texttt{presid} is $PSR_X$ (or $PSR_Y$). Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
+  $$
+  \begin{aligned}
+    PSR_Y(\pmb{\theta}_Y) = 2F_{\pmb{\theta}_Y}(\pmb{Y}) - 1 = 2 \Phi\left(\frac{\pmb{Y} - \pmb{Z}\pmb{\theta}_Y}{\sigma}\right) - 1
+  \end{aligned}
+  $$
+Where $F_{\pmb{\theta}_Y}(\cdot)$ is a \emph{cdf} of $Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$ and $\Phi(\cdot)$ is a \emph{cdf} of a standard normal, $Normal(\pmb{0}, 1)$.\\
+
+In order to find $\pmb{A}_{Y, 4,2}$, we have to find  $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_0}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_1}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_2}$, and $ \frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \sigma}$. In Qi's notations, they are mapped to return variable \texttt{dpresid.dtheta}:
+
+  $$
+  \begin{aligned}
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_0} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{1}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_1} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,1}}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_2} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,2}}{\sigma}\\
+    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \sigma} &= +2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{res_{Y_i}}{\sigma^2}\\
+  \end{aligned}
+  $$
+
+But without the last line. The remaining work is done by function \texttt{corTS()}, that I mentioned before. But, for the sake of completeness, we'll continue:
+\[
+\pmb{A}_{Y,4,2} = \sum_i^n\begin{bmatrix}
+   2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{1}{\sigma}   &  2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,1}}{\sigma}   & 2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,2}}{\sigma}  &  -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{res_{Y_i}}{\sigma^2}\\
+\end{bmatrix}\]
+
+Or
+\[
+\pmb{A}_{Y,4,2} = \frac{2}{\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \frac{\pmb{res}_Y}{\sigma} \\
+\end{bmatrix}
+\]
+$A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we have:
+
+%%%%%%%%%%% A_{Y,2,2}
+\[
+\pmb{A}_{Y,2,2} = 
+\begin{bmatrix}
+  \pmb{Z}^T\pmb{Z} & \pmb{0}\\
+  2 \cdot \pmb{res}_Y^T\pmb{Z} & 1\\
+  \end{bmatrix}
+\]
+%%%%%%%%%%% A_{Y,4,2}
+\[
+\pmb{A}_{Y,4,2} = \frac{2}{\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \frac{\pmb{res}_Y}{\sigma} \\
+\end{bmatrix}
+\]
+%%%%%%%%%%% A_{Y,5,2}
+\[
+\pmb{A}_{Y,5,2} = \frac{2}{\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_X\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_X\right]^T \frac{\pmb{res}_Y}{\sigma} \\
+\end{bmatrix}
+\]
+%%%%%%%%%%% A_{Y,7,2}
+\[
+\pmb{A}_{Y,7,2} = \frac{4}{\sigma}\begin{bmatrix}
+   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_Y\right]^T \pmb{Z}, &
+   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_Y\right]^T \frac{\pmb{res}_Y}{\sigma} \\
+\end{bmatrix}
+\]
+
+The above matrices are combined to get matrix $A$.
+
+
 \subsubsection{Miscellaneous}
 Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 % \subsection{M-estimation for conditional and partial-conditional correlation}
 % Another way of approaching this problem was suggested by \cite{liu2016covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
 % Under construction ...
-\section{Report}
+\section{Questions}
 \begin{enumerate}
-  \item Implemented partial PSR simulation for a model that uses splines. The problem was that models that use splines return a non-invertable variance-cov. matrix, which we needed to invert for for M-estimation. I've rewritten the M-estimation function in order to accomodate for the fact that in survival regression, we can supply the inverse of sub matrix A.
-  \item Started estimating the variance covariance of K-M.
-  \item Question: Are the estimates of K-M for $X$ and $Y$ dependent on each other? If they are, we cannot do delta method because our K-Ms are estimated in a way that they don't depend on each other.
-  \item Added the plot of perfect correlation.
-  \item Question: what can we compare this to? Can we compare this plot to uncensored time to event and a binary variable (yes/no) that is a result of censoring and then assigning 1 to all people with event and 0 to those who did not have an event.
+  \item What do people mean when they ask if the 5.2 is a high type-one error or not?
+  \item Why not to correlate the CDFs instead of PSR?
+  \item Conditional correlation: the correlation value can be greater than 1
+  \item Conditional correlation: how to do variance using M-estimation
+  \item Should we include motivation for PSRs?
 \end{enumerate}
 
 \section{What I am planning to do}
 \begin{enumerate}
-  \item try Frank's family zero
   \item try to find the original reference for Frank's family
   \item show correlation mean for each simulation scenario: average point estimate, average estimated variance, variance of the estimates accross 1000.
   \item Look for models that adjust for covariates
@@ -3365,7 +3571,6 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item add confidence intervals for PSR correlation
   \item Implemented M-estimation for Cox using the full likelihood
   \item implement conditional correlation
-  \item tried to derive the dependence of perfect correlation decreasing with percent censoring increasing, when cencoring is performed uniformly on the cdf scale. Still working on it.
   \item tried to see if the loss in correlation can be evaluated using Hoeffding and Frescet bounds, but did not figure out this yet.
 \end{enumerate}
 
@@ -3374,21 +3579,9 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
   \item understand sample correlation without and with censoring. Why the one with censoring is not smaller than the one without censoring
   \item connect (if possible) local version of Spearman rho and correlation of PSR
   \item Do M-estimation for Cox using the paper of Stute
-  \item Report to Bryan about the fact that the variance according to Stute is very similar to Greenwood
-  \item do ACCRE
   \item do PAPER
-  \item papametric model: bootstrap
-  \item compare to bootstrap without using a parametric regression
-  \item incorporate the the KM estimator into the M-estimation (Stute, KM as estimating equations)
-  \item bootstrap for CDF and for Cox regression
-  \item incorporate the uncertainty of evaluating CDF into the M-estimation
-  \item orm with cloglog (or loglog) link, it should give the same beta (potential direction)
-  \item Look at Dabrowska and Cuzick for variance of spearman correlation
-  \item keep looking for the variance of the baseline hazard
-  \item cART Combined Antiretroviral therapy, HAART - Highly active Antiretroviral therapy
-  \item ARV - Antiretroviral, ART Antiretroviral therapy (first generation medicine) PI - protease inhibitor
   \item instead of RNA use VL measurement
-  \item Change label for Qi's paper because now it is published now.
+  \item Change label for Qi's paper because it is published now.
   \item Check definition of $\rho_S$ for discrete data ???
   %\item baseline hazard score equations: tute The central limit theorem under random censorship. Bryan's number: 615-624-2220
   \item Look at the papers produced by CASSANet data: look up the definitions of baseline RNA, and baseline CD4.
