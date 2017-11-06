@@ -3403,27 +3403,27 @@ Where $\phi_{St.N.}$ and $\Phi_{St.N.}$ are the \emph{pdf} and the \emph{cdf} of
 \subsection{M-estimation for conditional and partial-conditional correlation of PSRs.}
 In order to estimate conditional correlation of PSRs, we follow the process discussed in Qi's paper (see \cite{liu2016covariate}). First we estimate PSRs for each of the two outcomes, then we fit five regressions with outcomes: $PSR_{X_i}$, $PSR_{Y_i}$, $(PSR_{X_i}\cdot PSR_{Y_i})$, $PSR_{X_i}^2$, and $PSR_{Y_i}^2$. From the predicted values, we compute $\frac{\widehat{PSR_{X_i}PSR_{Y_i}} - \widehat{PSR_{Y_i}}\widehat{PSR_{X_i}}}{\sqrt{\left(\widehat{PSR_{X_i}^2} - (\widehat{PSR_{X_i}})^2 \right)\left(\widehat{PSR_{Y_i}^2} - (\widehat{PSR_{Y_i}})^2 \right)}}$. Note that because $E\left[ PSR \right] = 0$ (given that the model is correctly specified), we can fit only three regressions and compute: $\frac{\widehat{PSR_{X_i}PSR_{Y_i}}}{\sqrt{\left(\widehat{PSR_{X_i}^2}  \right)\left(\widehat{PSR_{Y_i}^2}  \right)}}$.
 
-Now we need to estimate the variance of the conditional correlation. We do this, as one can guess, by using M-estimation. We keep in mind that in order to obtain conditional correlation, we need unadjusted PSRs (obtained from Kaplan-Meier (KM)), and in order to obtain partial-conditional correlation, we need adjusted PSRs (obtained from survival models (SM)), let's say with parameters $\pmb{\alpha}$. In either case, we need estimating equations for linear regression (LM) with parameters $\pmb{\beta}$ and estimating equations for either KM or SM. For generality, we use SM. Let's also assume that we compute a correlation conditional on some variable $T$. Let's also switch to $r$ instead of $PSR$
+Now we need to estimate the variance of the conditional correlation. We do this, as one can guess, by using M-estimation. We keep in mind that in order to obtain conditional correlation, we need unadjusted PSRs (obtained from Kaplan-Meier (KM)), and in order to obtain partial-conditional correlation, we need adjusted PSRs (obtained from survival models (SM)), let's say with parameters $\pmb{\alpha}$. In either case, we need estimating equations for linear regression (LM) with parameters $\pmb{\beta}$ and estimating equations for either KM or SM. For generality, let's assume that we first adjust for variable $Z$ using SM and then fit LM on variable $T$ in order to compute $Z$-adjusted (partial) correlation conditional on $T$. Let's also switch our notations from  $PSR$ to $r$. The following is a set of estimating equations that allow to compute $var(\rho_r(t))$ using M-estimation, where $t$ is a fixed scalar value of variable $T$.
 
 \[
-\pmb{\psi}_{Y_i} = 
+\pmb{\psi}_{Y_i}(t) = 
 	\begin{bmatrix}
-		\pmb{\psi}_{SM_{Y}}(\pmb{\alpha}_Y, Y_i)\\
-		\pmb{\psi}_{SM_{X}}(\pmb{\alpha}_X, X_i)\\
+		\pmb{\psi}_{SM_{Y}}(\pmb{\alpha}_Y, Y_i, Z_i)\\
+		\pmb{\psi}_{SM_{X}}(\pmb{\alpha}_X, X_i, Z_i)\\
 		\pmb{\psi}_{LM_{r^2_Y}}(\pmb{\beta}_{Y^2}, ~r^2_{Y,i}(\pmb{\alpha}_Y), ~T_i)\\
 		\pmb{\psi}_{LM_{r^2_X}}(\pmb{\beta}_{X^2}, ~r^2_{X,i}(\pmb{\alpha}_X), ~T_i)\\
 		\pmb{\psi}_{LM_{r_Y\cdot r_X}}(\pmb{\beta}_{YX}, ~r_{YX,i}(\pmb{\alpha}_Y, \pmb{\alpha}_X),  ~T_i)\\
      ~\\
-    \widehat{r_{X_i}r_{Y_i}}(\pmb{\alpha}_Y, \pmb{\alpha}_X, ~\pmb{\beta}_{YX}, ~T_i) - a(t) \\
- \widehat{r_{X_i}^2} (\pmb{\alpha}_X, ~\pmb{\beta}_{X^2},~T_i) - b(t)\\
- \widehat{r_{Y_i}^2} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y^2},~T_i) - c(t)\\
+    \widehat{r_{X_i}r_{Y_i}}(\pmb{\alpha}_Y, \pmb{\alpha}_X, ~\pmb{\beta}_{YX}, ~t) - a(t) \\
+ \widehat{r_{X_i}^2} (\pmb{\alpha}_X, ~\pmb{\beta}_{X^2},~t) - b(t)\\
+ \widehat{r_{Y_i}^2} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y^2},~t) - c(t)\\
     \frac{a(t)}{ \sqrt{b(t) \cdot c(t)}} - \rho_{r}(t)
  	\end{bmatrix} 
 \]
 
 Now, we have to take a LOT of derivatives: $\frac{\partial \cdot}{\partial \pmb{\alpha}_Y}$, $\frac{\partial \cdot}{\partial \pmb{\alpha}_X}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{Y^2}}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{X^2}}$, and $\frac{\partial \cdot}{\partial \pmb{\beta}_{YX}}$. One small relief is that $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\alpha_{\cdot}}}$ and $\frac{\partial \pmb{\psi}_{LM_{\cdot}}}{\partial \pmb{\beta{\cdot}}}$ are provided (or derived earlier) and $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\beta_{\cdot}}} = 0$.
 
-Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$. Let's remind ourselves that for linear regression, the score equation looks like this: 
+Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$. Let's remind ourselves that for linear regression, the score equation for three $\beta$-coefficients looks like this: 
 \[
 \pmb{\psi}_{LM_{r^2_Y}} = 
 	\begin{bmatrix}
@@ -3434,18 +3434,56 @@ Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alp
  	\end{bmatrix} 
 \]
 
-Where $res_i = r^2_i(\pmb{\alpha}) - \pmb{\beta}\pmb{t}_i$
+Where $res_i = r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{T}_i$
 \[
-\frac{\partial \pmb{\psi}_{LM_{r}}}{\partial \pmb{\alpha}} = 
+\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
 	\begin{bmatrix}
-		2\cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}} \\
-		t_{1i} \cdot 2 \cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}}\\
-		t_{2i} \cdot 2 \cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}}\\
-		4(r^2_i(\pmb{\alpha}) - \pmb{\beta}\pmb{t}_i)\cdot r_i(\pmb{\alpha}) \frac{\partial r_i(\pmb{\alpha})}{\partial \pmb{\alpha}}\\
+		2\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
+		t_{1i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		t_{2i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		4(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{T}_i)\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+ 	\end{bmatrix}=
+% \]
+% \[
+2\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+	\begin{bmatrix}
+		1\\
+		t_{1i} \\
+		t_{2i} \\
+		2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{T}_i)\\
  	\end{bmatrix} 
 \]
 
-Let's denote $res_i = y_i - \beta_0 - \beta_1z_{1i} - \beta_2z_{2i}$ and use variable name $l$ for the likelihood:  
+Similar formula holds for $\pmb{\psi}_{LM_{r^2_X}}$. Let's see what is going on for linear regression of $LM_{YX}$. We can use the type of score equations as $\pmb{\psi}_{LM_{r^2_Y}}$, but now $res_i = r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i$, so
+
+\[
+\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} = 
+	\begin{bmatrix}
+		r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
+		t_{1i}  \cdot r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		t_{2i} \cdot  r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		2\cdot (r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i)\cdot r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+ 	\end{bmatrix}= r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+	\begin{bmatrix}
+		1\\
+		t_{1i} \\
+		t_{2i} \\
+		2(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i)\\
+ 	\end{bmatrix} 
+\]
+And $\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$ is computed in a similar manner:
+\[
+\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_X} = 
+ r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{X_i}(\pmb{\alpha}_X)}{\partial \pmb{\alpha}_X}
+	\begin{bmatrix}
+		1\\
+		t_{1i} \\
+		t_{2i} \\
+		2(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i)\\
+ 	\end{bmatrix} 
+\]
+
+So what does our matrix $A$ looks like?
 
 \[
 \pmb{A}_{Y,2,2} = -\sum_i^n\begin{bmatrix}
