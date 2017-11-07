@@ -3421,9 +3421,26 @@ Now we need to estimate the variance of the conditional correlation. We do this,
  	\end{bmatrix} 
 \]
 
-Now, we have to take a LOT of derivatives: $\frac{\partial \cdot}{\partial \pmb{\alpha}_Y}$, $\frac{\partial \cdot}{\partial \pmb{\alpha}_X}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{Y^2}}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{X^2}}$, and $\frac{\partial \cdot}{\partial \pmb{\beta}_{YX}}$. One small relief is that $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\alpha_{\cdot}}}$ and $\frac{\partial \pmb{\psi}_{LM_{\cdot}}}{\partial \pmb{\beta{\cdot}}}$ are provided (or derived earlier) and $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\beta_{\cdot}}} = 0$.
+Now, we have to take a LOT of derivatives: $\frac{\partial \cdot}{\partial \pmb{\alpha}_Y}$, $\frac{\partial \cdot}{\partial \pmb{\alpha}_X}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{Y^2}}$, $\frac{\partial \cdot}{\partial \pmb{\beta}_{X^2}}$, and $\frac{\partial \cdot}{\partial \pmb{\beta}_{YX}}$. So the part of the M-estimation $A$-matrix that relates to the regressions can be outlined like this:
 
-Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$. Let's remind ourselves that for linear regression, the score equation for three $\beta$-coefficients looks like this: 
+\[
+\pmb{A}_{SM, LM} = -
+	\begin{bmatrix}
+		\sum_i\frac{\partial \psi_{i,SM_{Y}}}{\partial \pmb{\alpha}_Y} & 0  & 0  & 0  & 0 \\
+    %%%%%%%%%%%%
+		0 & \sum_i\frac{\partial \psi_{i,SM_{X}}}{\partial \pmb{\alpha}_X} & 0  & 0  & 0  \\
+    %%%%%%%%%%%%
+		\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} & 0  & \sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\beta}_Y}  & 0  & 0 \\
+    %%%%%%%%%%%%
+		0 & \sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X} & 0  & \sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\beta}_X}  & 0 \\
+    %%%%%%%%%%%%
+		\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} & \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}  & 0  & 0  & \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\beta}_{YX}} \\
+ 	\end{bmatrix} 
+\]
+
+One small relief is that $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\alpha_{\cdot}}}$ and $\frac{\partial \pmb{\psi}_{LM_{\cdot}}}{\partial \pmb{\beta{\cdot}}}$ are provided (or derived earlier). We ONLY have to figure out: $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$, $\sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X}$, $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$, and  $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$.
+
+Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$. Let's assume that we have two $\alpha$ coefficients in each survival model and three $\beta$ coefficients in each linear model. We remind ourselves that for linear regression, the score equations for three $\beta$-coefficients looks like this: 
 \[
 \pmb{\psi}_{LM_{r^2_Y}} = 
 	\begin{bmatrix}
@@ -3434,152 +3451,86 @@ Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alp
  	\end{bmatrix} 
 \]
 
-Where $res_i = r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{T}_i$
-\[
-\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
+Where $res_i = r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i$
+{\small
+{\[
+\frac{\partial \pmb{\psi}_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
 	\begin{bmatrix}
 		2\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
 		t_{1i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
 		t_{2i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
-		4(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{T}_i)\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+		4(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
  	\end{bmatrix}=
 % \]
 % \[
-2\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+2\cdot r_{Y_i}(\pmb{\alpha}_Y) 
 	\begin{bmatrix}
-		1\\
-		t_{1i} \\
-		t_{2i} \\
-		2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{T}_i)\\
+		1 & 1\\
+		t_{1i} & t_{1i} \\
+		t_{2i} & t_{2i} \\
+		2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i) & 2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\\
+ 	\end{bmatrix} 
+  \circ
+	\begin{bmatrix}
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
  	\end{bmatrix} 
 \]
+}}
+Where $\circ$ is a \emph{Hadamard} product or element-wise multiplication.
 
-Similar formula holds for $\pmb{\psi}_{LM_{r^2_X}}$. Let's see what is going on for linear regression of $LM_{YX}$. We can use the type of score equations as $\pmb{\psi}_{LM_{r^2_Y}}$, but now $res_i = r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i$, so
+Similar formula holds for $\pmb{\psi}_{LM_{r^2_X}}$. Let's see what is going on for linear regression of $LM_{YX}$. We can use the type of score equations as $\pmb{\psi}_{LM_{r^2_Y}}$, but now $res_i = r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i$, so
 
 \[
-\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} = 
+\frac{\partial \pmb{\psi}_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} =  r_{X_i}(\pmb{\alpha}_X)
 	\begin{bmatrix}
-		r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
-		t_{1i}  \cdot r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
-		t_{2i} \cdot  r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
-		2\cdot (r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i)\cdot r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
- 	\end{bmatrix}= r_{X_i}(\pmb{\alpha}_X) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+		1 & 1\\
+		t_{1i} & t_{1i} \\
+		t_{2i} & t_{2i} \\
+		2(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i) & 2(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i)\\
+ 	\end{bmatrix} 
+  \circ
 	\begin{bmatrix}
-		1\\
-		t_{1i} \\
-		t_{2i} \\
-		2(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i)\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
  	\end{bmatrix} 
 \]
 And $\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$ is computed in a similar manner:
-\[
-\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_X} = 
- r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{X_i}(\pmb{\alpha}_X)}{\partial \pmb{\alpha}_X}
+
+Because $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$ and $\sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X}$ are defined in a similar manner, we only write down $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$: 
+
+{\small
+{\[
+\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
 	\begin{bmatrix}
-		1\\
-		t_{1i} \\
-		t_{2i} \\
-		2(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{T}_i)\\
+		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y) & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)\\
+		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)t_{1i} & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)t_{1i}\\
+		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)t_{2i} & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)t_{2i}\\
+		4\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i) & 4\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\\
  	\end{bmatrix} 
 \]
+}}
 
-So what does our matrix $A$ looks like?
+Because $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$ and  $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$ are defined similarly, we only present $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$:
 
-\[
-\pmb{A}_{Y,2,2} = -\sum_i^n\begin{bmatrix}
-    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_0},  &
-    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_1}, &
-    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial \beta_2}, &
-    \frac{\partial \pmb{\psi}_{Y_i}}{ \partial (\sigma^2)} &
-\end{bmatrix}
- =-\sum_i^n\begin{bmatrix}
-    \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_0 \partial (\sigma^2)}\\
-    \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_o}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_1 \partial (\sigma^2)}\\
-    \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial \beta_2 \partial (\sigma^2)}\\
-    \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial \beta_0}  & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial \beta_1} & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2)\partial \beta_2} & \frac{\partial^2 l_{Y_i}}{ \partial (\sigma^2) \partial (\sigma^2)}\\
-\end{bmatrix} =
+{\small
+{\[
+\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} = 
+	\begin{bmatrix}
+		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{X_i}(\pmb{\alpha}_X) & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{X_i}(\pmb{\alpha}_X)\\
+		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{X_i}(\pmb{\alpha}_X)t_{1i} & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{X_i}(\pmb{\alpha}_X)t_{1i}\\
+		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{X_i}(\pmb{\alpha}_X)t_{2i} & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{X_i}(\pmb{\alpha}_X)t_{2i}\\
+		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{X_i}(\pmb{\alpha}_X)(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i) & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{X_i}(\pmb{\alpha}_X)(r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i)\\
+ 	\end{bmatrix} 
 \]
-\[
-  =\sum_i^n\begin{bmatrix}
-    1   &  z_{i1}   & z_{i2}  &  2 \cdot res_i\\
-    z_{i1}   &  z_{i1}^2   & z_{i1}z_{i2}  &  2 \cdot res_iz_{i1} \\
-    z_{i2}   &  z_{i1}z_{i2}   & z_{i2}^2  &  2 \cdot res_iz_{i2}  \\
-    2 \cdot res_i   & 2 \cdot res_iz_{i1}   & 2 \cdot res_iz_{i2}  &  1 \\
-\end{bmatrix}=
-\begin{bmatrix}
-  \pmb{Z}^T\pmb{Z} & 2 \cdot \pmb{Z}^T \pmb{res}\\
-  2 \cdot \pmb{res}^T\pmb{Z} & 1\\
-  \end{bmatrix}
-\]
+}}
 
-Because Qi was not including the derivative by $\sigma^2$, the return variable \texttt{d2l.dtheta.dtheta} can be mapped to  $\pmb{Z}^T\pmb{Z}$, or $\pmb{A}_{X,1,1}$ ($\pmb{A}_{Y,2,2}$), again loosely.\\
-I am not sure why the function returns variable \texttt{resid} (linear regression residuals $Y_i - \pmb{Z}_i\pmb{\theta}_Y$), but I haven't learned the code well yet.\\
 
-In Qi's notations, return variable \texttt{presid} is $PSR_X$ (or $PSR_Y$). Now let's see what $\pmb{A}_{Y, 4,2}$ is. Because we are in the context of linear model, $Y \sim Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$. Then the $PSR_Y(\pmb{\theta}_Y)$
-  $$
-  \begin{aligned}
-    PSR_Y(\pmb{\theta}_Y) = 2F_{\pmb{\theta}_Y}(\pmb{Y}) - 1 = 2 \Phi\left(\frac{\pmb{Y} - \pmb{Z}\pmb{\theta}_Y}{\sigma}\right) - 1
-  \end{aligned}
-  $$
-Where $F_{\pmb{\theta}_Y}(\cdot)$ is a \emph{cdf} of $Normal(\pmb{Z} \cdot \pmb{\theta}_Y , \sigma^2)$ and $\Phi(\cdot)$ is a \emph{cdf} of a standard normal, $Normal(\pmb{0}, 1)$.\\
 
-In order to find $\pmb{A}_{Y, 4,2}$, we have to find  $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_0}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_1}$, $\frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \beta_2}$, and $ \frac{\partial PSR_Y(\pmb{\theta}_Y)}{\partial \sigma}$. In Qi's notations, they are mapped to return variable \texttt{dpresid.dtheta}:
-
-  $$
-  \begin{aligned}
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_0} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{1}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_1} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,1}}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \beta_2} &= -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,2}}{\sigma}\\
-    \frac{\partial PSR_{Y_i}(\pmb{\theta}_Y)}{\partial \sigma} &= +2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{res_{Y_i}}{\sigma^2}\\
-  \end{aligned}
-  $$
-
-But without the last line. The remaining work is done by function \texttt{corTS()}, that I mentioned before. But, for the sake of completeness, we'll continue:
-\[
-\pmb{A}_{Y,4,2} = \sum_i^n\begin{bmatrix}
-   2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{1}{\sigma}   &  2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,1}}{\sigma}   & 2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{z_{i,2}}{\sigma}  &  -2f\left(\frac{res_{Y_i}}{\sigma}\right)\frac{res_{Y_i}}{\sigma^2}\\
-\end{bmatrix}\]
-
-Or
-\[
-\pmb{A}_{Y,4,2} = \frac{2}{\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \frac{\pmb{res}_Y}{\sigma} \\
-\end{bmatrix}
-\]
-$A_{Y,5,2}$ and  $A_{Y,5,2}$ are computed in similar manner. To summarize, we have:
-
-%%%%%%%%%%% A_{Y,2,2}
-\[
-\pmb{A}_{Y,2,2} = 
-\begin{bmatrix}
-  \pmb{Z}^T\pmb{Z} & \pmb{0}\\
-  2 \cdot \pmb{res}_Y^T\pmb{Z} & 1\\
-  \end{bmatrix}
-\]
-%%%%%%%%%%% A_{Y,4,2}
-\[
-\pmb{A}_{Y,4,2} = \frac{2}{\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\right]^T \frac{\pmb{res}_Y}{\sigma} \\
-\end{bmatrix}
-\]
-%%%%%%%%%%% A_{Y,5,2}
-\[
-\pmb{A}_{Y,5,2} = \frac{2}{\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_X\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_X\right]^T \frac{\pmb{res}_Y}{\sigma} \\
-\end{bmatrix}
-\]
-%%%%%%%%%%% A_{Y,7,2}
-\[
-\pmb{A}_{Y,7,2} = \frac{4}{\sigma}\begin{bmatrix}
-   \left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_Y\right]^T \pmb{Z}, &
-   -\left[f\left(\frac{\pmb{res}_Y}{\sigma}\right)\pmb{PSR}_Y\right]^T \frac{\pmb{res}_Y}{\sigma} \\
-\end{bmatrix}
-\]
-
-The above matrices are combined to get matrix $A$.
 
 
 \subsubsection{Miscellaneous}
