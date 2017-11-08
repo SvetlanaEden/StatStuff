@@ -3529,8 +3529,29 @@ Because $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$ an
 \]
 }}
 
+As a result, we get a very large variance-covariance matrix, $\Sigma_{(\pmb{\alpha}_X, \pmb{\alpha}_X, \pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$. We need only the part with $\beta$s, let's denote it as $\Sigma_{(\pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$. Now, given this variance-covariance matrix, the values of $T$, and the $\Delta$-method, we can compute the variance of the expression: $\hat{\rho}_C(t) = \frac{  \widehat{r_{X_i}r_{Y_i}}(\pmb{\alpha}_Y, \pmb{\alpha}_X, ~\pmb{\beta}_{YX}, ~t)}{ \sqrt{ \widehat{r_{X_i}^2} (\pmb{\alpha}_X, ~\pmb{\beta}_{X^2},~\pmb{t}) \widehat{r_{Y_i}^2} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y^2},~\pmb{t})}}$. Note that although we have this expression depends on $\pmb{\alpha}$s, we don't have to worry about this because our $\Sigma_{(\pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$ has taken this into account. So the resulting variance can be calculated like this:
 
+$$
+\begin{aligned}
+  \left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)_{N\times 9}   \times~  \Sigma_{(\pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY}),~~9\times 9}  ~ \times  ~  \left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)^T_{9 \times N}
+  \end{aligned}
+$$
 
+where $N$ is the number of points $t$ for which we are computing the conditional correlation and $9$ is the overall number of $\beta$ coefficients. Note that even if $t$ is scalar, the number of coefficients can be more than $2$, for example, when we model $t$ with restricted cubic splines with $3$ knots, the overall number of coefficients for each model including the intercept is $3$. Finally, let's write down the $i^{th}$ row of matrix $\left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)_{N\times 9}$ for clarity:
+
+{\tiny
+{$$
+\begin{aligned}
+  \left(\frac{-(1/2) \pmb{\beta}'_{YX}\pmb{t}_i} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)^3(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{1,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)^3(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{2,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)^3(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, 
+  %%%%%%%
+  \frac{-(1/2) \pmb{\beta}'_{YX}\pmb{t}_i} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)^3}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{1,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)^3}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{2,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)^3}},
+  %%%%%%%
+  \frac{1}{\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{t_{1,i}}{\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{t_{2,i}}{\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}  \right)_{N\times 9}  
+  \end{aligned}
+$$
+}}
+
+\clearpage
 
 
 \subsubsection{Miscellaneous}
@@ -3541,8 +3562,6 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 % Under construction ...
 \section{Questions}
 \begin{enumerate}
-  \item What do people mean when they ask if the 5.2 is a high type-one error or not?
-  \item Why not to correlate the CDFs instead of PSR?
   \item Conditional correlation: the correlation value can be greater than 1
   \item Conditional correlation: how to do variance using M-estimation
   \item Should we include motivation for PSRs?
