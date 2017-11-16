@@ -3426,19 +3426,23 @@ Now, we have to take a LOT of derivatives: $\frac{\partial \cdot}{\partial \pmb{
 \[
 \pmb{A}_{SM, LM} = -
 	\begin{bmatrix}
-		\sum_i\frac{\partial \psi_{i,SM_{Y}}}{\partial \pmb{\alpha}_Y} & 0  & 0  & 0  & 0 \\
+		\sum_i\frac{\partial \psi_{i,SM_{Y}}}{\partial \pmb{\alpha}_Y} & 0  & 0  & 0  & 0 & 0 & 0\\
     %%%%%%%%%%%%
-		0 & \sum_i\frac{\partial \psi_{i,SM_{X}}}{\partial \pmb{\alpha}_X} & 0  & 0  & 0  \\
+		0 & \sum_i\frac{\partial \psi_{i,SM_{X}}}{\partial \pmb{\alpha}_X} & 0  & 0  & 0 & 0 & 0  \\
     %%%%%%%%%%%%
-		\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} & 0  & \sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\beta}_Y}  & 0  & 0 \\
+		\sum_i\frac{\partial \psi_{i,LM_{r_Y}}}{\partial \pmb{\alpha}_Y} & 0  & \sum_i\frac{\partial \psi_{i,LM_{r_Y}}}{\partial \pmb{\beta}_Y}  & 0  & 0 & 0 & 0 \\
     %%%%%%%%%%%%
-		0 & \sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X} & 0  & \sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\beta}_X}  & 0 \\
+		0  & \sum_i\frac{\partial \psi_{i,LM_{r_X}}}{\partial \pmb{\alpha}_{X^2}} & 0 & \sum_i\frac{\partial \psi_{i,LM_{r_X}}}{\partial \pmb{\beta}_X}  & 0  & 0 & 0 \\
     %%%%%%%%%%%%
-		\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} & \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}  & 0  & 0  & \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\beta}_{YX}} \\
+		\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} & 0 & 0 & 0  & \sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\beta}_{Y^2}}  & 0  & 0  \\
+    %%%%%%%%%%%%
+		0 & \sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_{X^2}} & 0 & 0 & 0  & \sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\beta}_X}  & 0  \\
+    %%%%%%%%%%%%
+		\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} & \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X} & 0 & 0  & 0  & 0  & \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\beta}_{YX}} \\
  	\end{bmatrix} 
 \]
 
-One small relief is that $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\alpha_{\cdot}}}$ and $\frac{\partial \pmb{\psi}_{LM_{\cdot}}}{\partial \pmb{\beta{\cdot}}}$ are provided (or derived earlier). We ONLY have to figure out: $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$, $\sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X}$, $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$, and  $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$.
+One small relief is that $\frac{\partial \pmb{\psi}_{SM_{\cdot}}}{\partial \pmb{\alpha_{\cdot}}}$ and $\frac{\partial \pmb{\psi}_{LM_{\cdot}}}{\partial \pmb{\beta{\cdot}}}$ are provided (or derived earlier). We ONLY have to figure out: $\sum_i\frac{\partial \psi_{i,LM_{r_Y}}}{\partial \pmb{\alpha}_Y}$,   $\sum_i\frac{\partial \psi_{i,LM_{r_X}}}{\partial \pmb{\alpha}_X}$, $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$, $\sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X}$, $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$, and  $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$.
 
 Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$. Let's assume that we have two $\alpha$ coefficients in each survival model and three $\beta$ coefficients in each linear model. We remind ourselves that for linear regression, the score equations for three $\beta$-coefficients looks like this: 
 \[
@@ -3451,24 +3455,31 @@ Now let's figure out $\frac{\partial \pmb{\psi}_{LM_{r^2_Y}}}{\partial \pmb{\alp
  	\end{bmatrix} 
 \]
 
-Where $res_i = r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i$
+Where $res_i$ are one of the following:
+\begin{enumerate}
+  \item $res_i = r_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i$
+  \item $res_i = r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta_{X}}\pmb{t}_i$
+  \item $res_i = r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y^2}}\pmb{t}_i$
+  \item $res_i = r^2_{X_i}(\pmb{\alpha}_X) - \pmb{\beta_{X^2}}\pmb{t}_i$
+  \item $res_i = r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i$
+\end{enumerate}
+
+Let's define the derivatives for cases 1, 3, and 5. Cases 2 and 4 are similar. Let's introduce notations $\circ$ as a \emph{Hadamard} product or element-wise multiplication, then it is streight forward to show that:
+
 {\small
 {\[
 \frac{\partial \pmb{\psi}_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
 	\begin{bmatrix}
-		2\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
-		t_{1i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
-		t_{2i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
-		4(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
+		t_{1i}  \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		t_{2i}  \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		2(r_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
  	\end{bmatrix}=
-% \]
-% \[
-2\cdot r_{Y_i}(\pmb{\alpha}_Y) 
 	\begin{bmatrix}
 		1 & 1\\
 		t_{1i} & t_{1i} \\
 		t_{2i} & t_{2i} \\
-		2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i) & 2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\\
+		2(r_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i) & 2(r_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\\
  	\end{bmatrix} 
   \circ
 	\begin{bmatrix}
@@ -3478,10 +3489,33 @@ Where $res_i = r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i$
 		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
  	\end{bmatrix} 
 \]
-}}
-Where $\circ$ is a \emph{Hadamard} product or element-wise multiplication.
 
-Similar formula holds for $\pmb{\psi}_{LM_{r^2_X}}$. Let's see what is going on for linear regression of $LM_{YX}$. We can use the type of score equations as $\pmb{\psi}_{LM_{r^2_Y}}$, but now $res_i = r_{Y_i}(\pmb{\alpha}_Y)r_{X_i}(\pmb{\alpha}_X) - \pmb{\beta}_{YX}\pmb{t}_i$, so
+\[
+\frac{\partial \pmb{\psi}_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
+	\begin{bmatrix}
+		2\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y} \\
+		t_{1i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		t_{2i} \cdot 2 \cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}\\
+		4(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y^2}}\pmb{t}_i)\cdot r_{Y_i}(\pmb{\alpha}_Y) \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \pmb{\alpha}_Y}
+ 	\end{bmatrix}=
+% \]
+% \[
+2\cdot r_{Y_i}(\pmb{\alpha}_Y) 
+	\begin{bmatrix}
+		1 & 1\\
+		t_{1i} & t_{1i} \\
+		t_{2i} & t_{2i} \\
+		2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y^2}}\pmb{t}_i) & 2(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y^2}}\pmb{t}_i)\\
+ 	\end{bmatrix} 
+  \circ
+	\begin{bmatrix}
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+ 	\end{bmatrix} 
+\]
+
 
 \[
 \frac{\partial \pmb{\psi}_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} =  r_{X_i}(\pmb{\alpha}_X)
@@ -3499,26 +3533,32 @@ Similar formula holds for $\pmb{\psi}_{LM_{r^2_X}}$. Let's see what is going on 
 		\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
  	\end{bmatrix} 
 \]
-And $\frac{\partial \pmb{\psi}_{LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$ is computed in a similar manner:
+}}
 
-Because $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$ and $\sum_i\frac{\partial \psi_{i,LM_{r^2_X}}}{\partial \pmb{\alpha}_X}$ are defined in a similar manner, we only write down $\sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y}$: 
+
+The following is a draft, I have not made sure that this is correct, but I don't have to right now, because I am relying on Qi's code.
+
 
 {\small
 {\[
+\sum_i\frac{\partial \psi_{i,LM_{r_Y}}}{\partial \pmb{\alpha}_Y} = 
+	\begin{bmatrix}
+		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}} & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}\\
+		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}t_{1i} & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}t_{1,i}\\
+		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}t_{2i} & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}t_{2,i}\\
+		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}(r_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta}_{Y}\pmb{t}_i) & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}(r_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta}_{Y}\pmb{t}_i)\\
+ 	\end{bmatrix} 
+\]
+\[
 \sum_i\frac{\partial \psi_{i,LM_{r^2_Y}}}{\partial \pmb{\alpha}_Y} = 
 	\begin{bmatrix}
 		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y) & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)\\
 		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)t_{1i} & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)t_{1i}\\
 		2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)t_{2i} & 2\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)t_{2i}\\
-		4\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i) & 4\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta_{Y}}\pmb{t}_i)\\
+		4\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{Y_i}(\pmb{\alpha}_Y)(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta}_{Y^2}\pmb{t}_i) & 4\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{Y_i}(\pmb{\alpha}_Y)(r^2_{Y_i}(\pmb{\alpha}_Y) - \pmb{\beta}_{Y^2}\pmb{t}_i)\\
  	\end{bmatrix} 
 \]
-}}
-
-Because $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$ and  $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_X}$ are defined similarly, we only present $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$:
-
-{\small
-{\[
+\[
 \sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y} = 
 	\begin{bmatrix}
 		\sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,0}}r_{X_i}(\pmb{\alpha}_X) & \sum_i\frac{\partial r_{Y_i}(\pmb{\alpha}_Y)}{\partial \alpha_{Y,1}}r_{X_i}(\pmb{\alpha}_X)\\
@@ -3529,27 +3569,38 @@ Because $\sum_i\frac{\partial \psi_{i,LM_{r_{YX}}}}{\partial \pmb{\alpha}_Y}$ an
 \]
 }}
 
-As a result, we get a very large variance-covariance matrix, $\Sigma_{(\pmb{\alpha}_X, \pmb{\alpha}_X, \pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$. We need only the part with $\beta$s, let's denote it as $\Sigma_{(\pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$. Now, given this variance-covariance matrix, the values of $T$, and the $\Delta$-method, we can compute the variance of the expression: $\hat{\rho}_C(t) = \frac{  \widehat{r_{X_i}r_{Y_i}}(\pmb{\alpha}_Y, \pmb{\alpha}_X, ~\pmb{\beta}_{YX}, ~t)}{ \sqrt{ \widehat{r_{X_i}^2} (\pmb{\alpha}_X, ~\pmb{\beta}_{X^2},~\pmb{t}) \widehat{r_{Y_i}^2} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y^2},~\pmb{t})}}$. Note that although we have this expression depends on $\pmb{\alpha}$s, we don't have to worry about this because our $\Sigma_{(\pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$ has taken this into account. So the resulting variance can be calculated like this:
+As a result, we get a very large variance-covariance matrix, $\Sigma_{(\pmb{\alpha}_X, \pmb{\alpha}_X, \pmb{\beta}_{X}, \pmb{\beta}_{Y}, \pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$. We need only the part with $\beta$s, let's denote it as $\Sigma_{(\pmb{\beta}_{X}, \pmb{\beta}_{Y}, \pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$. Now, given this variance-covariance matrix, the values of $T$, and the $\Delta$-method, we can compute the variance of the expression: $\hat{\rho}_C(t) = \frac{  \widehat{r_{X_i}r_{Y_i}}(\pmb{\alpha}_Y, \pmb{\alpha}_X, ~\pmb{\beta}_{YX}, ~t)   -   \widehat{r_{Y_i}} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y},~\pmb{t}) \cdot \widehat{r_{X_i}} (\pmb{\alpha}_X, ~\pmb{\beta}_{X},~\pmb{t})  }{    \sqrt{   \left[ \widehat{r_{X_i}^2} (\pmb{\alpha}_X, ~\pmb{\beta}_{X^2},~\pmb{t})  - (\widehat{r_{X_i}} (\pmb{\alpha}_X, ~\pmb{\beta}_{X},~\pmb{t}))^2 \right]   \left[\widehat{r_{Y_i}^2} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y^2},~\pmb{t}) - (\widehat{r_{Y_i}} (\pmb{\alpha}_Y, ~\pmb{\beta}_{Y},~\pmb{t}))^2  \right]   }   }$. Note that although this expression depends on $\pmb{\alpha}$'s, we don't have to worry about this because our $\Sigma_{(\pmb{\beta}_{X}, \pmb{\beta}_{Y}, \pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})}$ has taken this into account. So the resulting variance can be calculated like this:
 
+{\small{
 $$
 \begin{aligned}
-  \left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)_{N\times 9}   \times~  \Sigma_{(\pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY}),~~9\times 9}  ~ \times  ~  \left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)^T_{9 \times N}
+  \left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y}},  \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)_{N\times 15}   \times~  \Sigma_{(\pmb{\beta}_{X}, \pmb{\beta}_{Y}, \pmb{\beta}_{X^2}, \pmb{\beta}_{Y^2}, \pmb{\beta}_{XY})_{15\times 15}}  ~ \times  ~  \left(  \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y}},  \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)^T_{15 \times N}
   \end{aligned}
 $$
-
-where $N$ is the number of points $t$ for which we are computing the conditional correlation and $9$ is the overall number of $\beta$ coefficients. Note that even if $t$ is scalar, the number of coefficients can be more than $2$, for example, when we model $t$ with restricted cubic splines with $3$ knots, the overall number of coefficients for each model including the intercept is $3$. Finally, let's write down the $i^{th}$ row of matrix $\left( \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)_{N\times 9}$ for clarity:
+}}
+where $N$ is the number of points $t$ for which we are computing the conditional correlation and $15$ is the overall number of $\beta$ coefficients. Note that even if $t$ is scalar, the number of coefficients can be more than $2$, for example, when we model $t$ with restricted cubic splines with $3$ knots, the overall number of coefficients for each model including the intercept is $3$. Finally, let's write down the $i^{th}$ row of matrix $\left(\frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y}},  \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{X^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{Y^2}}, \frac{\partial \hat{\rho}_C(t)}{\partial \pmb{\beta}_{YX}}  \right)_{N\times 15}$ for clarity:
 
 {\tiny
 {$$
 \begin{aligned}
-  \left(\frac{-(1/2) \pmb{\beta}'_{YX}\pmb{t}_i} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)^3(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{1,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)^3(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{2,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)^3(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, 
+  \left(    \frac{- \pmb{\beta}'_{Y}\pmb{t}_i   + \frac{C}{\pmb{\beta}'_{X^2} \pmb{t}  - \left(  \pmb{\beta}'_{X} \pmb{t} \right)^2 }   } {D},~
+  \frac{- \pmb{\beta}'_{Y}\pmb{t}_i   + \frac{C}{\pmb{\beta}'_{X^2} \pmb{t}  - \left(  \pmb{\beta}'_{X} \pmb{t} \right)^2 }   } {D} t_{1,i},~
+  \frac{- \pmb{\beta}'_{Y}\pmb{t}_i   + \frac{C}{\pmb{\beta}'_{X^2} \pmb{t}  - \left(  \pmb{\beta}'_{X} \pmb{t} \right)^2 }   } {D} t_{2,i},  \right.\\
   %%%%%%%
-  \frac{-(1/2) \pmb{\beta}'_{YX}\pmb{t}_i} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)^3}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{1,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)^3}}, \frac{-(1/2)(\pmb{\beta}'_{YX}\pmb{t}_i) t_{2,i}} {\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)^3}},
+  \left.  \frac{- \pmb{\beta}'_{X}\pmb{t}_i   + \frac{C }{\pmb{\beta}'_{Y^2} \pmb{t}  - \left(  \pmb{\beta}'_{Y} \pmb{t} \right)^2 }   } {D},~
+  \frac{- \pmb{\beta}'_{X}\pmb{t}_i   + \frac{C}{\pmb{\beta}'_{Y^2} \pmb{t}  - \left(  \pmb{\beta}'_{Y} \pmb{t} \right)^2 }   } {D} t_{1,i},~
+  \frac{- \pmb{\beta}'_{X}\pmb{t}_i   + \frac{C}{\pmb{\beta}'_{Y^2} \pmb{t}  - \left(  \pmb{\beta}'_{Y} \pmb{t} \right)^2 }   } {D} t_{2,i},  \right.\\
   %%%%%%%
-  \frac{1}{\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{t_{1,i}}{\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}, \frac{t_{2,i}}{\sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i)(\pmb{\beta}'_{Y^2}\pmb{t}_i)}}  \right)_{N\times 9}  
+  \left. \frac{-(1/2) C} {D(\pmb{\beta}'_{X^2}\pmb{t}_i)},~ \frac{-(1/2)C} {D(\pmb{\beta}'_{X^2}\pmb{t}_i)} t_{1,i},~ \frac{-(1/2)C} {D(\pmb{\beta}'_{X^2}\pmb{t}_i)} t_{2,i},\right.\\
+  %%%%%%%
+  \left.  \frac{-(1/2)C} {D(\pmb{\beta}'_{Y^2}\pmb{t}_i)},~ \frac{-(1/2)C} {D(\pmb{\beta}'_{Y^2}\pmb{t}_i)} t_{1,i},~ \frac{-(1/2)C} {D(\pmb{\beta}'_{Y^2}\pmb{t}_i)} t_{2,i},\right.\\
+  %%%%%%%
+  \left.  \frac{1}{D},~   \frac{1}{D}t_{1,i},~   \frac{1}{D}t_{2,i}  \right)
   \end{aligned}
 $$
 }}
+
+where $C = \pmb{\beta}'_{YX} \pmb{t}  - (\pmb{\beta}'_{X} \pmb{t})(\pmb{\beta}'_{Y} \pmb{t})$ and $D = \sqrt{(\pmb{\beta}'_{X^2}\pmb{t}_i  -  (\pmb{\beta}'_{X}\pmb{t}_i)^2)(  \pmb{\beta}'_{Y^2}\pmb{t}_i - (\pmb{\beta}'_{X}\pmb{t}_i)^2   )}$
 
 \clearpage
 
