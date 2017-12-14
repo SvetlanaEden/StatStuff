@@ -818,7 +818,7 @@ It can be easily shown that the above expression is the same as correlation of \
 	$$
 
 \subsection{Spearman correlation and PSR based on a different definition.}
-Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and the correltation of the PSR we have been using the following defition of \emph{Spearman} correlation: $cov(F_S(s), F_T(t))$. In this section, we show that if we start with the original definition, $E(sign(S_0-S_1)sign(T_0-T_2))$, we will get the same result. Let's see why. Keeping in mind that $S_1 \perp T_2$ we can write (see \cite{liu2016covariate}):
+Up to now, in order to prove the equivalence of \emph{Spearman} correlation and the correlation of the PSR we have been using the following definition of \emph{Spearman} correlation: $cov(F_S(s), F_T(t))$. In this section, we show that if we start with the original definition, $E(sign(S_0-S_1)sign(T_0-T_2))$, we will get the same result. Let's see why. Keeping in mind that $S_1 \perp T_2$ we can write (see \cite{liu2016covariate}):
 	$$
 	\begin{aligned}
 		E(sign(S_0-S_1)sign(T_0-T_2)) &= E_{(S_0,T_0)}\left\{ E_{S_1,T_2|S_0,T_0}[sign(S_0-S_1)sign(T_0-T_2) |(S_0,T_0)] \right\} = \\
@@ -828,7 +828,7 @@ Up to now, in order to prove the equivalence of \emph{Spearman} corrlation and t
 		  &= E\left\{ PSR_S \cdot PSR_Y \right\}\\
 	\end{aligned}
 	$$
-When censoring takes place, we don't observe $S_0$, but we still obsere $x_0$, so similarly to the previous section, instead of $PSR = [ F_S(S_0^-) - 1 + F_S(S_0) ]$ we can take $PSR = E[ F_S(S_0^-) - 1 + F_S(S_0) | S_0>x_0]$.
+When censoring takes place, we don't observe $S_0$, but we still observe $x_0$, so similarly to the previous section, instead of $PSR = [ F_S(S_0^-) - 1 + F_S(S_0) ]$ we can take $PSR = E[ F_S(S_0^-) - 1 + F_S(S_0) | S_0>x_0]$.
 
 %%%%% the derivations below are incorrect because the Ec is not the same as Ex.
 % Above is the covariance of PSR. In order to scale it to $[-1, 1]$ we need to find the variance of PSR under censoring. \cite{shepherd2016probability} showed that for continuous censored data, the variance of PSR is $E[R^2] = \frac{1}{3} - \frac{1}{3}E_C[(1-F(C))^3]$, where $C$ is time to censoring. Because:
@@ -848,7 +848,7 @@ When censoring takes place, we don't observe $S_0$, but we still obsere $x_0$, s
 %   \end{aligned}
 %   $$
 
-\subsection{Spearman correlation and cov of PSR for uncensored data, yet another proof.}
+\subsection{Spearman correlation and covariance of PSR for uncensored data, yet another proof.}
 Let's assume that $(T^a_1, T^a_2)$ is fixed and $T^b_1 \perp T^c_2$. Let's also assume that $S(\cdot)$ is a survival function and $F(\cdot)$ is a distribution function, then
 	$$
 	\begin{aligned}
@@ -3635,30 +3635,92 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \section{To-Do List}
 \begin{enumerate}
-  \item understand sample correlation without and with censoring. Why the one with censoring is not smaller than the one without censoring
-  \item connect (if possible) local version of Spearman rho and correlation of PSR
-  \item Do M-estimation for Cox using the paper of Stute
-  \item do PAPER
-  \item instead of RNA use VL measurement
-  \item Change label for Qi's paper because it is published now.
-  \item Check definition of $\rho_S$ for discrete data ???
-  %\item baseline hazard score equations: tute The central limit theorem under random censorship. Bryan's number: 615-624-2220
+  \item look at the censoring probability (for both events) as a function of CD4 level
+  \item generate several plots
+  \item write up all the scenarios of simulation: 1) diff. censoring stuff, 2) different covariate or the same
+  \item get 100 and 500 sample size instead of 50 and 200
+  \item I cannot seem to do cond corr as a function of calendar time
+  \item Change the X axis of the CD4 on the Sqrt scale
+  \item check out cross analysis (see reference recommended by Frank or ask him what this is)
+  \item find more motivation for correlation
+  \item read papers recommended by Frank
+  \item clarify that we do not censor together as part of the method
+  \item simulate data that does not depend on Z and don't use knots???
+  \item include new Partial correlation Power table (when Z is the same for both variables)
+  \item run (:)) a bivariate survival model with copulas  
   \item Look at the papers produced by CASSANet data: look up the definitions of baseline RNA, and baseline CD4.
-  \item Check the definition of baseline RNA: it should be within -180 to 0 days.
-  \item Baseline CD4: the  closest CD4 count to the date of first HAART within a window of -180 prior to first HAART to 30 (or 7) days after.
   \item Check virologic failure that should start 6 months after the starting point: Yours start right away.
   \item Sort out the notations: is it $E_S[F_S(x)|S>X]$ or $E_S[F_S(s)|s>x]$?
   \item you have two functions \texttt{simSurvDataFromJointCDF()} in \texttt{tools.R} check which one is in use
   \item fix in function zebraTable: when pallet is customized, the function prints out the color names.
   \item change the function of partial correlation in such way that $PSR_X$ could be adjusted and $PSR_Y$ unadjusted or the other way around. Currently, you have either both are adjusted (function corTS) or none (function $corTS_Simple$)
+  
+  \item understand sample correlation without and with censoring. Why the one with censoring is not smaller than the one without censoring
+  \item connect (if possible) local version of Spearman rho and correlation of PSR
+  %\item baseline hazard score equations: Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
+
 \end{enumerate}
 
-\section{What I've completed}
+\clearpage
+\section{Meeting report}
+After writing the simulation plan, I focused on the problem of generating confidence intervals for conditional correlation as a function of calendar time. The problem is that for each event, the cox model is very significant, but the A matrix (the matrix required for the M-estimation) is computationally singular. I tried several things. 1) Matrix inversion by parts (I could compute the inverse, but the product of matrix A and its inverse would not result in unit-diagonal matrix); 2) I tried computing confidence intervals assuming known hazard (the result was not great: strange confidence intervals); 3) I tried the generalized inverse (which I know, does not make sense), the confidence intervals were even greater; 4) Another and final attempt to address this problem was employing Stute's estimating equations, but Alas, they gave negative variance...
+
+\section{Plan for tomorrow}
 \begin{enumerate}
-  \item heatmap for perfect pos and neg cor.
-  \item Contacted Dr. Shih, she sent me her GAUSS code, and matched her computation. There were three major points of differences. First, the formula for variance in Dr. Shih's code differed from the variance in the paper. Second, the censoring mechanizm of data simulation differed from the description in the paper. Third, simulation of Clayton's family produced much higher correlation compared to what was described in the paper. I decided to use my own scenario for simulations.
-  \item I ended up using packages \texttt{lcopula} and \texttt{copula} for generating Clayton's and Frank's family.
-  \item papametric model: M-estim 
+  \item look at the censoring probability (for both events) as a function of CD4 level
+  \item generate nice plots for conditional correlation (simulated and real) plots
+  \item look at the results of the simulations from ACCRE
+  \item work on your code to incorporate bias into your table
+  \item run simulations on ACCRE that include bias.
+\end{enumerate}
+
+\section{Meeting agenda}
+\begin{enumerate}
+  \item Ask Bryan about JASM and causal inference tuition
+  \item Discuss the feedback from committee meeting
+  \begin{enumerate}
+    \item Frank: has recommended to include into the introduction earlier: full models with copula in 2 parametric model
+    \item Frank: Also reference cross-analysis (one event in a time-dependent covariate for the other) ???
+    \item Frank: Clarify assumption that censoring on one variable does not occur if the other one had an event
+    \item Frank: emphasize the context: method that does not offer HR
+    \item Frank: explore how to make the estimator less dependent on censoring
+    \item Frank: what is the support and the strength of the support
+    \item Frank: has recommended some papers. I have sent one of them and asked him to clarify the reference for the other two.
+    \item Cindy: clarify the censoring mechanism, whether the events are censored at the same time or what. Or, whether time to censoring variables are dependent on each other.
+    \item Dandan: For partial correlation are Z's the same for each event or different?
+    \item Dandan: semipartial correlation?
+    \item Cindy: Report bias in addition to coverage:
+  \end{enumerate}
+  \item Discuss the conditional correlation results.
+  \item My plan is to research why the confidence intervals for the calendar time do not work and then to finish more or less writing the paper.
+  \item Mention the local region Spearman's $rho$ (page 28):
+  
+  In the process of understanding the material of the oral exam, I developed another Sperman's rho estimator. It appears to be consistent if the estimates of $S(\cdot, \cdot)$. $S_Y(\cdot)$, and $S_X(\cdot)$ are consistent and supposedly not dependent of censoring distribution (??? not sure about this) given independence of the event of interest and censoring event:
+
+  {\small{
+  \begin{equation}
+  		cov_{\mathcal{R}} = \int_0^{+\infty} \int_0^{+\infty} \left\{S(x^-,y^-)F(dx)G(dy) -S(x^-,dy)F(dx)G(y^-)-S(dx,y^-)F(x^-)G(dy) +S(dx,dy)F(x^-)G(y^-)  \right\}
+  \end{equation}
+  }}
+
+  To see if this is the same as the covariance (or correlation) of the PSRs, let's express the correlation of PSR in terms of $S(x,y)$, $F(x)$, and $G(y)$:
+  	$$
+  	\begin{aligned}
+  		P_c - P_d &= P\left\{ (X_1 - X)(Y_2 - X) > 0 \right\} -  P\left\{ (X_1 - X)(Y_2 - X) < 0 \right\} = \\
+      &\text{skipping some algebra}\\
+      &= E \left\{   \left[ F(X^-) + F(X) - 1  \right]  \left[ G(Y^-) + G(Y) - 1  \right]  \right\} =\\
+      &= E \left\{   \left[ 2F(X^-) - F(dX) - 1  \right]  \left[ 2G(Y^-) - G(dY) - 1  \right]  \right\}
+  	\end{aligned}
+  	$$
+  Which can be expressed as the following:
+  {\small{
+  \begin{equation}
+  		cov(PSR_X,~PSR_Y) = \int_0^{+\infty} \int_0^{+\infty} \left\{   \left[ 2F(x^-) - F(dx) - 1  \right]  \left[ 2G(y^-) - G(dy) - 1  \right]  \right\}S(dx,dy)
+  \end{equation}
+  }}
+
+  Whether these two expressions are equivalent or not is still a question (work in progress). A small simulation study showed that they seem to be equivalent in the absence of censoring, but when the data is censored they are not equivalent. My current guess is that,  in general, they are not equivalent. In favor of his guess is the fact that the equation (\ref{SpearmanRhoSurvFunc}) was obtained by fixing values $min(X,X_1) = x$ and $min(Y,Y_2) = y$, while equation (\ref{PSRrhoSurvFunc}) was obtained by fixing values $X=x$ and $Y=y$.
+  
 \end{enumerate}
 
 
