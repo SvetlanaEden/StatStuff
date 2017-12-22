@@ -3663,15 +3663,30 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \clearpage
 \section{Meeting report}
-After writing the simulation plan, I focused on the problem of generating confidence intervals for conditional correlation as a function of calendar time. The problem is that for each event, the cox model is very significant, but the A matrix (the matrix required for the M-estimation) is computationally singular. I tried several things. 1) Matrix inversion by parts (I could compute the inverse, but the product of matrix A and its inverse would not result in unit-diagonal matrix); 2) I tried computing confidence intervals assuming known hazard (the result was not great: strange confidence intervals); 3) I tried the generalized inverse (which I know, does not make sense), the confidence intervals were even greater; 4) Another and final attempt to address this problem was employing Stute's estimating equations, but Alas, they gave negative variance...
+After writing the simulation plan, I focused on the problem of generating confidence intervals for conditional correlation as a function of calendar time. The problem is that for each event, the cox model is very significant, but the A matrix (the matrix required for the M-estimation) is computationally singular. I tried several things.
+1) Changed calendar time to start from 0. This worked for children. For adults, this almost worked. For adults, I am using M-estimation with full likelihood for one variable and M-estiamtion that assumes known hazard for the other.
+2) I do not know why this is the case, but am investigating this.
+3) Found the problem with simulations. The problem was that because of the digital number representation, some numbers appear to be the same, while their digital representation is different. Functions coxph() and basehas() were doing different things with these numbers, which caused the problem. I emailed Terri Therneau, and he explained what argument to use to deal with this problem.
+
+I was also working on incorporating the bias into the code. What was surprising was that the unadjusted method, KM, worked horribly (p.23). Well, I guess this should make sense. I'd appreciate the feedback for this table.
+I am working on some problem with simulations (it fails on ACCRE, but not on my computer.)
+Worked on nice plots of conditional correlation as a function of age and cd4. Compared different confidence intervals (full likelyhood and KM). KM intervals were wider.
+
+I thought of looking at the probability of censoring as a function of cd4. I ran it as a logistic regression, but then thought that it should probably be a survival model, and the censoring is not independent ?.?.?
+
+Indeas:
+To censor on uniform scale: before transforming the variables.
+
+Bugs: had zero hazard: what should I do?
 
 \section{Plan for tomorrow}
 \begin{enumerate}
   \item look at the censoring probability (for both events) as a function of CD4 level
-  \item generate nice plots for conditional correlation (simulated and real) plots
-  \item look at the results of the simulations from ACCRE
-  \item work on your code to incorporate bias into your table
-  \item run simulations on ACCRE that include bias.
+  \item generate nice plots for conditional correlation (real ones)
+  \item include in your code different  scenarios for censoring
+  \item for unadjusted: run simulations on ACCRE that include bias and incorporates different censoring scenarios
+  \item for partial: run simulations on ACCRE that include bias and incorporates different censoring scenarios
+  \item include function fillUpDecimals and fillUpStr in my skezoo package
 \end{enumerate}
 
 \section{Meeting agenda}
