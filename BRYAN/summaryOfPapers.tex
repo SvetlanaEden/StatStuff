@@ -1208,8 +1208,32 @@ But we still need to figure out what $H(dU, dV)$ is
 %\subsubsection{Perfect correlation under censoring, general case}
 
 \section{Local measures of association}
+\subsection{Kendall's $\tau$}
+\subsubsection{Computing Kendall's $\tau$ for archemedian copulas}
+The book of \cite{nelsen2007introduction} helps us to compute the value of Kendall's $tau$ for archemedian copulas using their generating function, $\phi(t)$, (see p. 116) and the formula on p.163:
+	$$
+	\begin{aligned}
+		\tau_K &= 1 + 4\int_0^1 \frac{\phi(t)}{\phi'(t)}  dt
+	\end{aligned}
+	$$
+For Frank's family this expression becomes:
 
-\subsection{Local \emph{Kendall's} $\tau$. Discrete case, not covered by \cite{fan2000class}}
+	$$
+	\begin{aligned}
+		\tau_K &= 1 + 4\int_0^1 \left\{   -ln \left(  \frac{e^{-\theta t} - 1}{ e^{-\theta} - 1}  \right) \left(  \frac{ 1 - e^{\theta}}{\theta}  \right) \right\}dt
+	\end{aligned}
+	$$
+
+And for Clayton's family this expression becomes:
+
+	$$
+	\begin{aligned}
+		\tau_K &= 1 + 4\int_0^1 \left(-  \frac{t^{-\theta} -  1}{\theta t^{-\theta - 1}}  \right) dt
+	\end{aligned}
+	$$
+
+
+\subsubsection{Local Kendall's $\tau$. Discrete case, not covered by \cite{fan2000class}}
 \label{deriveWeightedTau}
 Here we try to explain how \cite{oakes1989bivariate} showed that $\tau(s_1, s_2)$ can be written as:
 	$$
@@ -3674,13 +3698,18 @@ Worked on nice plots of conditional correlation as a function of age and cd4. Co
 
 I thought of looking at the probability of censoring as a function of cd4. I ran it as a logistic regression, but then thought that it should probably be a survival model, and the censoring is not independent ?.?.?
 
-Indeas:
-To censor on uniform scale: before transforming the variables.
+Explored the issue with conditional correlation of the calendar time. The problem was with the variable canlendar time. For some reason, when it is in years, the baseline hazard becomes enormous. Then the M-estimation gets all messed up. When I switched to time from the first year, it worked for children. For adults it was still a problem, so for one of the variables I used "known hazard" approach in M-estimation.
 
-Bugs: had zero hazard: what should I do?
+I coded two types of censoring and different proportions, which implements Bryan's suggestion.
+
+I worked on the power tables (automatic caption and stuff), worked on power plots and on conditional correlation plots.
+
 
 \section{Plan for tomorrow}
 \begin{enumerate}
+  \item restructure the powerForPartial() so that rclayton gets the new arguments: prob of censoring and stuff
+  \item incorporate different censoring scenarios into you partial correlation power computations.
+  \item think how to display graphically coverage and bias for different censoring scenarios and different copula families.
   \item look at the censoring probability (for both events) as a function of CD4 level
   \item generate nice plots for conditional correlation (real ones)
   \item include in your code different  scenarios for censoring
