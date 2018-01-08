@@ -1192,10 +1192,12 @@ Let's see what we can do with the integrals (starting with the easiest one):
     %%%%%%% integral C
     C &= U_0\int_{0}^{V_0} (2V - 1)[H(1, dV) - H(U_0, dV)] = \text{integration by parts}\\
      &= U_0  \left\{  (2V_0 - 1)(H(1, V_0) - H(U_0, V_0)) +H(1, 0) - H(U_0, 0)  - 2 \int_0^{V_0} [H(1, V) - H(U_0, V)]dV   \right\}\\
-     &= U_0  \left\{  (2V_0 - 1)(V_0 - H(U_0, V_0)) - 2 \int_0^{V_0} [H(1, V) - H(U_0, V)]dV   \right\}\\
+     &= U_0  \left\{  (2V_0 - 1)(V_0 - H(U_0, V_0)) - 2 \int_0^{V_0} [H(1, V) - H(U_0, V)]dV   \right\}
+     = U_0  \left\{  (2V_0 - 1)(V_0 - H(U_0, V_0)) - 2 \int_0^{V_0} [V - H(U_0, V)]dV   \right\} = \\
+     & = U_0  \left\{  (2V_0 - 1)(V_0 - H(U_0, V_0)) - V_0^2 + 2 \int_0^{V_0} H(U_0, V)dV   \right\}\\
     %%%%%
     %%%%%%% integral B
-    B &= V_0 \left\{  (2U_0 - 1) \left[U_0 - H(U_0, V_0)\right]  - 2\int_0^{U_0} [H(U, 1) + H(U, V_0)]dU  \right\}\\
+    B &= V_0 \left\{  (2U_0 - 1) \left[U_0 - H(U_0, V_0)\right]  - U_0^2 + 2 \int_0^{U_0} H(U, V_0)dU  \right\}\\
     %%%%%%% integral A
     A &= \int_0^{V_0}\int_0^{U_0} (2U - 1)(2V - 1)\cdot H(dU, dV) =  \underbrace{\int\int 4UV H(dU, dV)}_{E} + \underbrace{\int\int (-2U) H(dU, dV)}_{J} + \underbrace{\int\int (-2V) H(dU, dV)}_{K} + \underbrace{\int\int H(dU, dV)}_{L}\\
     %%%%%%%% integrals E, J, K, L
@@ -1216,6 +1218,26 @@ Let's see what we can do with the integrals (starting with the easiest one):
     A &= E + J + K + L = 4 U_0 V_0 H(U_0, V_0) -  4U_0\int_0^{V_0} H(U_0, V)dV   -  4 V_0 \int_0^{U_0}  H(U,V_0)  + 4 \int_0^{U_0} H(U, V) dV  dU + \\
     & -2  U_0 H(U_0, V_0) +  2 \int_0^{U_0}  H(U, V_0)dU  -2  V_0 H(U_0, V_0) +  2 \int_0^{V_0}  H(U_0, V)dV +  H(U_0, V_0) =\\
     &= (2U_0 - 1)(2V_0 - 1)H(U_0, V_0) - 2(2U_0 - 1)\int_0^{V_0} H(U_0, V)dV  - 2(2V_0 - 1)\int_0^{U_0} H(U, V_0)dU  + 4 \int_0^{U_0}\int_0^{V_0} H(U, V) dV  dU
+	\end{aligned}
+	$$
+
+}}
+
+So we get:
+
+
+{\scriptsize{
+	$$
+	\begin{aligned}
+    A+B+C+D &=  V_0 U_0 \large\{1 - U_0 - V_0  + H(U_0, V_0)\large\}+\\
+    %%%%%%% integral C
+    &+ U_0  \left\{  (2V_0 - 1)(V_0 - H(U_0, V_0)) - V_0^2 + 2 \int_0^{V_0} H(U_0, V)dV   \right\}+\\
+    %%%%%%% integral B
+    &+ V_0 \left\{  (2U_0 - 1) \left[U_0 - H(U_0, V_0)\right]  - U_0^2 + 2 \int_0^{U_0} H(U, V_0)dU  \right\}+\\
+    %%%%%%% integral A
+    &+ (2U_0 - 1)(2V_0 - 1)H(U_0, V_0) - 2(2U_0 - 1)\int_0^{V_0} H(U_0, V)dV  - 2(2V_0 - 1)\int_0^{U_0} H(U, V_0)dU  + 4 \int_0^{U_0}\int_0^{V_0} H(U, V) dV  dU =\\
+    %%%%%%% next step
+    &= H(U_0, V_0)(U_0 - 1)(V_0 - 1) - U_0 V_0 - 2(U_0 - 1)\int_0^{V_0} H(U_0, V)dV  - 2(V_0 - 1)\int_0^{U_0} H(U, V_0)dU  + 4 \int_0^{U_0}\int_0^{V_0} H(U, V) dV  dU 
 	\end{aligned}
 	$$
 
