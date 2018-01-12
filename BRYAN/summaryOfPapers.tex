@@ -1164,26 +1164,38 @@ We consider a case when the two time-to-event variables are not associate, but t
 \subsubsection{PSR correlation under censoring: general case}
 We now compute the covariance of PSR under general censoring scheme. We perform our computations on a cdf scale so the marginal distribution functions of the outcomes are uniform and denoted as $U$ an $V$, and their joint distribution function is $H(u, v)$ (which is a copula). Let's denote the marginal distribution functions of the censoring variables as $U_0$ and $V_0$. We assume some joint distribution function $G(u_0, v_0)$. The covariance of the PSRs conditional on $U_0$ and $V_0$ is:
 
-{\small{
+% {\small{
+%   $$
+%   \begin{aligned}
+%     cov(U_0, V_0) &=  Pr\{ U \leq U_0,~V \leq V_0\} \underbrace{  \int_0^{V_0}\int_0^{U_0} (2U - 1)(2V - 1)\cdot H(dU, dV)      }_{\text{A}}  +   Pr\{ U \leq U_0,~V > V_0\}  \underbrace{  \int_{V_0}^{1}\int_0^{U_0} (2U - 1)V_0\cdot H(dU, dV)  }_{B}   + \\
+%     &+ Pr\{ U > U_0,~V \leq V_0\} \underbrace{\int_{0}^{V_0}\int_{U_0}^1 (2V - 1)U_0\cdot H(dU, dV)}_{C} + Pr\{ U > U_0,~V > V_0\} \underbrace{\int_{V_0}^{1}\int_{U_0}^1 V_0 U_0\cdot H(dU, dV)}_{D}
+%   \end{aligned}
+%   $$
+%
+% }}
+% Where
+% {\small{
+%   $$
+%   \begin{aligned}
+%     &Pr\{ U \leq U_0,~V \leq V_0\} = H(U_0, V_0)\\
+%     &Pr\{ U \leq U_0,~V > V_0\} = F_U(U_0) - H(U_0, V_0) = U_0 - H(U_0, V_0)\\
+%     &Pr\{ U > U_0,~V \leq V_0\} = F_V(V_0) - H(U_0, V_0) = V_0 - H(U_0, V_0)\\
+%     &Pr\{ U > U_0,~V > V_0\} = 1 -F_U(U_0) - F_V(V_0)+ H(U_0, V_0) = 1 - U_0 - V_0  + H(U_0, V_0)
+%   \end{aligned}
+%   $$
+% }}
+
+
+{\scriptsize{
 	$$
 	\begin{aligned}
-    cov(U_0, V_0) &=  Pr\{ U \leq U_0,~V \leq V_0\} \underbrace{  \int_0^{V_0}\int_0^{U_0} (2U - 1)(2V - 1)\cdot H(dU, dV)      }_{\text{A}}  +   Pr\{ U \leq U_0,~V > V_0\}  \underbrace{  \int_{V_0}^{1}\int_0^{U_0} (2U - 1)V_0\cdot H(dU, dV)  }_{B}   + \\
-    &+ Pr\{ U > U_0,~V \leq V_0\} \underbrace{\int_{0}^{V_0}\int_{U_0}^1 (2V - 1)U_0\cdot H(dU, dV)}_{C} + Pr\{ U > U_0,~V > V_0\} \underbrace{\int_{V_0}^{1}\int_{U_0}^1 V_0 U_0\cdot H(dU, dV)}_{D}
+    cov(U_0, V_0) &=  \underbrace{  \int_0^{V_0}\int_0^{U_0} (2U - 1)(2V - 1)\cdot H(dU, dV)      }_{\text{A}}  +   \underbrace{  \int_{V_0}^{1}\int_0^{U_0} (2U - 1)V_0\cdot H(dU, dV)  }_{B}   +
+     \underbrace{\int_{0}^{V_0}\int_{U_0}^1 (2V - 1)U_0\cdot H(dU, dV)}_{C} +  \underbrace{\int_{V_0}^{1}\int_{U_0}^1 V_0 U_0\cdot H(dU, dV)}_{D}
 	\end{aligned}
 	$$
 
 }}
-Where 
-{\small{
-	$$
-	\begin{aligned}
-    &Pr\{ U \leq U_0,~V \leq V_0\} = H(U_0, V_0)\\
-    &Pr\{ U \leq U_0,~V > V_0\} = F_U(U_0) - H(U_0, V_0) = U_0 - H(U_0, V_0)\\
-    &Pr\{ U > U_0,~V \leq V_0\} = F_V(V_0) - H(U_0, V_0) = V_0 - H(U_0, V_0)\\
-    &Pr\{ U > U_0,~V > V_0\} = 1 -F_U(U_0) - F_V(V_0)+ H(U_0, V_0) = 1 - U_0 - V_0  + H(U_0, V_0)
-	\end{aligned}
-	$$
-}}
+
 Let's see what we can do with the integrals (starting with the easiest one):
 {\scriptsize{
 	$$
@@ -1223,13 +1235,14 @@ Let's see what we can do with the integrals (starting with the easiest one):
 
 }}
 
-So we get:
+So we get $cov(U_0, V_0)$:
 
 
 {\scriptsize{
 	$$
 	\begin{aligned}
-    A+B+C+D &=  V_0 U_0 \large\{1 - U_0 - V_0  + H(U_0, V_0)\large\}+\\
+    cov(U_0, V_0) &= A+B+C+D = \\
+    &= V_0 U_0 \large\{1 - U_0 - V_0  + H(U_0, V_0)\large\}+\\
     %%%%%%% integral C
     &+ U_0  \left\{  (2V_0 - 1)(V_0 - H(U_0, V_0)) - V_0^2 + 2 \int_0^{V_0} H(U_0, V)dV   \right\}+\\
     %%%%%%% integral B
@@ -1245,8 +1258,36 @@ So we get:
 
 
 
-In order to find the variance, we use equation (\ref{varOfPSRUnderDetermCensoring})
+In order to find the variance, we use equation (\ref{varOfPSRUnderDetermCensoring}):
+{\scriptsize{
+	$$
+	\begin{aligned}
+    var_X(U_0) = \frac{1}{3} U_0^3 - U_0^2 + U_0
+	\end{aligned}
+	$$
+}}
 
+In the following we use $G_{U_0}(du_0), G_{V_0}(dv_0)$ as a notation for marginal distribution of censoring variables on a cdf scale. We'll discuss how we get them later.\\
+Question for Bryan and Chun: In order to compute the correlation of PSRs under censoring, $\rho^*_{PSRs}$ we use conditional covariance and variances and integrate over the censoring distribution. The question is how to integrate over the censoring distribution:
+
+{\scriptsize{
+	$$
+	\begin{aligned}
+   \text{This way: } \rho^*_{PSRs}  = \frac{\int \int cov(U_0, V_0) G_{U_0}(du_0)G_{V_0}(dv_0)}{\sqrt{\left(\int var_X(U_0)G_{U_0}(du_0) \right) \left(\int var_Y(V_0)G_{V_0}(dv_0)  \right)}}\\
+    \text{or this way: } \rho^*_{PSRs}  = \int \int \frac{cov(U_0, V_0) }{ \sqrt{var_X(U_0)   var_Y(V_0)}}G_{U_0}(du_0)G_{V_0}(dv_0) \text{    ?}
+	\end{aligned}
+	$$
+}}
+
+Also, because the above formlas are on the cdf scale, there is another question, what are $G_{U_0}$ and $G_{V_0}$ in case when each outcome is distributed exponentially with mean $1$, and the censoring distribution is also exponential, but with a rate chosen to have a certain percentage of censored events. To get all our distributions on the same scale, let's transform variables $X$ and $C_X$ on using $F_X(\cdot)$ and transform variables, $Y$ and $C_Y$ on using $F_Y(\cdot)$. So for $X$ and $Y$ we end up having variables $U$ and $V$ that are uniformly distributed, and for $C_X$ and $C_Y$ we get $Z = F_X(C_X) =  1 - e^{-C_X}$ and $W = F_Y(C_Y)$ the following way. Suppose $C_X \sim 1-e^{-\beta_X \cdot c_X}$, then:
+{\scriptsize{
+	$$
+	\begin{aligned}
+    Pr \{ Z < z \} = Pr \{ 1 - e^{-C_X} < z \} = Pr \{ C_X < -ln(1 - z)\} = F_{C_X}(-ln(1 - z)) = 1-e^{-\beta (-ln(1 - z))} = 1 - (1-z)^{\beta}
+	\end{aligned}
+	$$
+}}
+Which means that both, $Z$ and $W$ have beta distribution with $\alpha_Z = \alpha_W = 1$ and $\beta_Z = \beta_X$, $\beta_W = \beta_Y$
 
 \subsubsection{Positive correlation, Clayton's family distribution.}
 In this section we compute the value of Spearman correlation under censoring. We consider a case when both variables, $X$ and $Y$, are distributed exponentially with mean $1/\lambda_1$ and with joint Clayton's distribution, and the censoring variables, $C_X$ and $C_Y$ are distributed exponentially with mean $1\lambda_2$ and are independent of each other:
@@ -3748,6 +3789,10 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \section{To-Do List}
 \begin{enumerate}
+  \item Compute integrals for $\rho^*$
+  \item Look at papers that estimate $\rho$ using copulas: do they do Partial rho?
+  \item program you code to save point estimate and CIs
+  \item change your code so if ACCRE's jobs times out, you could continue it again from where it stopped.
   \item look at the censoring probability (for both events) as a function of CD4 level
   \item generate several plots
   \item write up all the scenarios of simulation: 1) diff. censoring stuff, 2) different covariate or the same
