@@ -1250,7 +1250,7 @@ So we get $cov(U_0, V_0)$:
     %%%%%%% integral A
     &+ (2U_0 - 1)(2V_0 - 1)H(U_0, V_0) - 2(2U_0 - 1)\int_0^{V_0} H(U_0, V)dV  - 2(2V_0 - 1)\int_0^{U_0} H(U, V_0)dU  + 4 \int_0^{U_0}\int_0^{V_0} H(U, V) dV  dU =\\
     %%%%%%% next step
-    &= H(U_0, V_0)(U_0 - 1)(V_0 - 1) - U_0 V_0 - 2(U_0 - 1)\int_0^{V_0} H(U_0, V)dV  - 2(V_0 - 1)\int_0^{U_0} H(U, V_0)dU  + 4 \int_0^{U_0}\int_0^{V_0} H(U, V) dV  dU 
+    &= H(U_0, V_0)(1 - U_0)(1 - V_0) - U_0 V_0 + 2(1 - U_0)\int_0^{V_0} H(U_0, V)dV  + 2(1 - V_0)\int_0^{U_0} H(U, V_0)dU  + 4 \int_0^{U_0}\int_0^{V_0} H(U, V) dV  dU 
 	\end{aligned}
 	$$
 
@@ -1287,7 +1287,18 @@ Also, because the above formlas are on the cdf scale, there is another question,
 	\end{aligned}
 	$$
 }}
-Which means that both, $Z$ and $W$ have beta distribution with $\alpha_Z = \alpha_W = 1$ and $\beta_Z = \beta_X$, $\beta_W = \beta_Y$
+Which means that both, $Z$ and $W$ have beta distribution with $\alpha_Z = \alpha_W = 1$ and $\beta_Z = \beta_X$, $\beta_W = \beta_Y$.
+
+The question is if can evaluate the expression for Spearman's correlation under random censoring. We should probably start with conditional covariance and try to do something with  \emph{Fr\'echet-Hoeffding bounds}
+
+{\scriptsize{
+	$$
+	\begin{aligned}
+    max(u + v - 1, 0) \leq H(u, v) \leq min(u, v)
+	\end{aligned}
+	$$
+}}
+Where $H(u,v)$ is a copula in our notations.
 
 \subsubsection{Positive correlation, Clayton's family distribution.}
 In this section we compute the value of Spearman correlation under censoring. We consider a case when both variables, $X$ and $Y$, are distributed exponentially with mean $1/\lambda_1$ and with joint Clayton's distribution, and the censoring variables, $C_X$ and $C_Y$ are distributed exponentially with mean $1\lambda_2$ and are independent of each other:
@@ -1518,7 +1529,16 @@ And in general, their weighting technique works because:
 \subsection{Local \emph{Spearman's} $\rho$}
 
 \subsubsection{Local  \emph{Spearman's} $\rho$ weighted by the distribution of minimum}
-Inspired by \cite{fan2000dependence} we derive a local version of \emph{Spearman's} $\rho$, $\rho_S(x, y)$ using the following notations. We pick a pair $(X_{0},Y_{0})$ and two independent variables $(X_{1}$ and $Y_{2})$
+\cite{fan2000dependence} noted that the majority of clinical studies are conducted over a limited time period. If the  question of the study is association of two survival variables, such studies allow to compute association only over the period of the study. It is also possible that researchers might be interested in association of two survival variables during different time periods of the study. In order to address this need, \cite{fan2000dependence} suggested two statistics, a limited region cross ratio and a limited region Kendall's tau. Both statistics are suitable for right-censored data and consistent and asymptotically normally distributed. The authors further developed the idea of \cite{oakes1989bivariate} who proposed a local Kendall's $\tau$: $\tau(t_X, t_Y) = E\{sign(T_{X,1} - T_{X,2})(T_{Y,1} - T_{Y,2})~|~ min(T_{X,1},T_{X,2}) = t_X ~and~ min(T_{Y,1},T_{Y,2}) = t_Y \}$, where $(T_{X,1}, T_{X,2})$ and $(T_{Y,1}, T_{Y,2})$ are two independent pairs. Oakes incorrectly suggested that his derivations work for both continuous and discrete cases. We correct his derivations and the derivations of \cite{fan2000dependence} for limited region Kendall's tau in the discrete (see earlier sections) case and propose a Spearman's correlation over a limited time region $[0,t_X] \times [0, t_y]$.\\
+
+One way of defining Spearman's correlation is the probability of concordance minus probability of discordance for three independent pairs $(T_{X,0}, T_{Y,0})$, $(T_{X,1}, T_{Y,1})$, and $(T_{X,2}, T_{Y,2})$:
+$$
+\begin{aligned}
+  &P((T_{X,0}-T_{X,1})(T_{Y,0} - T_{Y,2})>0) - P((T_{X,0}-T_{X,1})(T_{Y,0}-T_{Y,2})<0) = E\{sign(T_{X,1} - T_{X,2})(T_{Y,1} - T_{Y,2}) \}. 
+\end{aligned}
+$$
+
+We switch notations here:
   $$
   \begin{aligned}
     P\{ &X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} =\\
@@ -1557,10 +1577,10 @@ P\{ &X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y \} =\\
 Now, let's find the joint distribution of concordance and discordance and of $X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y$:
 	$$
 	\begin{aligned}
-		P\{ (X_0>X_1, Y_0>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0>y, Y_2=y)\} = S(x, y)F(dx)G(dy) \\
-		P\{ (X_0<X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0=y, Y_2>y)\} = S(dx, dy)F(x)G(y) \\
-		P\{ (X_0>X_1, Y_0<Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0=y, Y_2>y)\} = S(x, dy)F(dx)G(y) \\
-		P\{ (X_0<X_1, Y_0>Y_2) &\cap (X_{1}\wedge X_{2} = x,~Y_{1}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0>y, Y_2=y)\} = S(dx, y)F(x)G(dy) \\
+		P\{ (X_0>X_1, Y_0>Y_2) &\cap (X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0>y, Y_2=y)\} = S(x, y)F(dx)G(dy) \\
+		P\{ (X_0<X_1, Y_0<Y_2) &\cap (X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0=y, Y_2>y)\} = S(dx, dy)F(x)G(y) \\
+		P\{ (X_0>X_1, Y_0<Y_2) &\cap (X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y) \} =P\{ X_0>x, X_1=x, Y_0=y, Y_2>y)\} = S(x, dy)F(dx)G(y) \\
+		P\{ (X_0<X_1, Y_0>Y_2) &\cap (X_{0}\wedge X_{1} = x,~Y_{0}\wedge Y_{2} = y) \} =P\{ X_0=x, X_1>x, Y_0>y, Y_2=y)\} = S(dx, y)F(x)G(dy) \\
 	\end{aligned}
 	$$
  Therefore 
@@ -1592,7 +1612,7 @@ Therefore, for the discrete case, we have:
   \end{aligned}
   $$
 }}
-If we weight $\rho(x, y)$ by $\frac{h(x, y)}{\int_0^x \int_0^y h(x, y)}$ and integrate the above expression over $[0,x]\times[0,y]$, we get a \emph{finate region Spearman} $\rho$:
+If we weight $\rho(x, y)$ by $\frac{h(x, y)}{\int_0^x \int_0^y h(x, y)}$ and integrate the above expression over $[0,x]\times[0,y]$, we get a \emph{finite region Spearman} $\rho$:
 	$$
 	\begin{aligned}
 		\mathcal{R}(x, y) &=P\{concord| X_{1}\wedge X_{2} \leq x,~Y_{1}\wedge Y_{2} \leq y\} - P\{discord|X_{1}\wedge X_{2} \leq x,~Y_{1}\wedge Y_{2} \leq y\}=\\
@@ -1658,8 +1678,8 @@ If we let $x \rightarrow \infty$ and $y \rightarrow \infty$, then  $ \lim_{x \ri
 To see if this is the same as Spearman $\rho$, let's express the correlation of PSR in terms of $S(x,y)$, $F(x)$, and $G(y)$:
 	$$
 	\begin{aligned}
-		P_c - P_d &= P\left\{ (X_1 - X)(Y_2 - X) > 0 \right\} -  P\left\{ (X_1 - X)(Y_2 - X) < 0 \right\} = \\
-    &\text{skipping some algebra}\\
+		P_c - P_d &= P\left\{ (X_1 - X)(Y_2 - Y) > 0 \right\} -  P\left\{ (X_1 - X)(Y_2 - Y) < 0 \right\} = \\
+    &\text{skipping some algebra, see Qi's paper}\\
     &= E \left\{   \left[ F(X^-) + F(X) - 1  \right]  \left[ G(Y^-) + G(Y) - 1  \right]  \right\} =\\
     &= E \left\{   \left[ 2F(X^-) - F(dX) - 1  \right]  \left[ 2G(Y^-) - G(dY) - 1  \right]  \right\}
 	\end{aligned}
@@ -1667,12 +1687,49 @@ To see if this is the same as Spearman $\rho$, let's express the correlation of 
 Which can be expressed as the following:
 {\small{
 \begin{equation}
-		\rho_{\text{PSR}} = \int_0^{+\infty} \int_0^{+\infty} \left\{   \left[ 2F(x^-) - F(dx) - 1  \right]  \left[ 2G(y^-) - G(dy) - 1  \right]  \right\}S(dx,dy)
+		\rho_{\text{PSR}} = \int_0^{+\infty} \int_0^{+\infty} \left\{   \left[ 2F(x^-) - F(dx) - 1  \right]  \left[ 2G(y^-) - G(dy) - 1  \right]  \right\}S(dx,dy) = \\
     \label{PSRrhoSurvFunc}
 \end{equation}
 }}
+or, in terms of survival functions:
+{\small{
+\begin{equation}
+		\rho_{\text{PSR}} = \int_0^{+\infty} \int_0^{+\infty} \left\{ \left[1 - 2S_X(x^-) + S_X(dx)\right]  \left[1 - 2S_Y(y^-) + S_Y(dy)  \right]  \right\}S(dx,dy) = \\
+\end{equation}
+}}
 
-Whether these two expressions are equivalent or not is still a question (work in progress). A small simulation study showed that they seem to be equivalent in the absence of censoring, but when the data is censored they are not equivalent. My current guess is that,  in general, they are not equivalent. In favor of his guess is the fact that the equation (\ref{SpearmanRhoSurvFunc}) was obtained by fixing values $min(X,X_1) = x$ and $min(Y,Y_1) = y$, while equation (\ref{PSRrhoSurvFunc}) was obtained by fixing values $X=x$ and $Y=y$.
+Whether the two expressions for correlation of PSR are equivalent or not is still a question (work in progress). A small simulation study showed that they seem to be equivalent in the absence of censoring, but when the data is censored they are not equivalent. My current guess is that,  in general, they are not equivalent. In favor of his guess is the fact that the equation (\ref{SpearmanRhoSurvFunc}) was obtained by fixing values $min(X,X_1) = x$ and $min(Y,Y_1) = y$, while equation (\ref{PSRrhoSurvFunc}) was obtained by fixing values $X=x$ and $Y=y$.
+
+\subsection{Yet another way of computing Spearman's correlation}
+As usual we have three pairs $(T_{X,0}, T_{Y,0})$, $(T_{X,1}, T_{Y,1})$, and $(T_{X,2}, T_{Y,2})$. Previously, we fixed $(T_{X,0}, T_{Y,0})$ and went from their. Now, we want to try to fix  $(T_{X,1}, T_{Y,1})$ and $(T_{X,2}, T_{Y,2})$:
+
+{\normalsize{
+$$
+\begin{aligned}
+  \rho = &P((T_{X,0} - T_{X,1})(T_{Y,0} - T_{Y,2})>0 )
+   - P((T_{X,0} - T_{X,1})(T_{Y,0} - T_{Y,2})<0 ) = \\
+   =  &P(T_{X,0} - T_{X,1} > 0, ~ T_{Y,0} - T_{Y,2}>0 ~or~ T_{X,0} - T_{X,1} < 0, ~ T_{Y,0} - T_{Y,2} < 0~|~T_{X,1}, T_{Y,2})\cdot P(T_{X,1})P(T_{Y,2})\\
+    &- P(T_{X,0} - T_{X,1}<0,~ T_{Y,0} - T_{Y,2}>0 ~or~ T_{X,0} - T_{X,1}>0,~ T_{Y,0} - T_{Y,2}<0 ~|~T_{X,1}, T_{Y,2})\cdot P(T_{X,1})P(T_{Y,2}) = \\
+  %%%
+   =&  [  S_{X,Y}(T_{X,1}, ~ T_{Y,2}) +  1 - S_{X,Y}(T_{X,1}^-, 0) -  S_{X,Y}(0, ~ T_{Y,2}^-)  +  S_{X,Y}(T_{X,1}^-, ~ T_{Y,2}^-)   ]\cdot S_X(dT_{X,1})S_Y(dT_{Y,2})\\
+    &- [  S_{X,Y}(0, T_{Y,2}) - S_{X,Y}(T_{X,1}^-, T_{Y,2})  +  S_{X,Y}(T_{X,1}, 0) - S_{X,Y}(T_{X,1}, T_{Y,2}^-)  ]\cdot S_X(dT_{X,1})S_Y(dT_{Y,2}) \\
+  %%%
+\end{aligned}
+$$
+}}
+For continuous case, this looks like this:
+{\normalsize{
+$$
+\begin{aligned}
+  \rho = &[  4\cdot S_{X,Y}(T_{X,1}, ~ T_{Y,2}) - 2\cdot S_{X,Y}(T_{X,1}, 0) -  2 \cdot  S_{X,Y}(0, ~ T_{Y,2})  +  1  ]\cdot S_X(dT_{X,1})S_Y(dT_{Y,2})\\
+  %%%
+\end{aligned}
+$$
+}}
+
+
+
+
 
 \subsubsection{Local  \emph{Spearman's} $\rho$ weighted by bivariate hazards}
 Inspired by paper of \cite{fan2000class}, we come up with another estimator of local Spearman's-like association. Instead of the weight $\frac{h(x, y)}{\int_0^x \int_0^y h(x, y)}$, we can use $\frac{\frac{h(x, y)}{S(x^-, y^-)F(x^-)G(y^-)}}{\int_0^x \int_0^y \frac{h(x, y)}{S(x^-, y^-)F(x^-)G(y^-)}}$, so we get:
@@ -1698,6 +1755,20 @@ We estimate them like this:
     \hat{\lambda}_Y &= \frac{\sum_{j = 1}^K I \left(Y_j \in [y,~y+dy),~\epsilon_j = 1 \right) }{\sum_{j = 1}^K I \left(Y_j\geq y   \right) }\\
 	\end{aligned}
 	$$
+
+\section{Adjusted Spearman's correlation}
+\textbf{Quale, van der Laan, Robins, 2006, Locally efficient estimation with bivariate right-censored data, file: Quale\_VanDerLaan\_Robins\_2006.pdf}
+Authors propose a locally efficient estimator that is \emph{made} out of two estimators: 1) $F_n$ lower dimensional parametric estimator of events, 2) $G_n$ consistent estimator of censoring events. It can be the other way around: $F_n$ is consistent and $G_n$ does not have to be. The resulting estimator is consistent and very efficient (compared to Dabrowska's estimator).\\
+
+\textbf{Yang, 2005, A NEW NONPARAMETRIC BIVARIATE SURVIVAL FUNCTION ESTIMATOR UNDER RANDOM RIGHT CENSORING, file: yang\_bivarSurf\_2005.pdf}
+It is an interesting estimator, it involves a band width, but no comparison to other estimators. The introduction is a thorough review of the literature.
+
+\textbf{Li, Lin, 2006, Semiparametric Normal Transformation Models for Spatially Correlated Survival Data} 
+
+\textbf{Li, Prentice, Lin, 2008, Semiparametric maximum likelihood estimation in normal transformation models for bivariate survival data}
+
+Read Hsu, Prentice (1996)\\
+Cai and Prentice (1997) modeled $\lambda_{ki}(t) = Y_{ki}(t)\lambda_0(t) e^{\beta^T Z_{ki}(t)}$ for each time point $i$ and for each cluster $k$. This is kind of simple, because both the $\beta$-coefficients and baseline hazard are the same for all members of the cluster.
 
 
 \section{Rank tests and bivariate survival surface approach.}
@@ -1774,6 +1845,9 @@ They note that this measure is in fact a weighted average of the Clayton's $\the
 
 \subsection{My plan}
 \begin{enumerate}[1)]
+  \item Look into bias of Kaplan - Meier function
+  \item look into proof of consistency of limited region Kendall's $\tau$
+  \item keep looking into adjusted bivariate survival models 
   \item look at the papers that have PRS and see if they use covariates
   \item look at all papers that are marked with stars
 	\item Look who cited Cuzick's paper
@@ -2116,7 +2190,7 @@ So the resulting variance is:
 	$$
 	\begin{aligned}
 		\pmb{V}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) &= \frac{\pmb{V}^*_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})}{n} = \frac{(\pmb{A}_n^*)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \pmb{B}^*_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})  \left\{(\pmb{A}_n^*)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \right\}^T}{n} = \\
-    &=\frac{\cancel{n}(\pmb{A}_n)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})\frac{1}{\cancel{n}} \pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})  \cancel{n}\left\{(\pmb{A}_n)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \right\}^T}{n} = \\
+    &=\frac{\cancel{n}(\pmb{A}_n)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})\frac{1}{\cancel{n}} \pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})  \cancel{n}\left\{(\pmb{A}_n)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \right\}^T}{\cancel{n}} = \\
     &=(\pmb{A}_n)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \pmb{B}_n(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}})  \left\{(\pmb{A}_n)^{-1}(\pmb{X}, \pmb{Y}, \pmb{Z}, \hat{\pmb{\theta}}) \right\}^T\\
     &~~~~where\\
 		\pmb{A}_n(\pmb{X}, \pmb{Y}, \pmb{Z}_i, \hat{\pmb{\theta}}) &=  \sum_{i = 1}^{n}\left[ -\frac{\partial}{\partial \pmb{\theta}^T}\psi(X_i, Y_i, \pmb{Z}_i, \hat{\pmb{\theta}}) \right]\\
@@ -3445,8 +3519,8 @@ Let's summarize:
     %%%%%%%%%%%% deriv by beta_i
     \frac{\partial PSR_{Y_i}}{\partial \beta_j} & =  -(1+\delta_i) \frac{z_{ji} }{\sigma\sqrt{2\pi} }    e^{ - \frac{\left( ln(y_i) -\pmb{z}_i\pmb{\beta} \right)^2}{2\sigma^2} }\\
     %%%%%%%%%%%% deriv by gamma
-    \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    -\frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}\cdot\phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) - F_Y(y_i)    \right]\\
-    &\text{check if the formula below is correct or the formula above}\\
+    %\left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    -\frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}\cdot\phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) - F_Y(y_i)    \right]\\
+    %&\text{check if the formula below is correct or the formula above}\\
     \left.\frac{\partial PSR_{Y_i}}{\partial \gamma}\right|_{\gamma = ln(\sigma)} &=~~(1+\delta_i)\left[    -\left(ln(y_i) - \pmb{z}_i\pmb{\beta}\right)\cdot\phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right)   +  \Phi_{St.N.}\left(  \frac{ln(y_i) - \pmb{z}_i\pmb{\beta}}{\sigma}  \right) - F_Y(y_i)    \right]
   \end{aligned}
   $$
@@ -3764,55 +3838,133 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 % \subsection{M-estimation for conditional and partial-conditional correlation}
 % Another way of approaching this problem was suggested by \cite{liu2016covariate}. Instead of taking derivatives like $\frac{\partial (PSR_Y^2(\pmb{\theta}_Y))}{\partial \beta_2}$, one can run a regression: $?$.\\
+
 % Under construction ...
-\section{Questions}
+
+\section{Committee comments}
 \begin{enumerate}
-  \item Conditional correlation: the correlation value can be greater than 1
-  \item Conditional correlation: how to do variance using M-estimation
-  \item Should we include motivation for PSRs?
+  \item Note that we have (or do we?) $T|Z~~ \perp  ~~C|Z$
+  \item Frank was saying something about taking a copula and doing a likelihood function then comparing our stuff to the result of the likelihood.
+  \item Frank has also suggested looking at the Hoeffding Dependence Coefficient (see \url{http://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/viewer.htm#procstat_corr_details07.htm})
+  \item Dandan has suggested to look into \emph{sudo values} approach of imputing the data so it is not censored anymore
+  \item Frank said that there is a rich kidney data (ask Leena)
+  \item Frank suggested transitional models with multiples states (Prof. Thernau, the one who wrote the survival analysis book).
+  \item Dandan has also pointed out the importance of the having a paper with a collaborator
 \end{enumerate}
 
-\section{What I am planning to do}
+\section{Thoughts about the committee meeting}
+1. I love our estimator, but what bothers me the most is that when the censoring is informative, it is possible for it to be biased away from zero. We haven't proved that the bias is always toward zero.
+2. If we do what the committee wanted, the papers that Bryan has sent were very helpful.
+I learned how to make my Dabrowska's estimator work faster (Prentice and Zhao, 2018):
+
+$$
+\begin{aligned}
+  \hat{F}(t_{1,i}, t_{2,j}) &= \frac{  \hat{F}(t_{1,i}, t_{2,j}^-) \hat{F}(t_{1,i}^-, t_{2,j}) } { \hat{F}(t_{1,i}^-, t_{2,j}^-)  }   \left\{   \frac{  d^{00}_{ij} r_{ij}  }{    (d_{ij}^{10} + d_{ij}^{00})  (d_{ij}^{01} + d_{ij}^{00})}  \right\}\\
+  &\text{where I don't understand some of the notations...} 
+\end{aligned}
+$$
+The paper of Prentice (2014) provides a non-parametric estimate of survival surface without the problem of negative mass, although it does not improve the efficiency much. It uses the idea of self-consistency first introduced by Efron (1967) and later developed by of Tsai and Crowley (1985). Prentice suggested first to use Dabrowska estimator but excluding the points with double censoring from the interior risk region (while leaving them on the margins, I think). He suggests to estimate survival functions for both, events $F$ and censored events $G$ and to construct $\hat{F}^*$ and $\hat{G}^*$. Then, he suggested to estimate c.d.f of $\underline{F}$ and $\underline{G}$, which I did not understand how, but suppose I did, then we could have constructed our self-consistent estimator like this:
+
+$$
+\begin{aligned}
+  \hat{F}(\Delta X_1, \Delta X_2) &=  \frac{\hat{F}^*}{1 - \underline{\hat{G}}(X_1^-, X_2^-)}, \text{ if $(X_1, X_2)$ is a failure time grid point}\\
+  &=0,\text{   otherwise}\\
+  \hat{G}(\Delta X_1, \Delta X_2) &=  \frac{\hat{G}^*}{1 - \underline{\hat{F}}(X_1, X_2)}, \text{ if $(X_1, X_2)$ is a censoring time grid point}\\
+  &=0,\text{   otherwise}
+\end{aligned}
+$$
+There is not analytic variance expression for the above estimator, but the bootstrap can be used. 
+
+The paper of Li, Prentice, and Lin, shows how to do a semi-parametric model, in other words, to adjust for covariates. Their model uses a transformation for cumulative marginal hazards, so that the joint distribution of time to event variables becomes Normal, which means that it has a built-in correlation, Spearman's correlation. 
+If I were to implement both of them, I would need to figure out the self-consistency estimation, and the variance estimation for unadjusted; and also I would have to figure out the semiparametric model, then I would have two papers!
+
+
+
+\section{Future papers}
 \begin{enumerate}
+  \item applying the method to EHR data where we have two (or more) times to event: time to being genotyped for certain mutations after being prescribed a certain medication (Johnathan's data collected from electronic health records (EHR))
+  \item Cumulative probability models (CPMs) for censored/detection limits. Qi has already done single detection limit)
+  \item Extension of bivariate survival  (your estimator: limited region rho)
+  \item Errors in variables with EHR data in the context of bivariate survival
+  \item EHR correlation (Linjun's work, BioVU)
+  \item How to use correlation to predict one bivariate outcome based on another
+  \item How to predict one time to event based on another time to event
+  \item Causal inference in bivariate survival 
+\end{enumerate}
+
+
+
+\section{To-Do List}
+
+Right now, I am running power for local rho with bootstrap: 1) job 27296774 (clayton, 100);  2) job 27355092 (clayton, 200), 3) job XXX (clayton, 500);  4) job 27247087 (frank, 100);  5) job XX (frank, 200); 5) job XX (frank, 500).
+
+
+\begin{enumerate}
+  \item what do I do at the lastly censored observation ? KM?
+  \item Try to evaluate the bias.
+  \item Plot for conditional correlation: get rid of uncensored case and get rid of "True correlation"
+  \item Do data analysis using a model and a conditional correlation
+  
+  \item list all methods for plot in unadjusted correlation
+
+  \item include the simulation page: about copulas
+  \item mention previous work
+  \item goal: create spearman's rank because it is very good
+  \item then do notations
+  \item liu: show that spearman's = corr of the new type of residuals
+  \item we follow similar approach in the context of PSRs
+  \item up to now 3 minutes
+  \item notaions 
+  \item definition of Spearmans' corr of CDFs
+  \item result of Liu about corr(psr, psrs)
+  \item rank correlation for censored data
+  \item time from HAART initiation
+    
+  \item $\bigvee$ For conditional correlation: get rid of exponential model.
+  \item $\bigvee$ For conditional correlation: look at the bias and coverage (of multiple points). Also do the bias and coverage for the biased estimate, proportion of CIs that cover the truth 
+  \item for Conditional correlation plots for CASANET data do plots with 3 knots.
+  \item $\bigvee$ For all tables: split each column into two, put Clayton 0.2 and Frank 0.2 together
+  \item $\bigvee$ for table 3, note that the bias is larger than in table 2
+  \item $\bigvee$ for table 3 add another table for power.
+  \item $\bigvee$ for table 3, put the independent censoring into the appendix
+  \item $\bigvee$ table 2 drop column "Method". Get rid of "bootstrap". Write that the bias is toward zero.
+  \item $\bigvee$: Question from Chun: Figures 3, 5: for some reason the middle columns are curved (but they have to be linear) Answer:  The reason why they are curved is that we first predict each $resid$, $resid^2$, $resid * resid$, and then we make a "correlation" out of it.
+  \item $\bigvee$: bias for the population parameter under censoring instead of "bias of bias".
+  \item $\bigvee$ For conditional correlation: we probably do not need the survival models to contain a quadratic term.
+  \item $\bigvee$ Change the notations to Tx, Cx, deltax, Fx, X, Ty, Cy, Deltay, Fy
+  \item...  
+  \item $\bigvee$ Inside tabel 6 separate adults and children (partial and unadjusted correlation)
+  \item $\bigvee$ re-run simulations with different seed for partial correlation, sample size 100, 200, because the seeds were a sequence from 1, 1000 and we need random seeds: (JOBID: 24699524, completed)
+  \item $\bigvee$ run simulations with different seed for partial correlation, sample sizes 500 (JOBID: 24787776, had to adjust seeds b/c it would not run, completed)
+  \item $\bigvee$ get simulations for bootstrap, frank, 100, 500 (JOBID: 24554302, completed)
+  %\item get simulations for bootstrap, frank, 100, 500 (JOBID: 24787853, 24938538, still running)
+  \item $\bigvee$ get simulations for bootstrap, frank, clayton, 200 (JOBID: 25021027 completed)
+  \item find the literature on non-parametric survival models
+      
+  \item $\bigvee$ exclude "no censoring" from the first unadjsuted correlation, put no censoring option in Appendix
+  \item $\bigvee$ sample - make it a first column and have only one number per sample size group.
+  \item exclude "power" from table 2, put no censoring option in Appendix. The rest of the numbers: first: bias: (coverage); bias* (coverage*); censoring percent.
+  \item $\bigvee$  table 3 should be moved into the Appendix, add text that for dependent censoring the results are slightly attenuated
+  \item $\bigvee$ in table 4 rerun it with censoring scenario of .3 (approximately, JOBID for 500 is 25042640, completed; JOBID for 100, 200 is 25023321, completed)
+  \item in table 4 why the bias is different - did not get the question
+  \item \textbf{Next week: example of CASSANETT data}
+  \item \textbf{the week after that: Conditional simulations}
+  \item \textbf{the week after that: Discussion}
+  \item \textbf{4/13} is our goal for paper submission
+  \item schedule the committee meeting in April after submitting the paper.
+  
   \item try to find the original reference for Frank's family
   \item show correlation mean for each simulation scenario: average point estimate, average estimated variance, variance of the estimates accross 1000.
   \item Look for models that adjust for covariates
-  \item check the weired degrees of freedom
   \item implement the function that uses the bootstrap in order to get the M-estimation for COX model, the p-value is defined as how often the CI included 0 times 2.
-  \item add to the section 2 some details. How is PSR related to Dabrowska (what is Dabrowska). How it is different from Dabrowska. Specify the fact that Dabrowska does not distinguish between x- and x.
-  \item Explain the difference in performance for different families
-  \item add confidence intervals for PSR correlation
-  \item Implemented M-estimation for Cox using the full likelihood
-  \item implement conditional correlation
   \item tried to see if the loss in correlation can be evaluated using Hoeffding and Frescet bounds, but did not figure out this yet.
-\end{enumerate}
-
-\section{To-Do List}
-\begin{enumerate}
-  \item Compute integrals for $\rho^*$
   \item Look at papers that estimate $\rho$ using copulas: do they do Partial rho?
-  \item program you code to save point estimate and CIs
-  \item change your code so if ACCRE's jobs times out, you could continue it again from where it stopped.
-  \item look at the censoring probability (for both events) as a function of CD4 level
-  \item generate several plots
-  \item write up all the scenarios of simulation: 1) diff. censoring stuff, 2) different covariate or the same
-  \item get 100 and 500 sample size instead of 50 and 200
-  \item I cannot seem to do cond corr as a function of calendar time
-  \item Change the X axis of the CD4 on the Sqrt scale
   \item check out cross analysis (see reference recommended by Frank or ask him what this is)
-  \item find more motivation for correlation
   \item read papers recommended by Frank
-  \item clarify that we do not censor together as part of the method
-  \item simulate data that does not depend on Z and don't use knots???
-  \item include new Partial correlation Power table (when Z is the same for both variables)
   \item run (:)) a bivariate survival model with copulas  
-  \item Look at the papers produced by CASSANet data: look up the definitions of baseline RNA, and baseline CD4.
-  \item Check virologic failure that should start 6 months after the starting point: Yours start right away.
-  \item Sort out the notations: is it $E_S[F_S(x)|S>X]$ or $E_S[F_S(s)|s>x]$?
   \item you have two functions \texttt{simSurvDataFromJointCDF()} in \texttt{tools.R} check which one is in use
   \item fix in function zebraTable: when pallet is customized, the function prints out the color names.
-  \item change the function of partial correlation in such way that $PSR_X$ could be adjusted and $PSR_Y$ unadjusted or the other way around. Currently, you have either both are adjusted (function corTS) or none (function $corTS_Simple$)
-  
+  \item change the function of partial correlation in such way that $PSR_X$ could be adjusted and $PSR_Y$ unadjusted or the other way around. Currently, you have either both are adjusted (function corTS) or none (function $corTS_Simple$)  
   \item understand sample correlation without and with censoring. Why the one with censoring is not smaller than the one without censoring
   \item connect (if possible) local version of Spearman rho and correlation of PSR
   %\item baseline hazard score equations: Stute The central limit theorem under random censorship. Bryan's number: 615-624-2220
@@ -3821,22 +3973,14 @@ Scores in \texttt{coxph} can be extracted as \texttt{mod\$score}
 
 \clearpage
 \section{Meeting report}
+
+-------
 After writing the simulation plan, I focused on the problem of generating confidence intervals for conditional correlation as a function of calendar time. The problem was that A matrix (the matrix required for the M-estimation) was computationally singular. I tried several things.
 
 1) The problem was with the variable canlendar time. For some reason, when it is in years, the baseline hazard becomes enormous. Then the M-estimation gets all messed up. When I switched to time from the first year, it worked for children. For adults it was still a problem, so  I used "known hazard" approach in M-estimation for one variable and  M-estimation with full likelihood  for the other.
 . Compared different confidence intervals (full likelyhood and known hazard). Known hazard intervals were wider.
 
 2) I do not know why this was the case, but am investigating this.
-
-3) I am working on some problem with simulations (it fails on ACCRE, but not on my computer.) Found the problem with simulations. The problem was that because of the digital number representation, some numbers appear to be the same, while their digital representation is different. Functions coxph() and basehas() were doing different things with these numbers, which caused the problem. I emailed Terri Therneau, and he explained what argument to use to deal with this problem.
-
-I thought of looking at the probability of censoring as a function of cd4. I ran it as a logistic regression, but then thought that it should probably be a survival model, and the censoring is not independent ?.?.?
-
-I coded two types of censoring and different proportions, which implements Bryan's suggestion.
-
-I worked on the power tables (automatic caption and stuff), worked on power plots and on conditional correlation plots.
-
-Worked on exploring the properties of other Rho estimators
 
 Go over the JASN document
 
@@ -3845,39 +3989,23 @@ Talk about the meeting with Johnathan
 
 \section{Plan for tomorrow}
 \begin{enumerate}
-  \item figure out parameter for dependent censoring for partial
-  \item figure out $\rho^*$
   \item find and implement competing approach for partial correlation
-  \item make 4 knots for children (cond cor over calendar time)
-  \item explore prob of censoring as function of other variables 
   \item read Bryans paper: Probability-Scale Residuals in HIV/AIDS Research: Diagnostics and Inference
-  \item restructure the powerForPartial() so that rclayton gets the new arguments: prob of censoring and stuff
-  \item incorporate different censoring scenarios into you partial correlation power computations.
-  \item think how to display graphically coverage and bias for different censoring scenarios and different copula families.
-  \item look at the censoring probability (for both events) as a function of CD4 level
-  \item generate nice plots for conditional correlation (real ones)
-  \item include in your code different  scenarios for censoring
-  \item for unadjusted: run simulations on ACCRE that include bias and incorporates different censoring scenarios
-  \item for partial: run simulations on ACCRE that include bias and incorporates different censoring scenarios
   \item include function fillUpDecimals and fillUpStr in my skezoo package
 \end{enumerate}
 
 \section{Meeting agenda}
 \begin{enumerate}
-  \item Ask Bryan about JASM and causal inference tuition
+  \item Ask Bryan about JASM
   \item Discuss the feedback from committee meeting
   \begin{enumerate}
     \item Frank: has recommended to include into the introduction earlier: full models with copula in 2 parametric model
     \item Frank: Also reference cross-analysis (one event in a time-dependent covariate for the other) ???
-    \item Frank: Clarify assumption that censoring on one variable does not occur if the other one had an event
     \item Frank: emphasize the context: method that does not offer HR
     \item Frank: explore how to make the estimator less dependent on censoring
     \item Frank: what is the support and the strength of the support
     \item Frank: has recommended some papers. I have sent one of them and asked him to clarify the reference for the other two.
-    \item Cindy: clarify the censoring mechanism, whether the events are censored at the same time or what. Or, whether time to censoring variables are dependent on each other.
     \item Dandan: For partial correlation are Z's the same for each event or different?
-    \item Dandan: semipartial correlation?
-    \item Cindy: Report bias in addition to coverage:
   \end{enumerate}
   \item Discuss the conditional correlation results.
   \item My plan is to research why the confidence intervals for the calendar time do not work and then to finish more or less writing the paper.
